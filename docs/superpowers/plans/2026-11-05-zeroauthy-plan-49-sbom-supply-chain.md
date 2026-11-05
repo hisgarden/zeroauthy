@@ -13,7 +13,7 @@ locally and a Go test guards the contract.
 
 **Architecture:** one generator script (`scripts/sbom.sh`, syft over a
 staging directory holding the extracted binary and the console lockfile;
-`cyclonedx-gomod` through `go run` as the Go-only fallback), one scanner
+`cyclonedx-gomod` installed into a temporary `GOBIN` as the Go-only fallback), one scanner
 script (`scripts/scan-sbom.sh`, grype with `.grype.yaml` and an optional
 `openvex.json`), one contract checker (`internal/sbomcheck`, vendored
 CycloneDX 1.6 schema, called by `scripts/check-sbom.sh`). CI and the
@@ -24,7 +24,7 @@ uploads. The Dockerfile moves to `cgr.dev/chainguard/go` and
 **Tech Stack:** Go 1.26.10 (unchanged), `github.com/santhosh-tekuri/jsonschema/v6`
 (already required), bash, syft (CI: `anchore/sbom-action/download-syft@v0`),
 grype (CI: `anchore/scan-action/download-grype@v7`), `actions/attest-sbom@v2`,
-`cyclonedx-gomod` v1.12.0 via `go run`. **No new Go module.**
+`cyclonedx-gomod` v1.12.0 via `go install` into a temporary `GOBIN`. **No new Go module.**
 
 **Spec:** [SBOM and supply-chain design](../specs/2026-11-05-zeroauthy-sbom-supply-chain-design.md).
 Read it before executing any task. Section numbers (§) refer to it.
@@ -32,7 +32,8 @@ Read it before executing any task. Section numbers (§) refer to it.
 ## Global Constraints
 
 - `go.mod`/`go.sum` do not change: no new `require`, no new `tool`
-  directive. `go run <module>@<version>` is the only way a Go tool is run.
+  directive. `go install <module>@<version>` into a temporary `GOBIN` is the
+  only way a Go tool is run (it never edits `go.mod`).
 - Workflow edits are additive: new jobs, new steps, new `outputs`, and the
   three existing lines named in Task 4. Never edit a step that mentions
   Node or npm (another branch is switching the console to Bun).
@@ -48,7 +49,7 @@ Read it before executing any task. Section numbers (§) refer to it.
   `yarn.lock`, `pnpm-lock.yaml`); the script refuses syft < 1.46.0 when
   `bun.lock` is the only lockfile.
 - Go commands run with `GOTOOLCHAIN=go1.26.10 GOTMPDIR=/home/user/gotmp`;
-  heavy commands (`go build`, `go run`, syft, grype) under `nice -n 15`.
+  heavy commands (`go build`, `go install`, syft, grype) under `nice -n 15`.
   Do not run the full Go test suite; run only `./internal/sbomcheck`.
 - Do not touch `internal/webauthn*`, `internal/store`, `api/`, `tests/e2e`
   or `docs/superpowers/*33b*`.

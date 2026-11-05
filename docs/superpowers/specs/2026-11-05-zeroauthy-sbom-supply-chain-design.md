@@ -42,7 +42,8 @@ image is built on Chainguard (`cgr.dev`) base images pinned by digest.
 because another branch is changing the console toolchain in the same files;
 no existing step that mentions Node or npm is edited. The Go module graph
 does not change: no new `require` in `go.mod`, no new `tool` directive; the
-only Go tool this plan runs is `go run <module>@<version>`.
+only Go tool this plan runs is `go install <module>@<version>` into a
+temporary `GOBIN`.
 
 ### In scope
 
@@ -133,8 +134,9 @@ Rules:
   instructions stay true).
 - **One generator, one script.** CI and `make sbom` run `scripts/sbom.sh`
   with syft. Without syft the script falls back to a pinned
-  `cyclonedx-gomod` through `go run` (Go modules only, CycloneDX only) and
-  says so; the strict check used in CI then fails, which is the point.
+  `cyclonedx-gomod` installed into a temporary `GOBIN` (Go modules only,
+  CycloneDX only) and says so; the strict check used in CI then fails,
+  which is the point.
 - **Policy.** A release stops on any unaccepted grype finding of severity
   high or critical in any release SBOM, and on any `govulncheck` finding
   reachable from `./...`. Medium and below are reported, not blocking.
@@ -361,11 +363,16 @@ Decisions:
   `make sbom-check` runs `scripts/check-sbom.sh dist/sbom`; `make sbom-scan`
   runs `scripts/scan-sbom.sh dist/sbom`. `/dist/` is already in
   `.gitignore`.
-- `scripts/sbom.sh` uses `syft` from `$SYFT` or `PATH`. Without it, it runs
-  `go run github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@v1.12.0 app`
-  per platform (`GOOS`/`GOARCH` set), which emits CycloneDX only and covers
-  Go modules only, and prints what is missing. `go run pkg@version` never
-  edits `go.mod` (verified: `git status` clean after the run).
+- `scripts/sbom.sh` uses `syft` from `$SYFT` or `PATH`. Without it, it
+  installs `github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@v1.12.0`
+  into a temporary `GOBIN` (built for the host; `go install pkg@version`
+  never edits `go.mod`, verified by a clean `git status` after the run) and
+  runs `cyclonedx-gomod app` once per platform with `GOOS`/`GOARCH` set,
+  which emits CycloneDX only and covers Go modules only, and prints what is
+  missing. The tool reads the module version through git and does not work
+  in a `git worktree`; the script says so. (Implementation note: running it
+  through `go run` with `GOOS`/`GOARCH` set would cross-compile the tool
+  itself, hence the install step.)
 - `internal/sbomcheck` (Go, uses the vendored `jsonschema/v6`): `CheckCycloneDX`
   validates against the embedded 1.6 schema and returns a summary;
   `CheckSPDX` checks the SPDX 2.3 fields; `Require` checks purl coverage;

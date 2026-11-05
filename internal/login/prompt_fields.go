@@ -113,6 +113,14 @@ func (h *Handlers) renderIdentifier(w http.ResponseWriter, r *http.Request, stat
 	if data.Social == nil {
 		data.Social = h.socialButtons(r, f)
 	}
+	if data.Passkey == nil {
+		pk, err := h.passkeyLogin(r, f)
+		if err != nil {
+			h.fail(w, r, err, f)
+			return
+		}
+		data.Passkey = pk
+	}
 	ui.RenderLoginIdentifier(w, status, f.view, data)
 }
 func (h *Handlers) renderSignup(w http.ResponseWriter, r *http.Request, status int, f *flow, data ui.SignupData) {

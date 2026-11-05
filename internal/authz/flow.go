@@ -196,6 +196,9 @@ func (h *Handlers) loginSucceeded(w http.ResponseWriter, r *http.Request, res te
 	if slices.Contains(fr.Prompts(), "none") {
 		e.Type = "ssa"
 	}
+	if d := passkeyPrompts(r.Context(), sess); d != nil {
+		e.Details = d
+	}
 	logs.RecordEvent(r.Context(), logs.RecorderFromContext(r.Context()), e)
 }
 

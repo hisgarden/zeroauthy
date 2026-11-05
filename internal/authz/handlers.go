@@ -314,6 +314,7 @@ func (h *Handlers) startConsent(w http.ResponseWriter, r *http.Request, res tena
 	params := fr.params()
 	params[ParamStage] = stageConsent
 	params[sessionKey] = sess.ID
+	carryFreshLogin(r.Context(), params, sess)
 	params["za_log_executions"] = strings.Join(logs.Enrich(r.Context(), logs.Event{}).ExecutionIDs, ",")
 	var prepare func(string, map[string]string) error
 	if eff != nil {
@@ -656,6 +657,7 @@ func (h *Handlers) Consent(w http.ResponseWriter, r *http.Request, res tenant.Re
 	for _, id := range strings.Split(txn.Params["za_log_executions"], ",") {
 		logs.AddExecution(r.Context(), id)
 	}
+	*r = *r.WithContext(resumeFreshLogin(r.Context(), txn.Params, sess))
 	h.finish(w, r, res, client, fr, sess, eff, true, true)
 }
 

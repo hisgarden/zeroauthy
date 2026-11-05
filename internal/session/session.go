@@ -105,8 +105,11 @@ func (m *Manager) Current(ctx context.Context, r *http.Request, t *store.Tenant)
 
 // Start creates a session for a freshly authenticated user and sets the
 // cookie. Any session the request already carries is deleted first, so a
-// login always gets a new session identifier.
-func (m *Manager) Start(ctx context.Context, w http.ResponseWriter, r *http.Request, t *store.Tenant, userID, connection string, authTime time.Time) (*store.LoginSession, error) {
+// login always gets a new session identifier. methods are the steps that
+// authenticated the user, first factor first (Plan 33b spec section 5.4);
+// a method without a time is stamped with authTime. Without methods the
+// session has no record (AuthMethods nil), as before Plan 33b.
+func (m *Manager) Start(ctx context.Context, w http.ResponseWriter, r *http.Request, t *store.Tenant, userID, connection string, authTime time.Time, methods ...store.AuthMethod) (*store.LoginSession, error) {
 	if old, err := r.Cookie(CookieName); err == nil && old.Value != "" {
 		if s, err := m.Store.Sessions().GetByTokenHash(ctx, t.ID, secrets.HashToken(old.Value)); err == nil {
 			_ = m.Store.Sessions().Delete(ctx, t.ID, s.ID)
@@ -134,6 +137,12 @@ func (m *Manager) Start(ctx context.Context, w http.ResponseWriter, r *http.Requ
 		CreatedAt:       now,
 		UpdatedAt:       now, LastInteractedAt: now,
 		InitialIP: ip, InitialUserAgent: ua, LastIP: ip, LastUserAgent: ua,
+	}
+	for _, method := range methods {
+		if method.At.IsZero() {
+			method.At = authTime.UTC()
+		}
+		s.AuthMethods = append(s.AuthMethods, method)
 	}
 	if err := m.Store.Sessions().Create(ctx, s); err != nil {
 		return nil, err

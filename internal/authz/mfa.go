@@ -136,6 +136,7 @@ func (h *Handlers) requireMFA(w http.ResponseWriter, r *http.Request, res tenant
 	params := fr.params()
 	params[ParamStage] = StageMFA
 	params[sessionKey] = sess.ID
+	carryFreshLogin(r.Context(), params, sess)
 	h.startTxnWith(w, r, res, client, fr, params, "/u/mfa", func(id string, p map[string]string) error {
 		plain, err := json.Marshal(pending)
 		if err != nil {
@@ -282,6 +283,7 @@ func (h *Handlers) MFAComplete(w http.ResponseWriter, r *http.Request, res tenan
 	}
 	h.clearTxnCookie(w, stored)
 	*r = *r.WithContext(context.WithValue(r.Context(), mfaCompletedKey{}, current.ID))
+	*r = *r.WithContext(resumeFreshLogin(r.Context(), stored.Params, current))
 	h.finish(w, r, res, client, fr, current, &pending.Effects, true, true)
 }
 func (h *Handlers) invalidMFA(w http.ResponseWriter, r *http.Request, res tenant.Resolved) {

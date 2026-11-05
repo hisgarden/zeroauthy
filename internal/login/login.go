@@ -26,6 +26,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/logscrub"
 	"github.com/zeroauthy/zeroauthy/internal/mfa"
 	"github.com/zeroauthy/zeroauthy/internal/orglogin"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/passwordless"
 	"github.com/zeroauthy/zeroauthy/internal/protection"
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
@@ -59,6 +60,9 @@ type Handlers struct {
 	// Passwordless serves the hosted passwordless prompt (Plan 34); nil
 	// offers no email or sms connection.
 	Passwordless *passwordless.Service
+	// Passkeys runs the hosted passkey ceremonies (Plan 33b); nil offers
+	// no passkeys.
+	Passkeys *passkey.Service
 	// Device code entry limits (/activate). Each counts misses; a code
 	// that is found refunds its attempt.
 	DeviceTxnThrottle    *identity.Throttle // key: transaction ID
@@ -543,7 +547,7 @@ func (h *Handlers) authenticateLogin(w http.ResponseWriter, r *http.Request, f *
 	if f.txn.Params[orglogin.InvitationIDParam] != "" {
 		h.sendSignupVerification(f, user)
 	}
-	h.complete(w, r, f, user)
+	h.complete(w, r, f, user, methodPassword)
 }
 
 func (h *Handlers) SignupPage(w http.ResponseWriter, r *http.Request) {
@@ -802,19 +806,22 @@ func (h *Handlers) SignupSubmit(w http.ResponseWriter, r *http.Request) {
 	code = "ss"
 	eventUser = user
 	h.sendSignupVerification(f, user)
-	h.complete(w, r, f, user)
+	h.complete(w, r, f, user, methodPassword)
 }
 
-// complete starts the session and hands back to /authorize processing.
-func (h *Handlers) complete(w http.ResponseWriter, r *http.Request, f *flow, user *store.User) {
+// complete starts the session, recording method as its first factor
+// (pwd, passkey, email or sms), and hands back to /authorize processing.
+func (h *Handlers) complete(w http.ResponseWriter, r *http.Request, f *flow, user *store.User, method string) {
 	*r = *r.WithContext(logs.WithEvent(r.Context(), logs.Event{UserID: user.UserID, UserName: passwordless.MaskIdentifier(f.conn.Strategy, user.Name)}))
 	ctx := r.Context()
 	now := h.now()
-	sess, err := h.Sessions.Start(ctx, w, r, f.res.Tenant, user.UserID, f.conn.Name, now)
+	sess, err := h.Sessions.Start(ctx, w, r, f.res.Tenant, user.UserID, f.conn.Name, now, store.AuthMethod{Name: method})
 	if err != nil {
 		h.fail(w, r, err, f)
 		return
 	}
+	*r = *r.WithContext(authz.WithFreshLogin(r.Context(), authz.FreshLogin{SessionID: sess.ID, Method: method}))
+	ctx = r.Context()
 	if err := h.Store.Users().RecordLogin(ctx, f.res.Tenant.ID, user.UserID, now, httpx.RecordedIP(r, h.TrustProxyHeaders)); err != nil {
 		h.log().WarnContext(ctx, "record login", "tenant", f.res.Tenant.ID, "err", err)
 	}

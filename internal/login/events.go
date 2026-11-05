@@ -12,8 +12,20 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/tenant"
 )
 
+// emitEvent records a hosted login event. The Plan 33b WebAuthn codes stay
+// disabled in the frozen log inventory until Plan 33b Task 19 flips them,
+// so logs.RecordEvent drops them until then; tests replace emitEvent to
+// observe them at this boundary.
+var emitEvent = logs.RecordEvent
+
 func (h *Handlers) event(r *http.Request, f *flow, code string, u *store.User) {
+	h.eventDetails(r, f, code, u, nil)
+}
+
+// eventDetails is event with the log's details.
+func (h *Handlers) eventDetails(r *http.Request, f *flow, code string, u *store.User, details map[string]any) {
 	e := logs.FromRequest(r)
+	e.Details = details
 	e.Type = code
 	if f != nil {
 		e.TenantID = f.res.Tenant.ID
@@ -31,7 +43,7 @@ func (h *Handlers) event(r *http.Request, f *flow, code string, u *store.User) {
 		e.UserID = u.UserID
 		e.UserName = u.Name
 	}
-	logs.RecordEvent(r.Context(), h.Recorder, e)
+	emitEvent(r.Context(), h.Recorder, e)
 }
 func (h *Handlers) maskRequest(r *http.Request) {
 	values := []string{}

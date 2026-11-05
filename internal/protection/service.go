@@ -15,6 +15,10 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/store"
 )
 
+// FlowPasskeyLogin is the Attempt flow of a hosted passkey assertion: only
+// the suspicious-IP login budget, keyed by IP (Plan 33b R3).
+const FlowPasskeyLogin = "passkey-login"
+
 type Attempt struct {
 	Tenant               *store.Tenant
 	Connection           *store.Connection
@@ -100,6 +104,10 @@ func (s *Service) Begin(ctx context.Context, a Attempt) (Decision, error) {
 	// Social flows (Plan 24) use the suspicious-IP budgets only: no email
 	// lookup and no password brute-force reservation.
 	social := a.Flow == "social-login" || a.Flow == "social-signup"
+	// A passkey assertion (Plan 33b R3) spends the login budget by IP
+	// before the user is known; the identified user's brute-force check is
+	// a separate "login" attempt.
+	social = social || a.Flow == FlowPasskeyLogin
 	if (a.Flow == "login" || a.Flow == "signup" || social || discovery) && p.SuspiciousIP.Enabled && !Allowlisted(ip, p.SuspiciousIP.Allowlist) {
 		if slices.Contains(p.SuspiciousIP.Shields, "block") {
 			kind, rate := store.ProtectionSuspiciousIPLogin, p.SuspiciousIP.Stage.PreLogin

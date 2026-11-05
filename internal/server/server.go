@@ -361,6 +361,9 @@ func New(d Deps) http.Handler {
 		tr.Post("/device/confirmation", lg.DeviceConfirmSubmit)
 		tr.Get("/device/success", lg.DeviceSuccess)
 		tr.Get("/device/denied", lg.DeviceDenied)
+		// Plan 33b passkeys (hosted)
+		lg.Passkeys = d.Passkeys
+		tr.Post("/u/login/passkey", lg.LoginPasskey)
 	})
 
 	// The Management API, on every host of every tenant, and the system

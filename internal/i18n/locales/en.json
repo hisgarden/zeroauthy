@@ -270,7 +270,9 @@
       "buttonText": "Continue",
       "invalid-identifier": "Enter your email or username.",
       "emailPlaceholder": "Email address",
-      "phonePlaceholder": "Phone number"
+      "phonePlaceholder": "Phone number",
+      "passkeyButtonText": "Sign in with a passkey",
+      "passkey-authentication-failed": "We couldn't sign you in with that passkey. Try again or use another way to sign in."
     }
   },
   "login-password": {

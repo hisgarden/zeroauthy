@@ -354,7 +354,7 @@ func (h *Handlers) PasswordlessCodeSubmit(w http.ResponseWriter, r *http.Request
 		h.fail(w, r, err, f)
 		return
 	}
-	h.complete(w, r, f, user)
+	h.complete(w, r, f, user, f.conn.Strategy)
 }
 
 // passwordlessMembership applies the organization's membership rules as a

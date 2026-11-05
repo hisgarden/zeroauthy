@@ -27,6 +27,43 @@ func (m *Manager) MarkMFA(ctx context.Context, s *store.LoginSession) error {
 	s.MFAAt = at
 	return nil
 }
+
+// AddMethod appends m to the session's authentication record (Plan 33b
+// spec section 5.4); a method without a time is stamped now. Wherever
+// MarkMFA runs it is called with {Name: "mfa", Type: factor}. The store has
+// no update for a session row, so the row is rewritten whole in one store
+// transaction: the stored record is read, extended, and the row replaced
+// with the same ID and cookie hash. ErrNotFound if the session is gone.
+func (m *Manager) AddMethod(ctx context.Context, s *store.LoginSession, method store.AuthMethod) error {
+	if s == nil {
+		return store.ErrNotFound
+	}
+	if method.At.IsZero() {
+		method.At = m.now()
+	}
+	var methods []store.AuthMethod
+	err := m.Store.WithTx(ctx, func(tx store.Store) error {
+		cur, err := tx.Sessions().Get(ctx, s.TenantID, s.ID)
+		if err != nil {
+			return err
+		}
+		cur.AuthMethods = append(cur.AuthMethods, method)
+		if err := tx.Sessions().Delete(ctx, s.TenantID, s.ID); err != nil {
+			return err
+		}
+		if err := tx.Sessions().Create(ctx, cur); err != nil {
+			return err
+		}
+		methods = cur.AuthMethods
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	s.AuthMethods = methods
+	return nil
+}
+
 func browserCookie(kind string) string {
 	switch kind {
 	case "remember":

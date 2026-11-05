@@ -58,6 +58,7 @@ func (h *Handlers) postLogin(w http.ResponseWriter, r *http.Request, res tenant.
 	if screenShown {
 		continuation["za_screen_shown"] = "true"
 	}
+	carryFreshLogin(ctx, continuation, sess)
 	result, err := h.Actions.PostLogin(ctx, actions.PostLoginInput{
 		OrganizationID: fr.OrgID, Tenant: res, Client: client, Session: sess, Continuation: continuation,
 		// Loaded only when Actions are bound: a tenant without post-login

@@ -116,5 +116,6 @@ func (h *Handlers) Continue(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	*r = *r.WithContext(resumeFreshLogin(r.Context(), result.Continuation, sess))
 	h.finish(w, r, res, client, fr, sess, eff, false, result.Continuation["za_screen_shown"] == "true")
 }

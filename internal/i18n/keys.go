@@ -121,3 +121,8 @@ const (
 	KeyPhoneUnableEnroll      = "zeroauthy.phone.unableEnroll"
 	KeyPhoneFactor            = "zeroauthy.phone.factorLabel"
 )
+
+// Plan 33b passkeys (hosted).
+const (
+	KeyPasskeyLoginFailed = "login-id.login-id.passkey-authentication-failed"
+)

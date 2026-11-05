@@ -171,6 +171,9 @@ type SocialButton struct {
 type LoginStageData struct {
 	LoginData
 	Revision int64
+	// Passkey is the login-id page's passkey offer (Plan 33b); nil renders
+	// no passkey markup.
+	Passkey *PasskeyLogin
 }
 
 func RenderLoginIdentifier(w http.ResponseWriter, status int, t Tenant, d LoginStageData) {

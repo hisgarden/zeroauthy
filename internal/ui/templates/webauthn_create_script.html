@@ -1,0 +1,73 @@
+{{define "webauthn-create-script"}}
+<script nonce="{{.}}">
+(function () {
+  "use strict";
+  var data = document.getElementById("za-webauthn-create");
+  if (!data || !window.PublicKeyCredential) { return; }
+  var opts;
+  try { opts = JSON.parse(data.textContent); } catch (e) { return; }
+  var form = data.nextElementSibling;
+  while (form && form.tagName !== "FORM") { form = form.nextElementSibling; }
+  if (!form) { return; }
+  var credField = form.querySelector('input[name="credential"]');
+  var errField = form.querySelector('input[name="webauthn_error"]');
+  var done = false;
+
+  function b64uToBuf(s) {
+    s = String(s).replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) { s += "="; }
+    var bin = atob(s), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) { out[i] = bin.charCodeAt(i); }
+    return out.buffer;
+  }
+  function bufToB64u(buf) {
+    var bytes = new Uint8Array(buf), bin = "";
+    for (var i = 0; i < bytes.length; i++) { bin += String.fromCharCode(bytes[i]); }
+    return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function toPublicKey(options) {
+    if (typeof PublicKeyCredential.parseCreationOptionsFromJSON === "function") {
+      return PublicKeyCredential.parseCreationOptionsFromJSON(options);
+    }
+    var pk = {
+      rp: options.rp, challenge: b64uToBuf(options.challenge), timeout: options.timeout,
+      attestation: options.attestation, authenticatorSelection: options.authenticatorSelection,
+      pubKeyCredParams: options.pubKeyCredParams || [],
+      user: { id: b64uToBuf(options.user.id), name: options.user.name, displayName: options.user.displayName },
+      excludeCredentials: []
+    };
+    (options.excludeCredentials || []).forEach(function (c) {
+      pk.excludeCredentials.push({ type: c.type, id: b64uToBuf(c.id), transports: c.transports });
+    });
+    return pk;
+  }
+  function serialize(cred) {
+    var r = cred.response;
+    var out = { id: cred.id, rawId: bufToB64u(cred.rawId), type: cred.type,
+                response: { clientDataJSON: bufToB64u(r.clientDataJSON), attestationObject: bufToB64u(r.attestationObject) } };
+    if (cred.authenticatorAttachment) { out.authenticatorAttachment = cred.authenticatorAttachment; }
+    if (r.getTransports) { try { out.response.transports = r.getTransports(); } catch (e) {} }
+    if (typeof cred.getClientExtensionResults === "function") {
+      try { out.clientExtensionResults = cred.getClientExtensionResults(); } catch (e) {}
+    }
+    return out;
+  }
+  function fail(err) {
+    done = true;
+    credField.value = "";
+    errField.value = (err && err.name) ? String(err.name) : "UnknownError";
+    form.submit();
+  }
+  form.addEventListener("submit", function (ev) {
+    if (done) { return; }
+    ev.preventDefault();
+    navigator.credentials.create({ publicKey: toPublicKey(opts) }).then(function (cred) {
+      done = true;
+      credField.value = JSON.stringify(serialize(cred));
+      errField.value = "";
+      form.submit();
+    }, fail);
+  });
+})();
+</script>
+{{end}}

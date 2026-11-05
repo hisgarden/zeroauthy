@@ -168,6 +168,12 @@ func newEnvWithStore(t *testing.T, st store.Store) *env {
 	mux.HandleFunc("POST /u/consent", h.ConsentSubmit)
 	mux.HandleFunc("GET /u/signup", h.SignupPage)
 	mux.HandleFunc("POST /u/signup", h.SignupSubmit)
+	mux.HandleFunc("GET /u/signup/identifier", h.SignupIdentifierGet)
+	mux.HandleFunc("POST /u/signup/identifier", h.SignupIdentifierPost)
+	mux.HandleFunc("GET /u/signup/passkey", h.SignupPasskeyGet)
+	mux.HandleFunc("POST /u/signup/passkey", h.SignupPasskeyPost)
+	mux.HandleFunc("GET /u/signup/password", h.SignupPasswordGet)
+	mux.HandleFunc("POST /u/signup/password", h.SignupPasswordPost)
 	mux.HandleFunc("GET /u/reset-password/request", h.ResetRequestPage)
 	mux.HandleFunc("POST /u/reset-password/request", h.ResetRequestSubmit)
 	mux.HandleFunc("GET /u/reset-password", h.ResetPasswordPage)
@@ -270,6 +276,11 @@ func (b *browser) begin(t *testing.T, extra ...string) (*httptest.ResponseRecord
 	loc, _ := url.Parse(rec.Header().Get("Location"))
 	state := loc.Query().Get("state")
 	page := b.do(t, "GET", loc.RequestURI(), nil)
+	// A page may redirect (the split signup flow does); follow it once, the
+	// way a browser would, before looking for the form.
+	if page.Code == http.StatusSeeOther || page.Code == http.StatusFound {
+		page = b.do(t, "GET", page.Header().Get("Location"), nil)
+	}
 	m := csrfField.FindStringSubmatch(page.Body.String())
 	if m == nil {
 		t.Fatalf("no csrf on page %s: %s", loc, page.Body)

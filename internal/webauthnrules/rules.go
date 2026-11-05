@@ -174,6 +174,16 @@ func Prompt(screen string) string { return frozen.Prompts[screen] }
 // renders on a screen (existing screens list only their passkey keys).
 func TextKeys(screen string) []string { return slices.Clone(frozen.TextKeys[screen]) }
 
+// AllTextKeys maps every screen to its documented text keys, for callers
+// that enumerate the screens rather than name one.
+func AllTextKeys() map[string][]string {
+	out := make(map[string][]string, len(frozen.TextKeys))
+	for k, v := range frozen.TextKeys {
+		out[k] = slices.Clone(v)
+	}
+	return out
+}
+
 // LogDetails returns the `details` fields a Plan 33b emission of code may
 // carry (§8.2); nil for codes this plan does not emit.
 func LogDetails(code string) []string { return slices.Clone(frozen.LogDetails[code]) }

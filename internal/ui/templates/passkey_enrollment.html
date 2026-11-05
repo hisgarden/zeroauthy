@@ -1,0 +1,34 @@
+{{define "title"}}{{t .Tenant.L "passkeys.passkey-enrollment.title"}}{{end}}
+{{define "description"}}{{t .Tenant.L "passkeys.passkey-enrollment.description"}}{{end}}
+{{define "content"}}
+{{if .Data.Error}}<p class="alert" role="alert">{{.Data.Error}}</p>{{end}}
+{{with .Data.Passkey}}{{if .Creation}}<script type="application/json" id="za-webauthn-create">{{.Options}}</script>{{end}}{{end}}
+{{.Tenant.Partials.FormContentStart}}
+<h2>{{t .Tenant.L "passkeys.passkey-enrollment.passkeyBenefit1Title"}}</h2>
+<p>{{t .Tenant.L "passkeys.passkey-enrollment.passkeyBenefit1Description"}}</p>
+<h2>{{t .Tenant.L "passkeys.passkey-enrollment.passkeyBenefit2Title"}}</h2>
+<p>{{t .Tenant.L "passkeys.passkey-enrollment.passkeyBenefit2Description"}}</p>
+{{if not .Data.Passkey.Local}}
+<h2>{{t .Tenant.L "passkeys.passkey-enrollment.passkeyBenefit3Title"}}</h2>
+<p>{{t .Tenant.L "passkeys.passkey-enrollment.passkeyBenefit3Description"}}</p>
+{{end}}
+{{.Tenant.Partials.FormContentEnd}}
+<form method="post" action="{{.Data.PasskeyAction}}" novalidate>
+<input type="hidden" name="state" value="{{.Data.State}}">
+<input type="hidden" name="csrf" value="{{.Data.CSRF}}">
+<input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
+{{with .Data.Passkey}}
+<input type="hidden" name="challenge_id" value="{{.ChallengeID}}">
+<input type="hidden" name="credential" value="">
+<input type="hidden" name="webauthn_error" value="">
+<button type="submit" id="za-passkey-create">{{.CreateText}}</button>
+{{end}}
+</form>
+<form method="post" action="{{.Data.PasswordAction}}" novalidate>
+<input type="hidden" name="state" value="{{.Data.State}}">
+<input type="hidden" name="csrf" value="{{.Data.CSRF}}">
+<input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
+<button type="submit" id="za-use-password">{{t .Tenant.L "passkeys.passkey-enrollment.usePasswordButtonText"}}</button>
+</form>
+{{with .Data.Passkey}}{{if .Creation}}{{template "webauthn-create-script" $.Nonce}}{{end}}{{end}}
+{{end}}

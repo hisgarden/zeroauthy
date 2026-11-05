@@ -538,5 +538,68 @@
       "logoAltText": "${companyName}",
       "invalid-code": "That code is wrong or has expired. Check it or ask for a new one."
     }
+  },
+  "signup-id": {
+    "signup-id": {
+      "title": "Create your account",
+      "description": "Enter your email address to continue to ${companyName}.",
+      "emailPlaceholder": "Email address",
+      "buttonText": "Continue"
+    }
+  },
+  "signup-password": {
+    "signup-password": {
+      "title": "Create a password",
+      "description": "Choose a password for your account.",
+      "passwordPlaceholder": "Password",
+      "buttonText": "Continue",
+      "password-policy-not-conformant": "The password does not meet the password policy."
+    }
+  },
+  "passkeys": {
+    "passkey-enrollment": {
+      "title": "Create a passkey",
+      "pageTitle": "Create a passkey",
+      "description": "Sign in faster and more safely with a passkey.",
+      "passkeyBenefit1Title": "Nothing to remember",
+      "passkeyBenefit1ImgAltText": "Passkey",
+      "passkeyBenefit1Description": "Use your fingerprint, face or screen lock to sign in.",
+      "passkeyBenefit2Title": "Stays on your device",
+      "passkeyBenefit2ImgAltText": "Device",
+      "passkeyBenefit2Description": "The passkey never leaves your device's secure storage.",
+      "passkeyBenefit3Title": "Works across your devices",
+      "passkeyBenefit3ImgAltText": "Devices",
+      "passkeyBenefit3Description": "Your password manager can sync the passkey to your other devices.",
+      "createButtonText": "Create a passkey",
+      "continueButtonText": "Continue",
+      "createButtonResetText": "Try again",
+      "usePasswordButtonText": "Create a password instead",
+      "backButtonText": "Back",
+      "checkboxText": "Don't show this again",
+      "email-in-use": "An account with this email or username already exists.",
+      "auth0-users-validation": "Check the details you entered and try again.",
+      "conflict-password-passkey": "This account already has a password.",
+      "password-not-allowed": "Password sign-up is turned off for this connection.",
+      "passkey-not-allowed": "Your browser or device did not allow the passkey.",
+      "invalid-passkey": "That passkey cannot be used here.",
+      "passkey-enrollment-failure": "We could not create your passkey. Try again or create a password.",
+      "passkey-enrollment-max-allowed-reached": "You have reached the maximum number of passkeys."
+    },
+    "passkey-enrollment-local": {
+      "title": "Create a passkey on this device",
+      "pageTitle": "Create a passkey on this device",
+      "description": "Sign in faster on this device with a passkey.",
+      "passkeyBenefit1Title": "Nothing to remember",
+      "passkeyBenefit1ImgAltText": "Passkey",
+      "passkeyBenefit1Description": "Use your fingerprint, face or screen lock to sign in.",
+      "passkeyBenefit2Title": "Stays on this device",
+      "passkeyBenefit2ImgAltText": "Device",
+      "passkeyBenefit2Description": "This passkey is stored only on this device.",
+      "createButtonText": "Create a passkey",
+      "continueButtonText": "Not now",
+      "checkboxText": "Don't show this again",
+      "error_passkey-enrollment-failure": "We could not create your passkey.",
+      "error_passkey-enrollment-max-allowed-reached": "You have reached the maximum number of passkeys."
+    }
   }
 }

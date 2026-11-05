@@ -560,6 +560,18 @@ func (h *Handlers) SignupPage(w http.ResponseWriter, r *http.Request) {
 		ui.RenderError(w, http.StatusForbidden, f.view, f.view.L.T(i18n.KeyErrSignupDisabled))
 		return
 	}
+	// With effective passkeys, /u/signup is the split flow's identifier step
+	// (LR33b-15); every other case keeps the single Plan 22 page.
+	if (f.txn.HostedState.Step == "" || f.txn.HostedState.Step == "identifier") && h.splitSignup(r, f) {
+		next := f.txn.HostedState.Clone()
+		next.Step = signupStepIdentifier
+		if err := h.transitionHosted(r, f, next); err != nil {
+			h.fail(w, r, errTxn, f)
+			return
+		}
+		http.Redirect(w, r, signupIdentifierLocation(f), http.StatusSeeOther)
+		return
+	}
 	if !h.captchaPage(w, r, f, "signup") {
 		return
 	}
@@ -590,7 +602,14 @@ func (h *Handlers) SignupSubmit(w http.ResponseWriter, r *http.Request) {
 		RequiresUsername: f.conn.RequiresUsername, LoginURL: "/u/login?" + url.Values{"state": {f.txn.ID}}.Encode(),
 		RedirectURI: f.txn.Params["redirect_uri"],
 	}
-	if !h.guardHostedForm(w, r, f, "signup", "signup", func(status int, message string) { data.Error = message; h.renderSignup(w, r, status, f, data) }) {
+	// The split flow's password step is its own prompt/screen; the single
+	// Plan 22 page keeps "signup".
+	signupPrompt, signupScreen := "signup", "signup"
+	splitPassword := f.txn.HostedState.Step == signupStepPassword || f.txn.HostedState.Step == signupStepPasskey
+	if splitPassword {
+		signupPrompt, signupScreen = "signup-password", "signup-password"
+	}
+	if !h.guardHostedForm(w, r, f, signupPrompt, signupScreen, func(status int, message string) { data.Error = message; h.renderSignup(w, r, status, f, data) }) {
 		return
 	}
 	// Missing required fields are malformed forms, not registration attempts.

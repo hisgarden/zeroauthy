@@ -178,3 +178,10 @@ Two findings for later tasks:
   false, so the ten Plan 33b codes cannot be asserted in a test until Task 19
   flips them. Tasks 10–15 should assert the emission rule and the bounded
   details, and leave the emitted-status assertion to Task 19.
+
+## Task 10 — hosted passkey signup
+
+The split `signup-id` → `passkey-enrollment` → `signup-password` flow lands
+for connections where passkeys are effective (LR33b-15), with the passkey
+branch creating the user and the passkey in one transaction and no password.
+Detail: [task 10 record](2026-11-05-plan-33b-record-task-10.md).

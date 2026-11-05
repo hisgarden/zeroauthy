@@ -189,7 +189,9 @@ one server.
 
 Actions, custom database scripts and social profile scripts run in Node.js
 (22.13 or later; profile scripts need 25 or later). The container image ships
-Node 26. With the binary, install Node yourself or set `actions.node` and
+Node 26 on a Chainguard (Wolfi) base pinned by digest; see
+[supply chain](supply-chain.md) for what is in it and how to verify it.
+With the binary, install Node yourself or set `actions.node` and
 `custom_db.node`. Set `actions.cache_dir` to a writable absolute path for a
 service account. If tenants are not trusted, also restrict outbound network
 access and run zeroauthy under a dedicated user or container; see the security

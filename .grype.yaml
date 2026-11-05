@@ -1,0 +1,23 @@
+# Vulnerability gate policy for release SBOMs (scripts/scan-sbom.sh, run by
+# `make sbom-scan`, the ci.yml `sbom` job and the release.yml `sbom` job).
+# See docs/supply-chain.md for the policy and how to accept a finding.
+#
+# A release stops on any unaccepted finding of severity high or critical,
+# fixed or not. Lower severities are reported, never blocking.
+fail-on-severity: high
+only-fixed: false
+
+# Accepted findings. Each entry names the vulnerability and the package and
+# carries a comment with the reason and the date; it is reviewed like code.
+# Prefer an OpenVEX statement in openvex.json (status not_affected or fixed,
+# with a justification) when the reason is "zeroauthy does not reach the
+# vulnerable code"; use an ignore rule for scanner false positives.
+#
+#   - vulnerability: GHSA-xxxx-xxxx-xxxx   # 2026-11-05: false positive, <why>
+#     package:
+#       name: github.com/example/module
+#       version: v1.2.3
+ignore: []
+
+# scripts/scan-sbom.sh adds --vex openvex.json when that file exists; grype
+# then drops matches the document marks not_affected or fixed.

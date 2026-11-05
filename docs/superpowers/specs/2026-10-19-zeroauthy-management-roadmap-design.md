@@ -11,8 +11,10 @@
 fix-before-1.0 items from the [pre-1.0 review](../reviews/2026-11-03-pre-1.0/)
 (the Plan 45 subset below) and the Plan 46 core release pipeline. 1.0 is an
 early preview to give people something to try (maintainer, 2026-11-03);
-Plans 35–48 continue after it. Review findings that can wait were moved into
-the plans below, marked "(pre-1.0 review)".
+Plans 35–49 continue after it. Review findings that can wait were moved into
+the plans below, marked "(pre-1.0 review)". Plan 49 (SBOMs, supply-chain
+attestations and Chainguard base images) was designed and implemented on
+2026-11-05 as an extension of the Plan 46 release pipeline.
 
 ### Done
 
@@ -112,8 +114,9 @@ Ordered by dependencies first, then by how much a typical tenant (and the mainta
 | 46 | Release pipeline, packaging, samples | short | 45 |
 | 47 | Hosted zeroauthy (multi-tenant SaaS) | full | 29, 31, 46 |
 | 48 | Refresh tokens II: rotation conversion, strict leeway, grant-revocation cascade, multi-resource and session-bound tokens | short | 17, 3 |
+| 49 | SBOMs, supply-chain attestations, vulnerability gate, Chainguard base images | short (done) | 46 |
 
-Plans 17 and 18 come from the users design. Plan 37 is sub-project 4 of the core spec and may itself split. Plans 39–47 are follow-ups (§3a): 39, 40 and 45 can run at any point after their dependencies; 41 should follow 33 and 35 so the certification run covers JAR and `acr`; 47 comes last.
+Plans 17 and 18 come from the users design. Plan 37 is sub-project 4 of the core spec and may itself split. Plans 39–49 are follow-ups (§3a): 39, 40 and 45 can run at any point after their dependencies; 41 should follow 33 and 35 so the certification run covers JAR and `acr`; 47 comes last.
 
 ## 3. Plans
 
@@ -434,6 +437,10 @@ The maintainer's hosting offer: tenant sign-up, subdomain and droplet provisioni
 ### Plan 48 — Refresh tokens II
 
 Proposed by the pre-1.0 review. Turning on rotation converts existing non-rotating tokens on their next exchange and deletes the client's other non-rotating tokens (Auth0's documented behaviour); the rotation `leeway` accepts only the immediately previous token; deleting a user grant revokes the refresh tokens issued under it; the refresh grant re-checks the API's `allow_offline_access`; multi-resource and session-bound refresh tokens. **Short.**
+
+### Plan 49 — SBOMs, supply-chain attestations and hardened base images
+
+An extension of Plan 46's release pipeline, not an Auth0 parity item: CycloneDX 1.6 and SPDX 2.3 SBOMs for every release archive (Go modules linked into the binary plus the console's production npm dependencies, read from whichever lockfile the console uses) and for the container image (plus BuildKit's own), published as release assets and as `attest-sbom` attestations; a grype gate over those SBOMs before approval, failing on high/critical with `.grype.yaml` ignore rules and OpenVEX statements as the only acceptance mechanism; `govulncheck` kept as the Go gate under the manual-CI rule; an operator verification guide (`docs/supply-chain.md`); `make sbom` with a contract test (`internal/sbomcheck`); and the Dockerfile, CI PostgreSQL service and examples on digest-pinned `cgr.dev` Chainguard images (the MySQL image is not in the free catalog). **Short; done 2026-11-05:** [spec](2026-11-05-zeroauthy-sbom-supply-chain-design.md), [plan](../plans/2026-11-05-zeroauthy-plan-49-sbom-supply-chain.md), [record](../2026-11-05-plan-49-implementation-record.md). Open: a scheduled re-scan workflow (needs a ruling against the manual-CI rule), cosign keyless signing, `chainguard/mysql` when pullable.
 
 ## 4. Cross-cutting work and where it lands
 

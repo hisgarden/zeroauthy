@@ -38,4 +38,6 @@ Start here: [quickstart](https://github.com/@REPOSITORY@/blob/@TAG@/docs/quickst
 [upgrading](https://github.com/@REPOSITORY@/blob/@TAG@/docs/upgrading.md) ·
 [compatibility](https://github.com/@REPOSITORY@/blob/@TAG@/docs/compatibility.md).
 Verify downloads with `sha256sum -c SHA256SUMS` and
-`gh attestation verify <file> --repo @REPOSITORY@`.
+`gh attestation verify <file> --repo @REPOSITORY@`. SBOMs (CycloneDX and
+SPDX) for every archive and the image are attached; see the
+[supply chain page](https://github.com/@REPOSITORY@/blob/@TAG@/docs/supply-chain.md).

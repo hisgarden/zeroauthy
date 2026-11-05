@@ -15,8 +15,14 @@ trap cleanup EXIT
 # The containers are throwaway, so their data lives on tmpfs and durability
 # is off: the suites make thousands of small transactions, and with fsync on
 # they mostly wait on the disk.
+#
+# PostgreSQL is cgr.dev/chainguard/postgres:latest (created 2026-11-02,
+# PostgreSQL 18.6) pinned by digest, the same image ci.yml uses; MySQL stays
+# on Docker Hub because the Chainguard MySQL image is not pullable
+# anonymously (checked 2026-11-05). See docs/supply-chain.md.
 "$rt" run -d --rm --name "$pg" -e POSTGRES_PASSWORD=zeroauthy -p "127.0.0.1:$pg_port:5432" \
-  --tmpfs /var/lib/postgresql/data docker.io/library/postgres:17 \
+  --tmpfs /var/lib/postgresql/data \
+  cgr.dev/chainguard/postgres@sha256:c976eb2e1f7702a9ec38acb3f44c3976b449db7f10181f20b74c53b212a0e202 \
   -c fsync=off -c synchronous_commit=off -c full_page_writes=off >/dev/null
 "$rt" run -d --rm --name "$my" -e MYSQL_ROOT_PASSWORD=zeroauthy -p "127.0.0.1:$my_port:3306" \
   --tmpfs /var/lib/mysql docker.io/library/mysql:8.4 \

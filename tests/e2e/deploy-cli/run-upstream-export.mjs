@@ -35,8 +35,9 @@ if (check.status !== 0) throw new Error('upstream inventory preflight failed; ra
 if (!clients.length || !resources.length) throw new Error('upstream inventory is empty; observation cannot establish a migration');
 const exportPath = path.join(output, 'export');
 await mkdir(exportPath, { mode: 0o700 });
+// The CLI's bin carries a node shebang; run its entry point under Bun instead.
 const bin = path.resolve(here, '../node_modules/.bin/a0deploy');
-const result = spawnSync(bin, ['export', '--config_file', configPath, '--format', format, '--output_folder', exportPath], { cwd: here, encoding: 'utf8', env: { ...process.env, AUTH0_ALLOW_DELETE: 'false' } });
+const result = spawnSync('bun', [bin, 'export', '--config_file', configPath, '--format', format, '--output_folder', exportPath], { cwd: here, encoding: 'utf8', env: { ...process.env, AUTH0_ALLOW_DELETE: 'false' } });
 await writeFile(path.join(output, '.observer.log'), `${result.stdout ?? ''}${result.stderr ?? ''}`, { mode: 0o600 });
 if (result.status !== 0) throw new Error('upstream export failed; inspect restricted observer log');
 console.log(JSON.stringify({ lane: 'upstream', outcome: 'exported', format, counts: { clients: clients.length, resourceServers: resources.length }, fields: { clients: [...new Set(clients.flatMap(Object.keys))].sort(), resourceServers: [...new Set(resources.flatMap(Object.keys))].sort() }, comparison: 'pending local import and re-export' }));

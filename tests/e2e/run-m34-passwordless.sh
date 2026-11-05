@@ -7,12 +7,13 @@ cd "$(dirname "$0")/../.."
 export GOTOOLCHAIN=go1.26.10
 unset NO_COLOR
 export FORCE_COLOR=0
-for tool in node go openssl curl flock setsid python3 sha256sum; do
+for tool in bun node go openssl curl flock setsid python3 sha256sum; do
  command -v "$tool" >/dev/null || { echo "e2e-passwordless unavailable: missing $tool" >&2; exit 1; }
 done
 export AUTH0_BIN="${AUTH0_BIN:-$(command -v auth0 || true)}"
 [[ -x "$AUTH0_BIN" && -x tests/e2e/node_modules/.bin/playwright ]] || { echo "e2e-passwordless unavailable: install the pinned Auth0 CLI and tests/e2e dependencies" >&2; exit 1; }
 "$AUTH0_BIN" --version | grep -q '1.37.0'
+# zeroauthy launches Node (>= 22.13) for the Actions runtime; the toolchain is Bun.
 node -e 'const [a,b]=process.versions.node.split(".").map(Number);if(a<22||(a===22&&b<13))process.exit(1)'
 exec 9>/tmp/zeroauthy-e2e-social.lock
 flock 9
@@ -63,6 +64,7 @@ for backend in ${E2E_M34_BACKENDS:-sqlite memory}; do
  git diff --binary > "$E2E_M34_WORK/source.patch"
  sha256sum tests/e2e/m34*.mjs tests/e2e/run-m34-passwordless.sh tests/e2e/sql-sinks/main.go > "$E2E_M34_WORK/harness-sha256.txt"
  node --version > "$E2E_M34_WORK/node-version.txt"
+ bun --version > "$E2E_M34_WORK/bun-version.txt"
  go version > "$E2E_M34_WORK/go-version.txt"
  for name in responses.jsonl browser-responses.jsonl browser-console.jsonl cli.jsonl receiver.jsonl private-secrets.jsonl migrate.log bootstrap.stderr; do : > "$E2E_M34_WORK/$name"; done
  case "$backend" in
@@ -108,8 +110,8 @@ YAML
  fi
  export E2E_M34_DSN="$dsn"
  start "$root/phone-fakes" -listen 127.0.0.1:9184 -tls-listen 127.0.0.1:9183 -cert "$root/cert.pem" -key "$root/key.pem" -log "$E2E_M34_WORK/private-phone.jsonl" > "$E2E_M34_WORK/phone-fakes.log" 2>&1
- start node tests/e2e/m34-cli.mjs receiver > "$E2E_M34_WORK/receiver.log" 2>&1
- PROXY_PORT=9198 TARGET_PORT=9543 start node tests/e2e/connect-proxy.mjs > "$E2E_M34_WORK/proxy.log" 2>&1
+ start bun tests/e2e/m34-cli.mjs receiver > "$E2E_M34_WORK/receiver.log" 2>&1
+ PROXY_PORT=9198 TARGET_PORT=9543 start bun tests/e2e/connect-proxy.mjs > "$E2E_M34_WORK/proxy.log" 2>&1
  start "$root/zeroauthy" serve -c "$E2E_M34_WORK/config.yaml" > "$E2E_M34_WORK/server.log" 2>&1
  server_pid=${pids[-1]}
  for _ in $(seq 1 300); do
@@ -134,17 +136,17 @@ for line in (work/'server.log').read_text().splitlines():
 else: raise RuntimeError('memory operator bootstrap did not deliver a private setup file')
 PYSETUP
  fi
- node tests/e2e/m34-node.mjs setup
+ bun tests/e2e/m34-node.mjs setup
  if [[ " ${E2E_M34_LANES:-browser grants sdk cli audit} " == *" browser "* ]]; then
   (cd tests/e2e && ./node_modules/.bin/playwright test m34-passwordless.spec.mjs --grep "${E2E_M34_GREP:-.*}" --config playwright.config.mjs --output "$E2E_M34_WORK/playwright-results")
  fi
  for lane in ${E2E_M34_LANES:-grants sdk cli audit}; do
   case "$lane" in
    browser) ;;
-   sdk) node tests/e2e/m34-node.mjs sdk ;;
-   cli) node tests/e2e/m34-cli.mjs cli ;;
-   grants) node tests/e2e/m34-grants.mjs ;;
-   audit) node tests/e2e/m34-node.mjs snapshot ;;
+   sdk) bun tests/e2e/m34-node.mjs sdk ;;
+   cli) bun tests/e2e/m34-cli.mjs cli ;;
+   grants) bun tests/e2e/m34-grants.mjs ;;
+   audit) bun tests/e2e/m34-node.mjs snapshot ;;
    *) echo "unknown passwordless lane: $lane" >&2; exit 1;;
   esac
  done
@@ -159,7 +161,7 @@ PYSETUP
   else
    : > "$E2E_M34_WORK/stored-sinks.jsonl"
   fi
-  node tests/e2e/m34-node.mjs audit
+  bun tests/e2e/m34-node.mjs audit
  fi
  echo "Plan34 passwordless $backend selected lanes passed: ${E2E_M34_LANES:-grants sdk cli audit}"
 done

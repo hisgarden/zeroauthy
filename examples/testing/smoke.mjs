@@ -1,7 +1,7 @@
 // examples/testing/smoke.mjs: the fastest check that the test tenant works.
-// Plain Node 22+, no dependencies.
+// Plain Bun (or Node 22+), no dependencies.
 //
-//   NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem node examples/testing/smoke.mjs
+//   NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem bun examples/testing/smoke.mjs
 //
 // It signs a seeded user in with the password grant, verifies the ID token's
 // signature against the tenant's JWKS and checks its claims, then calls the

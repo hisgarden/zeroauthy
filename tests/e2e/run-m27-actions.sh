@@ -3,7 +3,7 @@
 # fixture's two real server nodes, local provider and DNS-proof control plane.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
-for tool in node go openssl curl tar flock; do
+for tool in bun node go openssl curl tar flock; do
  command -v "$tool" >/dev/null || { echo "e2e-actions unavailable: missing $tool" >&2; exit 1; }
 done
 export AUTH0_BIN="${AUTH0_BIN:-$(command -v auth0 || true)}"
@@ -58,19 +58,19 @@ tenants:
         is_domain_connection: true
         enabled_clients: [m24-spa, m26-password]
 YAML
-node tests/e2e/fixtures/npm-registry/build.mjs "$work/registry"
-start node tests/e2e/fixtures/npm-registry/serve.mjs "$work/registry" >"$work/registry.log" 2>&1
+bun tests/e2e/fixtures/npm-registry/build.mjs "$work/registry"
+start bun tests/e2e/fixtures/npm-registry/serve.mjs "$work/registry" >"$work/registry.log" 2>&1
 export E2E_NPM_REGISTRY
 go build -o "$work/harness" ./tests/e2e/social/harness
 start "$work/harness" >"$work/server.log" 2>&1
-PROXY_PORT=9198 TARGET_PORT=9543 start node tests/e2e/connect-proxy.mjs >"$work/proxy.log" 2>&1
-PROXY_PORT=9199 TARGET_PORT=9544 start node tests/e2e/connect-proxy.mjs >"$work/proxy2.log" 2>&1
+PROXY_PORT=9198 TARGET_PORT=9543 start bun tests/e2e/connect-proxy.mjs >"$work/proxy.log" 2>&1
+PROXY_PORT=9199 TARGET_PORT=9544 start bun tests/e2e/connect-proxy.mjs >"$work/proxy2.log" 2>&1
 for _ in $(seq 1 150); do
  if curl -fsS http://127.0.0.1:9173/healthz >/dev/null 2>&1 && curl -s http://127.0.0.1:9198 >/dev/null && curl -s http://127.0.0.1:9199 >/dev/null; then break; fi
  sleep 0.1
 done
 if ! curl -fsS http://127.0.0.1:9173/healthz >/dev/null; then cat "$work/server.log"; exit 1; fi
-node tests/e2e/m27-node-auth0.mjs
+bun tests/e2e/m27-node-auth0.mjs
 export E2E_M26_SETUP_URL="$(cat "$work/setup")"
 ( cd tests/e2e && ./node_modules/.bin/playwright test m27-actions.spec.mjs --config playwright.config.mjs --output "$work/playwright-results" )
-node tests/e2e/m27-actions-cli.mjs
+bun tests/e2e/m27-actions-cli.mjs

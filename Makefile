@@ -74,10 +74,16 @@ conformance:
 	./tests/conformance/run.sh $(PLANS)
 
 # The admin console: install, lint, typecheck, test, regenerate the API
-# types and rebuild console/dist (committed, embedded by go:embed).
+# types and rebuild console/dist (committed, embedded by go:embed). The
+# toolchain is Bun; --bun runs the tools on Bun's runtime instead of the
+# Node their bin scripts' shebang names. The one exception is typecheck:
+# vue-tsc patches TypeScript's tsc at load time through Node's module hooks,
+# and under Bun's runtime (bun 1.4.4) the patch does not apply, so it
+# silently type-checks no .vue file and misreports component props. Without
+# --bun it runs on the Node from PATH until Bun supports it.
 console:
-	cd console && npm ci --no-audit --no-fund
-	cd console && npm run gen && npm run lint && npm run typecheck && npm test && npm run build
+	cd console && bun install --frozen-lockfile
+	cd console && bun --bun run gen && bun --bun run lint && bun run typecheck && bun --bun run test && bun --bun run build
 
 e2e-actions-ii:
 	./tests/e2e/run-m28-actions-ii.sh

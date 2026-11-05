@@ -9,11 +9,16 @@
 # download is not available (offline containers); never run `playwright install`
 # there.
 #
-# Node: >= 22.13 (m9-import). Playwright's sync module-loader hooks (Node
+# Toolchain: Bun (bun install, the helper servers, esbuild, Next and the
+# Playwright runner; `bun --bun x` forces Bun's runtime, since the package bin
+# scripts carry a node shebang that Bun would otherwise honour). Node >= 22.13
+# must still be on PATH for zeroauthy itself: it launches Node for the custom
+# database runtime (m9-import) through internal/noderunner, which stays on
+# Node. PLAYWRIGHT_FORCE_ASYNC_LOADER is for the container path below, which
+# runs Playwright under the image's Node: its sync module-loader hooks (Node
 # 22.15+) break require() of ESM packages from CommonJS ones
 # (express-openid-connect -> openid-client -> oauth4webapi fails with "request
-# for 'oauth4webapi' is from a module not been linked"), so the async loader
-# is forced below and one Node works for every spec.
+# for 'oauth4webapi' is from a module not been linked").
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
@@ -79,7 +84,7 @@ if curl -sf -H "Authorization: Bearer e2e-legacy-token" http://127.0.0.1:8099/st
   echo "port 8099 is already in use by another legacy store" >&2
   exit 1
 fi
-LEGACY_TOKEN=e2e-legacy-token start node tests/e2e/legacy-store.mjs >"$work/legacy.log" 2>&1
+LEGACY_TOKEN=e2e-legacy-token start bun tests/e2e/legacy-store.mjs >"$work/legacy.log" 2>&1
 legacy_pid=$started
 for _ in $(seq 1 50); do
   curl -sf -H "Authorization: Bearer e2e-legacy-token" http://127.0.0.1:8099/stats >/dev/null && break
@@ -104,26 +109,26 @@ fi
 server_pid=$started
 
 cd tests/e2e
-npm ci --no-audit --no-fund --silent || { echo "npm ci failed" >&2; exit 1; }
+bun install --frozen-lockfile --silent || { echo "bun install failed" >&2; exit 1; }
 node_modules/.bin/esbuild react/app.jsx --bundle --minify --format=iife --jsx=automatic \
   --define:process.env.NODE_ENV='"production"' --outfile="$work/react.js" --log-level=warning \
   || { echo "esbuild failed" >&2; exit 1; }
 E2E_CERT="$work/cert.pem" E2E_KEY="$work/key.pem" E2E_REACT_BUNDLE="$work/react.js" \
-  start node spa-server.mjs >"$work/spa.log" 2>&1
+  start bun spa-server.mjs >"$work/spa.log" 2>&1
 spa_pid=$started
 export NEXT_TELEMETRY_DISABLED=1
-node_modules/.bin/next build next-app >"$work/next-build.log" 2>&1 || { cat "$work/next-build.log"; exit 1; }
+bun --bun x next build next-app >"$work/next-build.log" 2>&1 || { cat "$work/next-build.log"; exit 1; }
 AUTH0_DOMAIN=https://localhost:8443 AUTH0_CLIENT_ID=e2e-next \
   AUTH0_CLIENT_SECRET=e2e-next-secret-not-for-production \
   AUTH0_SECRET="$(openssl rand -hex 32)" APP_BASE_URL=http://localhost:3000 \
   NODE_EXTRA_CA_CERTS="$work/cert.pem" \
-  start node_modules/.bin/next start next-app -p 3000 >"$work/next.log" 2>&1
+  start bun --bun x next start next-app -p 3000 >"$work/next.log" 2>&1
 next_pid=$started
 AUTH0_DOMAIN=https://localhost:8443 AUTH0_CLIENT_ID=e2e-next-par \
   AUTH0_CLIENT_SECRET=e2e-next-par-secret-not-for-production \
   AUTH0_SECRET="$(openssl rand -hex 32)" APP_BASE_URL=http://localhost:3002 E2E_PAR=1 \
   NODE_EXTRA_CA_CERTS="$work/cert.pem" \
-  start node_modules/.bin/next start next-app -p 3002 >"$work/next-par.log" 2>&1
+  start bun --bun x next start next-app -p 3002 >"$work/next-par.log" 2>&1
 next_par_pid=$started
 
 status=0
@@ -167,29 +172,29 @@ fi
 if [[ $status -eq 0 && "${E2E_M20_HARNESS:-0}" == 1 ]]; then
   E2E_ADMIN_SETUP_URL_M20="$(cd ../.. && "$work/zeroauthy" admin create --email operator-m20@e2e.local --config tests/e2e/config.yaml | grep '^https://')" || status=$?
   export E2E_ADMIN_SETUP_URL_M20
-  NODE_EXTRA_CA_CERTS="$work/cert.pem" node m20-node-auth0.mjs || status=$?
+  NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m20-node-auth0.mjs || status=$?
 fi
 
 if [[ $status -eq 0 && "${E2E_M21_HARNESS:-0}" == 1 ]]; then
   E2E_ADMIN_SETUP_URL_M21="$(cd ../.. && "$work/zeroauthy" admin create --email operator-m21@e2e.local --config tests/e2e/config.yaml | grep '^https://')" || status=$?
   export E2E_ADMIN_SETUP_URL_M21
-  if [[ $status -eq 0 ]]; then NODE_EXTRA_CA_CERTS="$work/cert.pem" node m21-node-auth0.mjs || status=$?; fi
+  if [[ $status -eq 0 ]]; then NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m21-node-auth0.mjs || status=$?; fi
 fi
 
 if [[ $status -eq 0 && "${E2E_M22_HARNESS:-0}" == 1 ]]; then
   E2E_ADMIN_SETUP_URL_M22="$(cd ../.. && "$work/zeroauthy" admin create --email operator-m22@e2e.local --config tests/e2e/config.yaml | grep '^https://')" || status=$?
   export E2E_ADMIN_SETUP_URL_M22
-  if [[ $status -eq 0 ]]; then NODE_EXTRA_CA_CERTS="$work/cert.pem" node m22-node-auth0.mjs || status=$?; fi
+  if [[ $status -eq 0 ]]; then NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m22-node-auth0.mjs || status=$?; fi
   if [[ $status -eq 0 ]]; then
     GOBIN="$work/bin" go install github.com/auth0/auth0-cli/cmd/auth0@v1.37.0 || status=$?
-    start node connect-proxy.mjs >"$work/proxy.log" 2>&1
+    start bun connect-proxy.mjs >"$work/proxy.log" 2>&1
     proxy_ready=0
     for _ in $(seq 1 50); do
       if curl -s --max-time 1 -o /dev/null http://127.0.0.1:8098; then proxy_ready=1; break; fi
       sleep 0.1
     done
     if [[ "$proxy_ready" == 1 ]]; then
-      AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m22-mgmt-cli.mjs || status=$?
+      AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m22-mgmt-cli.mjs || status=$?
     else
       echo "Plan 22 CLI proxy did not become ready" >&2
       status=1
@@ -208,6 +213,9 @@ if [[ $status -eq 0 ]]; then
   if [[ "${E2E_IN_CONTAINER:-0}" == 1 ]]; then
     echo "m10-device skipped: needs podman on the host"
     runtime="$(command -v docker || command -v podman)"
+    # The official Playwright image ships Node, not Bun, so inside it the
+    # runner is started with npx. node_modules (installed by bun on the host)
+    # has the standard layout, so the same tree works there.
     run_fg "$runtime" run --rm --network host --ipc host \
       -v "$PWD:/e2e" -v "$work:$work:ro" -v "$work/mail:$work/mail" -w /e2e \
       -e NODE_EXTRA_CA_CERTS="$work/cert.pem" -e E2E_MAIL_DIR="$work/mail" \
@@ -226,9 +234,9 @@ if [[ $status -eq 0 ]]; then
     else
       echo "m10-device skipped: needs podman on the host"
     fi
-    [[ -n "${E2E_CHROMIUM:-}" ]] || node_modules/.bin/playwright install chromium >/dev/null
+    [[ -n "${E2E_CHROMIUM:-}" ]] || bun --bun x playwright install chromium >/dev/null
     NODE_EXTRA_CA_CERTS="$work/cert.pem" E2E_CERT="$work/cert.pem" \
-      run_fg node_modules/.bin/playwright test "$@" || status=$?
+      run_fg bun --bun x playwright test "$@" || status=$?
   fi
 fi
 if [[ $status -ne 0 ]]; then

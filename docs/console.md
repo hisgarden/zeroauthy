@@ -222,8 +222,15 @@ See [user-import.md](user-import.md) for supported hashes and reset advice.
 ## Developing
 
 ```bash
-make console      # npm ci, lint, typecheck, Vitest, regenerate API types, build dist/
+make console      # bun install, lint, typecheck, Vitest, regenerate API types, build dist/
 ```
+
+The toolchain is [Bun](https://bun.sh) 1.4 or later (`console/bun.lock`
+is the lockfile); the Makefile runs each tool with `bun --bun` so it executes
+on Bun's runtime rather than the Node named by the tool's shebang. The
+exception is `vue-tsc` (typecheck): it patches TypeScript's `tsc` at load
+time through Node's module hooks, which Bun's runtime does not apply, so it
+still runs on a Node from `PATH` (22 or later).
 
 State lives in Pinia stores (tenants, preferences, session; tokens are never
 stored in one), styling is Tailwind v4 over theme tokens, and the sections

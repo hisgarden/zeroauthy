@@ -109,7 +109,8 @@ func TestPinnedPhoneHandlers(t *testing.T) {
 	if err = os.WriteFile(cert, pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: srv.Certificate().Raw}), 0600); err != nil {
 		t.Fatal(err)
 	}
-	cmd := exec.Command("node", "phone-pinned-roundtrip.cjs", strings.TrimPrefix(srv.URL, "https://"))
+	// Tooling, not the Actions runtime: the pinned handlers run under Bun.
+	cmd := exec.Command("bun", "phone-pinned-roundtrip.cjs", strings.TrimPrefix(srv.URL, "https://"))
 	cmd.Env = append(os.Environ(), "NODE_EXTRA_CA_CERTS="+cert, "ZA_DEPLOY_CLI_MODULES="+modules)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("pinned handlers: %v\n%s", err, out)

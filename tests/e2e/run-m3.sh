@@ -43,7 +43,7 @@ if legacy_stats; then
   echo "port $LEGACY_PORT is already in use by another legacy store" >&2
   exit 1
 fi
-LEGACY_PORT=$LEGACY_PORT LEGACY_TOKEN=e2e-legacy-token start node tests/e2e/legacy-store.mjs >"$work/legacy.log" 2>&1
+LEGACY_PORT=$LEGACY_PORT LEGACY_TOKEN=e2e-legacy-token start bun tests/e2e/legacy-store.mjs >"$work/legacy.log" 2>&1
 legacy_pid=$started
 for _ in $(seq 1 50); do
   legacy_stats && break
@@ -59,7 +59,7 @@ CGO_ENABLED=0 go build -o "$work/zeroauthy" ./cmd/zeroauthy
 # The pinned auth0-cli (m13-mgmt-cli.mjs), built from its module.
 AUTH0_CLI_VERSION=v1.37.0
 GOBIN="$work/bin" go install "github.com/auth0/auth0-cli/cmd/auth0@$AUTH0_CLI_VERSION"
-start node tests/e2e/connect-proxy.mjs >"$work/proxy.log" 2>&1
+start bun tests/e2e/connect-proxy.mjs >"$work/proxy.log" 2>&1
 
 ZEROAUTHY_SERVER__TLS_CERT_FILE="$work/cert.pem" \
 ZEROAUTHY_SERVER__TLS_KEY_FILE="$work/key.pem" \
@@ -98,27 +98,27 @@ if [[ $ready -ne 1 ]]; then
 fi
 
 status=0
-npm_log="$work/npm-ci.log"
-(cd tests/e2e && npm ci --no-audit --no-fund --silent >"$npm_log" 2>&1) || {
-  echo "npm ci failed" >&2
-  cat "$npm_log" >&2
+install_log="$work/bun-install.log"
+(cd tests/e2e && bun install --frozen-lockfile --silent >"$install_log" 2>&1) || {
+  echo "bun install failed" >&2
+  cat "$install_log" >&2
   exit 1
 }
 (cd tests/e2e && \
-  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" node m3-client-credentials.mjs && \
-  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" node m3-db-flows.mjs && \
-  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" node m9-custom-db.mjs && \
-  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" node m17-node-auth0.mjs && \
-  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" node m18-node-auth0.mjs && \
-  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" node m19-node-auth0.mjs && \
-  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" node m20-node-auth0.mjs && \
-  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m13-mgmt-cli.mjs && \
-  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m14-mgmt-cli.mjs && \
-  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m15-mgmt-cli.mjs && \
-  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m17-mgmt-cli.mjs && \
-  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m18-mgmt-cli.mjs && \
-  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m19-mgmt-cli.mjs && \
-  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" node m20-mgmt-cli.mjs) || status=$?
+  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m3-client-credentials.mjs && \
+  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m3-db-flows.mjs && \
+  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m9-custom-db.mjs && \
+  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m17-node-auth0.mjs && \
+  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m18-node-auth0.mjs && \
+  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m19-node-auth0.mjs && \
+  NODE_ENV=test NODE_EXTRA_CA_CERTS="$work/cert.pem" bun m20-node-auth0.mjs && \
+  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m13-mgmt-cli.mjs && \
+  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m14-mgmt-cli.mjs && \
+  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m15-mgmt-cli.mjs && \
+  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m17-mgmt-cli.mjs && \
+  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m18-mgmt-cli.mjs && \
+  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m19-mgmt-cli.mjs && \
+  AUTH0_BIN="$work/bin/auth0" E2E_CERT="$work/cert.pem" bun m20-mgmt-cli.mjs) || status=$?
 if [[ $status -ne 0 ]]; then
   dump_logs
 fi

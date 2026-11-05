@@ -1,12 +1,13 @@
 // examples/testing/login.spec.mjs: a real browser login through zeroauthy's
 // hosted login page, then the code exchange and ID token checks.
 //
-//   cd examples/testing && npm install && npx playwright install chromium
-//   NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem npx playwright test
+//   cd examples/testing && bun install && bun --bun x playwright install chromium
+//   NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem bun --bun x playwright test
 //
 // The browser ignores the self-signed certificate (playwright.config.mjs);
-// Node's fetch, used for the token exchange, trusts the CA through
-// NODE_EXTRA_CA_CERTS. No app has to run on localhost:3000: the test catches
+// the runtime's fetch, used for the token exchange, trusts the CA through
+// NODE_EXTRA_CA_CERTS (Bun honours it as Node does). No app has to run on
+// localhost:3000: the test catches
 // the redirect to the callback URL in the browser.
 import { test, expect } from '@playwright/test';
 import { createHash, createPublicKey, createVerify, randomBytes } from 'node:crypto';

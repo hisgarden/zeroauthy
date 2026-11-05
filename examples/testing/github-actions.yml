@@ -19,9 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
+          bun-version: 1.4.4
 
       - name: Start zeroauthy
         run: |
@@ -43,7 +43,7 @@ jobs:
           for i in $(seq 1 60); do
             if docker cp zeroauthy:/data/zeroauthy-ca.pem "$ca" 2>/dev/null &&
                curl -fsS --cacert "$ca" https://localhost:8443/healthz; then
-              # Later steps' Node processes trust the generated CA.
+              # Later steps' Bun (and Node) processes trust the generated CA.
               echo "NODE_EXTRA_CA_CERTS=$ca" >> "$GITHUB_ENV"
               echo "ZEROAUTHY_CA=$ca" >> "$GITHUB_ENV"
               exit 0
@@ -54,14 +54,14 @@ jobs:
           exit 1
 
       - name: Smoke test (password grant, Management API)
-        run: node "$KIT/smoke.mjs"
+        run: bun "$KIT/smoke.mjs"
 
       - name: Browser login test (Playwright)
         working-directory: ${{ env.KIT }}
         run: |
-          npm install
-          npx playwright install --with-deps chromium
-          npx playwright test
+          bun install
+          bun --bun x playwright install --with-deps chromium
+          bun --bun x playwright test
 
       - name: zeroauthy log
         if: always()

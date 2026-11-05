@@ -51,15 +51,15 @@ tenants:
 YAML
 go build -o "$work/harness" ./tests/e2e/social/harness
 start "$work/harness" >"$work/server.log" 2>&1
-PROXY_PORT=9198 TARGET_PORT=9543 start node tests/e2e/connect-proxy.mjs >"$work/proxy.log" 2>&1
-PROXY_PORT=9199 TARGET_PORT=9544 start node tests/e2e/connect-proxy.mjs >"$work/proxy2.log" 2>&1
+PROXY_PORT=9198 TARGET_PORT=9543 start bun tests/e2e/connect-proxy.mjs >"$work/proxy.log" 2>&1
+PROXY_PORT=9199 TARGET_PORT=9544 start bun tests/e2e/connect-proxy.mjs >"$work/proxy2.log" 2>&1
 for _ in $(seq 1 150); do
  if curl -fsS http://127.0.0.1:9173/healthz >/dev/null 2>&1 && curl -s http://127.0.0.1:9198 >/dev/null && curl -s http://127.0.0.1:9199 >/dev/null; then break; fi
  sleep 0.1
 done
 if ! curl -fsS http://127.0.0.1:9173/healthz >/dev/null; then cat "$work/server.log"; exit 1; fi
-node tests/e2e/m26-node-auth0.mjs
+bun tests/e2e/m26-node-auth0.mjs
 if [[ -z ${AUTH0_BIN:-} ]]; then GOBIN="$work/bin" go install github.com/auth0/auth0-cli/cmd/auth0@v1.37.0; export AUTH0_BIN="$work/bin/auth0"; fi
-node tests/e2e/m26-mgmt-cli.mjs
+bun tests/e2e/m26-mgmt-cli.mjs
 export E2E_M26_SETUP_URL="$(cat "$work/setup")"
 ( cd tests/e2e && ./node_modules/.bin/playwright test m26-rbac.spec.mjs --config playwright.config.mjs --output "$work/playwright-results" )

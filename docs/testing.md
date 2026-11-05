@@ -12,7 +12,7 @@ The kit is in [examples/testing](../examples/testing):
 |---|---|
 | [seed.yaml](../examples/testing/seed.yaml) | One tenant, a SPA, a regular web app, an M2M client, an API, the database connection and two users |
 | [compose.yaml](../examples/testing/compose.yaml) | zeroauthy with memory storage, self-signed TLS, the seed, emails in the log and a healthcheck |
-| [smoke.mjs](../examples/testing/smoke.mjs) | Password grant, ID token signature and claims, Management API (Node 22+, no dependencies) |
+| [smoke.mjs](../examples/testing/smoke.mjs) | Password grant, ID token signature and claims, Management API (Bun, or Node 22+; no dependencies) |
 | [login.spec.mjs](../examples/testing/login.spec.mjs) | Playwright: a browser login through the hosted login page, then the code exchange and claim checks |
 | [github-actions.yml](../examples/testing/github-actions.yml) | A GitHub Actions job running all of it |
 
@@ -36,7 +36,7 @@ proof of production behaviour.
 ```bash
 docker compose -f examples/testing/compose.yaml up -d --wait zeroauthy
 docker compose -f examples/testing/compose.yaml cp zeroauthy:/data/zeroauthy-ca.pem ./zeroauthy-ca.pem
-NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem node examples/testing/smoke.mjs
+NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem bun examples/testing/smoke.mjs
 ```
 
 ```
@@ -109,7 +109,7 @@ the server is healthy, never before, because it changes every start. See
 
 | Runtime | How |
 |---|---|
-| Node.js | `NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem` (added to the built-in roots; must be set when Node starts) |
+| Bun, Node.js | `NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem` (added to the built-in roots; must be set when the runtime starts; Bun reads the same variable) |
 | Python `requests` | `REQUESTS_CA_BUNDLE=./zeroauthy-ca.pem` (replaces the default bundle) |
 | Python `ssl`, `urllib`, `httpx` | `SSL_CERT_FILE=./zeroauthy-ca.pem` |
 | Go | `SSL_CERT_FILE=./zeroauthy-ca.pem` on Linux (replaces the system roots), or add the PEM to an `x509.CertPool` in your test's `http.Client` |
@@ -289,7 +289,7 @@ docker run -d --name zeroauthy -p 8443:8443 \
 
 until docker cp zeroauthy:/data/zeroauthy-ca.pem ./zeroauthy-ca.pem 2>/dev/null &&
       curl -fsS --cacert zeroauthy-ca.pem https://localhost:8443/healthz; do sleep 1; done
-NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem npm test
+NODE_EXTRA_CA_CERTS=./zeroauthy-ca.pem bun run test
 ```
 
 `server.system_host` is required whenever `server.base_domain` is not set;

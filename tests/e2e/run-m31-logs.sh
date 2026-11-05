@@ -7,7 +7,7 @@ export GOTOOLCHAIN=go1.26.10
 # Playwright sets FORCE_COLOR in its workers; omit NO_COLOR to avoid conflicts.
 unset NO_COLOR
 export FORCE_COLOR=0
-for tool in node go openssl curl flock python3 setsid; do
+for tool in bun node go openssl curl flock python3 setsid; do
  command -v "$tool" >/dev/null || { echo "e2e-logs unavailable: missing $tool" >&2; exit 1; }
 done
 export AUTH0_BIN="${AUTH0_BIN:-$(command -v auth0 || true)}"
@@ -85,8 +85,8 @@ go build -o "$work/zeroauthy" ./cmd/zeroauthy
 # CLI setup output is a credential: keep it 0600, outside the server log audit.
 # No bootstrap.admin_email, so the production server never logs a setup URL.
 "$work/zeroauthy" admin create -c "$work/config.yaml" --email operator31@e2e.local > "$work/operator-setup.txt" 2> "$work/bootstrap.stderr"
-start node tests/e2e/m31-logs-cli.mjs receiver > "$work/receiver.log" 2>&1
-PROXY_PORT=9198 TARGET_PORT=9543 start node tests/e2e/connect-proxy.mjs > "$work/proxy.log" 2>&1
+start bun tests/e2e/m31-logs-cli.mjs receiver > "$work/receiver.log" 2>&1
+PROXY_PORT=9198 TARGET_PORT=9543 start bun tests/e2e/connect-proxy.mjs > "$work/proxy.log" 2>&1
 start "$work/zeroauthy" serve -c "$work/config.yaml" > "$work/server.log" 2>&1
 server_pid=${pids[-1]}
 ready() {
@@ -98,20 +98,20 @@ ready() {
  echo 'e2e-logs: production app did not become ready' >&2; return 1
 }
 ready
-node tests/e2e/m31-node-auth0.mjs setup
-node tests/e2e/m31-logs-cli.mjs create
+bun tests/e2e/m31-node-auth0.mjs setup
+bun tests/e2e/m31-logs-cli.mjs create
 browser_status=0
 ( cd tests/e2e && ./node_modules/.bin/playwright test m31-logs.spec.mjs --config playwright.config.mjs --output "$work/playwright-results" ) || browser_status=$?
-node tests/e2e/m31-node-auth0.mjs check
-node tests/e2e/m31-node-auth0.mjs prepare-restart
+bun tests/e2e/m31-node-auth0.mjs check
+bun tests/e2e/m31-node-auth0.mjs prepare-restart
 kill -TERM -- "-$server_pid"
 wait "$server_pid"
 start "$work/zeroauthy" serve -c "$work/config.yaml" > "$work/server-restart.log" 2>&1
 server_pid=${pids[-1]}
 ready
-node tests/e2e/m31-node-auth0.mjs verify-restart
+bun tests/e2e/m31-node-auth0.mjs verify-restart
 cli_status=0
-node tests/e2e/m31-logs-cli.mjs verify || cli_status=$?
+bun tests/e2e/m31-logs-cli.mjs verify || cli_status=$?
 kill -TERM -- "-$server_pid"
 wait "$server_pid"
 # Export every log field and execution field, including indexed search projection,
@@ -127,6 +127,6 @@ with sqlite3.connect(work / 'logs.db') as db:
                 value = {k: v.decode() if isinstance(v, bytes) else v for k, v in dict(row).items()}
                 out.write(json.dumps(value) + '\n')
 PY
-node tests/e2e/m31-logs-cli.mjs audit
+bun tests/e2e/m31-logs-cli.mjs audit
 if [[ $browser_status != 0 || $cli_status != 0 ]]; then echo 'Plan31 browser/CLI acceptance failed; other checks completed, inspect retained artifacts' >&2; exit 1; fi
 echo 'Plan31 e2e-logs acceptance passed (production app/SQLite; local endpoints only)'

@@ -6,6 +6,14 @@ All notable changes to zeroauthy are recorded here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- **Bun replaces Node as the JavaScript toolchain.** `make console`, the
+  E2E harnesses and the testing kit use `bun install` and Bun's runtime
+  (`console/bun.lock` and `tests/e2e/bun.lock` replace the npm lockfiles).
+  Node stays the runtime zeroauthy launches for Actions, custom database and
+  social profile scripts.
+
 ## [1.0.0-rc.1]
 
 The first public release: an **early preview** for people to try. It covers

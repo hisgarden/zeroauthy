@@ -7,12 +7,13 @@ cd "$(dirname "$0")/../.."
 export GOTOOLCHAIN=go1.26.10
 unset NO_COLOR
 export FORCE_COLOR=0
-for tool in node go openssl curl flock setsid python3 sha256sum; do
+for tool in bun node go openssl curl flock setsid python3 sha256sum; do
  command -v "$tool" >/dev/null || { echo "e2e-mfa unavailable: missing $tool" >&2; exit 1; }
 done
 export AUTH0_BIN="${AUTH0_BIN:-$(command -v auth0 || true)}"
 [[ -x "$AUTH0_BIN" && -x tests/e2e/node_modules/.bin/playwright ]] || { echo "e2e-mfa unavailable: install the pinned Auth0 CLI and tests/e2e dependencies" >&2; exit 1; }
 "$AUTH0_BIN" --version | grep -q '1.37.0'
+# zeroauthy launches Node (>= 22.13) for the Actions runtime; the toolchain is Bun.
 node -e 'const [a,b]=process.versions.node.split(".").map(Number);if(a<22||(a===22&&b<13))process.exit(1)'
 exec 9>/tmp/zeroauthy-e2e-social.lock
 flock 9
@@ -59,6 +60,7 @@ for backend in ${E2E_M33_BACKENDS:-sqlite memory}; do
  git diff --binary > "$E2E_M33_WORK/source.patch"
  sha256sum tests/e2e/m33-mfa*.mjs tests/e2e/run-m33-mfa.sh > "$E2E_M33_WORK/harness-sha256.txt"
  node --version > "$E2E_M33_WORK/node-version.txt"
+ bun --version > "$E2E_M33_WORK/bun-version.txt"
  go version > "$E2E_M33_WORK/go-version.txt"
  for name in responses.jsonl browser-responses.jsonl browser-console.jsonl cli.jsonl receiver.jsonl private-secrets.jsonl migrate.log bootstrap.stderr; do : > "$E2E_M33_WORK/$name"; done
  case "$backend" in
@@ -100,8 +102,8 @@ YAML
   "$root/zeroauthy" migrate -c "$E2E_M33_WORK/config.yaml" > "$E2E_M33_WORK/migrate.log" 2>&1
   "$root/zeroauthy" admin create -c "$E2E_M33_WORK/config.yaml" --email operator33@e2e.local > "$E2E_M33_WORK/operator-setup.txt" 2> "$E2E_M33_WORK/bootstrap.stderr"
  fi
- start node tests/e2e/m33-mfa-cli.mjs receiver > "$E2E_M33_WORK/receiver.log" 2>&1
- PROXY_PORT=9198 TARGET_PORT=9543 start node tests/e2e/connect-proxy.mjs > "$E2E_M33_WORK/proxy.log" 2>&1
+ start bun tests/e2e/m33-mfa-cli.mjs receiver > "$E2E_M33_WORK/receiver.log" 2>&1
+ PROXY_PORT=9198 TARGET_PORT=9543 start bun tests/e2e/connect-proxy.mjs > "$E2E_M33_WORK/proxy.log" 2>&1
  start "$root/zeroauthy" serve -c "$E2E_M33_WORK/config.yaml" > "$E2E_M33_WORK/server.log" 2>&1
  server_pid=${pids[-1]}
  for _ in $(seq 1 300); do
@@ -109,17 +111,17 @@ YAML
   kill -0 "$server_pid" 2>/dev/null || { cat "$E2E_M33_WORK/server.log" >&2; exit 1; }
   sleep 0.1
  done
- node tests/e2e/m33-mfa-node.mjs setup
+ bun tests/e2e/m33-mfa-node.mjs setup
  if [[ "$backend" == sqlite && " ${E2E_M33_LANES:-browser sdk cli grants audit} " == *" browser "* ]]; then
   (cd tests/e2e && ./node_modules/.bin/playwright test m33-mfa.spec.mjs --config playwright.config.mjs --output "$E2E_M33_WORK/playwright-results")
  fi
  for lane in ${E2E_M33_LANES:-sdk cli grants audit}; do
   case "$lane" in
    browser) ;;
-   sdk) node tests/e2e/m33-mfa-node.mjs sdk ;;
-   cli) node tests/e2e/m33-mfa-cli.mjs cli ;;
-   grants) node tests/e2e/m33-mfa-grants.mjs ;;
-   audit) node tests/e2e/m33-mfa-node.mjs snapshot ;;
+   sdk) bun tests/e2e/m33-mfa-node.mjs sdk ;;
+   cli) bun tests/e2e/m33-mfa-cli.mjs cli ;;
+   grants) bun tests/e2e/m33-mfa-grants.mjs ;;
+   audit) bun tests/e2e/m33-mfa-node.mjs snapshot ;;
    *) echo "unknown MFA lane: $lane" >&2; exit 1;;
   esac
  done
@@ -140,7 +142,7 @@ PYDUMP
   else
    : > "$E2E_M33_WORK/stored-sinks.jsonl"
   fi
-  node tests/e2e/m33-mfa-node.mjs audit
+  bun tests/e2e/m33-mfa-node.mjs audit
  fi
  echo "Plan33 MFA $backend selected lanes passed: ${E2E_M33_LANES:-sdk cli grants audit}"
 done

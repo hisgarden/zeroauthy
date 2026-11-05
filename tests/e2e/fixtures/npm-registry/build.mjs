@@ -1,5 +1,6 @@
-// Build an offline registry from the package-lock-pinned installed dependency
-// closure. No npm command, lifecycle script, or network operation is executed.
+// Build an offline registry from the bun.lock-pinned installed dependency
+// closure. No package-manager command, lifecycle script, or network operation
+// is executed.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -8,14 +9,18 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 const output=process.argv[2];assert.ok(output);
 const root=path.resolve(import.meta.dirname,'../..');
-const lock=JSON.parse(fs.readFileSync(path.join(root,'package-lock.json')));
+// bun.lock is JSONC (trailing commas). Its packages map is keyed by the
+// install path with the node_modules segments dropped ("auth0",
+// "auth0-legacy/jose"), and each entry starts with "name@version".
+const lock=JSON.parse(fs.readFileSync(path.join(root,'bun.lock'),'utf8').replace(/,(\s*[}\]])/g,'$1'));
+const lockedVersion=key=>lock.packages[key]?.[0]?.slice(lock.packages[key][0].lastIndexOf('@')+1);
 fs.mkdirSync(output,{recursive:true});
 const packages={},seen=new Set();
 function visit(dir){
  dir=fs.realpathSync(dir);if(seen.has(dir))return;seen.add(dir);
  const pkg=JSON.parse(fs.readFileSync(path.join(dir,'package.json')));
- const entry=lock.packages[path.relative(root,dir).replaceAll(path.sep,'/')];
- assert.equal(entry?.version,pkg.version,`${pkg.name} must match lockfile`);
+ const key=path.relative(root,dir).split(path.sep).filter(s=>s!=='node_modules').join('/');
+ assert.equal(lockedVersion(key),pkg.version,`${pkg.name} must match lockfile`);
  const file=`${pkg.name.replaceAll('/','-')}-${pkg.version}.tgz`;
  // Preserve the complete published tree, including CommonJS and ESM exports.
  execFileSync('tar',['--exclude=./node_modules','--transform=s,^\\.,package,','-czf',path.join(output,file),'-C',dir,'.']);
@@ -30,4 +35,4 @@ function visit(dir){
 visit(path.join(root,'node_modules/auth0'));
 assert.ok(packages.auth0['7.4.0']);
 fs.writeFileSync(path.join(output,'registry.json'),JSON.stringify(packages));
-console.log(`offline npm fixture: auth0@7.4.0 and ${seen.size-1} dependency packages pinned to package-lock.json`);
+console.log(`offline npm fixture: auth0@7.4.0 and ${seen.size-1} dependency packages pinned to bun.lock`);

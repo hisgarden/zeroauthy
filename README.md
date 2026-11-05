@@ -426,8 +426,8 @@ Releases are manual: a tagged commit pushed to the `release` branch, then a main
 make test           # unit + contract + storage conformance tests (memory and SQLite)
 make test-sql       # SQL driver tests against PostgreSQL 17 and MySQL 8.4 containers (needs podman or docker)
 make generate       # regenerate code from api/authentication.yaml and api/management.yaml
-make console        # lint, test and rebuild the admin console (needs Node 22+; then make build to embed it)
-make e2e            # Auth0 SDKs against a live zeroauthy on SQLite (needs Node 22+, openssl)
+make console        # lint, test and rebuild the admin console (needs Bun 1.4+, Node 22+ for vue-tsc; then make build to embed it)
+make e2e            # Auth0 SDKs against a live zeroauthy on SQLite (needs Bun 1.4+, openssl, and Node 22.13+ for the custom database runtime)
 make e2e-events     # Event Streams browser, SDK, CLI, SSE and privacy acceptance
 make e2e-deploy     # pinned Deploy CLI YAML/directory round trips
 make check-sources  # verify every x-source provenance link

@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 // vitest runs from console/, where the built bundle lives.
 const dist = join(process.cwd(), 'dist')
 const built = existsSync(join(dist, 'index.html'))
-if (!built) console.warn('dist/ is absent: run `npm run build` to enable the bundle checks')
+if (!built) console.warn('dist/ is absent: run `bun run build` to enable the bundle checks')
 
 describe.skipIf(!built)('built bundle', () => {
   const assets = built ? readdirSync(join(dist, 'assets')) : []

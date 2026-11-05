@@ -35,14 +35,16 @@ const federationCredentials = path.join(work, 'federation-credentials.json');
 await writeFile(federationCredentials, JSON.stringify(Object.fromEntries(federation.map(c => [c.name, upstreamSecret]))), { mode: 0o600 });
 const sourceConfig = { ...JSON.parse(await readFile(process.env.E2E_M20_CONFIG, 'utf8')), AUTH0_CLIENT_SECRET: secrets[0], AUTH0_EXPORT_IDENTIFIERS: false };
 const targetConfig = { ...sourceConfig, AUTH0_KEYWORD_REPLACE_MAPPINGS:{ACTION_SECRET:actionSecret,EVENT_STREAM_TOKEN:eventSecret,LOGSTREAMS_HTTP_SECRET:streamHTTPSecret,LOGSTREAMS_DATADOG_SECRET:streamDatadogSecret}, AUTH0_DOMAIN: 'target.cli.e2e.test', AUTH0_CLIENT_ID: 'e2e-cli-target-admin', AUTH0_CLIENT_SECRET: secrets[1] };
-const bin = path.join(e2e, 'node_modules/.bin/a0deploy');
+// The CLI's bin carries a node shebang; run its entry point under Bun instead.
+const a0deploy = path.join(e2e, 'node_modules/.bin/a0deploy');
+const bin = 'bun', binArgs = [a0deploy];
 const comparator = args => spawnSync('go', ['run', './tests/e2e/deploy-cli', ...args], { cwd: root, encoding: 'utf8' });
 function checkedCompare(source, target) {
   const result = comparator(['compare', '--source', source, '--target', target, '--format', format, '--manifest', path.join(work, 'manifest.json')]);
   assert.ok(result.stdout, 'comparator produced no redacted report');
   return JSON.parse(result.stdout);
 }
-const version = spawnSync(bin, ['--version'], { encoding: 'utf8' });
+const version = spawnSync(bin, [...binArgs, '--version'], { encoding: 'utf8' });
 assert.equal(version.status, 0); assert.equal(version.stdout.trim(), '9.1.0');
 const manifest = JSON.parse(await readFile(path.join(e2e, 'deploy-cli/manifest.json'), 'utf8'));
 const excluded = JSON.parse(comparator(['exclusions', '--manifest', 'tests/e2e/deploy-cli/manifest.json']).stdout);

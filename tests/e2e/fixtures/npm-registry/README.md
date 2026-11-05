@@ -1,6 +1,6 @@
 This fixture runs entirely offline. `build.mjs OUTPUT` packages the installed
 `tests/e2e/node_modules/auth0@7.4.0` and its complete dependency closure into
-tarballs, checking each package version against `tests/e2e/package-lock.json`.
+tarballs, checking each package version against `tests/e2e/bun.lock`.
 It preserves the real SDK's CommonJS and ESM exports; it does not replace the
 SDK with a stub or run package lifecycle scripts.
 

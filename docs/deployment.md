@@ -194,6 +194,9 @@ Node 26. With the binary, install Node yourself or set `actions.node` and
 service account. If tenants are not trusted, also restrict outbound network
 access and run zeroauthy under a dedicated user or container; see the security
 sections of [Actions](actions.md) and [custom databases](custom-db.md).
+This runtime is the only reason a deployment needs Node: building the console
+and running the test suites use [Bun](https://bun.sh) instead
+([console](console.md#developing), [testing](testing.md)).
 
 ## Email
 

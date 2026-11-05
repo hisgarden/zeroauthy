@@ -29,7 +29,7 @@ CGO_ENABLED=0 go build -o "$work/zeroauthy" ./cmd/zeroauthy
 # provider (constructor option); OAuth profile scripts need Node 25+.
 node --version | grep -qE '^v(2[5-9]|[3-9][0-9])\.' || { echo "e2e-deploy needs Node 25+ for OAuth profile scripts" >&2; exit 1; }
 go build -o "$work/deploy-server" ./tests/e2e/deploy-cli/server
-start node tests/e2e/deploy-cli/connect-proxy.mjs >"$work/proxy.log" 2>&1
+start bun tests/e2e/deploy-cli/connect-proxy.mjs >"$work/proxy.log" 2>&1
 go build -o "$work/dns-fixture" ./tests/e2e/deploy-cli/dns-fixture
 start "$work/dns-fixture" >"$work/dns.log" 2>&1
 for _ in $(seq 1 60); do
@@ -83,7 +83,7 @@ for mode in "${modes[@]}"; do
     export E2E_M20_TARGET_DSN="sqlite://$E2E_M20_WORK/target.db"
     export E2E_M20_SOURCE_SEED="$E2E_M20_WORK/source-seed.yaml"
     export E2E_M20_TARGET_SEED="$E2E_M20_WORK/target-seed.yaml"
-    node --input-type=module -e 'import fs from "node:fs"; import yaml from "./tests/e2e/node_modules/js-yaml/index.js"; const fixture=yaml.load(fs.readFileSync("tests/e2e/deploy-cli/seed.yaml","utf8")); const streams=JSON.parse(fs.readFileSync("tests/e2e/deploy-cli/fixtures/log-streams.json","utf8")); fixture.tenants[0].log_streams=streams.map(s=>({...s,sink:{...s.sink,...(s.type==="http"?{httpAuthorization:"${E2E_M31_STREAM_HTTP_SECRET}"}:{datadogApiKey:"${E2E_M31_STREAM_DATADOG_SECRET}"})}})); fs.writeFileSync(process.env.E2E_M20_SOURCE_SEED,yaml.dump({tenants:[fixture.tenants[0]]})); fs.writeFileSync(process.env.E2E_M20_TARGET_SEED,yaml.dump({tenants:[fixture.tenants[1]]}));'
+    bun -e 'import fs from "node:fs"; import yaml from "./tests/e2e/node_modules/js-yaml/index.js"; const fixture=yaml.load(fs.readFileSync("tests/e2e/deploy-cli/seed.yaml","utf8")); const streams=JSON.parse(fs.readFileSync("tests/e2e/deploy-cli/fixtures/log-streams.json","utf8")); fixture.tenants[0].log_streams=streams.map(s=>({...s,sink:{...s.sink,...(s.type==="http"?{httpAuthorization:"${E2E_M31_STREAM_HTTP_SECRET}"}:{datadogApiKey:"${E2E_M31_STREAM_DATADOG_SECRET}"})}})); fs.writeFileSync(process.env.E2E_M20_SOURCE_SEED,yaml.dump({tenants:[fixture.tenants[0]]})); fs.writeFileSync(process.env.E2E_M20_TARGET_SEED,yaml.dump({tenants:[fixture.tenants[1]]}));'
     export ZEROAUTHY_STORAGE__DSN="$E2E_M20_SOURCE_DSN" ZEROAUTHY_SEED="$E2E_M20_SOURCE_SEED" ZEROAUTHY_SERVER__LISTEN=:8443
     serve_port=8443
     serve
@@ -91,11 +91,11 @@ for mode in "${modes[@]}"; do
     # The offline bootstrap requires an existing schema but an absent target
     # tenant. Migrate the separate destination before the preserved-ID lane.
     ZEROAUTHY_STORAGE__DSN="$E2E_M20_TARGET_DSN" "$work/zeroauthy" migrate --config tests/e2e/config.yaml >"$E2E_M20_WORK/target-migration.log" 2>&1
-    E2E_M20_PHASE=prepare node tests/e2e/m20-deploy-cli.mjs
+    E2E_M20_PHASE=prepare bun tests/e2e/m20-deploy-cli.mjs
     export ZEROAUTHY_STORAGE__DSN="$E2E_M20_TARGET_DSN" ZEROAUTHY_SEED="$E2E_M20_TARGET_SEED" ZEROAUTHY_SERVER__LISTEN=:8444
     serve_port=8444
     serve
-    E2E_M20_PHASE=verify node tests/e2e/m20-deploy-cli.mjs
+    E2E_M20_PHASE=verify bun tests/e2e/m20-deploy-cli.mjs
     stop_server
     server_pid="$source_pid"
     stop_server

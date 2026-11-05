@@ -25,11 +25,11 @@
     },
     {
       "name": "webauthn-roaming",
-      "status": "stored"
+      "status": "enforced"
     },
     {
       "name": "webauthn-platform",
-      "status": "stored"
+      "status": "enforced"
     },
     {
       "name": "recovery-code",
@@ -5178,11 +5178,11 @@
         "otp",
         "email",
         "recovery-code",
-        "phone"
+        "phone",
+        "webauthn-roaming",
+        "webauthn-platform"
       ],
       "unavailable_factors": [
-        "webauthn-roaming",
-        "webauthn-platform",
         "push-notification"
       ]
     },
@@ -5288,11 +5288,11 @@
         "otp",
         "email",
         "recovery-code",
-        "phone"
+        "phone",
+        "webauthn-roaming",
+        "webauthn-platform"
       ],
       "unavailable_factors": [
-        "webauthn-roaming",
-        "webauthn-platform",
         "push-notification"
       ]
     },
@@ -5357,11 +5357,11 @@
         "otp",
         "email",
         "recovery-code",
-        "phone"
+        "phone",
+        "webauthn-roaming",
+        "webauthn-platform"
       ],
       "unavailable_factors": [
-        "webauthn-roaming",
-        "webauthn-platform",
         "push-notification"
       ]
     },
@@ -5466,11 +5466,11 @@
         "otp",
         "email",
         "recovery-code",
-        "phone"
+        "phone",
+        "webauthn-roaming",
+        "webauthn-platform"
       ],
       "unavailable_factors": [
-        "webauthn-roaming",
-        "webauthn-platform",
         "push-notification"
       ]
     },
@@ -5534,11 +5534,11 @@
         "otp",
         "email",
         "recovery-code",
-        "phone"
+        "phone",
+        "webauthn-roaming",
+        "webauthn-platform"
       ],
       "unavailable_factors": [
-        "webauthn-roaming",
-        "webauthn-platform",
         "push-notification"
       ]
     }

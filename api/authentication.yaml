@@ -214,6 +214,8 @@ paths:
         - http://auth0.com/oauth/grant-type/mfa-recovery-code
       x-passwordless-grants:
         - http://auth0.com/oauth/grant-type/passwordless/otp
+      x-passkey-grants:
+        - urn:okta:params:oauth:grant-type:webauthn
       operationId: oauthToken
       tags: [Tokens]
       summary: Get a token
@@ -230,6 +232,7 @@ paths:
         | `password` | Resource owner password: exchange `username` and `password` for tokens. When `realm` is given, the user is looked up in that database connection (which must be enabled for the client), as with the password-realm grant. Otherwise the tenant's default directory (`default_directory`) is used, and a tenant without one rejects the request with `invalid_request`. |
         | `http://auth0.com/oauth/grant-type/password-realm` | As `password`, but `realm` names the database connection to use. The connection must be enabled for the client. |
         | `http://auth0.com/oauth/grant-type/passwordless/otp` | Exchange a passwordless code: `realm` (`email` or `sms`), `username` (the email or E.164 number) and `otp`. The client must have the grant enabled. Same MFA decision as password grants. `redirect_uri` is validated when sent (D-0060 P11). |
+        | `urn:okta:params:oauth:grant-type:webauthn` | The passkey grant (Plan 33b, D-0062): exchange the `auth_session` from `/passkey/register` or `/passkey/challenge` and the authenticator's `authn_response` (a JSON object, or a JSON string in a form body) for tokens. A register session creates the user without a password; a challenge session logs the user in. Optional `realm`, `scope`, `audience` and `organization`. First-party clients with the grant only; the canonical host is refused. Same MFA decision as password grants (`mfa_required`). Missing parameters are `400 invalid_request`; an expired, consumed or mismatched `auth_session` and every verification failure are `400 invalid_grant` with a fixed description (LR33b-25). Not advertised in discovery. |
 
         **Password grants.** Wrong passwords and unknown users get the same
         `403` `invalid_grant` error, "Wrong email or password.". An unknown,
@@ -252,6 +255,7 @@ paths:
         request is rejected.
       x-source:
         - https://auth0.com/docs/api/authentication#multi-factor-authentication
+        - https://auth0.com/docs/authenticate/database-connections/passkeys/passkey-apis
         - https://www.rfc-editor.org/rfc/rfc6749#section-4.4
         - https://www.rfc-editor.org/rfc/rfc6749#section-4.1.3
         - https://www.rfc-editor.org/rfc/rfc7636#section-4.6
@@ -907,6 +911,153 @@ paths:
           $ref: "#/components/responses/UnknownTenant"
         "501":
           $ref: "#/components/responses/OAuthErrorResponse"
+  /passkey/register:
+    post:
+      operationId: passkeyRegister
+      tags: [Passkeys]
+      summary: Start a native passkey signup
+      description: |
+        Plan 33b frozen contract (D-0062); the runtime lands in Task 15 and
+        the route answers `501 passkey_unavailable` until then. Starts a
+        passkey registration for a new user of a database connection and
+        returns the WebAuthn creation options plus an opaque `auth_session`
+        to exchange at `/oauth/token` with the passkey grant.
+
+        The client must be first party, OIDC conformant and hold the
+        `urn:okta:params:oauth:grant-type:webauthn` grant; confidential
+        clients authenticate with `client_secret` (`client_secret_post`).
+        The request must reach a custom domain or operator alias host; the
+        canonical host answers `400 invalid_request` (LR33b-25, R2).
+        `realm` defaults to the tenant's default directory when it is a
+        database connection enabled for the client, else the client's only
+        enabled database connection with passkeys effective. `organization`
+        follows the password-realm organization rules. `user_profile` must
+        carry every identifier the connection requires at signup; unknown
+        keys and an identifier that already resolves to a user are
+        `400 invalid_request`. Registration is refused when the connection
+        requires email or phone verification at signup.
+
+        Options: `challenge` (32 random bytes, base64url), `timeout` 60000,
+        `rp.id` the host's effective RP ID with `rp.name` equal to it,
+        `user.id` the user handle, `user.name` the highest-precedence
+        identifier, `user.displayName` the name or that identifier,
+        `pubKeyCredParams` -8, -7, -257, `authenticatorSelection`
+        `residentKey: required`, `userVerification: preferred`. `404
+        not_found` when the storage plugin lacks `webauthn.v1` or no
+        database connection of the tenant has passkeys effective. Logs
+        `passkey_challenge_started` or `passkey_challenge_failed` with
+        `details.purpose: register`.
+      x-source:
+        - https://auth0.com/docs/api/authentication/passkey/register
+        - https://auth0.com/docs/authenticate/database-connections/passkeys/passkey-apis
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasskeyRegisterRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PasskeyRegisterRequest"
+      responses:
+        "200":
+          description: Registration options and the session to exchange.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasskeyRegisterResponse"
+        "400":
+          description: "`invalid_request`: missing or unknown profile fields, an existing user, a client without the grant or third party, the canonical host, or a connection that requires OTP verification at signup."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "401":
+          description: "`invalid_client`: the client authentication failed."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "404":
+          description: "`not_found`: the Passkey APIs are not available on this tenant, or the request host is not a domain of any tenant."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "429":
+          description: "`too_many_requests`: the per-IP limit was reached."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "501":
+          $ref: "#/components/responses/OAuthErrorResponse"
+  /passkey/challenge:
+    post:
+      operationId: passkeyChallenge
+      tags: [Passkeys]
+      summary: Start a native passkey login
+      description: |
+        Plan 33b frozen contract (D-0062); the runtime lands in Task 15 and
+        the route answers `501 passkey_unavailable` until then. Issues a
+        WebAuthn request challenge for an existing passkey and an opaque
+        `auth_session` to exchange at `/oauth/token` with the passkey grant.
+        Client, host, `realm` and `organization` rules are those of
+        `/passkey/register`. The options are `challenge`, `timeout` 60000,
+        `rpId` (the host's effective RP ID) and `userVerification:
+        preferred`; `allowCredentials` is not sent (discoverable
+        credentials). The challenge is single use and expires 10 s after
+        `timeout`. `404 not_found` when the storage plugin lacks
+        `webauthn.v1` or no database connection of the tenant has passkeys
+        effective. Logs `passkey_challenge_started` or
+        `passkey_challenge_failed` with `details.purpose: login`.
+      x-source:
+        - https://auth0.com/docs/api/authentication/passkey/challenge
+        - https://auth0.com/docs/authenticate/database-connections/passkeys/passkey-apis
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasskeyChallengeRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PasskeyChallengeRequest"
+      responses:
+        "200":
+          description: Request options and the session to exchange.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasskeyChallengeResponse"
+        "400":
+          description: "`invalid_request`: missing or invalid parameters, a client without the grant or third party, or the canonical host."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "401":
+          description: "`invalid_client`: the client authentication failed."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "404":
+          description: "`not_found`: the Passkey APIs are not available on this tenant, or the request host is not a domain of any tenant."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "429":
+          description: "`too_many_requests`: the per-IP limit was reached."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthError"
+        "501":
+          $ref: "#/components/responses/OAuthErrorResponse"
   /mfa/associate:
     post:
       operationId: MFAAssociate
@@ -1435,6 +1586,96 @@ components:
         code: {type: string}
         description: {type: string}
         statusCode: {type: integer, enum: [400]}
+    PasskeyRegisterRequest:
+      type: object
+      required: [client_id, user_profile]
+      additionalProperties: false
+      properties:
+        client_id: {type: string}
+        client_secret: {type: string, writeOnly: true, description: Confidential clients using client_secret_post.}
+        realm: {type: string, description: The database connection; defaults to the tenant's default directory.}
+        organization: {type: string, description: Organization ID or name; required when the client's organization_usage is require.}
+        user_profile:
+          type: object
+          additionalProperties: false
+          description: The new user's identifiers and profile; every identifier the connection requires at signup must be present.
+          properties:
+            email: {type: string}
+            phone_number: {type: string, minLength: 1, maxLength: 30, description: E.164 with the international prefix.}
+            username: {type: string, description: Checked against the connection's username policy.}
+            name: {type: string, minLength: 1, maxLength: 300}
+            given_name: {type: string, minLength: 1, maxLength: 150}
+            family_name: {type: string, minLength: 1, maxLength: 150}
+            nickname: {type: string, minLength: 1, maxLength: 300}
+            picture: {type: string, format: uri}
+        user_metadata:
+          type: object
+          maxProperties: 10
+          additionalProperties: {type: string}
+          description: Up to 10 string fields stored on the new user.
+    PasskeyChallengeRequest:
+      type: object
+      required: [client_id]
+      additionalProperties: false
+      properties:
+        client_id: {type: string}
+        client_secret: {type: string, writeOnly: true, description: Confidential clients using client_secret_post.}
+        realm: {type: string, description: The database connection; defaults to the tenant's default directory.}
+        organization: {type: string, description: Organization ID or name; required when the client's organization_usage is require.}
+    PasskeyRegisterResponse:
+      type: object
+      required: [auth_session, authn_params_public_key]
+      properties:
+        auth_session: {type: string, description: Opaque single-use session to send with the passkey grant.}
+        authn_params_public_key:
+          type: object
+          description: WebAuthn PublicKeyCredentialCreationOptions (JSON form, base64url binary fields).
+          required: [challenge, timeout, rp, user, pubKeyCredParams, authenticatorSelection]
+          properties:
+            challenge: {type: string, description: "32 random bytes, base64url."}
+            timeout: {type: integer, enum: [60000], description: Milliseconds; the row expires 10 s later.}
+            rp:
+              type: object
+              required: [id, name]
+              properties:
+                id: {type: string, description: The host's effective RP ID.}
+                name: {type: string, description: Equal to `id`.}
+            user:
+              type: object
+              required: [id, name, displayName]
+              properties:
+                id: {type: string, description: "The user handle (32 random bytes per user, base64url)."}
+                name: {type: string, description: The highest-precedence identifier.}
+                displayName: {type: string, description: "The name when given, else the identifier."}
+            pubKeyCredParams:
+              type: array
+              description: "Always `-8`, `-7`, `-257` in that order."
+              items:
+                type: object
+                required: [type, alg]
+                properties:
+                  type: {type: string, enum: [public-key]}
+                  alg: {type: integer, enum: [-8, -7, -257]}
+            authenticatorSelection:
+              type: object
+              required: [residentKey, userVerification]
+              properties:
+                residentKey: {type: string, enum: [required]}
+                userVerification: {type: string, enum: [preferred]}
+    PasskeyChallengeResponse:
+      type: object
+      required: [auth_session, authn_params_public_key]
+      properties:
+        auth_session: {type: string, description: Opaque single-use session to send with the passkey grant.}
+        authn_params_public_key:
+          type: object
+          description: WebAuthn PublicKeyCredentialRequestOptions (JSON form).
+          required: [challenge, timeout, rpId, userVerification]
+          properties:
+            challenge: {type: string, description: "32 random bytes, base64url."}
+            timeout: {type: integer, enum: [60000]}
+            rpId: {type: string, description: The host's effective RP ID.}
+            userVerification: {type: string, enum: [preferred]}
     PasswordlessStartRequest:
       type: object
       description: Unknown members (extra options auth0.js forwards) are accepted and ignored, as Auth0 does.
@@ -1566,6 +1807,25 @@ components:
         oob_code: {type: string, writeOnly: true}
         binding_code: {type: string, writeOnly: true}
         recovery_code: {type: string, writeOnly: true}
+        auth_session:
+          type: string
+          writeOnly: true
+          description: The session returned by `/passkey/register` or `/passkey/challenge` (passkey grant); single use.
+        authn_response:
+          writeOnly: true
+          description: |
+            The authenticator's PublicKeyCredential in JSON form (passkey
+            grant): `id`, `rawId`, `type: public-key`, optional
+            `authenticatorAttachment`, `response` with `clientDataJSON` and
+            either `attestationObject` (registration) or
+            `authenticatorData`, `signature` and `userHandle` (login), and
+            optional `clientExtensionResults`; binary fields base64url. A
+            JSON object in a JSON body, or that object serialized as a JSON
+            string in a form body (as `@auth0/auth0-auth-js` 1.16.1 sends).
+          oneOf:
+            - type: object
+              additionalProperties: true
+            - type: string
     TokenResponse:
       type: object
       required: [access_token, token_type, expires_in]

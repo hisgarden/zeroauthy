@@ -1302,14 +1302,13 @@
       "description": "The user declined an MFA push challenge.",
       "category": "other",
       "emitted": false,
-      "plan": 33,
+      "plan": 0,
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/other/gd-auth-rejected",
       "origin": "public-catalog",
-      "note": "Plan 33b owns WebAuthn MFA after 1.0; not emitted by Plan 33.",
+      "note": "not_planned: Guardian push decline requires Auth0's app (Plan 33b §8.2 moved it with push).",
       "triggers": [],
-      "status": "deferred",
-      "owner": "Plan 33b"
+      "status": "not_planned"
     },
     {
       "type": "gd_auth_succeed",
@@ -1727,7 +1726,7 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/other/gd-webauthn-challenge-failed",
       "origin": "public-catalog",
-      "note": "Plan 33b owns WebAuthn MFA after 1.0; not emitted by Plan 33.",
+      "note": "Plan 33b: hosted passkey login assertion failures (first_factor true) and WebAuthn MFA challenge failures (webauthnrules.LogCodes); emission flips in Task 19.",
       "triggers": [],
       "status": "deferred",
       "owner": "Plan 33b"
@@ -1741,7 +1740,7 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/other/gd-webauthn-enrollment-failed",
       "origin": "public-catalog",
-      "note": "Plan 33b owns WebAuthn MFA after 1.0; not emitted by Plan 33.",
+      "note": "Plan 33b: passkey progressive/local enrollment and WebAuthn MFA enrollment failures (webauthnrules.LogCodes); emission flips in Task 19.",
       "triggers": [],
       "status": "deferred",
       "owner": "Plan 33b"
@@ -2077,9 +2076,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/other/passkey-challenge-failed",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b: native challenge refused or passkey grant verification failed (details.purpose, error.message); emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "passkey_challenge_started",
@@ -2090,9 +2090,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/other/passkey-challenge-started",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b: native /passkey/register and /passkey/challenge issued a challenge (details.purpose); emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "pla",
@@ -2495,9 +2496,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/auth-token-exchange-success/seoobft",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b (LR33b-28): mfa-oob grant after a password mfa_token, closing the Plan 33 gap; emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "seotpft",
@@ -2508,9 +2510,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/auth-token-exchange-success/seotpft",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b (LR33b-28): mfa-otp grant after a password mfa_token, closing the Plan 33 gap; emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "sepft",
@@ -2539,9 +2542,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/auth-token-exchange-success/sepkoobft",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b: mfa-oob grant after a passkey mfa_token (shared MFA grant dispatch); emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "sepkotpft",
@@ -2552,9 +2556,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/auth-token-exchange-success/sepkotpft",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b: mfa-otp grant after a passkey mfa_token (shared MFA grant dispatch); emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "sepkrcft",
@@ -2565,9 +2570,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/auth-token-exchange-success/sepkrcft",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b: mfa-recovery-code grant after a passkey mfa_token (shared MFA grant dispatch); emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "sercft",
@@ -2578,9 +2584,10 @@
       "stats_kind": "",
       "source": "https://auth0.com/docs/tenant-logs/auth-token-exchange-success/sercft",
       "origin": "public-catalog",
-      "note": "Plan 33 target; emission remains deferred until real MFA runtime lands.",
+      "note": "Plan 33b (LR33b-28): mfa-recovery-code grant after a password mfa_token, closing the Plan 33 gap; emission flips in Task 19.",
       "triggers": [],
-      "status": "deferred"
+      "status": "deferred",
+      "owner": "Plan 33b"
     },
     {
       "type": "sertft",
@@ -3480,7 +3487,39 @@
     "rules": [],
     "hooks": [],
     "stats": [],
-    "logs": []
+    "logs": [],
+    "details:s": [
+      "prompts"
+    ],
+    "details:ss": [
+      "authentication_methods"
+    ],
+    "details:gd_enrollment_complete": [
+      "authenticator"
+    ],
+    "details:gd_webauthn_enrollment_failed": [
+      "authentication_methods",
+      "authenticator",
+      "failure_details"
+    ],
+    "details:gd_webauthn_challenge_failed": [
+      "first_factor",
+      "authenticator",
+      "failure_details"
+    ],
+    "details:passkey_challenge_started": [
+      "purpose"
+    ],
+    "details:passkey_challenge_failed": [
+      "purpose",
+      "error"
+    ],
+    "details:sepkotpft": [],
+    "details:sepkoobft": [],
+    "details:sepkrcft": [],
+    "details:seotpft": [],
+    "details:seoobft": [],
+    "details:sercft": []
   },
   "privacy": {
     "allowlist_rule": "Resolve known resource routes to the family above, default deny for all others. Apply the same paths to request and response bodies, including arrays and JSON-in-string bodies. Unknown keys become the marker at any depth. Parent permission is not wildcard permission; arbitrary metadata, code, scripts, HTML, templates, URLs carrying bearers, provider options and all headers are never body-allowlisted. Query keys are separately allowlisted: page,per_page,include_totals,sort,fields,include_fields; all other query values are masked. Never log raw request URLs.",
@@ -4276,6 +4315,7 @@
     "Current log object may contain security_context; omitted unless trustworthy signals exist. location_info intentionally omitted. New catalog fields such as environment_name/is_mobile are not synthesized; Management Log uses isMobile.",
     "Log ID 56 decimal digits and sequence encoding, query subset bounds, cloud suspension, and runtime policies are local compatibility choices, not claims about Auth0 internals.",
     "No published generic notification-success code sn or password-notification code established; such outcomes remain server-log-only. No du/ubr aliases; canonical deletion sdu, unblock ublkdu, scpn means phone change.",
-    "fpurh/fcph are legacy Hook failures, not Action failures; they remain deferred. Phone-number changes remain unsupported by userrules.CheckPatch; scpn/fcpn are deferred to Plan 34 despite the provisional spec example. Codes marked emitted are Plan 31 emission targets at existing trigger functions, not a claim recording exists in Task 1. Current generic s success is interactive authorization, silent uses ssa and password grant uses sepft. social failures use f, not connector fc (no AD/LDAP connector)."
+    "fpurh/fcph are legacy Hook failures, not Action failures; they remain deferred. Phone-number changes remain unsupported by userrules.CheckPatch; scpn/fcpn are deferred to Plan 34 despite the provisional spec example. Codes marked emitted are Plan 31 emission targets at existing trigger functions, not a claim recording exists in Task 1. Current generic s success is interactive authorization, silent uses ssa and password grant uses sepft. social failures use f, not connector fc (no AD/LDAP connector).",
+    "Plan 33b (D-0062): details:<code> allowlists freeze the documented log details for the passkey and WebAuthn codes (s prompts, ss authentication_methods, gd_enrollment_complete authenticator, gd_webauthn_* authentication_methods/authenticator/first_factor/failure_details, passkey_challenge_* purpose/error) from the monitor-passkey-events page and the logs schema; no tenant observation (W8). gd_auth_rejected is not planned with push."
   ]
 }

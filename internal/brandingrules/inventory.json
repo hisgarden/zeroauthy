@@ -645,6 +645,8 @@
     "reset-password",
     "reset-password-success",
     "reset-password-error",
+    "reset-password-mfa-webauthn-platform-challenge",
+    "reset-password-mfa-webauthn-roaming-challenge",
     "consent",
     "status",
     "mfa-detect-browser-capabilities",

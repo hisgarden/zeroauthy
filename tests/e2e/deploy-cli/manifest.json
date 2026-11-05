@@ -54,14 +54,14 @@
       "name": "connections",
       "status": "included",
       "owner": "Plan 25",
-      "reason": "All five federated strategies round trip with explicit provider-secret reinjection, materialized OAuth profile scripts and post-import provider logins",
+      "reason": "All five federated strategies round trip with explicit provider-secret reinjection, materialized OAuth profile scripts and post-import provider logins; database passkey options (authentication_methods.passkey, passkey_options) round-trip as stored since D-0042 and are enforced when the Plan 33b prerequisites hold (D-0062)",
       "fixture": "fixtures/connections.json"
     },
     {
       "name": "clients",
       "status": "included",
       "owner": "Plan 20",
-      "reason": "Client identity, settings and credential omission are in scope",
+      "reason": "Client identity, settings and credential omission are in scope; since Plan 33b the passkey grant type (urn:okta:params:oauth:grant-type:webauthn) and the native mobile device settings (iOS team and bundle IDs, Android package name and certificate fingerprints) round-trip too (D-0062)",
       "fixture": "fixtures/clients.json"
     },
     {
@@ -96,7 +96,7 @@
       "name": "guardianFactors",
       "status": "included",
       "owner": "Plan 33",
-      "reason": "Documented Guardian configuration round-trips; delivery status follows the Plan 33 frozen factor inventory",
+      "reason": "Documented Guardian configuration round-trips; delivery status follows the Plan 33 frozen factor inventory; the webauthn-roaming and webauthn-platform flags are enforced since Plan 33b. The security-key user-verification setting has no Auth0 API and therefore no Deploy CLI handler (D-0062, LR33b-22)",
       "fixture": "fixtures/guardian-factors.json"
     },
     {
@@ -242,7 +242,7 @@
       "name": "customDomains",
       "status": "included",
       "owner": "Plan 23",
-      "reason": "Real domain declarations and strict settings/default migration with separate DNS proof",
+      "reason": "Real domain declarations and strict settings/default migration with separate DNS proof; relying_party_identifier round-trips and, since Plan 33b, drives the effective RP ID of passkey and WebAuthn ceremonies on that domain (D-0062)",
       "fixture": "fixtures/custom-domains.json"
     },
     {

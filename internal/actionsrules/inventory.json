@@ -750,25 +750,25 @@
           "name": "authentication.challengeWith",
           "support": "supported",
           "evidence": "documented",
-          "note": "Plan 33 MFA; frozen mfarules schemas and enforced factors only"
+          "note": "Plan 33 MFA and Plan 33b WebAuthn factors; frozen mfarules schemas and enforced factors only"
         },
         {
           "name": "authentication.challengeWithAny",
           "support": "supported",
           "evidence": "documented",
-          "note": "Plan 33 MFA; frozen mfarules schemas and enforced factors only"
+          "note": "Plan 33 MFA and Plan 33b WebAuthn factors; frozen mfarules schemas and enforced factors only"
         },
         {
           "name": "authentication.enrollWith",
           "support": "supported",
           "evidence": "documented",
-          "note": "Plan 33 MFA; frozen mfarules schemas and enforced factors only"
+          "note": "Plan 33 MFA and Plan 33b WebAuthn factors; frozen mfarules schemas and enforced factors only"
         },
         {
           "name": "authentication.enrollWithAny",
           "support": "supported",
           "evidence": "documented",
-          "note": "Plan 33 MFA; frozen mfarules schemas and enforced factors only"
+          "note": "Plan 33 MFA and Plan 33b WebAuthn factors; frozen mfarules schemas and enforced factors only"
         },
         {
           "name": "authentication.recordMethod",
@@ -786,7 +786,7 @@
           "name": "multifactor.enable",
           "support": "supported",
           "evidence": "documented",
-          "note": "Plan 33 MFA; frozen mfarules schemas and enforced factors only"
+          "note": "Plan 33 MFA and Plan 33b WebAuthn factors; frozen mfarules schemas and enforced factors only"
         },
         {
           "name": "prompt.render",
@@ -1023,13 +1023,13 @@
           "name": "authentication.challengeWith",
           "support": "supported",
           "evidence": "documented",
-          "note": "Plan 33 MFA; frozen mfarules schemas and enforced factors only"
+          "note": "Plan 33 MFA and Plan 33b WebAuthn factors; frozen mfarules schemas and enforced factors only"
         },
         {
           "name": "authentication.challengeWithAny",
           "support": "supported",
           "evidence": "documented",
-          "note": "Plan 33 MFA; frozen mfarules schemas and enforced factors only"
+          "note": "Plan 33 MFA and Plan 33b WebAuthn factors; frozen mfarules schemas and enforced factors only"
         },
         {
           "name": "redirect.sendUserTo",

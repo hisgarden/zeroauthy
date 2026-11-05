@@ -4461,6 +4461,7 @@ func (e MFACreateAuthenticationMethodPreferredAuthenticationMethod) Valid() bool
 // Defines values for MFACreateAuthenticationMethodType.
 const (
 	MFACreateAuthenticationMethodTypeEmail           MFACreateAuthenticationMethodType = "email"
+	MFACreateAuthenticationMethodTypePasskey         MFACreateAuthenticationMethodType = "passkey"
 	MFACreateAuthenticationMethodTypeTotp            MFACreateAuthenticationMethodType = "totp"
 	MFACreateAuthenticationMethodTypeWebauthnRoaming MFACreateAuthenticationMethodType = "webauthn-roaming"
 )
@@ -4469,6 +4470,8 @@ const (
 func (e MFACreateAuthenticationMethodType) Valid() bool {
 	switch e {
 	case MFACreateAuthenticationMethodTypeEmail:
+		return true
+	case MFACreateAuthenticationMethodTypePasskey:
 		return true
 	case MFACreateAuthenticationMethodTypeTotp:
 		return true
@@ -6684,6 +6687,60 @@ func (e UsersExportJobCreateFormat) Valid() bool {
 	}
 }
 
+// Defines values for WebAuthnRoamingSettingsUserVerification.
+const (
+	Discouraged WebAuthnRoamingSettingsUserVerification = "discouraged"
+	Preferred   WebAuthnRoamingSettingsUserVerification = "preferred"
+	Required    WebAuthnRoamingSettingsUserVerification = "required"
+)
+
+// Valid indicates whether the value is a known member of the WebAuthnRoamingSettingsUserVerification enum.
+func (e WebAuthnRoamingSettingsUserVerification) Valid() bool {
+	switch e {
+	case Discouraged:
+		return true
+	case Preferred:
+		return true
+	case Required:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetPasskeyPrerequisites200JSONResponseBodyUnmet.
+const (
+	GetPasskeyPrerequisites200JSONResponseBodyUnmetIdentifierFirst  GetPasskeyPrerequisites200JSONResponseBodyUnmet = "identifier_first"
+	GetPasskeyPrerequisites200JSONResponseBodyUnmetImportMode       GetPasskeyPrerequisites200JSONResponseBodyUnmet = "import_mode"
+	GetPasskeyPrerequisites200JSONResponseBodyUnmetPasskeyDisabled  GetPasskeyPrerequisites200JSONResponseBodyUnmet = "passkey_disabled"
+	GetPasskeyPrerequisites200JSONResponseBodyUnmetPassword         GetPasskeyPrerequisites200JSONResponseBodyUnmet = "password"
+	GetPasskeyPrerequisites200JSONResponseBodyUnmetRequiresUsername GetPasskeyPrerequisites200JSONResponseBodyUnmet = "requires_username"
+	GetPasskeyPrerequisites200JSONResponseBodyUnmetStrategy         GetPasskeyPrerequisites200JSONResponseBodyUnmet = "strategy"
+	GetPasskeyPrerequisites200JSONResponseBodyUnmetUniversalLogin   GetPasskeyPrerequisites200JSONResponseBodyUnmet = "universal_login"
+)
+
+// Valid indicates whether the value is a known member of the GetPasskeyPrerequisites200JSONResponseBodyUnmet enum.
+func (e GetPasskeyPrerequisites200JSONResponseBodyUnmet) Valid() bool {
+	switch e {
+	case GetPasskeyPrerequisites200JSONResponseBodyUnmetIdentifierFirst:
+		return true
+	case GetPasskeyPrerequisites200JSONResponseBodyUnmetImportMode:
+		return true
+	case GetPasskeyPrerequisites200JSONResponseBodyUnmetPasskeyDisabled:
+		return true
+	case GetPasskeyPrerequisites200JSONResponseBodyUnmetPassword:
+		return true
+	case GetPasskeyPrerequisites200JSONResponseBodyUnmetRequiresUsername:
+		return true
+	case GetPasskeyPrerequisites200JSONResponseBodyUnmetStrategy:
+		return true
+	case GetPasskeyPrerequisites200JSONResponseBodyUnmetUniversalLogin:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TestTenantEmail200JSONResponseBodyStatus.
 const (
 	TestTenantEmail200JSONResponseBodyStatusDrop   TestTenantEmail200JSONResponseBodyStatus = "drop"
@@ -7402,9 +7459,16 @@ type Client struct {
 	IsFirstParty     bool    `json:"is_first_party"`
 
 	// JwtConfiguration ID token settings.
-	JwtConfiguration JwtConfiguration     `json:"jwt_configuration"`
-	Name             string               `json:"name"`
-	OidcConformant   ClientOidcConformant `json:"oidc_conformant"`
+	JwtConfiguration JwtConfiguration `json:"jwt_configuration"`
+
+	// Mobile Native application settings for the Passkey APIs (Plan 33b,
+	// D-0039 addendum in D-0062): stored and returned, used to build the
+	// `/.well-known/apple-app-site-association` and
+	// `/.well-known/assetlinks.json` files on custom domains and the
+	// Android `apk-key-hash` origins. Previously accepted and ignored.
+	Mobile         *ClientMobile        `json:"mobile,omitempty"`
+	Name           string               `json:"name"`
+	OidcConformant ClientOidcConformant `json:"oidc_conformant"`
 
 	// OrganizationDiscoveryMethods Left out when unset.
 	OrganizationDiscoveryMethods *[]ClientOrganizationDiscoveryMethods `json:"organization_discovery_methods,omitempty"`
@@ -7504,8 +7568,10 @@ type ClientCreate struct {
 
 	// GrantTypes Grant types the application may use. zeroauthy serves
 	// authorization_code, refresh_token, client_credentials, password,
-	// password-realm and device_code; implicit and the MFA grants are
-	// stored but not served.
+	// password-realm, device_code and, since Plan 33b, the passkey
+	// grant `urn:okta:params:oauth:grant-type:webauthn` (first-party
+	// applications; D-0062); implicit and the MFA grants are stored
+	// but not served.
 	GrantTypes *[]string `json:"grant_types,omitempty"`
 
 	// InitiateLoginUri HTTPS application login route used by organization invitation links. Omission preserves the existing value; null is rejected.
@@ -7523,8 +7589,12 @@ type ClientCreate struct {
 	// LogoUri Accepted and ignored.
 	LogoUri interface{} `json:"logo_uri,omitempty"`
 
-	// Mobile Accepted and ignored.
-	Mobile interface{} `json:"mobile,omitempty"`
+	// Mobile Native application settings for the Passkey APIs (Plan 33b,
+	// D-0039 addendum in D-0062): stored and returned, used to build the
+	// `/.well-known/apple-app-site-association` and
+	// `/.well-known/assetlinks.json` files on custom domains and the
+	// Android `apk-key-hash` origins. Previously accepted and ignored.
+	Mobile *ClientMobile `json:"mobile,omitempty"`
 
 	// Name The application's name.
 	Name string `json:"name"`
@@ -7710,6 +7780,37 @@ type ClientGrantSettingsOrganizationUsage string
 // `subject_type` among them.
 type ClientGrantUpdate = ClientGrantSettings
 
+// ClientMobile Native application settings for the Passkey APIs (Plan 33b,
+// D-0039 addendum in D-0062): stored and returned, used to build the
+// `/.well-known/apple-app-site-association` and
+// `/.well-known/assetlinks.json` files on custom domains and the
+// Android `apk-key-hash` origins. Previously accepted and ignored.
+type ClientMobile struct {
+	// Android Android application identity.
+	Android *ClientMobileAndroid `json:"android,omitempty"`
+
+	// Ios iOS application identity.
+	Ios *ClientMobileIOS `json:"ios,omitempty"`
+}
+
+// ClientMobileAndroid Android application identity.
+type ClientMobileAndroid struct {
+	// AppPackageName The application's package name.
+	AppPackageName *string `json:"app_package_name,omitempty"`
+
+	// Sha256CertFingerprints SHA-256 signing-certificate fingerprints (hex with colons); several cover debug and release builds.
+	Sha256CertFingerprints *[]string `json:"sha256_cert_fingerprints,omitempty"`
+}
+
+// ClientMobileIOS iOS application identity.
+type ClientMobileIOS struct {
+	// AppBundleIdentifier The application's bundle identifier.
+	AppBundleIdentifier *string `json:"app_bundle_identifier,omitempty"`
+
+	// TeamId The Apple developer team identifier.
+	TeamId *string `json:"team_id,omitempty"`
+}
+
 // ClientPage A page of applications with `include_totals=true`.
 type ClientPage struct {
 	Clients []Client `json:"clients"`
@@ -7768,8 +7869,10 @@ type ClientSettings struct {
 
 	// GrantTypes Grant types the application may use. zeroauthy serves
 	// authorization_code, refresh_token, client_credentials, password,
-	// password-realm and device_code; implicit and the MFA grants are
-	// stored but not served.
+	// password-realm, device_code and, since Plan 33b, the passkey
+	// grant `urn:okta:params:oauth:grant-type:webauthn` (first-party
+	// applications; D-0062); implicit and the MFA grants are stored
+	// but not served.
 	GrantTypes *[]string `json:"grant_types,omitempty"`
 
 	// InitiateLoginUri HTTPS application login route used by organization invitation links. Omission preserves the existing value; null is rejected.
@@ -7784,8 +7887,12 @@ type ClientSettings struct {
 	// LogoUri Accepted and ignored.
 	LogoUri interface{} `json:"logo_uri,omitempty"`
 
-	// Mobile Accepted and ignored.
-	Mobile interface{} `json:"mobile,omitempty"`
+	// Mobile Native application settings for the Passkey APIs (Plan 33b,
+	// D-0039 addendum in D-0062): stored and returned, used to build the
+	// `/.well-known/apple-app-site-association` and
+	// `/.well-known/assetlinks.json` files on custom domains and the
+	// Android `apk-key-hash` origins. Previously accepted and ignored.
+	Mobile *ClientMobile `json:"mobile,omitempty"`
 
 	// Name The application's name.
 	Name *string `json:"name,omitempty"`
@@ -7904,8 +8011,10 @@ type ClientUpdate struct {
 
 	// GrantTypes Grant types the application may use. zeroauthy serves
 	// authorization_code, refresh_token, client_credentials, password,
-	// password-realm and device_code; implicit and the MFA grants are
-	// stored but not served.
+	// password-realm, device_code and, since Plan 33b, the passkey
+	// grant `urn:okta:params:oauth:grant-type:webauthn` (first-party
+	// applications; D-0062); implicit and the MFA grants are stored
+	// but not served.
 	GrantTypes *[]string `json:"grant_types,omitempty"`
 
 	// InitiateLoginUri HTTPS application login route used by organization invitation links. Omission preserves the existing value; null is rejected.
@@ -7921,8 +8030,12 @@ type ClientUpdate struct {
 	// LogoUri Accepted and ignored.
 	LogoUri interface{} `json:"logo_uri,omitempty"`
 
-	// Mobile Accepted and ignored.
-	Mobile interface{} `json:"mobile,omitempty"`
+	// Mobile Native application settings for the Passkey APIs (Plan 33b,
+	// D-0039 addendum in D-0062): stored and returned, used to build the
+	// `/.well-known/apple-app-site-association` and
+	// `/.well-known/assetlinks.json` files on custom domains and the
+	// Android `apk-key-hash` origins. Previously accepted and ignored.
+	Mobile *ClientMobile `json:"mobile,omitempty"`
 
 	// Name The application's name.
 	Name *string `json:"name,omitempty"`
@@ -10064,7 +10177,16 @@ type MFAAuthenticationMethodPreferredAuthenticationMethod string
 // MFAAuthenticationMethodType defines model for MFAAuthenticationMethod.Type.
 type MFAAuthenticationMethodType string
 
-// MFACreateAuthenticationMethod defines model for MFACreateAuthenticationMethod.
+// MFACreateAuthenticationMethod Plan 33 frozen contract, extended by Plan 33b (D-0062) with
+// `type: passkey` from `CreatedUserAuthenticationMethodTypeEnum`. A
+// passkey needs `key_id` and a COSE `public_key` (LR33b-23);
+// `relying_party_identifier` defaults to the tenant's default custom
+// domain's effective RP ID, else the canonical host; `identity_user_id`
+// defaults to the user's database identity; `user_handle` to the
+// user's existing handle. The 21st passkey is `400 invalid_body`
+// (LR33b-29) and a duplicate `key_id` in the tenant `409`. Without the
+// `webauthn.v1` storage capability a passkey create is `501
+// webauthn_unavailable`.
 type MFACreateAuthenticationMethod struct {
 	Aaguid                        *openapi_types.UUID                                         `json:"aaguid,omitempty"`
 	CredentialBackedUp            *bool                                                       `json:"credential_backed_up,omitempty"`
@@ -12722,6 +12844,16 @@ type VerificationEmailJobCreate struct {
 	UserId string `json:"user_id"`
 }
 
+// WebAuthnRoamingSettings The security-key user-verification requirement (Plan 33b, LR33b-22):
+// `discouraged` is Auth0's "Never" (the default), `preferred` "If
+// supported" and `required` "Required".
+type WebAuthnRoamingSettings struct {
+	UserVerification WebAuthnRoamingSettingsUserVerification `json:"user_verification"`
+}
+
+// WebAuthnRoamingSettingsUserVerification defines model for WebAuthnRoamingSettings.UserVerification.
+type WebAuthnRoamingSettingsUserVerification string
+
 // Fields defines model for fields.
 type Fields = string
 
@@ -12796,6 +12928,9 @@ type PreviewTenantBrandingJSONBody struct {
 	Overrides *map[string]interface{} `json:"overrides,omitempty"`
 	Screen    string                  `json:"screen"`
 }
+
+// GetPasskeyPrerequisites200JSONResponseBodyUnmet defines parameters for GetPasskeyPrerequisites.
+type GetPasskeyPrerequisites200JSONResponseBodyUnmet string
 
 // TestTenantEmail200JSONResponseBodyStatus defines parameters for TestTenantEmail.
 type TestTenantEmail200JSONResponseBodyStatus string
@@ -13740,6 +13875,9 @@ type PreviewTenantEmailJSONRequestBody = EmailPreviewRequest
 
 // TestTenantEmailJSONRequestBody defines body for TestTenantEmail for application/json ContentType.
 type TestTenantEmailJSONRequestBody = EmailTestRequest
+
+// PutWebAuthnRoamingSettingsJSONRequestBody defines body for PutWebAuthnRoamingSettings for application/json ContentType.
+type PutWebAuthnRoamingSettingsJSONRequestBody = WebAuthnRoamingSettings
 
 // CreateActionJSONRequestBody defines body for CreateAction for application/json ContentType.
 type CreateActionJSONRequestBody = ActionCreate
@@ -20080,6 +20218,9 @@ type ServerInterface interface {
 	// PreviewTenantBranding Preview tenant Universal Login branding.
 	// (POST /api/system/tenants/{tenant}/branding/preview)
 	PreviewTenantBranding(w http.ResponseWriter, r *http.Request, tenant string)
+	// GetPasskeyPrerequisites Read a database connection's passkey prerequisites
+	// (GET /api/system/tenants/{tenant}/connections/{id}/passkey-prerequisites)
+	GetPasskeyPrerequisites(w http.ResponseWriter, r *http.Request, tenant string, id string)
 	// TryConnectionScript Try a custom database script
 	// (POST /api/system/tenants/{tenant}/connections/{id}/scripts/{name}/try)
 	TryConnectionScript(w http.ResponseWriter, r *http.Request, tenant string, id string, name string)
@@ -20089,6 +20230,12 @@ type ServerInterface interface {
 	// TestTenantEmail Send a saved tenant email template to the verified operator.
 	// (POST /api/system/tenants/{tenant}/emails/test)
 	TestTenantEmail(w http.ResponseWriter, r *http.Request, tenant string)
+	// GetWebAuthnRoamingSettings Read the security-key user-verification setting
+	// (GET /api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings)
+	GetWebAuthnRoamingSettings(w http.ResponseWriter, r *http.Request, tenant string)
+	// PutWebAuthnRoamingSettings Set the security-key user-verification setting
+	// (PUT /api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings)
+	PutWebAuthnRoamingSettings(w http.ResponseWriter, r *http.Request, tenant string)
 	// GetTenantJobs List a tenant's jobs
 	// (GET /api/system/tenants/{tenant}/jobs)
 	GetTenantJobs(w http.ResponseWriter, r *http.Request, tenant string, params GetTenantJobsParams)
@@ -21034,6 +21181,12 @@ func (_ Unimplemented) PreviewTenantBranding(w http.ResponseWriter, r *http.Requ
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
+// GetPasskeyPrerequisites Read a database connection's passkey prerequisites
+// (GET /api/system/tenants/{tenant}/connections/{id}/passkey-prerequisites)
+func (_ Unimplemented) GetPasskeyPrerequisites(w http.ResponseWriter, r *http.Request, tenant string, id string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
 // TryConnectionScript Try a custom database script
 // (POST /api/system/tenants/{tenant}/connections/{id}/scripts/{name}/try)
 func (_ Unimplemented) TryConnectionScript(w http.ResponseWriter, r *http.Request, tenant string, id string, name string) {
@@ -21049,6 +21202,18 @@ func (_ Unimplemented) PreviewTenantEmail(w http.ResponseWriter, r *http.Request
 // TestTenantEmail Send a saved tenant email template to the verified operator.
 // (POST /api/system/tenants/{tenant}/emails/test)
 func (_ Unimplemented) TestTenantEmail(w http.ResponseWriter, r *http.Request, tenant string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// GetWebAuthnRoamingSettings Read the security-key user-verification setting
+// (GET /api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings)
+func (_ Unimplemented) GetWebAuthnRoamingSettings(w http.ResponseWriter, r *http.Request, tenant string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// PutWebAuthnRoamingSettings Set the security-key user-verification setting
+// (PUT /api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings)
+func (_ Unimplemented) PutWebAuthnRoamingSettings(w http.ResponseWriter, r *http.Request, tenant string) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -23150,6 +23315,41 @@ func (siw *ServerInterfaceWrapper) PreviewTenantBranding(w http.ResponseWriter, 
 	handler.ServeHTTP(w, r)
 }
 
+// GetPasskeyPrerequisites operation middleware
+func (siw *ServerInterfaceWrapper) GetPasskeyPrerequisites(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "tenant" -------------
+	var tenant string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "tenant", chi.URLParam(r, "tenant"), &tenant, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: r.URL.RawPath == ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "tenant", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", chi.URLParam(r, "id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: r.URL.RawPath == ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetPasskeyPrerequisites(w, r, tenant, id)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // TryConnectionScript operation middleware
 func (siw *ServerInterfaceWrapper) TryConnectionScript(w http.ResponseWriter, r *http.Request) {
 
@@ -23237,6 +23437,58 @@ func (siw *ServerInterfaceWrapper) TestTenantEmail(w http.ResponseWriter, r *htt
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.TestTenantEmail(w, r, tenant)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetWebAuthnRoamingSettings operation middleware
+func (siw *ServerInterfaceWrapper) GetWebAuthnRoamingSettings(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "tenant" -------------
+	var tenant string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "tenant", chi.URLParam(r, "tenant"), &tenant, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: r.URL.RawPath == ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "tenant", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetWebAuthnRoamingSettings(w, r, tenant)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// PutWebAuthnRoamingSettings operation middleware
+func (siw *ServerInterfaceWrapper) PutWebAuthnRoamingSettings(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "tenant" -------------
+	var tenant string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "tenant", chi.URLParam(r, "tenant"), &tenant, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: r.URL.RawPath == ""})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "tenant", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.PutWebAuthnRoamingSettings(w, r, tenant)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -33378,6 +33630,15 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/api/system/tenants/{tenant}/emails/test", wrapper.TestTenantEmail)
+	})
+	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings", wrapper.GetWebAuthnRoamingSettings)
+	})
+	r.Group(func(r chi.Router) {
+		r.Put(options.BaseURL+"/api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings", wrapper.PutWebAuthnRoamingSettings)
+	})
+	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/api/system/tenants/{tenant}/connections/{id}/passkey-prerequisites", wrapper.GetPasskeyPrerequisites)
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/api/system/tenants/{tenant}/connections/{id}/scripts/{name}/try", wrapper.TryConnectionScript)

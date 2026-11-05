@@ -253,6 +253,117 @@ func (e MFARequiredError) Valid() bool {
 	}
 }
 
+// Defines values for PasskeyChallengeResponseAuthnParamsPublicKeyTimeout.
+const (
+	PasskeyChallengeResponseAuthnParamsPublicKeyTimeoutN60000 PasskeyChallengeResponseAuthnParamsPublicKeyTimeout = 60000
+)
+
+// Valid indicates whether the value is a known member of the PasskeyChallengeResponseAuthnParamsPublicKeyTimeout enum.
+func (e PasskeyChallengeResponseAuthnParamsPublicKeyTimeout) Valid() bool {
+	switch e {
+	case PasskeyChallengeResponseAuthnParamsPublicKeyTimeoutN60000:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PasskeyChallengeResponseAuthnParamsPublicKeyUserVerification.
+const (
+	PasskeyChallengeResponseAuthnParamsPublicKeyUserVerificationPreferred PasskeyChallengeResponseAuthnParamsPublicKeyUserVerification = "preferred"
+)
+
+// Valid indicates whether the value is a known member of the PasskeyChallengeResponseAuthnParamsPublicKeyUserVerification enum.
+func (e PasskeyChallengeResponseAuthnParamsPublicKeyUserVerification) Valid() bool {
+	switch e {
+	case PasskeyChallengeResponseAuthnParamsPublicKeyUserVerificationPreferred:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionResidentKey.
+const (
+	Required PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionResidentKey = "required"
+)
+
+// Valid indicates whether the value is a known member of the PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionResidentKey enum.
+func (e PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionResidentKey) Valid() bool {
+	switch e {
+	case Required:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerification.
+const (
+	PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerificationPreferred PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerification = "preferred"
+)
+
+// Valid indicates whether the value is a known member of the PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerification enum.
+func (e PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerification) Valid() bool {
+	switch e {
+	case PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerificationPreferred:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg.
+const (
+	Minus257 PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg = -257
+	Minus7   PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg = -7
+	Minus8   PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg = -8
+)
+
+// Valid indicates whether the value is a known member of the PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg enum.
+func (e PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg) Valid() bool {
+	switch e {
+	case Minus257:
+		return true
+	case Minus7:
+		return true
+	case Minus8:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsType.
+const (
+	PublicKey PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsType = "public-key"
+)
+
+// Valid indicates whether the value is a known member of the PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsType enum.
+func (e PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsType) Valid() bool {
+	switch e {
+	case PublicKey:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PasskeyRegisterResponseAuthnParamsPublicKeyTimeout.
+const (
+	PasskeyRegisterResponseAuthnParamsPublicKeyTimeoutN60000 PasskeyRegisterResponseAuthnParamsPublicKeyTimeout = 60000
+)
+
+// Valid indicates whether the value is a known member of the PasskeyRegisterResponseAuthnParamsPublicKeyTimeout enum.
+func (e PasskeyRegisterResponseAuthnParamsPublicKeyTimeout) Valid() bool {
+	switch e {
+	case PasskeyRegisterResponseAuthnParamsPublicKeyTimeoutN60000:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PasswordlessStartRequestClientAssertionType.
 const (
 	UrnIetfParamsOauthClientAssertionTypeJwtBearer PasswordlessStartRequestClientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
@@ -579,6 +690,134 @@ type OpenIDConfiguration struct {
 	UserinfoEndpoint                  *string   `json:"userinfo_endpoint,omitempty"`
 }
 
+// PasskeyChallengeRequest defines model for PasskeyChallengeRequest.
+type PasskeyChallengeRequest struct {
+	ClientId string `json:"client_id"`
+
+	// ClientSecret Confidential clients using client_secret_post.
+	ClientSecret *string `json:"client_secret,omitempty"`
+
+	// Organization Organization ID or name; required when the client's organization_usage is require.
+	Organization *string `json:"organization,omitempty"`
+
+	// Realm The database connection; defaults to the tenant's default directory.
+	Realm *string `json:"realm,omitempty"`
+}
+
+// PasskeyChallengeResponse defines model for PasskeyChallengeResponse.
+type PasskeyChallengeResponse struct {
+	// AuthSession Opaque single-use session to send with the passkey grant.
+	AuthSession string `json:"auth_session"`
+
+	// AuthnParamsPublicKey WebAuthn PublicKeyCredentialRequestOptions (JSON form).
+	AuthnParamsPublicKey struct {
+		// Challenge 32 random bytes, base64url.
+		Challenge string `json:"challenge"`
+
+		// RpId The host's effective RP ID.
+		RpId             string                                                       `json:"rpId"`
+		Timeout          PasskeyChallengeResponseAuthnParamsPublicKeyTimeout          `json:"timeout"`
+		UserVerification PasskeyChallengeResponseAuthnParamsPublicKeyUserVerification `json:"userVerification"`
+	} `json:"authn_params_public_key"`
+}
+
+// PasskeyChallengeResponseAuthnParamsPublicKeyTimeout defines model for PasskeyChallengeResponse.AuthnParamsPublicKey.Timeout.
+type PasskeyChallengeResponseAuthnParamsPublicKeyTimeout int
+
+// PasskeyChallengeResponseAuthnParamsPublicKeyUserVerification defines model for PasskeyChallengeResponse.AuthnParamsPublicKey.UserVerification.
+type PasskeyChallengeResponseAuthnParamsPublicKeyUserVerification string
+
+// PasskeyRegisterRequest defines model for PasskeyRegisterRequest.
+type PasskeyRegisterRequest struct {
+	ClientId string `json:"client_id"`
+
+	// ClientSecret Confidential clients using client_secret_post.
+	ClientSecret *string `json:"client_secret,omitempty"`
+
+	// Organization Organization ID or name; required when the client's organization_usage is require.
+	Organization *string `json:"organization,omitempty"`
+
+	// Realm The database connection; defaults to the tenant's default directory.
+	Realm *string `json:"realm,omitempty"`
+
+	// UserMetadata Up to 10 string fields stored on the new user.
+	UserMetadata *map[string]string `json:"user_metadata,omitempty"`
+
+	// UserProfile The new user's identifiers and profile; every identifier the connection requires at signup must be present.
+	UserProfile struct {
+		Email      *string `json:"email,omitempty"`
+		FamilyName *string `json:"family_name,omitempty"`
+		GivenName  *string `json:"given_name,omitempty"`
+		Name       *string `json:"name,omitempty"`
+		Nickname   *string `json:"nickname,omitempty"`
+
+		// PhoneNumber E.164 with the international prefix.
+		PhoneNumber *string `json:"phone_number,omitempty"`
+		Picture     *string `json:"picture,omitempty"`
+
+		// Username Checked against the connection's username policy.
+		Username *string `json:"username,omitempty"`
+	} `json:"user_profile"`
+}
+
+// PasskeyRegisterResponse defines model for PasskeyRegisterResponse.
+type PasskeyRegisterResponse struct {
+	// AuthSession Opaque single-use session to send with the passkey grant.
+	AuthSession string `json:"auth_session"`
+
+	// AuthnParamsPublicKey WebAuthn PublicKeyCredentialCreationOptions (JSON form, base64url binary fields).
+	AuthnParamsPublicKey struct {
+		AuthenticatorSelection struct {
+			ResidentKey      PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionResidentKey      `json:"residentKey"`
+			UserVerification PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerification `json:"userVerification"`
+		} `json:"authenticatorSelection"`
+
+		// Challenge 32 random bytes, base64url.
+		Challenge string `json:"challenge"`
+
+		// PubKeyCredParams Always `-8`, `-7`, `-257` in that order.
+		PubKeyCredParams []struct {
+			Alg  PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg  `json:"alg"`
+			Type PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsType `json:"type"`
+		} `json:"pubKeyCredParams"`
+		Rp struct {
+			// Id The host's effective RP ID.
+			Id string `json:"id"`
+
+			// Name Equal to `id`.
+			Name string `json:"name"`
+		} `json:"rp"`
+
+		// Timeout Milliseconds; the row expires 10 s later.
+		Timeout PasskeyRegisterResponseAuthnParamsPublicKeyTimeout `json:"timeout"`
+		User    struct {
+			// DisplayName The name when given, else the identifier.
+			DisplayName string `json:"displayName"`
+
+			// Id The user handle (32 random bytes per user, base64url).
+			Id string `json:"id"`
+
+			// Name The highest-precedence identifier.
+			Name string `json:"name"`
+		} `json:"user"`
+	} `json:"authn_params_public_key"`
+}
+
+// PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionResidentKey defines model for PasskeyRegisterResponse.AuthnParamsPublicKey.AuthenticatorSelection.ResidentKey.
+type PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionResidentKey string
+
+// PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerification defines model for PasskeyRegisterResponse.AuthnParamsPublicKey.AuthenticatorSelection.UserVerification.
+type PasskeyRegisterResponseAuthnParamsPublicKeyAuthenticatorSelectionUserVerification string
+
+// PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg defines model for PasskeyRegisterResponse.AuthnParamsPublicKey.PubKeyCredParams.Alg.
+type PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsAlg int
+
+// PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsType defines model for PasskeyRegisterResponse.AuthnParamsPublicKey.PubKeyCredParams.Type.
+type PasskeyRegisterResponseAuthnParamsPublicKeyPubKeyCredParamsType string
+
+// PasskeyRegisterResponseAuthnParamsPublicKeyTimeout Milliseconds; the row expires 10 s later.
+type PasskeyRegisterResponseAuthnParamsPublicKeyTimeout int
+
 // PasswordlessStartRequest Unknown members (extra options auth0.js forwards) are accepted and ignored, as Auth0 does.
 type PasswordlessStartRequest struct {
 	// AuthParams Authorization parameters (scope, state, redirect_uri, response_type, ...) carried into the magic link.
@@ -710,10 +949,23 @@ type SignupResponse struct {
 // TokenRequest defines model for TokenRequest.
 type TokenRequest struct {
 	// Audience Identifier of the API the token is for. Defaults to the tenant's default audience.
-	Audience     *string `json:"audience,omitempty"`
-	BindingCode  *string `json:"binding_code,omitempty"`
-	ClientId     *string `json:"client_id,omitempty"`
-	ClientSecret *string `json:"client_secret,omitempty"`
+	Audience *string `json:"audience,omitempty"`
+
+	// AuthSession The session returned by `/passkey/register` or `/passkey/challenge` (passkey grant); single use.
+	AuthSession *string `json:"auth_session,omitempty"`
+
+	// AuthnResponse The authenticator's PublicKeyCredential in JSON form (passkey
+	// grant): `id`, `rawId`, `type: public-key`, optional
+	// `authenticatorAttachment`, `response` with `clientDataJSON` and
+	// either `attestationObject` (registration) or
+	// `authenticatorData`, `signature` and `userHandle` (login), and
+	// optional `clientExtensionResults`; binary fields base64url. A
+	// JSON object in a JSON body, or that object serialized as a JSON
+	// string in a form body (as `@auth0/auth0-auth-js` 1.16.1 sends).
+	AuthnResponse *TokenRequest_AuthnResponse `json:"authn_response,omitempty"`
+	BindingCode   *string                     `json:"binding_code,omitempty"`
+	ClientId      *string                     `json:"client_id,omitempty"`
+	ClientSecret  *string                     `json:"client_secret,omitempty"`
 
 	// Code Authorization code (grant_type=authorization_code).
 	Code *string `json:"code,omitempty"`
@@ -748,6 +1000,24 @@ type TokenRequest struct {
 
 	// Username The user's email or username (password grants), or the email or E.164 number (passwordless OTP grant).
 	Username *string `json:"username,omitempty"`
+}
+
+// TokenRequestAuthnResponse0 defines model for TokenRequest.AuthnResponse.0.
+type TokenRequestAuthnResponse0 map[string]interface{}
+
+// TokenRequestAuthnResponse1 defines model for TokenRequest.AuthnResponse.1.
+type TokenRequestAuthnResponse1 = string
+
+// TokenRequest_AuthnResponse The authenticator's PublicKeyCredential in JSON form (passkey
+// grant): `id`, `rawId`, `type: public-key`, optional
+// `authenticatorAttachment`, `response` with `clientDataJSON` and
+// either `attestationObject` (registration) or
+// `authenticatorData`, `signature` and `userHandle` (login), and
+// optional `clientExtensionResults`; binary fields base64url. A
+// JSON object in a JSON body, or that object serialized as a JSON
+// string in a form body (as `@auth0/auth0-auth-js` 1.16.1 sends).
+type TokenRequest_AuthnResponse struct {
+	union json.RawMessage
 }
 
 // TokenResponse defines model for TokenResponse.
@@ -980,6 +1250,18 @@ type OauthTokenFormdataRequestBody = TokenRequest
 
 // OidcLogoutPostFormdataRequestBody defines body for OidcLogoutPost for application/x-www-form-urlencoded ContentType.
 type OidcLogoutPostFormdataRequestBody = OidcLogoutRequest
+
+// PasskeyChallengeJSONRequestBody defines body for PasskeyChallenge for application/json ContentType.
+type PasskeyChallengeJSONRequestBody = PasskeyChallengeRequest
+
+// PasskeyChallengeFormdataRequestBody defines body for PasskeyChallenge for application/x-www-form-urlencoded ContentType.
+type PasskeyChallengeFormdataRequestBody = PasskeyChallengeRequest
+
+// PasskeyRegisterJSONRequestBody defines body for PasskeyRegister for application/json ContentType.
+type PasskeyRegisterJSONRequestBody = PasskeyRegisterRequest
+
+// PasskeyRegisterFormdataRequestBody defines body for PasskeyRegister for application/x-www-form-urlencoded ContentType.
+type PasskeyRegisterFormdataRequestBody = PasskeyRegisterRequest
 
 // PasswordlessStartJSONRequestBody defines body for PasswordlessStart for application/json ContentType.
 type PasswordlessStartJSONRequestBody = PasswordlessStartRequest
@@ -1430,6 +1712,68 @@ func (a UserInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(object)
 }
 
+// AsTokenRequestAuthnResponse0 returns the union data inside the TokenRequest_AuthnResponse as a TokenRequestAuthnResponse0
+func (t TokenRequest_AuthnResponse) AsTokenRequestAuthnResponse0() (TokenRequestAuthnResponse0, error) {
+	var body TokenRequestAuthnResponse0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTokenRequestAuthnResponse0 overwrites any union data inside the TokenRequest_AuthnResponse as the provided TokenRequestAuthnResponse0
+func (t *TokenRequest_AuthnResponse) FromTokenRequestAuthnResponse0(v TokenRequestAuthnResponse0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTokenRequestAuthnResponse0 performs a merge with any union data inside the TokenRequest_AuthnResponse, using the provided TokenRequestAuthnResponse0
+func (t *TokenRequest_AuthnResponse) MergeTokenRequestAuthnResponse0(v TokenRequestAuthnResponse0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTokenRequestAuthnResponse1 returns the union data inside the TokenRequest_AuthnResponse as a TokenRequestAuthnResponse1
+func (t TokenRequest_AuthnResponse) AsTokenRequestAuthnResponse1() (TokenRequestAuthnResponse1, error) {
+	var body TokenRequestAuthnResponse1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTokenRequestAuthnResponse1 overwrites any union data inside the TokenRequest_AuthnResponse as the provided TokenRequestAuthnResponse1
+func (t *TokenRequest_AuthnResponse) FromTokenRequestAuthnResponse1(v TokenRequestAuthnResponse1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTokenRequestAuthnResponse1 performs a merge with any union data inside the TokenRequest_AuthnResponse, using the provided TokenRequestAuthnResponse1
+func (t *TokenRequest_AuthnResponse) MergeTokenRequestAuthnResponse1(v TokenRequestAuthnResponse1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t TokenRequest_AuthnResponse) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *TokenRequest_AuthnResponse) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsOAuthError returns the union data inside the DbconnectionsSignup400JSONResponseBody as a OAuthError
 func (t DbconnectionsSignup400JSONResponseBody) AsOAuthError() (OAuthError, error) {
 	var body OAuthError
@@ -1604,6 +1948,12 @@ type ServerInterface interface {
 	// OidcLogoutPost Log the user out (form post)
 	// (POST /oidc/logout)
 	OidcLogoutPost(w http.ResponseWriter, r *http.Request)
+	// PasskeyChallenge Start a native passkey login
+	// (POST /passkey/challenge)
+	PasskeyChallenge(w http.ResponseWriter, r *http.Request)
+	// PasskeyRegister Start a native passkey signup
+	// (POST /passkey/register)
+	PasskeyRegister(w http.ResponseWriter, r *http.Request)
 	// PasswordlessStart Send a passwordless code or link
 	// (POST /passwordless/start)
 	PasswordlessStart(w http.ResponseWriter, r *http.Request, params PasswordlessStartParams)
@@ -1721,6 +2071,18 @@ func (_ Unimplemented) OidcLogout(w http.ResponseWriter, r *http.Request, params
 // OidcLogoutPost Log the user out (form post)
 // (POST /oidc/logout)
 func (_ Unimplemented) OidcLogoutPost(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// PasskeyChallenge Start a native passkey login
+// (POST /passkey/challenge)
+func (_ Unimplemented) PasskeyChallenge(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// PasskeyRegister Start a native passkey signup
+// (POST /passkey/register)
+func (_ Unimplemented) PasskeyRegister(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -2355,6 +2717,34 @@ func (siw *ServerInterfaceWrapper) OidcLogoutPost(w http.ResponseWriter, r *http
 	handler.ServeHTTP(w, r)
 }
 
+// PasskeyChallenge operation middleware
+func (siw *ServerInterfaceWrapper) PasskeyChallenge(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.PasskeyChallenge(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// PasskeyRegister operation middleware
+func (siw *ServerInterfaceWrapper) PasskeyRegister(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.PasskeyRegister(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // PasswordlessStart operation middleware
 func (siw *ServerInterfaceWrapper) PasswordlessStart(w http.ResponseWriter, r *http.Request) {
 
@@ -2897,6 +3287,12 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/passwordless/verify_redirect", wrapper.PasswordlessVerifyRedirectConfirm)
+	})
+	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/passkey/register", wrapper.PasskeyRegister)
+	})
+	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/passkey/challenge", wrapper.PasskeyChallenge)
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/mfa/associate", wrapper.MFAAssociate)

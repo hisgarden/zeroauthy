@@ -121,3 +121,11 @@ const (
 	KeyPhoneUnableEnroll      = "zeroauthy.phone.unableEnroll"
 	KeyPhoneFactor            = "zeroauthy.phone.factorLabel"
 )
+
+// WebAuthn MFA (Plan 33b): factor labels on the hosted factor lists. The
+// mfa-webauthn screens' own texts use the prompt.screen prefix of
+// webauthnrules.TextKeys.
+const (
+	KeyWebAuthnRoamingFactor  = "zeroauthy.webauthn-mfa.roamingFactorLabel"
+	KeyWebAuthnPlatformFactor = "zeroauthy.webauthn-mfa.platformFactorLabel"
+)

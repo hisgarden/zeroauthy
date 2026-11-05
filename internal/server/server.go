@@ -332,6 +332,11 @@ func New(d Deps) http.Handler {
 			tr.Post(path, lg.MFASubmit)
 		}
 		tr.Get("/u/mfa-enroll-ticket", lg.MFATicket)
+		// Plan 33b WebAuthn MFA (hosted)
+		for _, path := range login.MFAWebAuthnPaths {
+			tr.Get(path, lg.MFAPage)
+			tr.Post(path, lg.MFASubmit)
+		}
 		tr.Get("/u/login", lg.LoginPage)
 		tr.Post("/u/login", lg.LoginSubmit)
 		for _, path := range []string{"/u/login-passwordless-email-code", "/u/login-passwordless-sms-otp"} {

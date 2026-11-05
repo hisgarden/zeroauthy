@@ -30,10 +30,17 @@ type DecideInput struct {
 	// A user with a usable primary factor must complete MFA for it.
 	MFAAPI      bool
 	PhoneEnroll bool
+	// WebAuthn is the request's WebAuthn context (Plan 33b). Its zero value
+	// (no capability result) makes the WebAuthn factors unavailable;
+	// authenticators stored for another RP ID never count (LR33b-5).
+	WebAuthn WebAuthnInput
 }
 
-// Decide is shared by hosted authorization and password grants. Only OTP and
-// email are enforced in Plan 33; recovery is a fallback for an enrolled user.
+// Decide is shared by hosted authorization and password grants. OTP, email,
+// phone and (Plan 33b) the WebAuthn factors are enforced; recovery is a
+// fallback for an enrolled user. Security keys can be enrolled when
+// in.WebAuthn is available; device biometrics are never offered for a
+// first enrollment (LR33b-20).
 func Decide(in DecideInput) (Requirement, error) {
 	r := Requirement{AllowRemember: true}
 	if in.Effects != nil {
@@ -47,11 +54,11 @@ func Decide(in DecideInput) (Requirement, error) {
 	// The MFA API can remove and replace factors, so its token requires MFA
 	// whenever the user has a usable primary factor, regardless of policy or
 	// an Action skip. Unenrolled users may still obtain an enrollment token.
-	apiMFA := in.MFAAPI && hasPrimary(in.User, in.Authenticators, enabled)
+	apiMFA := in.MFAAPI && hasPrimary(in.User, in.Authenticators, enabled, in.WebAuthn)
 	if e != nil && e.Provider == "none" && !apiMFA {
 		return Requirement{}, nil
 	}
-	requested := []string{"otp", "email", "phone", "recovery-code"}
+	requested := []string{"otp", "email", "phone", FactorRoaming, FactorPlatform, "recovery-code"}
 	action := e != nil && e.Provider != "none" && (e.Provider != "" || e.Mode != "")
 	if action {
 		r.Required, r.Reason, r.AllowRemember = true, "action", e.AllowRememberBrowser
@@ -67,7 +74,7 @@ func Decide(in DecideInput) (Requirement, error) {
 			requested = nil
 			for _, group := range e.Factors {
 				for _, f := range group {
-					if f != "otp" && f != "email" && f != "phone" && f != "recovery-code" {
+					if f != "otp" && f != "email" && f != "phone" && f != "recovery-code" && !IsWebAuthnFactor(f) {
 						return r, ErrNoFactor
 					}
 					if !slices.Contains(requested, f) {
@@ -81,7 +88,7 @@ func Decide(in DecideInput) (Requirement, error) {
 			case "google-authenticator":
 				requested = []string{"otp"}
 			case "guardian":
-				requested = []string{"otp", "phone", "recovery-code"}
+				requested = []string{"otp", "phone", FactorRoaming, FactorPlatform, "recovery-code"}
 			default:
 				return r, ErrNoFactor
 			}
@@ -107,14 +114,20 @@ func Decide(in DecideInput) (Requirement, error) {
 	confirmed := map[string]bool{}
 	primary := false
 	preferred := ""
+	// held lists WebAuthn factors the user is enrolled in for this RP ID
+	// but cannot use from this request (no capability, another device).
+	held := map[string]bool{}
 	for _, a := range in.Authenticators {
 		f := factorName(a.Type)
-		if UsableMethod(in.User, a, enabled) {
+		if UsableMethod(in.User, a, enabled) || UsableWebAuthn(a, enabled, in.WebAuthn) {
 			primary = true
 			confirmed[f] = true
 			if a.Preferred {
 				preferred = f
 			}
+		} else if enrolledWebAuthn(a, enabled, in.WebAuthn) {
+			primary = true
+			held[f] = true
 		}
 	}
 	if primary && enabled["recovery-code"] {
@@ -133,8 +146,8 @@ func Decide(in DecideInput) (Requirement, error) {
 		if !enabled[guardianFactor(f)] {
 			continue
 		}
-		if f == "otp" || f == "email" || f == "phone" && in.PhoneEnroll {
-			if e == nil || e.Mode != "enroll" || !confirmed[f] {
+		if f == "otp" || f == "email" || f == "phone" && in.PhoneEnroll || f == FactorRoaming && in.WebAuthn.Available {
+			if e == nil || e.Mode != "enroll" || !confirmed[f] && !held[f] {
 				enroll = append(enroll, f)
 			}
 		}
@@ -143,6 +156,17 @@ func Decide(in DecideInput) (Requirement, error) {
 		}
 	}
 	if e != nil && e.Mode == "challenge" && len(usable) == 0 {
+		return r, ErrNoFactor
+	}
+	// A user enrolled only in WebAuthn factors this request cannot use is
+	// never offered a new enrollment instead (that would bypass the factor):
+	// the hosted pages offer the recovery code or another factor, and a
+	// grant without WebAuthn fails closed.
+	heldRequested := false
+	for f := range held {
+		heldRequested = heldRequested || slices.Contains(requested, f)
+	}
+	if heldRequested && len(usable) == 0 && !r.Enroll {
 		return r, ErrNoFactor
 	}
 	if r.Enroll || len(usable) == 0 {
@@ -186,10 +210,12 @@ func UsableMethod(u *store.User, a store.Authenticator, enabled map[string]bool)
 	return false
 }
 
-// hasPrimary reports whether a usable primary method exists.
-func hasPrimary(u *store.User, list []store.Authenticator, enabled map[string]bool) bool {
+// hasPrimary reports whether a usable primary method exists. A WebAuthn
+// enrollment for the request's RP ID (any RP ID without one) counts, so the
+// MFA API cannot be used to replace a factor its caller cannot prove.
+func hasPrimary(u *store.User, list []store.Authenticator, enabled map[string]bool, w WebAuthnInput) bool {
 	for _, a := range list {
-		if UsableMethod(u, a, enabled) {
+		if EnrolledMethod(u, a, enabled, w) {
 			return true
 		}
 	}

@@ -52,7 +52,10 @@ type mfaFixture struct {
 
 func newMFAFixture(t *testing.T) *mfaFixture {
 	t.Helper()
-	e := newEnv(t)
+	return newMFAFixtureWithEnv(t, newEnv(t))
+}
+func newMFAFixtureWithEnv(t *testing.T, e *env) *mfaFixture {
+	t.Helper()
 	ctx := context.Background()
 	tn := mustTenant(t, e, "acme")
 	u, err := e.st.Users().FindByLogin(ctx, tn.ID, "Username-Password-Authentication", aliceLogin)

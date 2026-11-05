@@ -13,7 +13,9 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/keys"
 	"github.com/zeroauthy/zeroauthy/internal/logs"
 	"github.com/zeroauthy/zeroauthy/internal/logscrub"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/phone"
+	"github.com/zeroauthy/zeroauthy/internal/rpid"
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 )
@@ -33,8 +35,20 @@ var (
 
 // Enrollment contains one-time TOTP display values. Callers must retain only
 // AuthenticatorID and ChallengeID in sealed transaction state, never Secret/URI.
-type Enrollment struct{ Factor, AuthenticatorID, Secret, URI, ChallengeID string }
-type Challenge struct{ ID, Factor, AuthenticatorID, Method string }
+// WebAuthn enrollments (Plan 33b) carry no authenticator until confirmed;
+// RPID and Origin name the relying party the challenge is bound to.
+type Enrollment struct {
+	Factor, AuthenticatorID, Secret, URI, ChallengeID string
+	RPID, Origin                                      string
+}
+
+// Challenge is one MFA challenge. RPID, Origin and DeviceKey are set for
+// WebAuthn challenges (Plan 33b): the bound relying party and the device
+// key a platform authenticator must match.
+type Challenge struct {
+	ID, Factor, AuthenticatorID, Method string
+	RPID, Origin, DeviceKey             string
+}
 type Proof struct{ Code string }
 type Confirmed struct{ AuthenticatorID, RecoveryCode string }
 type EmailSender interface {
@@ -58,6 +72,14 @@ type Service struct {
 	// pendingRecovery is the hash of a recovery code already displayed at
 	// association; it is persisted only when the enrollment is confirmed.
 	pendingRecovery string
+	// Passkeys issues and takes the WebAuthn MFA challenges (Plan 33b,
+	// webauthn-register and webauthn-assert); nil offers no WebAuthn factor.
+	Passkeys *passkey.Service
+	// RPIDs resolves a request host's WebAuthn relying party ID.
+	RPIDs rpid.Policy
+	// hostedTxn and hostedCookie bind WebAuthn challenges to a hosted
+	// transaction and its browser cookie hash (WithHostedBinding).
+	hostedTxn, hostedCookie string
 }
 
 // NewService uses the repository's master-key wrapper and atomic protection
@@ -582,7 +604,9 @@ func (s *Service) Recover(ctx context.Context, tid, uid, code string) (next stri
 			if a.Type == "recovery-code" && a.Confirmed {
 				recovery = &a
 			}
-			usable = usable || UsableMethod(u, a, g.Factors)
+			// A WebAuthn enrollment on any RP ID makes the user enrolled:
+			// the recovery code is the fallback when the browser cannot use it.
+			usable = usable || EnrolledMethod(u, a, g.Factors, WebAuthnInput{})
 		}
 		if !usable {
 			return ErrNoFactor

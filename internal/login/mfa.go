@@ -32,6 +32,11 @@ type mfaPageState struct {
 	// Switched replaces a stale enrollment requirement with the challenge for
 	// the factors the user enrolled since /authorize decided it.
 	Switched *mfa.Requirement `json:",omitempty"`
+	// Plan 33b WebAuthn MFA: the mfa-detect-browser-capabilities result
+	// (Detected; WebAuthn and a user-verifying platform authenticator) and
+	// the step after a WebAuthn enrollment (nickname, then success).
+	Detected, CanWebAuthn, CanPlatform bool   `json:",omitempty"`
+	WebAuthnStep                       string `json:",omitempty"`
 }
 type mfaFlow struct {
 	*flow
@@ -90,7 +95,11 @@ func (h *Handlers) existingFactorChallenge(r *http.Request, f *flow, p *authz.MF
 		return req, true, err
 	}
 	customize, _ := f.res.Tenant.SettingsExtra["customize_mfa_in_postlogin_action"].(bool)
-	req, err = mfa.Decide(mfa.DecideInput{Settings: g, Effects: p.Effects.MFA, User: u, Authenticators: aa, CustomizeInActions: customize, MFAAPI: p.Requirement.Reason == "mfa-api", PhoneEnroll: len(methods) > 0})
+	wa, err := h.webauthnInput(r, f)
+	if err != nil {
+		return req, true, err
+	}
+	req, err = mfa.Decide(mfa.DecideInput{Settings: g, Effects: p.Effects.MFA, User: u, Authenticators: aa, CustomizeInActions: customize, MFAAPI: p.Requirement.Reason == "mfa-api", PhoneEnroll: len(methods) > 0, WebAuthn: wa})
 	if err != nil || !req.Required || req.Enroll || len(req.Factors) == 0 {
 		// Fail closed: the transaction can neither enroll nor challenge.
 		return req, true, errTxn
@@ -168,11 +177,14 @@ func (h *Handlers) loadMFA(w http.ResponseWriter, r *http.Request, post bool) *m
 			return nil
 		}
 		if stale {
-			out.page = mfaPageState{Switched: &req}
+			next := out.page.fresh()
+			next.Switched = &req
+			out.page = next
 			out.pending.Requirement = req
 			out.switched = true
 		}
 	}
+	applyDetection(out)
 	return out
 }
 
@@ -204,6 +216,16 @@ func mfaURL(f *mfaFlow, path string) string {
 }
 func mfaPath(f *mfaFlow) string {
 	switch f.page.Factor {
+	case mfa.FactorRoaming, mfa.FactorPlatform:
+		switch {
+		case f.page.WebAuthnStep == webauthnStepNickname:
+			return mfaWebAuthnNicknamePath
+		case f.page.WebAuthnStep == webauthnStepSuccess:
+			return mfaWebAuthnSuccessPath
+		case f.pending.Requirement.Enroll:
+			return "/u/mfa-webauthn-" + webauthnKind(f.page.Factor) + "-enrollment"
+		}
+		return "/u/mfa-webauthn-" + webauthnKind(f.page.Factor) + "-challenge"
 	case "phone":
 		if f.page.ChallengeID == "" {
 			return "/u/mfa-phone-enrollment"
@@ -229,6 +251,18 @@ func mfaPage(f *mfaFlow) string {
 		return "mfa_recovery_enroll"
 	}
 	switch f.page.Factor {
+	case mfa.FactorRoaming, mfa.FactorPlatform:
+		switch {
+		case f.page.WebAuthnStep == webauthnStepNickname:
+			return "mfa_webauthn_nickname"
+		case f.page.WebAuthnStep == webauthnStepSuccess:
+			return "mfa_webauthn_success"
+		case f.pending.Requirement.Enroll:
+			return "mfa_webauthn_" + webauthnKind(f.page.Factor) + "_enroll"
+		case f.pending.Requirement.Reason == "reset":
+			return "mfa_webauthn_reset_" + webauthnKind(f.page.Factor) + "_challenge"
+		}
+		return "mfa_webauthn_" + webauthnKind(f.page.Factor) + "_challenge"
 	case "phone":
 		if f.page.ChallengeID == "" {
 			return "mfa_phone_enroll"
@@ -256,6 +290,10 @@ func mfaPage(f *mfaFlow) string {
 	return "mfa_options"
 }
 func (h *Handlers) renderMFA(w http.ResponseWriter, r *http.Request, status int, f *mfaFlow, recovery, message string) {
+	if mfa.IsWebAuthnFactor(f.page.Factor) && !f.page.RecoveryPending {
+		h.renderWebAuthn(w, r, status, f, message)
+		return
+	}
 	page := mfaPage(f)
 	prompt, screen := ui.MFAScreen(page)
 	if !h.prepareHostedForm(w, r, f.flow, prompt, screen) {
@@ -297,6 +335,9 @@ func (h *Handlers) renderMFA(w http.ResponseWriter, r *http.Request, status int,
 			if factor == "phone" {
 				label = f.view.L.T(i18n.KeyPhoneFactor)
 			}
+			if mfa.IsWebAuthnFactor(factor) {
+				label = webauthnFactorLabel(f.view.L, factor)
+			}
 			d.Options = append(d.Options, ui.MFAOption{Factor: factor, Label: label})
 		}
 	}
@@ -317,7 +358,7 @@ func (h *Handlers) renderMFA(w http.ResponseWriter, r *http.Request, status int,
 	ui.RenderMFA(w, status, f.view, page, d)
 }
 func (h *Handlers) startMFAMethod(w http.ResponseWriter, r *http.Request, f *mfaFlow, factor string) bool {
-	if !slices.Contains(f.pending.Requirement.Factors, factor) || factor != "otp" && factor != "email" && factor != "phone" && factor != "recovery-code" || f.pending.Requirement.Enroll && factor == "recovery-code" {
+	if !slices.Contains(f.pending.Requirement.Factors, factor) || factor != "otp" && factor != "email" && factor != "phone" && factor != "recovery-code" && !mfa.IsWebAuthnFactor(factor) || f.pending.Requirement.Enroll && factor == "recovery-code" {
 		h.fail(w, r, errTxn, f.flow)
 		return false
 	}
@@ -325,7 +366,7 @@ func (h *Handlers) startMFAMethod(w http.ResponseWriter, r *http.Request, f *mfa
 		h.fail(w, r, errTxn, f.flow)
 		return false
 	}
-	if f.page.Factor == factor && (f.page.ChallengeID != "" || factor == "phone" && f.pending.Requirement.Enroll) {
+	if f.page.Factor == factor && (f.page.ChallengeID != "" || factor == "phone" && f.pending.Requirement.Enroll || mfa.IsWebAuthnFactor(factor)) {
 		return true
 	}
 	// Claim the revision before sending an email or creating a method.
@@ -333,7 +374,17 @@ func (h *Handlers) startMFAMethod(w http.ResponseWriter, r *http.Request, f *mfa
 		h.fail(w, r, errTxn, f.flow)
 		return false
 	}
-	f.page = mfaPageState{Factor: factor, SentAt: h.now(), Switched: f.page.Switched}
+	next := f.page.fresh()
+	next.Factor, next.SentAt = factor, h.now()
+	f.page = next
+	if mfa.IsWebAuthnFactor(factor) {
+		// The ceremony page issues its own bound challenge on every render.
+		if err := h.saveMFAPage(r, f, "mfa-page"); err != nil {
+			h.fail(w, r, errTxn, f.flow)
+			return false
+		}
+		return true
+	}
 	if factor == "phone" && f.pending.Requirement.PhonePreferredMethod != "both" {
 		f.page.Method = f.pending.Requirement.PhonePreferredMethod
 	}
@@ -400,7 +451,7 @@ func (h *Handlers) startMFAMethod(w http.ResponseWriter, r *http.Request, f *mfa
 		}
 	}
 	if err != nil {
-		f.page = mfaPageState{Switched: f.page.Switched}
+		f.page = f.page.fresh()
 		_ = h.saveMFAPage(r, f, "mfa-page")
 		h.fail(w, r, err, f.flow)
 		return false
@@ -427,6 +478,33 @@ func (h *Handlers) MFAPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		h.renderMFA(w, r, 200, f, "", "")
+		return
+	}
+	// Plan 33b WebAuthn MFA: capability detection and the steps after a
+	// WebAuthn enrollment.
+	switch r.URL.Path {
+	case mfaDetectPath:
+		if f.page.Proven {
+			h.fail(w, r, errTxn, f.flow)
+			return
+		}
+		h.renderDetect(w, r, f)
+		return
+	case mfaWebAuthnNicknamePath, mfaWebAuthnSuccessPath:
+		if !webauthnStepPath(f, r.URL.Path) {
+			h.fail(w, r, errTxn, f.flow)
+			return
+		}
+		h.renderWebAuthn(w, r, 200, f, "")
+		return
+	}
+	if needsDetection(f) && (r.URL.Path == "/u/mfa" || webauthnPageFactor(f, r.URL.Path) != "") {
+		http.Redirect(w, r, mfaURL(f, mfaDetectPath), http.StatusSeeOther)
+		return
+	}
+	if r.URL.Path == "/u/mfa" && len(f.pending.Requirement.Factors) == 0 && f.page.Detected {
+		// The browser can run none of the required factors.
+		h.renderWebAuthnNotice(w, r, f, "mfa_webauthn_not_available", http.StatusBadRequest)
 		return
 	}
 	if r.URL.Path == "/u/mfa" {
@@ -471,6 +549,8 @@ func (h *Handlers) MFAPage(w http.ResponseWriter, r *http.Request) {
 		if !f.pending.Requirement.Enroll {
 			factor = "recovery-code"
 		}
+	default:
+		factor = webauthnPageFactor(f, r.URL.Path)
 	}
 	if factor == "" {
 		h.fail(w, r, errTxn, f.flow)
@@ -494,6 +574,10 @@ func (h *Handlers) MFASubmit(w http.ResponseWriter, r *http.Request) {
 	// switched page; any other stale page restarts there.
 	if f.switched && r.URL.Path != "/u/mfa" {
 		h.restartSwitchedMFA(w, r, f)
+		return
+	}
+	if r.URL.Path == mfaDetectPath {
+		h.submitDetect(w, r, f)
 		return
 	}
 	if r.URL.Path == "/u/mfa" {
@@ -533,11 +617,25 @@ func (h *Handlers) MFASubmit(w http.ResponseWriter, r *http.Request) {
 			h.renderMFA(w, r, 400, f, "", f.view.L.T(prompt+"."+screen+".acknowledgeText"))
 			return
 		}
+		if f.page.WebAuthnStep != "" {
+			// A WebAuthn enrollment continues to its nickname screen.
+			f.page.RecoveryPending = false
+			if err := h.saveMFAPage(r, f, "mfa-page"); err != nil {
+				h.fail(w, r, errTxn, f.flow)
+				return
+			}
+			http.Redirect(w, r, mfaURL(f, mfaPath(f)), http.StatusSeeOther)
+			return
+		}
 		if err := h.saveMFAPage(r, f, "mfa-busy"); err != nil {
 			h.fail(w, r, errTxn, f.flow)
 			return
 		}
 		h.finishMFA(w, r, f)
+		return
+	}
+	if mfa.IsWebAuthnFactor(f.page.Factor) {
+		h.submitWebAuthn(w, r, f, prompt, screen)
 		return
 	}
 	if f.pending.Requirement.Enroll && f.page.Factor == "otp" && r.PostForm.Get("action") == "manual" {
@@ -680,7 +778,8 @@ func (h *Handlers) MFASubmit(w http.ResponseWriter, r *http.Request) {
 	if errors.Is(err, mfa.ErrAlreadyEnrolled) && firstOnlyEnrollment(f.pending) {
 		// The user enrolled a factor after this page loaded. Nothing was
 		// confirmed; restart at /u/mfa, which challenges that factor.
-		f.page = mfaPageState{}
+		f.page = f.page.fresh()
+		f.page.Switched = nil
 		h.restartSwitchedMFA(w, r, f)
 		return
 	}
@@ -806,7 +905,12 @@ func (h *Handlers) MFATicket(w http.ResponseWriter, r *http.Request) {
 	var factors []string
 	var allowMultiple bool
 	ticketHash := secrets.HashToken(r.URL.Query().Get("ticket"))
-	err := h.Store.WithTx(r.Context(), func(tx store.Store) error {
+	wa, err := h.MFA.WebAuthnContext(r.Context(), res, r.UserAgent())
+	if err != nil {
+		h.fail(w, r, err, nil)
+		return
+	}
+	err = h.Store.WithTx(r.Context(), func(tx store.Store) error {
 		// Opening the link only validates it; link scanners must not spend it.
 		// The enrollment proof transaction consumes it (see proveMFA).
 		ticket, e := tx.MFA().PeekTicket(r.Context(), res.Tenant.ID, ticketHash, h.now())
@@ -831,16 +935,16 @@ func (h *Handlers) MFATicket(w http.ResponseWriter, r *http.Request) {
 		}
 		if !ticket.AllowMultiple {
 			for _, a := range aa {
-				if mfa.UsableMethod(user, a, g.Factors) {
+				if mfa.EnrolledMethod(user, a, g.Factors, mfa.WebAuthnInput{RPID: wa.RPID}) {
 					return store.ErrInvalid
 				}
 			}
 		}
-		for _, factor := range []string{"otp", "email"} {
+		for _, factor := range []string{"otp", "email", mfa.FactorRoaming} {
 			if ticket.Factor != "" && ticket.Factor != factor {
 				continue
 			}
-			if g.Factors[factor] && (factor != "email" || user.EmailVerified && user.Email != "") {
+			if g.Factors[factor] && (factor != "email" || user.EmailVerified && user.Email != "") && (factor != mfa.FactorRoaming || wa.Available) {
 				factors = append(factors, factor)
 			}
 		}

@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"github.com/zeroauthy/zeroauthy/internal/mfarules"
+	"github.com/zeroauthy/zeroauthy/internal/webauthnrules"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -57,6 +58,14 @@ func usedKeys(t *testing.T) []string {
 		}
 	}
 	used = append(used, "mfa.mfa-enroll-result.invalidTicket")
+	// Plan 33b WebAuthn MFA screens (and the reset-password WebAuthn
+	// challenges) render every documented text key with a data-driven
+	// prompt/screen prefix.
+	for _, screen := range webauthnrules.Screens()["mfa-webauthn"] {
+		for _, key := range webauthnrules.TextKeys(screen) {
+			used = append(used, webauthnrules.Prompt(screen)+"."+screen+"."+key)
+		}
+	}
 	// Hosted passwordless code screens share one template with a screen
 	// prefix (internal/login passwordlessCodeSuffixes).
 	for _, screen := range []string{"login-passwordless-email-code", "login-passwordless-sms-otp"} {

@@ -300,6 +300,9 @@ func build(ctx context.Context, cfg *config.Config, log *slog.Logger, st store.S
 	mfaService := mfa.NewService(st, wrapper, tenantEmail, st.Protection(), log, nil)
 	mfaService.Recorder = recorder
 	passkeys := passkey.New(st, rpPolicy, nil)
+	// Plan 33b WebAuthn MFA: challenges through the ceremony service, RP IDs
+	// by the deployment's policy.
+	mfaService.Passkeys, mfaService.RPIDs = passkeys, rpPolicy
 	if cfg.Email.Driver == "" || cfg.Email.Driver == "log" {
 		log.Warn("email.driver is log: emails are written to the server log and not delivered; reset links are redacted unless email.log_links is true")
 	}

@@ -69,6 +69,29 @@
       "descriptionUsed": "This link has already been used. To reset your password, return to the login page and select \"Forgot Your Password\" to send a new email.",
       "eventTitleGeneric": "Link Expired",
       "descriptionGeneric": "To reset your password, return to the login page and select \"Forgot Your Password\" to send a new email."
+    },
+    "reset-password-mfa-webauthn-platform-challenge": {
+      "pageTitle": "Confirm it's you to reset your password",
+      "description": "Use this device's fingerprint, face or screen lock before you choose a new password.",
+      "awaitingConfirmation": "Waiting for your device…",
+      "too-many-webauthn-challenge-attempts-error": "Too many attempts. Wait a while before you try again.",
+      "logoAltText": "${companyName}",
+      "continueButtonText": "Continue",
+      "pickAuthenticatorText": "Try another method",
+      "usePasswordText": "Use your password instead",
+      "rememberMeText": "Remember this browser for 30 days",
+      "webauthn-platform-challenge-error": "This device could not confirm it's you. Try again."
+    },
+    "reset-password-mfa-webauthn-roaming-challenge": {
+      "title": "Confirm it's you to reset your password",
+      "description": "Use the security key you added to your account before you choose a new password.",
+      "awaitingConfirmation": "Waiting for your security key…",
+      "too-many-webauthn-challenge-attempts-error": "Too many attempts. Wait a while before you try again.",
+      "logoAltText": "${companyName}",
+      "continueButtonText": "Use security key",
+      "pickAuthenticatorText": "Try another method",
+      "rememberMeText": "Remember this browser for 30 days",
+      "webauthn-challenge-error": "Your security key could not be checked. Try again."
     }
   },
   "email-verification": {
@@ -260,6 +283,10 @@
       "unableEnroll": "Unable to enroll this phone number",
       "factorLabel": "Phone (SMS or voice)",
       "countryLabel": "Country"
+    },
+    "webauthn-mfa": {
+      "roamingFactorLabel": "Security key",
+      "platformFactorLabel": "This device's biometrics"
     }
   },
   "login-id": {
@@ -358,6 +385,12 @@
       "recovery-codeText": "Recovery code",
       "invalidCode": "The code is invalid or expired. Try again.",
       "tooManyAttempts": "Too many attempts. Try again later."
+    },
+    "mfa-detect-browser-capabilities": {
+      "pickAuthenticatorText": "Continue with another method",
+      "reloadButtonText": "Check again",
+      "noJSErrorTitle": "JavaScript is turned off",
+      "noJSErrorDescription": "Security keys and device biometrics need JavaScript in this browser. Turn it on and check again, or continue with another method."
     }
   },
   "mfa-otp": {
@@ -530,6 +563,101 @@
       "editText": "Use a different phone number",
       "logoAltText": "${companyName}",
       "invalid-code": "That code is wrong or has expired. Check it or ask for a new one."
+    }
+  },
+  "mfa-webauthn": {
+    "mfa-webauthn-roaming-enrollment": {
+      "pageTitle": "Add a security key",
+      "title": "Add a security key",
+      "description": "Use a hardware security key as the second step when you sign in.",
+      "awaitingConfirmation": "Waiting for your security key…",
+      "logoAltText": "${companyName}",
+      "continueButtonText": "Use security key",
+      "pickAuthenticatorText": "Try another method",
+      "instructions1": "Have your security key with you.",
+      "instructions2": "Select the button below, then insert or hold your key near the device when the browser asks.",
+      "instructions3": "If the key has a button or a sensor, touch it.",
+      "webauthn-associate-error": "The security key could not be added. Try again."
+    },
+    "mfa-webauthn-platform-enrollment": {
+      "pageTitle": "Verify with this device",
+      "title": "Sign in faster on this device",
+      "description": "Next time, confirm it's you with this device's fingerprint, face or screen lock.",
+      "awaitingConfirmation": "Waiting for your device…",
+      "logoAltText": "${companyName}",
+      "continueButtonText": "Continue",
+      "pickAuthenticatorText": "Try another method",
+      "snoozeEnrollmentButtonText": "Remind me later",
+      "refuseAddingDeviceText": "Not on this device",
+      "skipAddingDeviceText": "Not now",
+      "webauthn-platform-associate-error": "This device could not be set up. Try again."
+    },
+    "mfa-webauthn-roaming-challenge": {
+      "pageTitle": "Verify with your security key",
+      "title": "Verify with your security key",
+      "description": "Insert or hold near the device the security key you added to your account.",
+      "awaitingConfirmation": "Waiting for your security key…",
+      "too-many-webauthn-challenge-attempts-error": "Too many attempts. Wait a while before you try again.",
+      "logoAltText": "${companyName}",
+      "continueButtonText": "Use security key",
+      "pickAuthenticatorText": "Try another method",
+      "rememberMeText": "Remember this browser for 30 days",
+      "webauthn-challenge-error": "Your security key could not be checked. Try again."
+    },
+    "mfa-webauthn-platform-challenge": {
+      "title": "Verify with this device",
+      "description": "Confirm it's you with this device's fingerprint, face or screen lock.",
+      "awaitingConfirmation": "Waiting for your device…",
+      "too-many-webauthn-challenge-attempts-error": "Too many attempts. Wait a while before you try again.",
+      "logoAltText": "${companyName}",
+      "continueButtonText": "Continue",
+      "pickAuthenticatorText": "Try another method",
+      "usePasswordText": "Use your password instead",
+      "rememberMeText": "Remember this browser for 30 days",
+      "webauthn-platform-challenge-error": "This device could not confirm it's you. Try again."
+    },
+    "mfa-webauthn-change-key-nickname": {
+      "title": "Name your security key",
+      "description": "Pick a name that helps you recognize this key later.",
+      "nickname": "Key name",
+      "nicknamePlaceholder": "For example, Blue key",
+      "descriptionPlatform": "Pick a name that helps you recognize this device later.",
+      "nicknamePlatform": "Device name",
+      "nicknamePlaceholderPlatform": "For example, Work laptop",
+      "buttonText": "Continue",
+      "logoAltText": "${companyName}",
+      "webauthn-patch-nickname-error": "The name of your security key could not be saved. Try again.",
+      "webauthn-platform-patch-nickname-error": "The name of your device could not be saved. Try again.",
+      "no-nickname": "Enter a name.",
+      "nickname-too-short": "The name needs at least one character.",
+      "nickname-too-long": "The name can have at most 20 characters.",
+      "error-while-retrieving-authenticator": "We could not find this key on your account.",
+      "error-while-patching": "The name could not be saved. Try again."
+    },
+    "mfa-webauthn-enrollment-success": {
+      "title": "Security key added",
+      "titlePlatform": "Device added",
+      "description": "You can now use this security key to confirm it's you.",
+      "descriptionPlatform": "You can now use this device to confirm it's you.",
+      "buttonText": "Continue",
+      "logoAltText": "${companyName}"
+    },
+    "mfa-webauthn-error": {
+      "tryAgainLinkText": "Try again",
+      "pickAuthenticatorText": "Try another method",
+      "errorTitleChallenge": "Security key not verified",
+      "errorTitlePlatformChallenge": "Device not verified",
+      "description": "The browser stopped before your security key was checked.",
+      "descriptionPlatform": "The browser stopped before this device could confirm it's you.",
+      "refuseAddingAuthenticatorText": "Skip for now",
+      "usePasswordText": "Use your password instead"
+    },
+    "mfa-webauthn-not-available-error": {
+      "pageTitle": "Not supported in this browser",
+      "errorTitle": "Not supported in this browser",
+      "errorDescription": "This browser cannot use security keys or device biometrics.",
+      "pickAuthenticatorText": "Try another method",
+      "usePasswordText": "Use your password instead"
     }
   }
 }

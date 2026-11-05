@@ -92,6 +92,11 @@ func (h *Handlers) mfaDecision(r *http.Request, res tenant.Resolved, fr flowReq,
 			return mfa.Requirement{}, e
 		}
 		in.PhoneEnroll = len(methods) > 0
+		// Plan 33b: decided before the hosted capability page, assuming a
+		// WebAuthn-capable browser; the MFA pages narrow it.
+		if in.WebAuthn, e = h.MFA.WebAuthnContext(r.Context(), res, r.UserAgent()); e != nil {
+			return mfa.Requirement{}, e
+		}
 	}
 	in.MFAAPI = fr.Request.Audience != "" && mfa.APIAudience(r.Context(), h.Store, res.Tenant.ID, fr.Request.Audience)
 	// Validate the original Action factor restrictions before satisfying its

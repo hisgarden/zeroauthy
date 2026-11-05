@@ -1,0 +1,22 @@
+{{define "title"}}{{.Tenant.Name}}{{end}}
+{{define "description"}}{{end}}
+{{define "content"}}
+<form method="post" action="{{.Data.Action}}" id="za-webauthn-form">
+<input type="hidden" name="state" value="{{.Data.State}}">
+<input type="hidden" name="csrf" value="{{.Data.CSRF}}">
+<input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
+<input type="hidden" name="webauthn" value="">
+<input type="hidden" name="platform" value="">
+{{.Tenant.Partials.FormContentStart}}
+<noscript>
+<p class="alert" role="alert">{{t .Tenant.L "mfa.mfa-detect-browser-capabilities.noJSErrorTitle"}}</p>
+<p>{{t .Tenant.L "mfa.mfa-detect-browser-capabilities.noJSErrorDescription"}}</p>
+<button type="submit">{{t .Tenant.L "mfa.mfa-detect-browser-capabilities.pickAuthenticatorText"}}</button>
+</noscript>
+{{.Tenant.Partials.FormContentEnd}}</form>
+{{.Tenant.Partials.FormFooterStart}}
+<noscript><p class="alt"><a href="{{.Data.WebAuthn.DetectURL}}">{{t .Tenant.L "mfa.mfa-detect-browser-capabilities.reloadButtonText"}}</a></p></noscript>
+{{.Tenant.Partials.FormFooterEnd}}
+<script type="application/json" id="za-webauthn">{{.Data.WebAuthn.Options}}</script>
+<script nonce="{{.Nonce}}">{{.Data.WebAuthn.Script}}</script>
+{{end}}

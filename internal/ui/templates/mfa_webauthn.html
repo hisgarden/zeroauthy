@@ -1,0 +1,46 @@
+{{define "doctitle"}}{{with index .Data.WebAuthn.Keys "pageTitle"}}{{t $.Tenant.L .}}{{else}}{{template "title" .}}{{end}}{{end}}
+{{define "logoalt"}}{{with index .Data.WebAuthn.Keys "logoAltText"}}{{t $.Tenant.L .}}{{else}}{{t $.Tenant.L "zeroauthy.layout.logoAltText"}}{{end}}{{end}}
+{{define "title"}}{{with index .Data.WebAuthn.Keys "title"}}{{t $.Tenant.L .}}{{else}}{{with index $.Data.WebAuthn.Keys "pageTitle"}}{{t $.Tenant.L .}}{{end}}{{end}}{{end}}
+{{define "description"}}{{with index .Data.WebAuthn.Keys "description"}}{{t $.Tenant.L .}}{{end}}{{end}}
+{{define "content"}}
+{{$v := .Data.WebAuthn}}
+{{if .Data.Error}}<p class="alert" role="alert">{{.Data.Error}}</p>{{end}}
+{{if eq $v.View "ceremony"}}
+<form method="post" action="{{.Data.Action}}" id="za-webauthn-form">
+<input type="hidden" name="state" value="{{.Data.State}}">
+<input type="hidden" name="csrf" value="{{.Data.CSRF}}">
+<input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
+<input type="hidden" name="credential" value="">
+<input type="hidden" name="webauthn_error" value="">
+{{.Tenant.Partials.FormContentStart}}
+{{range $v.Instructions}}<p>{{t $.Tenant.L .}}</p>{{end}}
+{{if .Data.AllowRemember}}{{with index $v.Keys "rememberMeText"}}<label><input type="checkbox" name="remember" value="yes">{{t $.Tenant.L .}}</label>{{end}}{{end}}
+<p role="status" id="za-webauthn-status" hidden>{{with index $v.Keys "awaitingConfirmation"}}{{t $.Tenant.L .}}{{end}}</p>
+<button type="button" id="za-webauthn-start">{{with index $v.Keys "continueButtonText"}}{{t $.Tenant.L .}}{{end}}</button>
+{{.Tenant.Partials.FormContentEnd}}</form>
+<script type="application/json" id="za-webauthn">{{$v.Options}}</script>
+<script nonce="{{.Nonce}}">{{$v.Script}}</script>
+{{else if eq $v.View "nickname"}}
+<form method="post" action="{{.Data.Action}}">
+<input type="hidden" name="state" value="{{.Data.State}}">
+<input type="hidden" name="csrf" value="{{.Data.CSRF}}">
+<input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
+{{.Tenant.Partials.FormContentStart}}
+<label for="nickname">{{with index $v.Keys "nickname"}}{{t $.Tenant.L .}}{{end}}</label><input id="nickname" name="nickname" value="{{$v.Nickname}}" maxlength="{{$v.NicknameMax}}" required placeholder="{{with index $v.Keys "nicknamePlaceholder"}}{{$.Tenant.L.T .}}{{end}}">
+<button type="submit">{{with index $v.Keys "buttonText"}}{{t $.Tenant.L .}}{{end}}</button>
+{{.Tenant.Partials.FormContentEnd}}</form>
+{{else if eq $v.View "success"}}
+<form method="post" action="{{.Data.Action}}">
+<input type="hidden" name="state" value="{{.Data.State}}">
+<input type="hidden" name="csrf" value="{{.Data.CSRF}}">
+<input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
+{{.Tenant.Partials.FormContentStart}}
+<button type="submit">{{with index $v.Keys "buttonText"}}{{t $.Tenant.L .}}{{end}}</button>
+{{.Tenant.Partials.FormContentEnd}}</form>
+{{else if eq $v.View "error"}}
+{{if $v.RetryURL}}<p><a href="{{$v.RetryURL}}">{{with index $v.Keys "tryAgainLinkText"}}{{t $.Tenant.L .}}{{end}}</a></p>{{end}}
+{{end}}
+{{.Tenant.Partials.FormFooterStart}}
+{{if .Data.AnotherURL}}{{with index $v.Keys "pickAuthenticatorText"}}<p class="alt"><a href="{{$.Data.AnotherURL}}">{{t $.Tenant.L .}}</a></p>{{end}}{{end}}
+{{.Tenant.Partials.FormFooterEnd}}
+{{end}}

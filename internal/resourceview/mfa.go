@@ -2,10 +2,12 @@ package resourceview
 
 import "github.com/zeroauthy/zeroauthy/internal/store"
 
-// Multifactor is a derived public value. Recovery alone is not enrollment.
+// Multifactor is a derived public value. Recovery alone is not enrollment,
+// and a passkey is a first factor, not MFA (Plan 33b spec §9.1), so neither
+// counts; WebAuthn MFA does.
 func Multifactor(methods []store.Authenticator) []string {
 	for _, a := range methods {
-		if a.Confirmed && a.Type != "recovery-code" {
+		if a.Confirmed && a.Type != "recovery-code" && a.Type != "passkey" {
 			return []string{"guardian"}
 		}
 	}

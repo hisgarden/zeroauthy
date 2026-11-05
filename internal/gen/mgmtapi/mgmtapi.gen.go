@@ -4545,6 +4545,7 @@ func (e MFACreateAuthenticationMethodsResponsePreferredAuthenticationMethod) Val
 // Defines values for MFACreateAuthenticationMethodsResponseType.
 const (
 	MFACreateAuthenticationMethodsResponseTypeEmail           MFACreateAuthenticationMethodsResponseType = "email"
+	MFACreateAuthenticationMethodsResponseTypePasskey         MFACreateAuthenticationMethodsResponseType = "passkey"
 	MFACreateAuthenticationMethodsResponseTypePhone           MFACreateAuthenticationMethodsResponseType = "phone"
 	MFACreateAuthenticationMethodsResponseTypeTotp            MFACreateAuthenticationMethodsResponseType = "totp"
 	MFACreateAuthenticationMethodsResponseTypeWebauthnRoaming MFACreateAuthenticationMethodsResponseType = "webauthn-roaming"
@@ -4554,6 +4555,8 @@ const (
 func (e MFACreateAuthenticationMethodsResponseType) Valid() bool {
 	switch e {
 	case MFACreateAuthenticationMethodsResponseTypeEmail:
+		return true
+	case MFACreateAuthenticationMethodsResponseTypePasskey:
 		return true
 	case MFACreateAuthenticationMethodsResponseTypePhone:
 		return true
@@ -4643,6 +4646,7 @@ const (
 	MFAGetAuthenticationMethodResponseTypeEmail             MFAGetAuthenticationMethodResponseType = "email"
 	MFAGetAuthenticationMethodResponseTypeEmailVerification MFAGetAuthenticationMethodResponseType = "email-verification"
 	MFAGetAuthenticationMethodResponseTypeGuardian          MFAGetAuthenticationMethodResponseType = "guardian"
+	MFAGetAuthenticationMethodResponseTypePasskey           MFAGetAuthenticationMethodResponseType = "passkey"
 	MFAGetAuthenticationMethodResponseTypePassword          MFAGetAuthenticationMethodResponseType = "password"
 	MFAGetAuthenticationMethodResponseTypePhone             MFAGetAuthenticationMethodResponseType = "phone"
 	MFAGetAuthenticationMethodResponseTypePush              MFAGetAuthenticationMethodResponseType = "push"
@@ -4660,6 +4664,8 @@ func (e MFAGetAuthenticationMethodResponseType) Valid() bool {
 	case MFAGetAuthenticationMethodResponseTypeEmailVerification:
 		return true
 	case MFAGetAuthenticationMethodResponseTypeGuardian:
+		return true
+	case MFAGetAuthenticationMethodResponseTypePasskey:
 		return true
 	case MFAGetAuthenticationMethodResponseTypePassword:
 		return true
@@ -4727,6 +4733,7 @@ const (
 	MFAGetAuthenticationMethodsResponse0TypeEmail             MFAGetAuthenticationMethodsResponse0Type = "email"
 	MFAGetAuthenticationMethodsResponse0TypeEmailVerification MFAGetAuthenticationMethodsResponse0Type = "email-verification"
 	MFAGetAuthenticationMethodsResponse0TypeGuardian          MFAGetAuthenticationMethodsResponse0Type = "guardian"
+	MFAGetAuthenticationMethodsResponse0TypePasskey           MFAGetAuthenticationMethodsResponse0Type = "passkey"
 	MFAGetAuthenticationMethodsResponse0TypePassword          MFAGetAuthenticationMethodsResponse0Type = "password"
 	MFAGetAuthenticationMethodsResponse0TypePhone             MFAGetAuthenticationMethodsResponse0Type = "phone"
 	MFAGetAuthenticationMethodsResponse0TypePush              MFAGetAuthenticationMethodsResponse0Type = "push"
@@ -4744,6 +4751,8 @@ func (e MFAGetAuthenticationMethodsResponse0Type) Valid() bool {
 	case MFAGetAuthenticationMethodsResponse0TypeEmailVerification:
 		return true
 	case MFAGetAuthenticationMethodsResponse0TypeGuardian:
+		return true
+	case MFAGetAuthenticationMethodsResponse0TypePasskey:
 		return true
 	case MFAGetAuthenticationMethodsResponse0TypePassword:
 		return true
@@ -4811,6 +4820,7 @@ const (
 	MFAGetAuthenticationMethodsResponse1AuthenticatorsTypeEmail             MFAGetAuthenticationMethodsResponse1AuthenticatorsType = "email"
 	MFAGetAuthenticationMethodsResponse1AuthenticatorsTypeEmailVerification MFAGetAuthenticationMethodsResponse1AuthenticatorsType = "email-verification"
 	MFAGetAuthenticationMethodsResponse1AuthenticatorsTypeGuardian          MFAGetAuthenticationMethodsResponse1AuthenticatorsType = "guardian"
+	MFAGetAuthenticationMethodsResponse1AuthenticatorsTypePasskey           MFAGetAuthenticationMethodsResponse1AuthenticatorsType = "passkey"
 	MFAGetAuthenticationMethodsResponse1AuthenticatorsTypePassword          MFAGetAuthenticationMethodsResponse1AuthenticatorsType = "password"
 	MFAGetAuthenticationMethodsResponse1AuthenticatorsTypePhone             MFAGetAuthenticationMethodsResponse1AuthenticatorsType = "phone"
 	MFAGetAuthenticationMethodsResponse1AuthenticatorsTypePush              MFAGetAuthenticationMethodsResponse1AuthenticatorsType = "push"
@@ -4828,6 +4838,8 @@ func (e MFAGetAuthenticationMethodsResponse1AuthenticatorsType) Valid() bool {
 	case MFAGetAuthenticationMethodsResponse1AuthenticatorsTypeEmailVerification:
 		return true
 	case MFAGetAuthenticationMethodsResponse1AuthenticatorsTypeGuardian:
+		return true
+	case MFAGetAuthenticationMethodsResponse1AuthenticatorsTypePasskey:
 		return true
 	case MFAGetAuthenticationMethodsResponse1AuthenticatorsTypePassword:
 		return true
@@ -5358,6 +5370,7 @@ func (e MFAUpdateAuthenticationMethodResponsePreferredAuthenticationMethod) Vali
 // Defines values for MFAUpdateAuthenticationMethodResponseType.
 const (
 	MFAUpdateAuthenticationMethodResponseTypeEmail           MFAUpdateAuthenticationMethodResponseType = "email"
+	MFAUpdateAuthenticationMethodResponseTypePasskey         MFAUpdateAuthenticationMethodResponseType = "passkey"
 	MFAUpdateAuthenticationMethodResponseTypePhone           MFAUpdateAuthenticationMethodResponseType = "phone"
 	MFAUpdateAuthenticationMethodResponseTypeTotp            MFAUpdateAuthenticationMethodResponseType = "totp"
 	MFAUpdateAuthenticationMethodResponseTypeWebauthnRoaming MFAUpdateAuthenticationMethodResponseType = "webauthn-roaming"
@@ -5367,6 +5380,8 @@ const (
 func (e MFAUpdateAuthenticationMethodResponseType) Valid() bool {
 	switch e {
 	case MFAUpdateAuthenticationMethodResponseTypeEmail:
+		return true
+	case MFAUpdateAuthenticationMethodResponseTypePasskey:
 		return true
 	case MFAUpdateAuthenticationMethodResponseTypePhone:
 		return true
@@ -12733,9 +12748,12 @@ type UserSession struct {
 	AuthenticatedAt time.Time `json:"authenticated_at"`
 	Authentication  struct {
 		Methods []struct {
-			// Name `pwd` for a database login.
+			// Name The method the login recorded (SessionAuthenticationSignal: `pwd`, `passkey`, `federated`, `email`, `sms` or `mfa`); sessions from before methods were recorded show `pwd` (Plan 33b).
 			Name      string    `json:"name"`
 			Timestamp time.Time `json:"timestamp"`
+
+			// Type The MFA factor; only with `mfa`.
+			Type *string `json:"type,omitempty"`
 		} `json:"methods"`
 	} `json:"authentication"`
 	Clients []struct {

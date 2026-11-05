@@ -126,3 +126,76 @@ func TestClientOrganizationFieldsValidation(t *testing.T) {
 		t.Errorf("normalize bad usage: %v", errs)
 	}
 }
+
+// Plan 33b: client mobile is validated per ClientMobile* and the passkey
+// grant is accepted for first-party applications only.
+func TestClientMobileValidation(t *testing.T) {
+	fp := strings.TrimSuffix(strings.Repeat("AB:", 32), ":")
+	good := &store.ClientMobile{
+		IOS:     &store.ClientMobileIOS{TeamID: "A1B2C3D4E5", AppBundleIdentifier: "com.acme.app"},
+		Android: &store.ClientMobileAndroid{AppPackageName: "com.acme.app", SHA256CertFingerprints: []string{fp, strings.ToLower(fp)}},
+	}
+	s := Spec{AppType: "native", GrantTypes: []string{GrantPasskey, GrantRefreshToken}, Mobile: good}
+	if errs := Normalize(&s, false); len(errs) > 0 {
+		t.Fatal(errs)
+	}
+	for name, m := range map[string]*store.ClientMobile{
+		"empty":         {},
+		"ios only":      {IOS: &store.ClientMobileIOS{TeamID: "A1B2C3D4E5", AppBundleIdentifier: "com.acme.app"}},
+		"unset strings": {IOS: &store.ClientMobileIOS{}, Android: &store.ClientMobileAndroid{}},
+	} {
+		s := Spec{AppType: "native", Mobile: m}
+		if errs := Normalize(&s, false); len(errs) > 0 {
+			t.Errorf("%s: %v", name, errs)
+		}
+	}
+	for name, m := range map[string]*store.ClientMobile{
+		"short team":        {IOS: &store.ClientMobileIOS{TeamID: "A1B2"}},
+		"lower team":        {IOS: &store.ClientMobileIOS{TeamID: "a1b2c3d4e5"}},
+		"bundle no dot":     {IOS: &store.ClientMobileIOS{AppBundleIdentifier: "acme"}},
+		"bundle space":      {IOS: &store.ClientMobileIOS{AppBundleIdentifier: "com.acme app"}},
+		"package digit":     {Android: &store.ClientMobileAndroid{AppPackageName: "com.1acme"}},
+		"package dash":      {Android: &store.ClientMobileAndroid{AppPackageName: "com.acme-app"}},
+		"no fingerprints":   {Android: &store.ClientMobileAndroid{SHA256CertFingerprints: []string{}}},
+		"short fingerprint": {Android: &store.ClientMobileAndroid{SHA256CertFingerprints: []string{"AB:CD"}}},
+		"bare hex":          {Android: &store.ClientMobileAndroid{SHA256CertFingerprints: []string{strings.Repeat("AB", 32)}}},
+		"non-hex":           {Android: &store.ClientMobileAndroid{SHA256CertFingerprints: []string{strings.TrimSuffix(strings.Repeat("ZZ:", 32), ":")}}},
+		"empty fingerprint": {Android: &store.ClientMobileAndroid{SHA256CertFingerprints: []string{""}}},
+	} {
+		s := Spec{AppType: "native", Mobile: m}
+		errs := Normalize(&s, false)
+		if len(errs) == 0 || !strings.Contains(errs[0].Error(), "mobile") {
+			t.Errorf("%s: %v, want a mobile error", name, errs)
+		}
+	}
+	third := false
+	s = Spec{AppType: "native", IsFirstParty: &third, ThirdPartySecurityMode: store.SecurityModePermissive, GrantTypes: []string{GrantPasskey}}
+	if errs := Normalize(&s, false); len(errs) == 0 || !strings.Contains(errs[0].Error(), "third-party") {
+		t.Errorf("passkey grant on a third-party client: %v", errs)
+	}
+	if !slicesContains(GrantTypes, "urn:okta:params:oauth:grant-type:webauthn") || GrantPasskey != "urn:okta:params:oauth:grant-type:webauthn" {
+		t.Errorf("GrantTypes = %v", GrantTypes)
+	}
+	// Mobile survives FromClient and Apply as an independent copy.
+	c := &store.Client{Name: "native", AppType: store.AppTypeNative, TokenEndpointAuthMethod: store.AuthMethodNone, IsFirstParty: true,
+		RedirectionPolicy: store.RedirectionPolicyAllowAlways, Mobile: good}
+	spec := FromClient(c)
+	got := &store.Client{}
+	Apply(got, &spec)
+	if !reflect.DeepEqual(got, c) {
+		t.Fatalf("round trip\n got %+v\nwant %+v", got, c)
+	}
+	got.Mobile.Android.SHA256CertFingerprints[0] = "changed"
+	if good.Android.SHA256CertFingerprints[0] != fp {
+		t.Fatal("Apply shares the fingerprint list")
+	}
+}
+
+func slicesContains(list []string, v string) bool {
+	for _, x := range list {
+		if x == v {
+			return true
+		}
+	}
+	return false
+}

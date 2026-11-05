@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/zeroauthy/zeroauthy/internal/resourceview"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 	"github.com/zeroauthy/zeroauthy/internal/tenant"
 )
@@ -138,8 +139,9 @@ func sessionDevice(s *store.LoginSession) map[string]any {
 	}
 }
 
-// sessionJSON renders a session as Auth0 does. The authentication method is
-// always pwd: database logins are the only kind zeroauthy has.
+// sessionJSON renders a session as Auth0 does. The authentication methods
+// are the ones the login recorded; sessions from before they were recorded
+// show pwd (resourceview.SessionAuthentication).
 func sessionJSON(s *store.LoginSession) map[string]any {
 	clients := make([]map[string]any, len(s.ClientIDs))
 	for i, c := range s.ClientIDs {
@@ -149,7 +151,7 @@ func sessionJSON(s *store.LoginSession) map[string]any {
 		"id": s.ID, "user_id": s.UserID,
 		"created_at": userTime(s.CreatedAt), "updated_at": userTime(s.UpdatedAt),
 		"authenticated_at": userTime(s.AuthenticatedAt),
-		"authentication":   map[string]any{"methods": []map[string]any{{"name": "pwd", "timestamp": userTime(s.AuthenticatedAt)}}},
+		"authentication":   resourceview.SessionAuthentication(s),
 		"idle_expires_at":  userTime(s.IdleExpiresAt), "expires_at": userTime(s.ExpiresAt),
 		"device": sessionDevice(s), "clients": clients,
 		"last_interacted_at": userTime(s.LastInteractedAt),

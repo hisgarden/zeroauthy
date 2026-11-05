@@ -14702,6 +14702,7 @@ components:
               - webauthn-roaming
               - webauthn-platform
               - guardian
+              - passkey
               - password
             confirmed:
               type: boolean
@@ -14799,6 +14800,7 @@ components:
                   - webauthn-roaming
                   - webauthn-platform
                   - guardian
+                  - passkey
                   - password
                 confirmed:
                   type: boolean
@@ -14879,6 +14881,7 @@ components:
           - email
           - totp
           - webauthn-roaming
+          - passkey
         name:
           type: string
         phone_number:
@@ -15117,6 +15120,7 @@ components:
           - webauthn-roaming
           - webauthn-platform
           - guardian
+          - passkey
           - password
         confirmed:
           type: boolean
@@ -15285,6 +15289,7 @@ components:
           - email
           - totp
           - webauthn-roaming
+          - passkey
         name:
           type: string
         phone_number:
@@ -22398,7 +22403,8 @@ components:
                 type: object
                 required: [name, timestamp]
                 properties:
-                  name: {type: string, description: "`pwd` for a database login."}
+                  name: {type: string, description: "The method the login recorded (SessionAuthenticationSignal: `pwd`, `passkey`, `federated`, `email`, `sms` or `mfa`); sessions from before methods were recorded show `pwd` (Plan 33b)."}
+                  type: {type: string, description: The MFA factor; only with `mfa`.}
                   timestamp: {type: string, format: date-time}
         idle_expires_at: {type: string, format: date-time}
         expires_at: {type: string, format: date-time}

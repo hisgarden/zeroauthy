@@ -249,6 +249,10 @@ func (h *Handlers) CreateClient(w http.ResponseWriter, r *http.Request) {
 		}
 		spec.GrantTypes = clientrules.DefaultGrantTypes(method)
 	}
+	if err := h.applyMobile(r, &spec, in); err != nil {
+		Fail(w, err)
+		return
+	}
 	tn := resolved(r)
 	if err := normalize(&spec, tn); err != nil {
 		Fail(w, err)
@@ -323,6 +327,9 @@ func (h *Handlers) UpdateClient(w http.ResponseWriter, r *http.Request, id strin
 		}
 		if in.securityModeSet && spec.ThirdPartySecurityMode != c.ThirdPartySecurityMode {
 			return badBody("third_party_security_mode cannot change after creation")
+		}
+		if err := h.applyMobile(r, &spec, in); err != nil {
+			return err
 		}
 		if err := normalize(&spec, tn); err != nil {
 			return err
@@ -547,12 +554,130 @@ func (h *Handlers) clientView(ctx context.Context, tn *store.Tenant, c *store.Cl
 		b := *p
 		v.SkipNonVerifiableCallbackUriConfirmationPrompt = &b
 	}
+	v.Mobile = mobileView(c.Mobile)
 	if reveal {
 		if s := h.openSecret(ctx, c); s != "" {
 			v.ClientSecret = &s
 		}
 	}
 	return v
+}
+
+// mobileView is c.Mobile in Auth0's shape; unset strings are left out.
+func mobileView(m *store.ClientMobile) *mgmtapi.ClientMobile {
+	if m == nil {
+		return nil
+	}
+	set := func(s string) *string {
+		if s == "" {
+			return nil
+		}
+		return &s
+	}
+	out := &mgmtapi.ClientMobile{}
+	if m.IOS != nil {
+		out.Ios = &mgmtapi.ClientMobileIOS{TeamId: set(m.IOS.TeamID), AppBundleIdentifier: set(m.IOS.AppBundleIdentifier)}
+	}
+	if m.Android != nil {
+		out.Android = &mgmtapi.ClientMobileAndroid{AppPackageName: set(m.Android.AppPackageName)}
+		if m.Android.SHA256CertFingerprints != nil {
+			fps := slices.Clone(m.Android.SHA256CertFingerprints)
+			out.Android.Sha256CertFingerprints = &fps
+		}
+	}
+	return out
+}
+
+// applyMobile sets s.Mobile from the body's mobile member (Plan 33b): null
+// clears it and an object replaces it whole; clientrules.Normalize then
+// validates it. A store without the webauthn.v1 capability cannot keep it,
+// so there mobile stays accepted and ignored, unvalidated, as before
+// (D-0039), and the response shows what a later read will.
+func (h *Handlers) applyMobile(r *http.Request, s *clientrules.Spec, in clientBody) error {
+	if !in.mobileSet {
+		return nil
+	}
+	ok, err := webauthnStorage(r.Context(), h.Store)
+	if err != nil {
+		return internalError(h, r, "check WebAuthn storage", err)
+	}
+	if !ok {
+		s.Mobile = nil
+		return nil
+	}
+	if isNull(in.mobile) {
+		s.Mobile = nil
+		return nil
+	}
+	m, err := decodeMobile(in.mobile)
+	if err != nil {
+		return badBody("mobile: %v", err)
+	}
+	s.Mobile = m
+	return nil
+}
+
+// decodeMobile reads a ClientMobile object, refusing unknown members and
+// wrong types.
+func decodeMobile(raw json.RawMessage) (*store.ClientMobile, error) {
+	var v struct {
+		IOS *struct {
+			TeamID              *string `json:"team_id"`
+			AppBundleIdentifier *string `json:"app_bundle_identifier"`
+		} `json:"ios"`
+		Android *struct {
+			AppPackageName         *string   `json:"app_package_name"`
+			SHA256CertFingerprints *[]string `json:"sha256_cert_fingerprints"`
+		} `json:"android"`
+	}
+	if err := decodeStrict(raw, &v); err != nil {
+		return nil, err
+	}
+	str := func(p *string) string {
+		if p == nil {
+			return ""
+		}
+		return *p
+	}
+	m := &store.ClientMobile{}
+	if v.IOS != nil {
+		m.IOS = &store.ClientMobileIOS{TeamID: str(v.IOS.TeamID), AppBundleIdentifier: str(v.IOS.AppBundleIdentifier)}
+	}
+	if v.Android != nil {
+		m.Android = &store.ClientMobileAndroid{AppPackageName: str(v.Android.AppPackageName)}
+		if v.Android.SHA256CertFingerprints != nil {
+			m.Android.SHA256CertFingerprints = append([]string{}, *v.Android.SHA256CertFingerprints...)
+		}
+	}
+	return m, nil
+}
+
+// webauthnStorage reports whether st keeps passkeys and the Plan 33b
+// record fields (client mobile, session methods): a negotiating driver
+// (the gRPC plugin client) must hold webauthn.v1, and a driver whose
+// WebAuthn() is the unimplemented stub never does. Decorators that expose
+// Unwrap (the events capture) are looked through, since they do not
+// forward the capability themselves.
+func webauthnStorage(ctx context.Context, st store.Store) (bool, error) {
+	for {
+		if ws, ok := st.(store.WebAuthnSupporter); ok {
+			err := ws.CheckWebAuthnSupport(ctx)
+			if errors.Is(err, store.ErrWebAuthnUnavailable) {
+				return false, nil
+			}
+			if err != nil {
+				return false, err
+			}
+			break
+		}
+		u, ok := st.(interface{ Unwrap() store.Store })
+		if !ok {
+			break
+		}
+		st = u.Unwrap()
+	}
+	_, stub := st.WebAuthn().(store.UnimplementedWebAuthn)
+	return !stub, nil
 }
 
 // The refresh-token lifetimes zeroauthy applies when a client sets none.
@@ -608,7 +733,7 @@ var ignoredClientFields = []string{
 	"description", "logo_uri", "client_metadata", "sso", "sso_disabled",
 	"cross_origin_authentication", "cross_origin_auth", "cross_origin_loc",
 	"custom_login_page_on", "custom_login_page",
-	"native_social_login", "mobile",
+	"native_social_login",
 	"is_token_endpoint_ip_header_trusted", "allowed_clients", "created_at", "updated_at",
 }
 
@@ -623,6 +748,10 @@ type clientBody struct {
 	// value other than deny, which a storage plugin without Organizations
 	// cannot keep (501).
 	orgUsageSet bool
+	// mobile is the body's mobile member, read by applyMobile once the
+	// storage capability is known.
+	mobile    json.RawMessage
+	mobileSet bool
 }
 
 // readClientBody applies body's fields to s, in name order so that the
@@ -711,6 +840,8 @@ func readClientBody(body map[string]json.RawMessage, s *clientrules.Spec) (clien
 			err = readJWTConfiguration(raw, s)
 		case "refresh_token":
 			err = readRefreshToken(raw, &s.RefreshToken)
+		case "mobile":
+			out.mobile, out.mobileSet = raw, true
 		default:
 			if slices.Contains(ignoredClientFields, k) {
 				continue

@@ -24,8 +24,10 @@ import (
 // Account linking (U7, D-0043). Linking moves the secondary user's identity,
 // with its password hash, into the primary's identities, records the
 // secondary's email, email_verified and username in that identity's
-// ProfileData, and deletes the secondary user with everything that names
-// it. Unlinking recreates the secondary from ProfileData alone.
+// ProfileData, moves the secondary's passkeys to the primary (LR33b-24) and
+// deletes the secondary user with everything else that names it, all in one
+// transaction. Unlinking recreates the secondary from ProfileData alone and
+// moves back the passkeys created for that identity.
 
 var (
 	errIdentityConflict = &Error{Status: http.StatusConflict, Code: "identity_conflict", Message: "Specified identity already exists."}
@@ -303,6 +305,13 @@ func (h *Handlers) LinkUserIdentity(w http.ResponseWriter, r *http.Request, id s
 		if err := tx.Users().Update(ctx, sec); err != nil {
 			return err
 		}
+		// The secondary's passkeys move to the primary unchanged, before
+		// the secondary (and everything it still holds) is deleted, so a
+		// passkey login resolves to the primary as a linked login does
+		// (LR33b-24). A store without webauthn.v1 holds no passkeys.
+		if err := tx.WebAuthn().MovePasskeys(ctx, tn.ID, secondary, id, ""); err != nil && !errors.Is(err, store.ErrWebAuthnUnavailable) {
+			return err
+		}
 		if err := tx.Users().Delete(ctx, tn.ID, secondary); err != nil {
 			return err
 		}
@@ -394,6 +403,13 @@ func (h *Handlers) UnlinkUserIdentity(w http.ResponseWriter, r *http.Request, id
 		// matches it.
 		if _, err := tx.Users().BumpVersion(ctx, tn.ID, secondary); err != nil {
 			return err
+		}
+		// Passkeys created for the unlinked identity go back with it
+		// (LR33b-24); identity_user_id names a database identity.
+		if moved.Provider == store.StrategyDatabase {
+			if err := tx.WebAuthn().MovePasskeys(ctx, tn.ID, id, secondary, moved.UserID); err != nil && !errors.Is(err, store.ErrWebAuthnUnavailable) {
+				return err
+			}
 		}
 		if moved.PasswordHash != "" {
 			c, err := tx.Connections().GetByName(ctx, tn.ID, moved.Connection)

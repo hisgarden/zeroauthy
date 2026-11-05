@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"regexp"
 	"slices"
 	"strings"
 
@@ -31,6 +32,9 @@ const (
 	GrantMFARecoveryCode   = "http://auth0.com/oauth/grant-type/mfa-recovery-code"
 	// GrantPasswordlessOTP exchanges a passwordless email or SMS code (Plan 34).
 	GrantPasswordlessOTP = "http://auth0.com/oauth/grant-type/passwordless/otp"
+	// GrantPasskey exchanges a native passkey ceremony's auth_session and
+	// authn_response (Plan 33b, first-party applications only).
+	GrantPasskey = "urn:okta:params:oauth:grant-type:webauthn"
 )
 
 // GrantTypes lists every grant type a client may name.
@@ -38,6 +42,7 @@ var GrantTypes = []string{
 	GrantAuthorizationCode, GrantImplicit, GrantRefreshToken, GrantClientCredentials,
 	GrantPassword, GrantPasswordRealm, GrantDeviceCode,
 	GrantMFAOOB, GrantMFAOTP, GrantMFARecoveryCode, GrantPasswordlessOTP,
+	GrantPasskey,
 }
 
 // AppTypes lists the application types.
@@ -90,6 +95,10 @@ type Spec struct {
 	OrganizationUsage            string
 	OrganizationRequireBehavior  string
 	OrganizationDiscoveryMethods []string
+
+	// Mobile is the native app identity of the Passkey APIs (Plan 33b);
+	// nil means none. Normalize validates it (ValidateMobile).
+	Mobile *store.ClientMobile
 }
 
 // RefreshToken is a client's refresh-token policy in Auth0's terms.
@@ -237,7 +246,7 @@ func Normalize(s *Spec, parSupported bool) []error {
 		switch {
 		case !slices.Contains(GrantTypes, gt):
 			fail("grant type %q is not supported", gt)
-		case !firstParty && (gt == GrantPassword || gt == GrantPasswordRealm || gt == GrantPasswordlessOTP):
+		case !firstParty && (gt == GrantPassword || gt == GrantPasswordRealm || gt == GrantPasswordlessOTP || gt == GrantPasskey):
 			fail("grant type %q is not available to third-party applications", gt)
 		case strict && !slices.Contains(strictGrantTypes, gt):
 			fail("grant type %q is not available to strict third-party applications", gt)
@@ -298,12 +307,72 @@ func Normalize(s *Spec, parSupported bool) []error {
 	if rt.TokenLifetime > 0 && rt.IdleTokenLifetime > rt.TokenLifetime {
 		fail("refresh_token.idle_token_lifetime must not exceed token_lifetime")
 	}
+	if err := ValidateMobile(s.Mobile); err != nil {
+		errs = append(errs, err)
+	}
 	if err := ValidateOrganizationFields(s.OrganizationUsage, s.OrganizationRequireBehavior, s.OrganizationDiscoveryMethods); err != nil {
 		errs = append(errs, err)
 	} else if err := CheckOrganizationGrants(s.OrganizationUsage, s.GrantTypes); err != nil {
 		errs = append(errs, err)
 	}
 	return errs
+}
+
+var (
+	// teamIDPattern is an Apple developer team ID: ten upper-case letters
+	// or digits.
+	teamIDPattern = regexp.MustCompile(`^[A-Z0-9]{10}$`)
+	// bundleIDPattern is an Apple bundle identifier: reverse-DNS labels of
+	// letters, digits and hyphens.
+	bundleIDPattern = regexp.MustCompile(`^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$`)
+	// packageNamePattern is an Android application ID: at least two
+	// segments, each starting with a letter, of letters, digits and
+	// underscores.
+	packageNamePattern = regexp.MustCompile(`^[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)+$`)
+	// fingerprintPattern is a SHA-256 certificate fingerprint as Android
+	// tools print it: 32 hex pairs joined by colons.
+	fingerprintPattern = regexp.MustCompile(`^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){31}$`)
+)
+
+// maxMobileField bounds each mobile identifier; Apple bundle identifiers
+// and Android application IDs are far shorter in practice.
+const maxMobileField = 255
+
+// maxFingerprints bounds mobile.android.sha256_cert_fingerprints.
+const maxFingerprints = 20
+
+// ValidateMobile checks a client's mobile settings (ClientMobile,
+// ClientMobileIOS, ClientMobileAndroid). nil, an empty object and empty
+// strings mean unset (Auth0's defaults are ""); a set team ID, bundle
+// identifier or package name must be well formed, and a fingerprint list,
+// when present, holds 1 to 20 colon-separated SHA-256 fingerprints.
+func ValidateMobile(m *store.ClientMobile) error {
+	if m == nil {
+		return nil
+	}
+	if ios := m.IOS; ios != nil {
+		switch {
+		case ios.TeamID != "" && !teamIDPattern.MatchString(ios.TeamID):
+			return errors.New("mobile.ios.team_id must be ten upper-case letters or digits")
+		case ios.AppBundleIdentifier != "" && (len(ios.AppBundleIdentifier) > maxMobileField || !bundleIDPattern.MatchString(ios.AppBundleIdentifier)):
+			return errors.New("mobile.ios.app_bundle_identifier must be a reverse-DNS identifier such as com.example.app")
+		}
+	}
+	if android := m.Android; android != nil {
+		if android.AppPackageName != "" && (len(android.AppPackageName) > maxMobileField || !packageNamePattern.MatchString(android.AppPackageName)) {
+			return errors.New("mobile.android.app_package_name must be an application ID such as com.example.app")
+		}
+		fps := android.SHA256CertFingerprints
+		if fps != nil && (len(fps) == 0 || len(fps) > maxFingerprints) {
+			return fmt.Errorf("mobile.android.sha256_cert_fingerprints needs 1 to %d fingerprints", maxFingerprints)
+		}
+		for _, fp := range fps {
+			if !fingerprintPattern.MatchString(fp) {
+				return errors.New("mobile.android.sha256_cert_fingerprints entries must be SHA-256 fingerprints (32 hex pairs separated by colons)")
+			}
+		}
+	}
+	return nil
 }
 
 // ErrOrganizationRule marks a client organization setting that is well
@@ -398,6 +467,7 @@ func Apply(c *store.Client, s *Spec) {
 		v := *p
 		c.SkipNonVerifiableCallbackURIConfirmationPrompt = &v
 	}
+	c.Mobile = s.Mobile.Clone()
 }
 
 // FromClient returns c's settings as a normalized Spec, the starting point
@@ -422,6 +492,7 @@ func FromClient(c *store.Client) Spec {
 		OrganizationUsage:                  c.OrganizationUsage,
 		OrganizationRequireBehavior:        c.OrganizationRequireBehavior,
 		OrganizationDiscoveryMethods:       slices.Clone(c.OrganizationDiscoveryMethods),
+		Mobile:                             c.Mobile.Clone(),
 	}
 	if c.RefreshToken.Rotating {
 		s.RefreshToken.RotationType = Rotating

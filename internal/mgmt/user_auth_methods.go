@@ -1,27 +1,55 @@
 package mgmt
 
 import (
+	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"github.com/zeroauthy/zeroauthy/internal/mfa"
 	"github.com/zeroauthy/zeroauthy/internal/mfarules"
 	"github.com/zeroauthy/zeroauthy/internal/phone"
+	"github.com/zeroauthy/zeroauthy/internal/rpid"
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
 	"github.com/zeroauthy/zeroauthy/internal/store"
+	"github.com/zeroauthy/zeroauthy/internal/tenant"
 	"github.com/zeroauthy/zeroauthy/internal/tenantrules"
 	"github.com/zeroauthy/zeroauthy/internal/webauthn"
+	"github.com/zeroauthy/zeroauthy/internal/webauthnrules"
 	"net/http"
 	"net/url"
+	"slices"
 	"strings"
 	"unicode/utf8"
 )
 
+// derivedPublicData are allowlisted public data keys the Management API
+// does not return under their own names: a passkey's backup_eligible and
+// backed_up become credential_device_type and credential_backed_up (spec
+// §9.1), and attachment stays internal.
+var derivedPublicData = []string{"attachment", "backed_up", "backup_eligible"}
+
+// methodPublicData are the store.AuthenticatorPublicDataKeys the
+// Management API accepts and returns as they are.
+var methodPublicData = slices.DeleteFunc(slices.Clone(store.AuthenticatorPublicDataKeys), func(k string) bool { return slices.Contains(derivedPublicData, k) })
+
+var errWebAuthnUnavailable = &Error{Status: http.StatusNotImplemented, Code: "webauthn_unavailable", Message: "Passkeys need a storage driver with the webauthn.v1 capability"}
+
+// passkeyUserAgentMax bounds a passkey's user_agent, as hosted enrollment
+// does.
+const passkeyUserAgentMax = 512
+
+// passkeyHandleMax is the WebAuthn user handle limit (64 bytes).
+const passkeyHandleMax = 64
+
 func methodJSON(a store.Authenticator) map[string]any {
+	if a.Type == "passkey" {
+		return passkeyJSON(a)
+	}
 	out := map[string]any{}
 	if len(a.PublicData) > 0 {
 		var data map[string]any
 		_ = json.Unmarshal(a.PublicData, &data)
-		for _, key := range []string{"aaguid", "credential_device_type", "credential_backed_up", "identity_user_id", "user_agent", "user_handle", "transports"} {
+		for _, key := range methodPublicData {
 			if v, ok := data[key]; ok {
 				out[key] = v
 			}
@@ -51,6 +79,187 @@ func methodJSON(a store.Authenticator) map[string]any {
 	}
 	return out
 }
+
+// passkeyJSON is a passkey with exactly the §9.1 members:
+// credential_device_type is multi_device iff the credential is backup
+// eligible, credential_backed_up its backup state, and there is no
+// confirmed (passkeys are always usable).
+func passkeyJSON(a store.Authenticator) map[string]any {
+	var data map[string]any
+	if len(a.PublicData) > 0 {
+		_ = json.Unmarshal(a.PublicData, &data)
+	}
+	device := "single_device"
+	if data["backup_eligible"] == true {
+		device = "multi_device"
+	}
+	out := map[string]any{
+		"id": a.ID, "type": a.Type, "name": a.Name, "created_at": userTime(a.CreatedAt),
+		"key_id": base64.RawURLEncoding.EncodeToString(a.CredentialID), "public_key": base64.RawURLEncoding.EncodeToString(a.PublicKey),
+		"relying_party_identifier": a.RPID, "credential_device_type": device, "credential_backed_up": data["backed_up"] == true,
+	}
+	for _, key := range []string{"aaguid", "identity_user_id", "user_agent", "user_handle", "transports"} {
+		if v, ok := data[key]; ok {
+			out[key] = v
+		}
+	}
+	if !a.LastAuthAt.IsZero() {
+		out["last_auth_at"] = userTime(a.LastAuthAt)
+	}
+	return out
+}
+
+// rpHostname checks a relying_party_identifier: a bare host name, no
+// scheme, port, path or wildcard.
+func rpHostname(rp string) bool {
+	parsed, err := url.Parse("https://" + rp)
+	return rp != "" && err == nil && parsed.Host == rp && parsed.Hostname() == rp && parsed.Path == "" && parsed.RawQuery == "" && parsed.Fragment == "" && !strings.ContainsAny(rp, " *@")
+}
+
+// defaultPasskeyRPID is the RP ID of a passkey created without
+// relying_party_identifier (LR33b-23): the effective RP ID of the tenant's
+// default custom domain when that domain resolves to a usable one, else
+// the canonical host's.
+func (h *Handlers) defaultPasskeyRPID(r *http.Request) (string, error) {
+	ctx := r.Context()
+	tn := resolved(r)
+	p := rpid.Policy{BaseDomain: h.BaseDomain, SystemHost: h.SystemHost, RestrictShared: h.RestrictSharedRPIDs, Store: h.Store}
+	if h.Domains != nil {
+		p.OriginSuffix = h.Domains.Reserved().OriginSuffix
+	}
+	id, err := h.Store.CustomDomains().GetDefault(ctx, tn.ID)
+	if err != nil && !errors.Is(err, store.ErrNotFound) && !errors.Is(err, store.ErrCustomDomainRepositoryUnavailable) {
+		return "", err
+	}
+	if id != "" {
+		d, err := h.Store.CustomDomains().Get(ctx, tn.ID, id)
+		if err != nil && !errors.Is(err, store.ErrNotFound) {
+			return "", err
+		}
+		if d != nil {
+			res, err := p.For(ctx, tenant.Resolved{Tenant: tn, Host: d.Domain})
+			if err != nil {
+				return "", err
+			}
+			if res.Valid {
+				return res.RPID, nil
+			}
+		}
+	}
+	res, err := p.For(ctx, tenant.Resolved{Tenant: tn, Host: tn.CanonicalHost})
+	if err != nil {
+		return "", err
+	}
+	if !res.Valid {
+		return "", badBody("the tenant has no usable relying party identifier; set relying_party_identifier")
+	}
+	return res.RPID, nil
+}
+
+// newPasskey builds the passkey a POST body describes for u (LR33b-23):
+// key_id and a valid COSE public_key are required; relying_party_identifier
+// defaults to rp; identity_user_id must name one of u's database
+// identities and defaults to its own; user_handle defaults to the handle
+// of u's existing passkeys (existing), else 32 new random bytes.
+func (h *Handlers) newPasskey(u *store.User, b map[string]any, rp string, existing []store.Authenticator) (*store.Authenticator, error) {
+	text := func(k string) string { v, _ := b[k].(string); return v }
+	limits := webauthnrules.Limits
+	a := &store.Authenticator{TenantID: u.TenantID, UserID: u.UserID, ID: "passkey|dev_" + secrets.RandomString(20), Type: "passkey", Name: text("name"),
+		Confirmed: true, LastStep: -1, CreatedAt: h.now(), RPID: rp}
+	var err error
+	if a.CredentialID, err = decodeMFAKey(text("key_id")); err != nil || len(a.CredentialID) > limits.CredentialIDMax {
+		return nil, badBody("key_id must be a base64url credential ID")
+	}
+	if a.PublicKey, err = decodeMFAKey(text("public_key")); err != nil || len(a.PublicKey) > limits.COSEMax {
+		return nil, badBody("public_key must be a base64url COSE key")
+	}
+	if _, err = webauthn.ParseCOSEKey(a.PublicKey); err != nil {
+		return nil, badBody("public_key must be a base64url COSE key")
+	}
+	if v, ok := b["relying_party_identifier"]; ok {
+		a.RPID = strings.TrimSuffix(strings.ToLower(v.(string)), ".")
+		if !rpHostname(a.RPID) || len(a.RPID) > limits.RPIDMax {
+			return nil, badBody("relying_party_identifier must be a host name")
+		}
+	}
+	if utf8.RuneCountInString(a.Name) > limits.NicknameMax {
+		return nil, badBody("name must be at most %d characters", limits.NicknameMax)
+	}
+	var databases []string
+	own := ""
+	for _, id := range u.Identities {
+		if id.Provider == store.StrategyDatabase {
+			databases = append(databases, id.UserID)
+			if own == "" && !id.Linked() {
+				own = id.UserID
+			}
+		}
+	}
+	identityUserID := own
+	if v, ok := b["identity_user_id"]; ok {
+		identityUserID = v.(string)
+		if !slices.Contains(databases, identityUserID) {
+			return nil, badBody("identity_user_id must name one of the user's database identities")
+		}
+	}
+	if identityUserID == "" {
+		return nil, badBody("passkeys need a database identity")
+	}
+	handle := passkeyHandle(existing)
+	if v, ok := b["user_handle"]; ok {
+		h, err := decodeMFAKey(v.(string))
+		if err != nil || len(h) > passkeyHandleMax {
+			return nil, badBody("user_handle must be a base64url value of at most %d bytes", passkeyHandleMax)
+		}
+		handle = base64.RawURLEncoding.EncodeToString(h)
+	}
+	if handle == "" {
+		raw := make([]byte, limits.UserHandleBytes)
+		if _, err := rand.Read(raw); err != nil {
+			return nil, err
+		}
+		handle = base64.RawURLEncoding.EncodeToString(raw)
+	}
+	if len(text("user_agent")) > passkeyUserAgentMax {
+		return nil, badBody("user_agent must be at most %d bytes", passkeyUserAgentMax)
+	}
+	data := map[string]any{"backup_eligible": b["credential_device_type"] == "multi_device", "backed_up": b["credential_backed_up"] == true,
+		"identity_user_id": identityUserID, "user_handle": handle}
+	if v, ok := b["aaguid"]; ok {
+		data["aaguid"] = strings.ToLower(v.(string))
+	}
+	for _, key := range []string{"user_agent", "transports"} {
+		if v, ok := b[key]; ok {
+			data[key] = v
+		}
+	}
+	if a.PublicData, err = json.Marshal(data); err != nil {
+		return nil, err
+	}
+	return a, nil
+}
+
+// passkeyHandle is the user handle of the user's first passkey (by
+// creation time, then ID), which every later passkey reuses (LR33b-7), or
+// "" when the user has none.
+func passkeyHandle(list []store.Authenticator) string {
+	var first *store.Authenticator
+	handle := ""
+	for i := range list {
+		a := &list[i]
+		var data struct {
+			UserHandle string `json:"user_handle"`
+		}
+		if a.Type != "passkey" || json.Unmarshal(a.PublicData, &data) != nil || data.UserHandle == "" {
+			continue
+		}
+		if first == nil || a.CreatedAt.Before(first.CreatedAt) || a.CreatedAt.Equal(first.CreatedAt) && a.ID < first.ID {
+			first, handle = a, data.UserHandle
+		}
+	}
+	return handle
+}
+
 func decodeMFAKey(s string) ([]byte, error) {
 	for _, enc := range []*base64.Encoding{base64.RawURLEncoding, base64.URLEncoding, base64.StdEncoding, base64.RawStdEncoding} {
 		if v, e := enc.DecodeString(s); e == nil && len(v) > 0 {
@@ -98,7 +307,7 @@ func (h *Handlers) newMethod(tid, uid string, b map[string]any) (store.Authentic
 		return a, store.ErrInvalid
 	}
 	public := map[string]any{}
-	for _, key := range []string{"aaguid", "credential_device_type", "credential_backed_up", "identity_user_id", "user_agent", "user_handle", "transports"} {
+	for _, key := range methodPublicData {
 		if v, ok := b[key]; ok {
 			public[key] = v
 		}
@@ -115,6 +324,31 @@ func (h *Handlers) userMFA(w http.ResponseWriter, r *http.Request, route mfarule
 		return
 	}
 	tid := resolved(r).ID
+	passkeyRP := ""
+	if b, ok := body.(map[string]any); ok && route.Operation == "CreateAuthenticationMethods" && b["type"] == "passkey" {
+		// Passkeys need webauthn.v1 (spec §10); without it the create is
+		// 501 whatever the body says.
+		supported, e := webauthnStorage(r.Context(), h.Store)
+		if e != nil {
+			Fail(w, internalError(h, r, "check WebAuthn storage", e))
+			return
+		}
+		if !supported {
+			Fail(w, errWebAuthnUnavailable)
+			return
+		}
+		if rp, ok := b["relying_party_identifier"].(string); ok {
+			passkeyRP = rp
+		} else if passkeyRP, e = h.defaultPasskeyRPID(r); e != nil {
+			var apiErr *Error
+			if errors.As(e, &apiErr) {
+				Fail(w, apiErr)
+			} else {
+				Fail(w, internalError(h, r, "resolve the default relying party identifier", e))
+			}
+			return
+		}
+	}
 	switch route.Operation {
 	case "GetAuthenticationMethods", "GetUserEnrollments":
 		all, e := h.Store.MFA().ListAuthenticators(r.Context(), tid, uid)
@@ -124,9 +358,14 @@ func (h *Handlers) userMFA(w http.ResponseWriter, r *http.Request, route mfarule
 		}
 		out := []any{}
 		if route.Operation == "GetUserEnrollments" {
+			// Passkeys are a first factor, not Guardian enrollments.
 			for _, a := range all {
-				if a.Confirmed {
-					out = append(out, enrollmentJSON(publicPhone(r, a)))
+				if a.Confirmed && a.Type != "passkey" {
+					view := enrollmentJSON(publicPhone(r, a))
+					if a.Type == "webauthn-roaming" || a.Type == "webauthn-platform" {
+						view["auth_method"] = a.Type
+					}
+					out = append(out, view)
 				}
 			}
 			writeJSON(w, 200, out)
@@ -163,12 +402,40 @@ func (h *Handlers) userMFA(w http.ResponseWriter, r *http.Request, route mfarule
 	err = h.Store.WithTx(r.Context(), func(tx store.Store) error {
 		// Same user lock as service enrollment/proof commits: replace-all,
 		// regeneration and deletions serialize with concurrent authenticators.
-		if _, e := tx.Users().GetForUpdate(r.Context(), tid, uid); e != nil {
+		locked, e := tx.Users().GetForUpdate(r.Context(), tid, uid)
+		if e != nil {
 			return e
 		}
 		repo := tx.MFA()
 		switch route.Operation {
 		case "CreateAuthenticationMethods":
+			if b := body.(map[string]any); b["type"] == "passkey" {
+				existing, e := repo.ListAuthenticators(r.Context(), tid, uid)
+				if e != nil {
+					return e
+				}
+				a, e := h.newPasskey(locked, b, passkeyRP, existing)
+				if e != nil {
+					return e
+				}
+				// No user.updated: passkeys are not part of multifactor
+				// (LR33b-33).
+				switch e = tx.WebAuthn().CreatePasskey(r.Context(), a, webauthnrules.Limits.MaxPasskeys); {
+				case errors.Is(e, store.ErrPrecondition):
+					return badBody("the user already has the maximum of %d passkeys", webauthnrules.Limits.MaxPasskeys)
+				case errors.Is(e, store.ErrConflict):
+					return &Error{Status: http.StatusConflict, Code: "conflict", Message: "An authentication method with this key_id already exists"}
+				case errors.Is(e, store.ErrWebAuthnUnavailable):
+					return errWebAuthnUnavailable
+				case e != nil:
+					return e
+				}
+				out = passkeyJSON(*a)
+				delete(out.(map[string]any), "last_auth_at")
+				status = 201
+				code = "gd_enrollment_complete"
+				return nil
+			}
 			a, e := h.newMethod(tid, uid, body.(map[string]any))
 			if e != nil {
 				return e
@@ -215,6 +482,9 @@ func (h *Handlers) userMFA(w http.ResponseWriter, r *http.Request, route mfarule
 				return e
 			}
 			patch := body.(map[string]any)
+			if _, ok := patch["preferred_authentication_method"]; ok && a.Type == "passkey" {
+				return badBody("passkeys have no preferred_authentication_method")
+			}
 			if v, ok := patch["name"]; ok {
 				if utf8.RuneCountInString(v.(string)) > 20 {
 					return store.ErrInvalid
@@ -235,8 +505,16 @@ func (h *Handlers) userMFA(w http.ResponseWriter, r *http.Request, route mfarule
 			status = 200
 			code = "gd_update_device_account"
 		case "DeleteAuthenticationMethod":
+			a, e := repo.GetAuthenticator(r.Context(), tid, uid, id)
+			if e != nil {
+				return e
+			}
 			if e := repo.DeleteAuthenticator(r.Context(), tid, uid, id); e != nil {
 				return e
+			}
+			if a.Type == "passkey" {
+				// A passkey is not MFA: remembered MFA browsers stay valid.
+				return nil
 			}
 			return repo.BumpRememberEpoch(r.Context(), tid, uid)
 		case "DeleteAuthenticationMethods", "DeleteUserAuthenticators":
@@ -269,7 +547,7 @@ func (h *Handlers) userMFA(w http.ResponseWriter, r *http.Request, route mfarule
 			old := ""
 			hasFactor := false
 			for _, a := range all {
-				if a.Confirmed && a.Type != "recovery-code" {
+				if a.Confirmed && a.Type != "recovery-code" && a.Type != "passkey" {
 					hasFactor = true
 				}
 				if a.Type == "recovery-code" {
@@ -326,7 +604,8 @@ func (h *Handlers) guardianEnrollment(w http.ResponseWriter, r *http.Request, id
 	// or a walk over the tenant's users.
 	tid := resolved(r).ID
 	a, err := h.Store.MFA().GetAuthenticatorByEnrollmentID(r.Context(), tid, id)
-	if err == nil && !a.Confirmed {
+	if err == nil && (!a.Confirmed || a.Type == "passkey") {
+		// Passkeys are a first factor, never Guardian enrollments.
 		err = store.ErrNotFound
 	}
 	if err != nil {

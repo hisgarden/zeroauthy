@@ -3578,7 +3578,8 @@
               "totp",
               "email",
               "webauthn-roaming",
-              "phone"
+              "phone",
+              "passkey"
             ]
           },
           "name": {

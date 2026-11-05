@@ -1,8 +1,10 @@
 package seed
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"maps"
 	"net/url"
 	"regexp"
 	"slices"
@@ -12,11 +14,14 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/clientrules"
 	"github.com/zeroauthy/zeroauthy/internal/connrules"
 	"github.com/zeroauthy/zeroauthy/internal/devicecode"
+	"github.com/zeroauthy/zeroauthy/internal/hostname"
 	"github.com/zeroauthy/zeroauthy/internal/i18n"
 	"github.com/zeroauthy/zeroauthy/internal/identity"
 	"github.com/zeroauthy/zeroauthy/internal/rbacrules"
+	"github.com/zeroauthy/zeroauthy/internal/rpid"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 	"github.com/zeroauthy/zeroauthy/internal/tenant"
+	"github.com/zeroauthy/zeroauthy/internal/webauthnrules"
 )
 
 var hexColor = regexp.MustCompile(`^#[0-9a-fA-F]{6}$`)
@@ -76,8 +81,32 @@ func (f *File) validate() error {
 			}
 			domainOwner[nd] = t.Name
 		}
+		errs = append(errs, t.validateRPIDs()...)
 	}
 	return errors.Join(errs...)
+}
+
+// validateRPIDs checks each alias RP ID with the R1 registrable-suffix rule
+// (rpid.Policy.Validate without the deployment's sharing rule, which Apply
+// checks against the store and configuration).
+func (t *Tenant) validateRPIDs() []error {
+	var errs []error
+	for _, host := range slices.Sorted(maps.Keys(t.DomainRPIDs)) {
+		rp := t.DomainRPIDs[host]
+		listed := slices.ContainsFunc(t.Domains, func(d string) bool {
+			n, err := hostname.NormalizeOperatorHost(d)
+			return err == nil && n == host
+		})
+		if !listed {
+			errs = append(errs, fmt.Errorf("seed: tenant %q: relying_party_identifier %q names no domain %q", t.Name, rp, host))
+			continue
+		}
+		if err := (rpid.Policy{}).Validate(context.Background(), "", host, rp); err != nil {
+			errs = append(errs, fmt.Errorf("seed: tenant %q: domain %q: relying_party_identifier %q must be the host or a registrable suffix of it (not a public suffix, at most %d characters): %w",
+				t.Name, host, rp, webauthnrules.Limits.RPIDMax, store.ErrInvalid))
+		}
+	}
+	return errs
 }
 
 // CheckManagementAPI checks the seed against each tenant's Management API

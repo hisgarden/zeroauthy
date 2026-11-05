@@ -645,3 +645,31 @@ func TestSelfSignedTLSConfig(t *testing.T) {
 		}
 	}
 }
+
+func TestConfigWebAuthnRestrict(t *testing.T) {
+	base := "ZEROAUTHY_STORAGE__DSN=memory://"
+	cfg, err := Load("", []string{base, sysHost})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Security.WebAuthn.RestrictSharedRPIDs {
+		t.Fatal("restrict_shared_rp_ids defaults to true, want false")
+	}
+	cfg, err = Load("", []string{base, sysHost, "ZEROAUTHY_SECURITY__WEBAUTHN__RESTRICT_SHARED_RP_IDS=true"})
+	if err != nil || !cfg.Security.WebAuthn.RestrictSharedRPIDs {
+		t.Fatalf("env override: %+v, %v", cfg.Security.WebAuthn, err)
+	}
+	path := writeFile(t, "zeroauthy.yaml", `
+security:
+  webauthn:
+    restrict_shared_rp_ids: true
+`)
+	cfg, err = Load(path, []string{base, sysHost})
+	if err != nil || !cfg.Security.WebAuthn.RestrictSharedRPIDs {
+		t.Fatalf("file value: %+v, %v", cfg.Security.WebAuthn, err)
+	}
+	cfg, err = Load(path, []string{base, sysHost, "ZEROAUTHY_SECURITY__WEBAUTHN__RESTRICT_SHARED_RP_IDS=false"})
+	if err != nil || cfg.Security.WebAuthn.RestrictSharedRPIDs {
+		t.Fatalf("env over file: %+v, %v", cfg.Security.WebAuthn, err)
+	}
+}

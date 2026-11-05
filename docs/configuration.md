@@ -204,6 +204,14 @@ mount a certificate. The [quickstart](quickstart.md) shows a full `docker run`.
 | `security.rate_limit.other.rate` | `ZEROAUTHY_SECURITY__RATE_LIMIT__OTHER__RATE` | number | `50` | `security.rate_limit.other.rate` is the sustained requests per second. |
 | `security.rate_limit.other.burst` | `ZEROAUTHY_SECURITY__RATE_LIMIT__OTHER__BURST` | integer | `200` | `security.rate_limit.other.burst` is how many requests may arrive at once. |
 
+#### `security.webauthn`
+
+`security.webauthn` holds the deployment's rules for passkeys and security keys.
+
+| Key | Environment variable | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `security.webauthn.restrict_shared_rp_ids` | `ZEROAUTHY_SECURITY__WEBAUTHN__RESTRICT_SHARED_RP_IDS` | bool | `false` | `security.webauthn.restrict_shared_rp_ids` refuses relying party IDs that cover server.base_domain or another tenant's host. Turn it on for shared multi-tenant hosting. |
+
 ### `log`
 
 `log` configures the server's own log output on stdout.

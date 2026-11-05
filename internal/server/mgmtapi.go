@@ -288,6 +288,10 @@ func (a mgmtAPI) TryConnectionScript(w http.ResponseWriter, r *http.Request, ten
 	a.h.TryConnectionScript(w, r, tenant, id, name)
 }
 
+func (a mgmtAPI) GetPasskeyPrerequisites(w http.ResponseWriter, r *http.Request, tenant, id string) {
+	a.h.GetPasskeyPrerequisites(w, r, tenant, id)
+}
+
 func (a mgmtAPI) PreviewTenantEmail(w http.ResponseWriter, r *http.Request, tenant string) {
 	a.h.PreviewEmail(w, r, tenant)
 }

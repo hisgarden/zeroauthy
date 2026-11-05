@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"maps"
+	"net"
 	"reflect"
 	"slices"
 	"strings"
@@ -22,6 +24,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/hostname"
 	"github.com/zeroauthy/zeroauthy/internal/identity"
 	"github.com/zeroauthy/zeroauthy/internal/keys"
+	"github.com/zeroauthy/zeroauthy/internal/rpid"
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 	"github.com/zeroauthy/zeroauthy/internal/tenant"
@@ -29,7 +32,14 @@ import (
 )
 
 // Options carries deployment limits shared with the Management API.
-type Options struct{ EventsMaxStreams int }
+type Options struct {
+	EventsMaxStreams int
+	// RPIDs is the deployment's relying party ID policy; Apply checks each
+	// seeded alias RP ID with it against the transaction's store after all
+	// tenants are written (R1/R2). A zero policy applies only the
+	// registrable-suffix rule; an empty BaseDomain takes the file's.
+	RPIDs rpid.Policy
+}
 
 // Apply upserts everything in f. It never deletes. With f.Mode set to
 // ModeCreateOnly it only creates what does not exist yet and leaves every
@@ -72,8 +82,69 @@ func apply(ctx context.Context, st store.Store, f *File, now func() time.Time, w
 				return fmt.Errorf("seed: tenant %q: %w", t.Name, err)
 			}
 		}
-		return nil
+		return checkAliasRPIDs(ctx, tx, f, options...)
 	})
+}
+
+// checkAliasRPIDs runs the deployment's R1 rule on every alias RP ID this
+// seed wrote, once every tenant's hosts are in place, so that the strict
+// rule sees the other tenants' hosts.
+func checkAliasRPIDs(ctx context.Context, tx store.Store, f *File, options ...Options) error {
+	var p rpid.Policy
+	if len(options) > 0 {
+		p = options[0].RPIDs
+	}
+	p.Store = tx
+	if p.BaseDomain == "" {
+		p.BaseDomain = f.baseDomain
+	}
+	for _, t := range f.Tenants {
+		if len(t.DomainRPIDs) == 0 {
+			continue
+		}
+		tn, err := tx.Tenants().GetByName(ctx, t.Name)
+		if errors.Is(err, store.ErrNotFound) {
+			continue
+		}
+		if err != nil {
+			return err
+		}
+		for _, host := range slices.Sorted(maps.Keys(tn.DomainRPIDs)) {
+			rp := tn.DomainRPIDs[host]
+			if t.DomainRPIDs[host] == "" || !strings.EqualFold(strings.TrimSuffix(t.DomainRPIDs[host], "."), rp) {
+				continue // not written by this seed (API tenant, create-only, omitted domains)
+			}
+			if err := p.Validate(ctx, tn.ID, host, rp); err != nil {
+				return fmt.Errorf("seed: tenant %q: domain %q: relying_party_identifier %q: %w", t.Name, host, rp, err)
+			}
+		}
+	}
+	return nil
+}
+
+// aliasRPIDs is the DomainRPIDs to store for the normalized aliases: the
+// seed's overrides for listed hosts, without those equal to the host.
+func aliasRPIDs(in Tenant, domains []string) map[string]string {
+	var out map[string]string
+	for host, rp := range in.DomainRPIDs {
+		rp = strings.TrimSuffix(strings.ToLower(rp), ".")
+		if !slices.Contains(domains, host) || rp == "" || rp == aliasName(host) {
+			continue
+		}
+		if out == nil {
+			out = map[string]string{}
+		}
+		out[host] = rp
+	}
+	return out
+}
+
+// aliasName is a normalized alias host without its port.
+func aliasName(host string) string {
+	if name, _, err := net.SplitHostPort(host); err == nil {
+		return name
+	}
+	return host
 }
 
 func applyTenant(ctx context.Context, st store.Store, f *File, in Tenant, now time.Time, w keys.Wrapper, options ...Options) error {
@@ -119,6 +190,7 @@ func applyTenant(ctx context.Context, st store.Store, f *File, in Tenant, now ti
 		tn, err = tenantsetup.UpsertTenant(ctx, st, in.Name, now, func(tn *store.Tenant) error {
 			before := tn.Clone()
 			tn.FriendlyName, tn.Domains, tn.DefaultAudience = in.FriendlyName, domains, in.DefaultAudience
+			tn.DomainRPIDs = aliasRPIDs(in, domains)
 			tn.AllowedLogoutURLs = slices.Clone(in.AllowedLogoutURLs)
 			tn.EnabledLocales = slices.Clone(in.EnabledLocales)
 			tn.CustomText = in.CustomText.Clone()
@@ -131,6 +203,9 @@ func applyTenant(ctx context.Context, st store.Store, f *File, in Tenant, now ti
 			tn.DeviceFlowCharset, tn.DeviceFlowMask = in.DeviceFlow.Charset, in.DeviceFlow.Mask
 			if exists {
 				preserveOmittedTenant(tn, before, in.supplied)
+				if _, supplied := in.supplied["domains"]; !supplied && in.supplied != nil {
+					tn.DomainRPIDs = maps.Clone(before.DomainRPIDs)
+				}
 			}
 			if exists {
 				tn.CanonicalHost = existing.CanonicalHost
@@ -142,6 +217,9 @@ func applyTenant(ctx context.Context, st store.Store, f *File, in Tenant, now ti
 			// entry in existing operator configuration.
 			if f.baseDomain == "" && tn.CanonicalHost != "" && !slices.Contains(tn.Domains, tn.CanonicalHost) {
 				return fmt.Errorf("cannot remove canonical host %q: %w", tn.CanonicalHost, store.ErrConflict)
+			}
+			if _, ok := tn.DomainRPIDs[tn.CanonicalHost]; ok {
+				return fmt.Errorf("domain %q is the canonical host, whose relying party identifier is always the host itself: %w", tn.CanonicalHost, store.ErrInvalid)
 			}
 			if err := applyTenantSettings(tn, in, w); err != nil {
 				return err

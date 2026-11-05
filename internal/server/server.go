@@ -37,6 +37,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/phone"
 	"github.com/zeroauthy/zeroauthy/internal/protection"
 	"github.com/zeroauthy/zeroauthy/internal/ratelimit"
+	"github.com/zeroauthy/zeroauthy/internal/rpid"
 	"github.com/zeroauthy/zeroauthy/internal/session"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 	"github.com/zeroauthy/zeroauthy/internal/tenant"
@@ -88,6 +89,10 @@ type Deps struct {
 	// origin CORS allows on /api/v2 and /api/system.
 	BaseDomain string
 	SystemHost string
+	// RPIDs is the deployment's WebAuthn relying party ID policy (Plan 33b
+	// R1/R2): base domain, system host, origin suffix and
+	// security.webauthn.restrict_shared_rp_ids.
+	RPIDs rpid.Policy
 
 	// Console is the built admin console; nil means the embedded one.
 	Console fs.FS
@@ -376,6 +381,7 @@ func New(d Deps) http.Handler {
 		BreachCheckerAvailable: sharedProtection.BreachChecker != nil,
 		Protection:             sharedProtection,
 		Domains:                d.Domains,
+		RestrictSharedRPIDs:    d.RPIDs.RestrictShared,
 	}
 	mr.Use(d.Resolver.Middleware, systemOnly, mgmtCORS(systemOrigin), auth, mh.LogMiddleware, operatorOnly)
 	if len(d.ExportKey) > 0 {

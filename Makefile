@@ -1,4 +1,4 @@
-.PHONY: e2e-passwordless e2e-mfa e2e-events e2e-logs e2e-organizations-ii e2e-organizations build test test-sql lint generate check-sources e2e e2e-actions e2e-actions-ii e2e-rbac e2e-email-accounts e2e-social e2e-deploy e2e-signing e2e-email e2e-branding e2e-domains conformance console
+.PHONY: sbom sbom-check sbom-scan e2e-passwordless e2e-mfa e2e-events e2e-logs e2e-organizations-ii e2e-organizations build test test-sql lint generate check-sources e2e e2e-actions e2e-actions-ii e2e-rbac e2e-email-accounts e2e-social e2e-deploy e2e-signing e2e-email e2e-branding e2e-domains conformance console
 
 build:
 	CGO_ENABLED=0 go build -trimpath -o bin/zeroauthy ./cmd/zeroauthy
@@ -12,6 +12,21 @@ test-sql:
 
 lint:
 	go vet ./...
+
+# Software bills of materials for the release archives (docs/supply-chain.md).
+# VERSION defaults to the dry-run scheme release.yml uses; `make sbom
+# VERSION=1.2.3` matches a tagged build. Builds the archives first when
+# dist/ has none for VERSION. Output: dist/sbom/ (gitignored under /dist/).
+VERSION ?= 0.0.0-dev.$(shell git rev-parse --short=12 HEAD)
+sbom:
+	@ls dist/zeroauthy_$(VERSION)_*.tar.gz >/dev/null 2>&1 || ./scripts/dist.sh $(VERSION) dist
+	./scripts/sbom.sh $(VERSION) dist
+
+sbom-check:
+	./scripts/check-sbom.sh --strict dist/sbom
+
+sbom-scan:
+	./scripts/scan-sbom.sh dist/sbom
 
 generate:
 	go generate ./...

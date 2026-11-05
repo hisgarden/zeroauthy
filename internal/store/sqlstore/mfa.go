@@ -155,13 +155,18 @@ func (r mfa) DeleteAuthenticator(ctx context.Context, tid, uid, id string) error
 	}
 	return expectRow(res)
 }
+
+// DeleteUserAuthenticators with nil types removes every MFA type: passkeys
+// are first factors and stay.
 func (r mfa) DeleteUserAuthenticators(ctx context.Context, tid, uid string, types []string) error {
 	if types != nil && len(types) == 0 {
 		return nil
 	}
 	q := `DELETE FROM mfa_authenticators WHERE tenant_id=? AND user_id=?`
 	args := []any{tid, uid}
-	if types != nil {
+	if types == nil {
+		q += ` AND type<>'passkey'`
+	} else {
 		q += ` AND type IN (`
 		for i, t := range types {
 			if i > 0 {
@@ -495,7 +500,7 @@ func (r mfa) PurgeMFA(ctx context.Context, before time.Time, limit int) (int, er
 }
 func (r mfa) DeleteUserMFA(ctx context.Context, tid, uid string) error {
 	return r.s.atomicRetry(ctx, nil, func(s *Store) error {
-		for _, table := range []string{"mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers"} {
+		for _, table := range []string{"mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers", "webauthn_snoozes"} {
 			if _, err := s.exec(ctx, `DELETE FROM `+table+` WHERE tenant_id=? AND user_id=?`, tid, uid); err != nil {
 				return err
 			}
@@ -505,7 +510,7 @@ func (r mfa) DeleteUserMFA(ctx context.Context, tid, uid string) error {
 }
 func (r mfa) DeleteTenantMFA(ctx context.Context, tid string) error {
 	return r.s.atomicRetry(ctx, nil, func(s *Store) error {
-		for _, table := range []string{"mfa_guardian", "mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers"} {
+		for _, table := range []string{"mfa_guardian", "mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers", "webauthn_snoozes"} {
 			if _, err := s.exec(ctx, `DELETE FROM `+table+` WHERE tenant_id=?`, tid); err != nil {
 				return err
 			}

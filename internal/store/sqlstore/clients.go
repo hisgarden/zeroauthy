@@ -18,6 +18,10 @@ const clientCols = `tenant_id, client_id, name, app_type, secrets, token_endpoin
  is_first_party, third_party_security_mode, redirection_policy, skip_non_verifiable_callback_uri_confirmation_prompt, require_pushed_authorization_requests, origin,
  organization_usage, organization_require_behavior, organization_discovery_methods, initiate_login_uri`
 
+// clientRowCols are clientCols plus mobile (migration 0035). Fixtures for
+// older schema versions insert clientCols with clientArgs.
+const clientRowCols = clientCols + `, mobile`
+
 // secretJSON is the stored form of store.ClientSecret: times are micros, as
 // everywhere else.
 type secretJSON struct {
@@ -32,7 +36,11 @@ func (r clients) Create(ctx context.Context, c *store.Client) error {
 	if err != nil {
 		return err
 	}
-	_, err = r.s.write(ctx, nil, `INSERT INTO clients (`+clientCols+`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, args...)
+	mobile, err := mobileArg(c.Mobile)
+	if err != nil {
+		return err
+	}
+	_, err = r.s.write(ctx, nil, `INSERT INTO clients (`+clientRowCols+`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, append(args, mobile)...)
 	return r.s.conflict(err)
 }
 
@@ -40,7 +48,7 @@ func (r clients) Get(ctx context.Context, tenantID, clientID string) (*store.Cli
 	if err := r.s.policyRead(ctx, tenantID); err != nil {
 		return nil, err
 	}
-	c, err := scanClient(r.s.queryRow(ctx, `SELECT `+clientCols+` FROM clients WHERE tenant_id = ? AND client_id = ?`, tenantID, clientID))
+	c, err := scanClient(r.s.queryRow(ctx, `SELECT `+clientRowCols+` FROM clients WHERE tenant_id = ? AND client_id = ?`, tenantID, clientID))
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, store.ErrNotFound
 	}
@@ -52,13 +60,17 @@ func (r clients) Update(ctx context.Context, c *store.Client) error {
 	if err != nil {
 		return err
 	}
-	// args: tenant_id, client_id, then the 21 mutable columns.
+	mobile, err := mobileArg(c.Mobile)
+	if err != nil {
+		return err
+	}
+	// args: tenant_id, client_id, then the 22 mutable columns; mobile follows.
 	return r.s.policyWrite(ctx, c.TenantID, func(tx *Store) error {
 		res, err := tx.exec(ctx, `UPDATE clients SET name=?, app_type=?, secrets=?, token_endpoint_auth_method=?, grant_types=?,
  callbacks=?, allowed_logout_urls=?, web_origins=?, allowed_origins=?, id_token_lifetime=?, refresh_token=?, created_at=?,
  is_first_party=?, third_party_security_mode=?, redirection_policy=?, skip_non_verifiable_callback_uri_confirmation_prompt=?, require_pushed_authorization_requests=?, origin=?,
- organization_usage=?, organization_require_behavior=?, organization_discovery_methods=?, initiate_login_uri=?
- WHERE tenant_id=? AND client_id=?`, append(args[2:], c.TenantID, c.ClientID)...)
+ organization_usage=?, organization_require_behavior=?, organization_discovery_methods=?, initiate_login_uri=?, mobile=?
+ WHERE tenant_id=? AND client_id=?`, append(args[2:], mobile, c.TenantID, c.ClientID)...)
 		if err != nil {
 			return tx.conflict(err)
 		}
@@ -101,7 +113,7 @@ func (r clients) List(ctx context.Context, tenantID string, f store.ClientFilter
 	if err := r.s.queryRow(ctx, `SELECT COUNT(*) FROM clients WHERE `+cond, args...).Scan(&total); err != nil {
 		return nil, 0, err
 	}
-	rows, err := r.s.query(ctx, `SELECT `+clientCols+` FROM clients WHERE `+cond+` ORDER BY created_at, client_id`+r.s.d.byteOrder+pageClause(p), args...)
+	rows, err := r.s.query(ctx, `SELECT `+clientRowCols+` FROM clients WHERE `+cond+` ORDER BY created_at, client_id`+r.s.d.byteOrder+pageClause(p), args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -122,11 +134,15 @@ func scanClient(row scanner) (*store.Client, error) {
 	var secrets, grants, callbacks, logout, webOrigins, origins, refresh string
 	var created int64
 	var skipPrompt sql.NullBool
-	var discovery sql.NullString
+	var discovery, mobile sql.NullString
 	if err := row.Scan(&c.TenantID, &c.ClientID, &c.Name, &c.AppType, &secrets, &c.TokenEndpointAuthMethod, &grants,
 		&callbacks, &logout, &webOrigins, &origins, &c.IDTokenLifetime, &refresh, &created,
 		&c.IsFirstParty, &c.ThirdPartySecurityMode, &c.RedirectionPolicy, &skipPrompt, &c.RequirePushedAuthorizationRequests, &c.Origin,
-		&c.OrganizationUsage, &c.OrganizationRequireBehavior, &discovery, &c.InitiateLoginURI); err != nil {
+		&c.OrganizationUsage, &c.OrganizationRequireBehavior, &discovery, &c.InitiateLoginURI, &mobile); err != nil {
+		return nil, err
+	}
+	var err error
+	if c.Mobile, err = fromMobile(mobile); err != nil {
 		return nil, err
 	}
 	var ss []secretJSON
@@ -191,4 +207,54 @@ func clientArgs(c *store.Client) ([]any, error) {
 		js[3], js[4], js[5], c.IDTokenLifetime, js[6], micros(c.CreatedAt),
 		c.IsFirstParty, c.ThirdPartySecurityMode, c.RedirectionPolicy, nullBool(c.SkipNonVerifiableCallbackURIConfirmationPrompt), c.RequirePushedAuthorizationRequests, c.Origin,
 		c.OrganizationUsage, c.OrganizationRequireBehavior, discovery, c.InitiateLoginURI}, nil
+}
+
+// mobileJSON is the stored form of store.ClientMobile in clients.mobile,
+// named like the Management API's client "mobile" object.
+type mobileJSON struct {
+	IOS     *mobileIOSJSON     `json:"ios,omitempty"`
+	Android *mobileAndroidJSON `json:"android,omitempty"`
+}
+
+type mobileIOSJSON struct {
+	TeamID              string `json:"team_id"`
+	AppBundleIdentifier string `json:"app_bundle_identifier"`
+}
+
+type mobileAndroidJSON struct {
+	AppPackageName         string   `json:"app_package_name"`
+	SHA256CertFingerprints []string `json:"sha256_cert_fingerprints"`
+}
+
+// mobileArg encodes a client's mobile settings; nil is SQL NULL.
+func mobileArg(m *store.ClientMobile) (any, error) {
+	if m == nil {
+		return nil, nil
+	}
+	var v mobileJSON
+	if m.IOS != nil {
+		v.IOS = &mobileIOSJSON{m.IOS.TeamID, m.IOS.AppBundleIdentifier}
+	}
+	if m.Android != nil {
+		v.Android = &mobileAndroidJSON{m.Android.AppPackageName, m.Android.SHA256CertFingerprints}
+	}
+	return toJSON(v)
+}
+
+func fromMobile(s sql.NullString) (*store.ClientMobile, error) {
+	if !s.Valid || s.String == "null" {
+		return nil, nil
+	}
+	var v mobileJSON
+	if err := fromJSON(s.String, &v); err != nil {
+		return nil, err
+	}
+	m := &store.ClientMobile{}
+	if v.IOS != nil {
+		m.IOS = &store.ClientMobileIOS{TeamID: v.IOS.TeamID, AppBundleIdentifier: v.IOS.AppBundleIdentifier}
+	}
+	if v.Android != nil {
+		m.Android = &store.ClientMobileAndroid{AppPackageName: v.Android.AppPackageName, SHA256CertFingerprints: v.Android.SHA256CertFingerprints}
+	}
+	return m, nil
 }

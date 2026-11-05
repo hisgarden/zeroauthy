@@ -6,6 +6,13 @@ All notable changes to zeroauthy are recorded here. The format follows
 
 ## [Unreleased]
 
+### Security
+
+- Upgrade `github.com/go-jose/go-jose/v4` from 4.1.5 to 4.1.6 to fix
+  GHSA-mgcc-cww5-fp2q (CVE-2026-116587). A crafted RSA key in a JWK could make
+  JWK parsing use excessive CPU; zeroauthy parses the JWKS of configured
+  upstream OIDC and Microsoft connections.
+
 ## [1.0.0-rc.1]
 
 The first public release: an **early preview** for people to try. It covers

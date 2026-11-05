@@ -47,8 +47,9 @@ locally and in CI. See the [testing guide](docs/testing.md) and the kit in
 **Start here:** [quickstart](docs/quickstart.md) (container to SDK login),
 [deployment](docs/deployment.md), [upgrading](docs/upgrading.md),
 [migrating from Auth0](docs/migrating-from-auth0.md),
-[stability promise](docs/stability.md), [security policy](SECURITY.md) and
-the [changelog](CHANGELOG.md).
+[stability promise](docs/stability.md), [security policy](SECURITY.md),
+[supply chain](docs/supply-chain.md) (SBOMs, attestations, how to verify a
+release) and the [changelog](CHANGELOG.md).
 
 ![The zeroauthy admin console: a tenant's applications](docs/pics/console-applications.png)
 

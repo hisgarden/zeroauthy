@@ -77,3 +77,20 @@ Out of scope:
 
 Behaviour that differs from Auth0's documentation but is not a security
 problem is a normal bug: please open a public issue.
+
+## Supply chain
+
+Every release publishes, beside the archives and the container image, a
+CycloneDX 1.6 and an SPDX 2.3 SBOM per artefact, GitHub artifact
+attestations (build provenance for every file and the image, and an SBOM
+attestation per artefact), and checksums. Before a release can be approved,
+`govulncheck` and a grype scan of every SBOM must pass: a finding of
+severity high or critical blocks the release unless it is accepted by a
+reviewed `ignore` rule in `.grype.yaml` or an OpenVEX statement in
+`openvex.json`, each with its reason. The container image is built on
+Chainguard base images pinned by digest.
+
+How to verify a download or the image, how to feed the SBOMs to your own
+scanner, and the full policy are in [docs/supply-chain.md](docs/supply-chain.md).
+A vulnerability in a dependency that zeroauthy exposes is in scope: report
+it as above and name the package and advisory.

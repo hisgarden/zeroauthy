@@ -6,6 +6,25 @@ All notable changes to zeroauthy are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **SBOMs and supply-chain attestations.** Every release now attaches a
+  CycloneDX 1.6 and an SPDX 2.3 SBOM per archive and for the container
+  image (Go modules, the console's production npm dependencies, the image's
+  OS packages), `SBOM_SHA256SUMS`, build provenance for every file and an
+  SBOM attestation per artefact; a grype vulnerability gate (high/critical)
+  runs before a release can be approved, with accepted findings recorded in
+  `.grype.yaml` or `openvex.json`. `make sbom` reproduces the SBOMs locally.
+  See [docs/supply-chain.md](docs/supply-chain.md).
+
+### Changed
+
+- **Container base images.** The image is built on `cgr.dev/chainguard/go`
+  and runs on `cgr.dev/chainguard/node` (Node.js 26 on Wolfi), both pinned
+  by digest; it runs as uid 65532 (`node`) as before. The CI PostgreSQL
+  service and `scripts/test-sql.sh` use `cgr.dev/chainguard/postgres`
+  (PostgreSQL 18).
+
 ## [1.0.0-rc.1]
 
 The first public release: an **early preview** for people to try. It covers

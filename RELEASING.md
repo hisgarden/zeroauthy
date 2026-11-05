@@ -54,7 +54,12 @@ git push origin "v$V^{commit}:refs/heads/release"
   "Run it with Docker" section from [`.github/release-docker.md`](.github/release-docker.md)
   (image, essential environment variables, links to the configuration
   reference and testing guide).
-- Build provenance attestations for the archives and the image.
+- SBOMs: `zeroauthy_<version>_<os>_<arch>.cdx.json` (CycloneDX 1.6) and
+  `.spdx.json` (SPDX 2.3) per archive, `zeroauthy_<version>_image.cdx.json`
+  and `.spdx.json` for the image, and `SBOM_SHA256SUMS`.
+- Build provenance attestations for the archives, the SBOM files and the
+  image, and an SBOM attestation per archive and for the image (pushed to
+  the registry). See [docs/supply-chain.md](docs/supply-chain.md).
 
 Prereleases are marked as prereleases on GitHub and never move `latest`.
 
@@ -124,27 +129,40 @@ not on `main`; investigate instead of forcing.
 The workflow runs, in order:
 
 1. **test**: the full CI workflow: gofmt, vet, the Go race suite,
-   `govulncheck`, the console checks, the SQL drivers and the E2E lanes.
+   `govulncheck`, the console checks, the SQL drivers, the E2E lanes and
+   the SBOM job (a dry-run build's SBOMs, their contract check and a grype
+   scan).
 2. **conformance**: the OpenID conformance plans.
 3. **binaries**: the reproducible archives and `SHA256SUMS`.
-4. **approve**: pauses for a required reviewer of the `production`
+4. **sbom**: the archives' SBOMs, a linux/amd64 image built for the gate
+   (never pushed) and its SBOM, the contract check, and the vulnerability
+   gate: any high or critical finding not accepted in `.grype.yaml` or
+   `openvex.json` stops the run here. See
+   [docs/supply-chain.md](docs/supply-chain.md) for the policy and how to
+   accept a finding.
+5. **approve**: pauses for a required reviewer of the `production`
    environment. Open the run, click **Review deployments**, tick
    `production` and **Approve and deploy**. Reject it to stop the release;
    nothing has been published at this point.
-5. **image**: builds and pushes the multi-arch image, with provenance and SBOM.
-6. **publish**: verifies the checksums, attests the archives, and creates the
-   GitHub release with the notes.
+6. **image**: builds and pushes the multi-arch image, with provenance and SBOM.
+7. **publish**: verifies the checksums, generates the image SBOM from the
+   pushed digest, attests the archives, the SBOM files and the image (build
+   provenance and SBOM attestations), and creates the GitHub release with
+   the notes.
 
 A failure in any gate stops the run before anything is published.
 
 ### Step 5: check the result
 
-- The release page shows the notes, three archives and `SHA256SUMS`, marked
-  as prerelease for `-rc`/`-beta` versions.
+- The release page shows the notes, three archives, `SHA256SUMS`, eight
+  SBOM files and `SBOM_SHA256SUMS`, marked as prerelease for `-rc`/`-beta`
+  versions.
 - `docker pull ghcr.io/occupysaas/zeroauthy:X.Y.Z` works and
   `docker run --rm ghcr.io/occupysaas/zeroauthy:X.Y.Z version` prints the version.
-- Downloads verify: `sha256sum -c SHA256SUMS` and
-  `gh attestation verify <archive> --repo occupysaas/zeroauthy`.
+- Downloads verify: `sha256sum -c SHA256SUMS`, `sha256sum -c SBOM_SHA256SUMS`,
+  `gh attestation verify <archive> --repo occupysaas/zeroauthy` and
+  `gh attestation verify oci://ghcr.io/occupysaas/zeroauthy:X.Y.Z --repo occupysaas/zeroauthy`
+  (more in [docs/supply-chain.md](docs/supply-chain.md)).
 
 ### Promoting a release candidate
 
@@ -193,4 +211,17 @@ approval still apply. Also add the fix and its changelog entry to `main`.
 `scripts/dist.sh X.Y.Z` builds the same archives into `dist/`. With the same
 commit and Go toolchain the output is byte-identical (the timestamp is the
 commit time). `docker build --build-arg VERSION=X.Y.Z -t zeroauthy .` builds
-the image.
+the image. `make sbom VERSION=X.Y.Z`, `make sbom-check` and `make sbom-scan`
+reproduce the SBOMs, the contract check and the vulnerability gate
+([docs/supply-chain.md](docs/supply-chain.md)).
+
+### Base images
+
+The Dockerfile, the CI PostgreSQL service and `scripts/test-sql.sh` use
+Chainguard (`cgr.dev`) images pinned by digest, with the tag and creation
+date in a comment beside each digest. The build stage forces the `go.mod`
+toolchain so the image binary matches the archives. To move to a newer
+base, follow "What is pinned and how to bump it" in
+[docs/supply-chain.md](docs/supply-chain.md): fetch the new digest, update
+every reference and the comments, rebuild, run the SBOM checks, and
+rehearse with a dry run.

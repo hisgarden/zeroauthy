@@ -303,3 +303,19 @@ func TestKillForTestUnwrapGuards(t *testing.T) {
 	storeplugin.KillForTest(&cyclicTestStore{})
 	storeplugin.KillForTest(events.Wrap(nil, events.Config{}))
 }
+
+// The sample plugin negotiates webauthn.v1 and the SDK wrapper reports it.
+func TestWebAuthnThroughPluginProcess(t *testing.T) {
+	s, err := storeplugin.Open(context.Background(), pluginBin)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = s.Close() })
+	ws, ok := s.(store.WebAuthnSupporter)
+	if !ok {
+		t.Fatal("plugin store has no WebAuthn capability probe")
+	}
+	if err := ws.CheckWebAuthnSupport(context.Background()); err != nil || !ws.WebAuthnSupported() {
+		t.Fatalf("webauthn.v1 not negotiated: %v", err)
+	}
+}

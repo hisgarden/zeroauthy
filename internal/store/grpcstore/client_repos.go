@@ -158,6 +158,10 @@ func (a clientTenants) Create(ctx context.Context, t *store.Tenant) error {
 	if err := a.c.requireTenantSettings(ctx); err != nil {
 		return err
 	}
+	t, err := tenantGate.write(ctx, a.c, t)
+	if err != nil {
+		return err
+	}
 	return put("TenantsCreate", t, tenantToPB, func(pb *storev1.Tenant) (result, error) {
 		return a.c.rpc.TenantsCreate(ctx, &storev1.TenantWrite{TxId: a.c.txID, Value: pb})
 	})
@@ -165,7 +169,8 @@ func (a clientTenants) Create(ctx context.Context, t *store.Tenant) error {
 
 func (a clientTenants) get(ctx context.Context, op string, call func(context.Context, *storev1.TenantsGetRequest, ...grpc.CallOption) (*storev1.TenantResult, error), key string) (*store.Tenant, error) {
 	r, err := call(ctx, &storev1.TenantsGetRequest{TxId: a.c.txID, Key: key})
-	return decOne(op, err, r.GetError(), r.GetValue(), tenantFromPB)
+	v, err := decOne(op, err, r.GetError(), r.GetValue(), tenantFromPB)
+	return tenantGate.one(ctx, a.c, v, err)
 }
 
 func (a clientTenants) Get(ctx context.Context, id string) (*store.Tenant, error) {
@@ -192,6 +197,10 @@ func (a clientTenants) Update(ctx context.Context, t *store.Tenant) error {
 	if err := a.c.requireTenantSettings(ctx); err != nil {
 		return err
 	}
+	t, err := tenantGate.write(ctx, a.c, t)
+	if err != nil {
+		return err
+	}
 	return put("TenantsUpdate", t, tenantToPB, func(pb *storev1.Tenant) (result, error) {
 		return a.c.rpc.TenantsUpdate(ctx, &storev1.TenantWrite{TxId: a.c.txID, Value: pb})
 	})
@@ -199,7 +208,8 @@ func (a clientTenants) Update(ctx context.Context, t *store.Tenant) error {
 
 func (a clientTenants) List(ctx context.Context) ([]*store.Tenant, error) {
 	r, err := a.c.rpc.TenantsList(ctx, &storev1.TenantsListRequest{TxId: a.c.txID})
-	return decList("TenantsList", err, r.GetError(), r.GetValues(), tenantFromPB)
+	out, err := decList("TenantsList", err, r.GetError(), r.GetValues(), tenantFromPB)
+	return tenantGate.list(ctx, a.c, out, err)
 }
 
 // Delete needs a plugin built against Plan 13's protocol.
@@ -213,6 +223,10 @@ func (a clientTenants) Delete(ctx context.Context, id string) error {
 type clientClients struct{ c *Client }
 
 func (a clientClients) Create(ctx context.Context, v *store.Client) error {
+	v, err := clientGate.write(ctx, a.c, v)
+	if err != nil {
+		return err
+	}
 	return put("ClientsCreate", v, clientToPB, func(pb *storev1.Client) (result, error) {
 		return a.c.rpc.ClientsCreate(ctx, &storev1.ClientWrite{TxId: a.c.txID, Value: pb})
 	})
@@ -220,10 +234,15 @@ func (a clientClients) Create(ctx context.Context, v *store.Client) error {
 
 func (a clientClients) Get(ctx context.Context, tenantID, clientID string) (*store.Client, error) {
 	r, err := a.c.rpc.ClientsGet(ctx, &storev1.ScopedKey{TxId: a.c.txID, TenantId: tenantID, Key: clientID})
-	return decOne("ClientsGet", err, r.GetError(), r.GetValue(), clientFromPB)
+	v, err := decOne("ClientsGet", err, r.GetError(), r.GetValue(), clientFromPB)
+	return clientGate.one(ctx, a.c, v, err)
 }
 
 func (a clientClients) Update(ctx context.Context, v *store.Client) error {
+	v, err := clientGate.write(ctx, a.c, v)
+	if err != nil {
+		return err
+	}
 	return put("ClientsUpdate", v, clientToPB, func(pb *storev1.Client) (result, error) {
 		return a.c.rpc.ClientsUpdate(ctx, &storev1.ClientWrite{TxId: a.c.txID, Value: pb})
 	})
@@ -239,6 +258,7 @@ func (a clientClients) List(ctx context.Context, tenantID string, f store.Client
 		// Everything, as every plugin can serve it.
 		r, err := a.c.rpc.ClientsList(ctx, &storev1.TenantScope{TxId: a.c.txID, TenantId: tenantID})
 		out, err := decList("ClientsList", err, r.GetError(), r.GetValues(), clientFromPB)
+		out, err = clientGate.list(ctx, a.c, out, err)
 		sortClients(out)
 		return out, len(out), err
 	}
@@ -258,6 +278,7 @@ func (a clientClients) List(ctx context.Context, tenantID string, f store.Client
 		return filterClients(all, f, p)
 	}
 	out, err := decList("ClientsListPage", err, r.GetError(), r.GetValues(), clientFromPB)
+	out, err = clientGate.list(ctx, a.c, out, err)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -695,6 +716,10 @@ func (a clientSessions) Create(ctx context.Context, v *store.LoginSession) error
 			return err
 		}
 	}
+	v, err := sessionGate.write(ctx, a.c, v)
+	if err != nil {
+		return err
+	}
 	return put("SessionsCreate", v, sessionToPB, func(pb *storev1.LoginSession) (result, error) {
 		return a.c.rpc.SessionsCreate(ctx, &storev1.SessionWrite{TxId: a.c.txID, Value: pb})
 	})
@@ -702,17 +727,20 @@ func (a clientSessions) Create(ctx context.Context, v *store.LoginSession) error
 
 func (a clientSessions) GetByTokenHash(ctx context.Context, tenantID, tokenHash string) (*store.LoginSession, error) {
 	r, err := a.c.rpc.SessionsGetByTokenHash(ctx, &storev1.ScopedKey{TxId: a.c.txID, TenantId: tenantID, Key: tokenHash})
-	return decOne("SessionsGetByTokenHash", err, r.GetError(), r.GetValue(), sessionFromPB)
+	v, err := decOne("SessionsGetByTokenHash", err, r.GetError(), r.GetValue(), sessionFromPB)
+	return sessionGate.one(ctx, a.c, v, err)
 }
 
 func (a clientSessions) Get(ctx context.Context, tenantID, id string) (*store.LoginSession, error) {
 	r, err := a.c.rpc.SessionsGet(ctx, &storev1.ScopedKey{TxId: a.c.txID, TenantId: tenantID, Key: id})
-	return decOne("SessionsGet", tooOld(err), r.GetError(), r.GetValue(), sessionFromPB)
+	v, err := decOne("SessionsGet", tooOld(err), r.GetError(), r.GetValue(), sessionFromPB)
+	return sessionGate.one(ctx, a.c, v, err)
 }
 
 func (a clientSessions) ListByUser(ctx context.Context, tenantID, userID string) ([]*store.LoginSession, error) {
 	r, err := a.c.rpc.SessionsListByUser(ctx, &storev1.ScopedKey{TxId: a.c.txID, TenantId: tenantID, Key: userID})
-	return decList("SessionsListByUser", tooOld(err), r.GetError(), r.GetValues(), sessionFromPB)
+	out, err := decList("SessionsListByUser", tooOld(err), r.GetError(), r.GetValues(), sessionFromPB)
+	return sessionGate.list(ctx, a.c, out, err)
 }
 
 // Touch sends at, ip and userAgent as new TouchRequest fields: a plugin that

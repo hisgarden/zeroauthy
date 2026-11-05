@@ -1,0 +1,241 @@
+From a87193a96ef224e9ee4d6530b0bcf8897161b836 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 5 Nov 2026 07:17:23 +0000
+Subject: [PATCH] ci: SBOM generation, vulnerability gate and SBOM attestations
+ (workflow files only)
+
+ci.yml: new sbom job (dry-run archives, scripts/sbom.sh with syft from anchore/sbom-action, strict contract check, grype gate with scripts/scan-sbom.sh) and the PostgreSQL service on cgr.dev/chainguard/postgres by digest. release.yml: new sbom job before approve (archive SBOMs, a linux/amd64 gate image built but never pushed, contract check, grype gate), the image job exports its digest, and publish generates the pushed image's SBOM, extends build provenance to the SBOM files, adds actions/attest-sbom for each archive and the image (pushed to the registry), and attaches the SBOM files and SBOM_SHA256SUMS to the release. No step mentioning Node or npm is changed. Plan 49 Task 4.
+
+This commit touches only .github/workflows/ and is last on the branch so the rest can be pushed with a token that lacks the workflow scope.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01PwU6ecBmDBeqBc87nLbVTg
+---
+ .github/workflows/ci.yml      |  38 +++++++++++-
+ .github/workflows/release.yml | 113 ++++++++++++++++++++++++++++++++--
+ 2 files changed, 146 insertions(+), 5 deletions(-)
+
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index cdbd9f2..c277eb8 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -40,6 +40,37 @@ jobs:
+           go-version-input: ""
+           go-version-file: go.mod
+           go-package: ./...
++  sbom:
++    # SBOMs of a dry-run build and the vulnerability gate over them
++    # (scripts/sbom.sh, scripts/check-sbom.sh, scripts/scan-sbom.sh;
++    # docs/supply-chain.md). release.yml runs the same scripts over the real
++    # archives and a gate image before approval. Accepted findings live in
++    # .grype.yaml and openvex.json; govulncheck above stays the Go gate.
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++        with:
++          fetch-depth: 0
++      - uses: actions/setup-go@v5
++        with:
++          go-version-file: go.mod
++      - run: ./scripts/dist.sh "0.0.0-dev.${GITHUB_SHA::12}" dist
++      - id: syft
++        uses: anchore/sbom-action/download-syft@v0
++      - run: ./scripts/sbom.sh "0.0.0-dev.${GITHUB_SHA::12}" dist
++        env:
++          SYFT: ${{ steps.syft.outputs.cmd }}
++      - run: ./scripts/check-sbom.sh --strict dist/sbom
++      - id: grype
++        uses: anchore/scan-action/download-grype@v7
++      - run: ./scripts/scan-sbom.sh dist/sbom
++        env:
++          GRYPE: ${{ steps.grype.outputs.cmd }}
++      - uses: actions/upload-artifact@v4
++        with:
++          name: sbom-ci
++          path: dist/sbom/
++          if-no-files-found: error
+   console:
+     runs-on: ubuntu-latest
+     steps:
+@@ -88,7 +119,10 @@ jobs:
+     runs-on: ubuntu-latest
+     services:
+       postgres:
+-        image: postgres:17
++        # cgr.dev/chainguard/postgres:latest, created 2026-11-02: PostgreSQL
++        # 18.6 with client tools and a shell; honours POSTGRES_PASSWORD like
++        # the Docker Hub image. Pinned by digest (docs/supply-chain.md).
++        image: cgr.dev/chainguard/postgres@sha256:c976eb2e1f7702a9ec38acb3f44c3976b449db7f10181f20b74c53b212a0e202
+         env:
+           POSTGRES_PASSWORD: zeroauthy
+         ports:
+@@ -99,6 +133,8 @@ jobs:
+           --health-timeout 5s
+           --health-retries 24
+       mysql:
++        # Stays on Docker Hub: cgr.dev/chainguard/mysql is not pullable
++        # anonymously (checked 2026-11-05) and MariaDB is not a substitute.
+         image: mysql:8.4
+         env:
+           MYSQL_ROOT_PASSWORD: zeroauthy
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 96ab012..3565679 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -75,10 +75,62 @@ jobs:
+           path: dist/
+           if-no-files-found: error
+ 
++  sbom:
++    # Software bills of materials and the vulnerability gate (Plan 49,
++    # docs/supply-chain.md). Runs before `approve`: the archives' SBOMs and
++    # a local linux/amd64 image build are scanned, and nothing is published
++    # while a critical or high finding is not accepted in .grype.yaml or
++    # openvex.json. The published image SBOM is taken from the pushed image
++    # in `publish`; the gate build here is never pushed.
++    needs: [version, binaries]
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-go@v5
++        with:
++          go-version-file: go.mod
++      - uses: actions/download-artifact@v4
++        with:
++          name: dist
++          path: dist
++      - id: syft
++        uses: anchore/sbom-action/download-syft@v0
++      - name: SBOMs of the release archives
++        run: ./scripts/sbom.sh "${{ needs.version.outputs.version }}" dist
++        env:
++          SYFT: ${{ steps.syft.outputs.cmd }}
++      - run: ./scripts/check-sbom.sh --strict dist/sbom
++      - uses: docker/setup-buildx-action@v3
++      - name: Build the linux/amd64 image for the gate (not pushed)
++        uses: docker/build-push-action@v6
++        with:
++          context: .
++          platforms: linux/amd64
++          build-args: VERSION=${{ needs.version.outputs.version }}
++          tags: zeroauthy:sbom-gate
++          load: true
++          push: false
++      - name: SBOM of the gate image
++        run: ./scripts/sbom.sh image docker:zeroauthy:sbom-gate "${{ needs.version.outputs.version }}" dist/gate
++        env:
++          SYFT: ${{ steps.syft.outputs.cmd }}
++      - run: ./scripts/check-sbom.sh --strict dist/gate/sbom
++      - id: grype
++        uses: anchore/scan-action/download-grype@v7
++      - name: Vulnerability gate
++        run: ./scripts/scan-sbom.sh dist/sbom dist/gate/sbom
++        env:
++          GRYPE: ${{ steps.grype.outputs.cmd }}
++      - uses: actions/upload-artifact@v4
++        with:
++          name: sbom
++          path: dist/sbom/
++          if-no-files-found: error
++
+   approve:
+     # Manual gate: GitHub waits for a required reviewer of the `production`
+     # environment (Settings > Environments) before anything is published.
+-    needs: [version, test, conformance, binaries]
++    needs: [version, test, conformance, binaries, sbom]
+     if: needs.version.outputs.publish == 'true'
+     runs-on: ubuntu-latest
+     environment: production
+@@ -97,6 +149,9 @@ jobs:
+       packages: write
+       id-token: write
+       attestations: write
++    outputs:
++      # The pushed index digest; `publish` scans and attests the image by it.
++      digest: ${{ steps.build.outputs.digest }}
+     steps:
+       - uses: actions/checkout@v4
+       - uses: docker/setup-buildx-action@v3
+@@ -135,11 +190,12 @@ jobs:
+           push-to-registry: true
+ 
+   publish:
+-    needs: [version, test, conformance, binaries, approve, image]
++    needs: [version, test, conformance, binaries, sbom, approve, image]
+     if: needs.version.outputs.publish == 'true' && needs.approve.result == 'success' && needs.image.result == 'success'
+     runs-on: ubuntu-latest
+     permissions:
+       contents: write
++      packages: write
+       id-token: write
+       attestations: write
+     steps:
+@@ -150,9 +206,57 @@ jobs:
+           path: dist
+       - name: Verify checksums
+         run: cd dist && sha256sum -c SHA256SUMS
++      # SBOMs (docs/supply-chain.md): the archive SBOMs come from the `sbom`
++      # gate job; the image SBOM is generated here from the pushed digest so
++      # its metadata names the published image. The CycloneDX document of
++      # each artefact is an attest-sbom attestation; every SBOM file is also
++      # a build-provenance subject, so `gh attestation verify` covers it.
++      - uses: actions/download-artifact@v4
++        with:
++          name: sbom
++          path: dist/sbom
++      - name: Verify SBOM checksums
++        run: cd dist/sbom && sha256sum -c SBOM_SHA256SUMS
++      - uses: docker/login-action@v3
++        with:
++          registry: ghcr.io
++          username: ${{ github.actor }}
++          password: ${{ secrets.GITHUB_TOKEN }}
++      - uses: actions/setup-go@v5
++        with:
++          go-version-file: go.mod
++      - id: syft
++        uses: anchore/sbom-action/download-syft@v0
++      - name: SBOM of the pushed image
++        run: ./scripts/sbom.sh image "registry:ghcr.io/${{ github.repository }}@${{ needs.image.outputs.digest }}" "${{ needs.version.outputs.version }}" dist
++        env:
++          SYFT: ${{ steps.syft.outputs.cmd }}
++      - run: ./scripts/check-sbom.sh --strict dist/sbom
+       - uses: actions/attest-build-provenance@v2
+         with:
+-          subject-path: dist/*.tar.gz
++          subject-path: |
++            dist/*.tar.gz
++            dist/sbom/*.cdx.json
++            dist/sbom/*.spdx.json
++            dist/sbom/SBOM_SHA256SUMS
++      - uses: actions/attest-sbom@v2
++        with:
++          subject-path: dist/zeroauthy_${{ needs.version.outputs.version }}_linux_amd64.tar.gz
++          sbom-path: dist/sbom/zeroauthy_${{ needs.version.outputs.version }}_linux_amd64.cdx.json
++      - uses: actions/attest-sbom@v2
++        with:
++          subject-path: dist/zeroauthy_${{ needs.version.outputs.version }}_linux_arm64.tar.gz
++          sbom-path: dist/sbom/zeroauthy_${{ needs.version.outputs.version }}_linux_arm64.cdx.json
++      - uses: actions/attest-sbom@v2
++        with:
++          subject-path: dist/zeroauthy_${{ needs.version.outputs.version }}_darwin_arm64.tar.gz
++          sbom-path: dist/sbom/zeroauthy_${{ needs.version.outputs.version }}_darwin_arm64.cdx.json
++      - uses: actions/attest-sbom@v2
++        with:
++          subject-name: ghcr.io/${{ github.repository }}
++          subject-digest: ${{ needs.image.outputs.digest }}
++          sbom-path: dist/sbom/zeroauthy_${{ needs.version.outputs.version }}_image.cdx.json
++          push-to-registry: true
+       - name: Create the GitHub release
+         env:
+           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+@@ -167,4 +271,5 @@ jobs:
+             .github/release-docker.md >> notes.md
+           flags=(--verify-tag --title "zeroauthy $TAG" --notes-file notes.md)
+           [ "$PRERELEASE" = true ] && flags+=(--prerelease) || flags+=(--latest)
+-          gh release create "$TAG" "${flags[@]}" dist/*.tar.gz dist/SHA256SUMS
++          gh release create "$TAG" "${flags[@]}" dist/*.tar.gz dist/SHA256SUMS \
++            dist/sbom/*.cdx.json dist/sbom/*.spdx.json dist/sbom/SBOM_SHA256SUMS
+-- 
+2.43.0
+

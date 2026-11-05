@@ -653,11 +653,13 @@ English catalog.
 **Files:** create `internal/mfa/webauthn.go`, `internal/login/mfa_webauthn.go`,
 templates `mfa_detect.html`, `mfa_webauthn.html`; modify
 `internal/mfa/{service,decide}.go`, `internal/login/mfa.go`,
-`internal/mgmt/{guardian,guardian_stored,guardian_tickets}.go` (factors
-enforced; UV setting system route), `internal/mfarules/inventory.json`
-(`webauthn-roaming` → enforced), `internal/actions/mfa.go`,
-`internal/server/server.go` (the `/u/mfa-detect-browser-capabilities` and
-`/u/mfa-webauthn-*` paths), English catalog.
+`internal/mgmt/{guardian,guardian_stored,guardian_tickets}.go` and
+`internal/mgmt/guardian_webauthn.go` (the UV setting route's runtime),
+`internal/actions/mfa.go`, `internal/server/{server,mgmtapi}.go` (the
+`/u/mfa-detect-browser-capabilities` and `/u/mfa-webauthn-*` paths, and the
+UV route's adapter), English catalog. Task 1 already moved
+`webauthn-roaming` and `webauthn-platform` to `enforced` in
+`internal/mfarules/inventory.json`; no inventory edit remains here.
 
 **Interfaces:** consumes Tasks 3, 4, 7, 8. Produces
 `mfa.Service.BeginWebAuthnEnroll(ctx, tid, uid, factor string, rp rpid.Result, display passkey.UserDisplay) (*Enrollment, webauthn.CreationOptions, error)`,

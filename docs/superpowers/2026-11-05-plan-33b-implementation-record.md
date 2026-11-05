@@ -199,3 +199,18 @@ Third pre-existing failure set found: `internal/authz` fails 12
 Actions-runtime-dependent tests on this branch, reproduced with every Task 11
 change stashed, the same way `internal/login`'s 15 do. Task 19 must report
 both sets as environment-blocked, never as passing.
+
+## Task 12 — WebAuthn MFA with security keys (in progress)
+
+Part 1 landed: the operator-only security-key user-verification setting
+runs at `GET`/`PUT …/guardian/factors/webauthn-roaming/settings` instead of
+answering 501, with the value stored at
+`GuardianSettings.Stored["webauthn-roaming/settings"]`. The runtime (the
+factor itself in `internal/mfa`, the hosted WebAuthn MFA pages and the
+detect page) is still in progress.
+Detail: [task 12 record](2026-11-05-plan-33b-record-task-12.md).
+
+Two contract findings, both verified: Task 1 already moved both WebAuthn
+factors to `enforced` in `internal/mfarules/inventory.json` (so the plan's
+Task 12 line asking for it was stale and is corrected, not re-applied), and
+the UV route was frozen in the API document but had no server adapter at all.

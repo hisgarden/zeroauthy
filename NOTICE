@@ -32,3 +32,10 @@ beside the code. Modified: adds argon2d export (DKey) and Argon2 version
 0x10 support (KeyVersion, Version10; version 1.0 overwrites blocks on every
 pass instead of XOR-ing); the tests were not copied. Each change is marked in
 a comment in argon2.go.
+
+internal/sbomcheck/schema/ holds the CycloneDX JSON schemas
+bom-1.6.schema.json, spdx.schema.json and jsf-0.82.schema.json, copied on
+2026-11-05 from https://github.com/CycloneDX/specification (schema/, commit
+6470e34ef83f915868ece48934cff52e10c9eb49), licensed under the Apache License,
+Version 2.0, Copyright OWASP Foundation; the license text is beside them.
+They are used only to validate the SBOMs a release publishes.

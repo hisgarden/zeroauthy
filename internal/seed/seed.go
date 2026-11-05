@@ -15,6 +15,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/apirules"
 	"github.com/zeroauthy/zeroauthy/internal/clientrules"
 	"github.com/zeroauthy/zeroauthy/internal/connrules"
+	"github.com/zeroauthy/zeroauthy/internal/hostname"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 	"go.yaml.in/yaml/v3"
 )
@@ -63,7 +64,7 @@ type Tenant struct {
 
 	Name                string           `yaml:"name"`
 	FriendlyName        string           `yaml:"friendly_name"`
-	Domains             []string         `yaml:"domains"`
+	Domains             []string         `yaml:"-"` // from DomainEntries; see below
 	DefaultAudience     string           `yaml:"default_audience"`
 	DefaultDirectory    string           `yaml:"default_directory"`
 	AllowedLogoutURLs   []string         `yaml:"allowed_logout_urls"`
@@ -81,6 +82,13 @@ type Tenant struct {
 	CustomText          store.CustomText `yaml:"custom_text"`
 
 	DeviceFlow DeviceFlow `yaml:"device_flow"`
+
+	// DomainEntries is the YAML domains list: each entry is an operator
+	// alias host or {host, relying_party_identifier} (Plan 33b R2). Parse
+	// copies the hosts to Domains and the RP IDs to DomainRPIDs, keyed by
+	// the normalized host; programmatic callers set those two directly.
+	DomainEntries []SeedDomain      `yaml:"domains"`
+	DomainRPIDs   map[string]string `yaml:"-"`
 
 	SkipNonVerifiableCallbackURIConfirmationPrompt bool `yaml:"skip_non_verifiable_callback_uri_confirmation_prompt"`
 	UseScopeDescriptionsForConsent                 bool `yaml:"use_scope_descriptions_for_consent"`
@@ -272,6 +280,7 @@ func Parse(data []byte) (*File, error) {
 	}
 	for i := range f.Tenants {
 		f.Tenants[i].supplied = raw.Tenants[i]
+		f.Tenants[i].splitDomains()
 	}
 	if err := f.validate(); err != nil {
 		return nil, err
@@ -286,6 +295,73 @@ func ValidateFile(f *File) error {
 		return errors.New("seed: nil file")
 	}
 	return f.validate()
+}
+
+// SeedDomain is one entry of a tenant's domains: a host string, or a
+// mapping with host and an optional relying_party_identifier, the WebAuthn
+// RP ID the alias uses instead of itself (Plan 33b R2).
+type SeedDomain struct {
+	Host                   string
+	RelyingPartyIdentifier string
+}
+
+func (d *SeedDomain) UnmarshalYAML(n *yaml.Node) error {
+	switch n.Kind {
+	case yaml.ScalarNode:
+		return n.Decode(&d.Host)
+	case yaml.MappingNode:
+		seen := map[string]bool{}
+		for i := 0; i+1 < len(n.Content); i += 2 {
+			key, value := n.Content[i].Value, n.Content[i+1]
+			if seen[key] {
+				return fmt.Errorf("line %d: domains: duplicate field %q", n.Line, key)
+			}
+			seen[key] = true
+			var v string
+			if value.Kind != yaml.ScalarNode || value.Decode(&v) != nil {
+				return fmt.Errorf("line %d: domains: %s must be a string", value.Line, key)
+			}
+			switch key {
+			case "host":
+				d.Host = v
+			case "relying_party_identifier":
+				if v == "" {
+					return fmt.Errorf("line %d: domains: relying_party_identifier must not be empty", value.Line)
+				}
+				d.RelyingPartyIdentifier = v
+			default:
+				return fmt.Errorf("line %d: domains: field %q not found (want host or relying_party_identifier)", n.Content[i].Line, key)
+			}
+		}
+		if d.Host == "" {
+			return fmt.Errorf("line %d: domains: an entry needs a host", n.Line)
+		}
+		return nil
+	default:
+		return fmt.Errorf("line %d: domains: each entry is a host or {host, relying_party_identifier}", n.Line)
+	}
+}
+
+// splitDomains fills Domains and DomainRPIDs from the parsed entries.
+func (t *Tenant) splitDomains() {
+	if t.DomainEntries == nil {
+		return
+	}
+	t.Domains, t.DomainRPIDs = make([]string, len(t.DomainEntries)), nil
+	for i, d := range t.DomainEntries {
+		t.Domains[i] = d.Host
+		if d.RelyingPartyIdentifier == "" {
+			continue
+		}
+		host, err := hostname.NormalizeOperatorHost(d.Host)
+		if err != nil {
+			host = d.Host // validate reports it
+		}
+		if t.DomainRPIDs == nil {
+			t.DomainRPIDs = map[string]string{}
+		}
+		t.DomainRPIDs[host] = d.RelyingPartyIdentifier
+	}
 }
 
 type Branding struct {

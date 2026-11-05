@@ -155,8 +155,9 @@ func TestTenantRoundTrip(t *testing.T) {
 		PushedAuthorizationRequestsSupported: true,
 		DeviceFlowCharset:                    "digits", DeviceFlowMask: "###-###",
 		Reserved: true, Seeded: true, Origin: store.OriginAPI, IdentityEpoch: 7,
+		DomainRPIDs: map[string]string{"a.example.test": "example.test"},
 	}, tenantToPB, tenantFromPB)
-	roundTrip(t, "empty", &store.Tenant{Domains: []string{}, AllowedLogoutURLs: []string{}, EnabledLocales: []string{}, CustomText: store.CustomText{}, SettingsExtra: map[string]any{}, SettingsPresence: map[string]bool{}, ProtectionSettings: store.ProtectionSettings{CAPTCHA: store.CAPTCHAPolicy{SimpleCaptcha: map[string]any{}}}}, tenantToPB, tenantFromPB)
+	roundTrip(t, "empty", &store.Tenant{DomainRPIDs: map[string]string{}, Domains: []string{}, AllowedLogoutURLs: []string{}, EnabledLocales: []string{}, CustomText: store.CustomText{}, SettingsExtra: map[string]any{}, SettingsPresence: map[string]bool{}, ProtectionSettings: store.ProtectionSettings{CAPTCHA: store.CAPTCHAPolicy{SimpleCaptcha: map[string]any{}}}}, tenantToPB, tenantFromPB)
 	roundTrip(t, "zero", &store.Tenant{}, tenantToPB, tenantFromPB)
 }
 
@@ -182,7 +183,11 @@ func TestClientRoundTrip(t *testing.T) {
 		OrganizationUsage:                              store.OrgUsageRequire,
 		OrganizationRequireBehavior:                    store.OrgBehaviorPreLoginPrompt,
 		OrganizationDiscoveryMethods:                   []string{store.OrgDiscoveryEmail},
+		Mobile: &store.ClientMobile{IOS: &store.ClientMobileIOS{TeamID: "ABCDE12345", AppBundleIdentifier: "com.example.app"},
+			Android: &store.ClientMobileAndroid{AppPackageName: "com.example.app", SHA256CertFingerprints: []string{"AB:CD"}}},
 	}, clientToPB, clientFromPB)
+	roundTrip(t, "mobile empty", &store.Client{Mobile: &store.ClientMobile{Android: &store.ClientMobileAndroid{SHA256CertFingerprints: []string{}}}}, clientToPB, clientFromPB)
+	roundTrip(t, "mobile bare", &store.Client{Mobile: &store.ClientMobile{}}, clientToPB, clientFromPB)
 	roundTrip(t, "third party", &store.Client{
 		TenantID: "ten", ClientID: "tp", ThirdPartySecurityMode: store.SecurityModePermissive,
 		SkipNonVerifiableCallbackURIConfirmationPrompt: ptr(false),
@@ -350,8 +355,9 @@ func TestSessionRoundTrip(t *testing.T) {
 		ExpiresAt: nanoTime.Add(time.Hour), IdleExpiresAt: nanoTime.Add(time.Minute), CreatedAt: nanoTime,
 		UpdatedAt: nanoTime.Add(time.Second), LastInteractedAt: nanoTime.Add(2 * time.Second),
 		InitialIP: "203.0.113.7", InitialUserAgent: "ua-1", LastIP: "198.51.100.9", LastUserAgent: "ua-2",
+		AuthMethods: []store.AuthMethod{{Name: "pwd", At: nanoTime}, {Name: "mfa", Type: "otp", At: nanoTime.Add(time.Minute)}},
 	}, sessionToPB, sessionFromPB)
-	roundTrip(t, "empty", &store.LoginSession{ClientIDs: []string{}}, sessionToPB, sessionFromPB)
+	roundTrip(t, "empty", &store.LoginSession{ClientIDs: []string{}, AuthMethods: []store.AuthMethod{}}, sessionToPB, sessionFromPB)
 	roundTrip(t, "zero", &store.LoginSession{}, sessionToPB, sessionFromPB)
 }
 

@@ -231,6 +231,7 @@ func tenantToPB(t *store.Tenant) (*storev1.Tenant, error) {
 		DeviceFlowCharset:                              t.DeviceFlowCharset, DeviceFlowMask: t.DeviceFlowMask,
 		Reserved: t.Reserved, Seeded: t.Seeded, Origin: t.Origin,
 		IdentityEpoch: t.IdentityEpoch,
+		DomainRpIds:   stringMapToPB(t.DomainRPIDs),
 	}
 
 	for _, item := range []struct {
@@ -285,6 +286,7 @@ func tenantFromPB(pb *storev1.Tenant) (*store.Tenant, error) {
 		DeviceFlowCharset:                              pb.DeviceFlowCharset, DeviceFlowMask: pb.DeviceFlowMask,
 		Reserved: pb.Reserved, Seeded: pb.Seeded, Origin: pb.Origin,
 		IdentityEpoch: pb.IdentityEpoch,
+		DomainRPIDs:   stringMapFromPB(pb.DomainRpIds),
 	}
 
 	for _, item := range []struct {
@@ -347,6 +349,7 @@ func clientToPB(c *store.Client) (*storev1.Client, error) {
 		OrganizationUsage:                              c.OrganizationUsage,
 		OrganizationRequireBehavior:                    c.OrganizationRequireBehavior,
 		OrganizationDiscoveryMethods:                   stringsToPB(c.OrganizationDiscoveryMethods),
+		Mobile:                                         clientMobileToPB(c.Mobile),
 	}
 	if c.Secrets != nil {
 		pb.Secrets = &storev1.ClientSecretList{Values: make([]*storev1.ClientSecret, 0, len(c.Secrets))}
@@ -387,6 +390,7 @@ func clientFromPB(pb *storev1.Client) (*store.Client, error) {
 		OrganizationUsage:                              pb.OrganizationUsage,
 		OrganizationRequireBehavior:                    pb.OrganizationRequireBehavior,
 		OrganizationDiscoveryMethods:                   stringsFromPB(pb.OrganizationDiscoveryMethods),
+		Mobile:                                         clientMobileFromPB(pb.Mobile),
 	}
 	if pb.Secrets != nil {
 		c.Secrets = make([]store.ClientSecret, 0, len(pb.Secrets.Values))
@@ -868,6 +872,7 @@ func sessionToPB(s *store.LoginSession) (*storev1.LoginSession, error) {
 		IdleExpiresAt: tsToPB(s.IdleExpiresAt), CreatedAt: tsToPB(s.CreatedAt),
 		UpdatedAt: tsToPB(s.UpdatedAt), LastInteractedAt: tsToPB(s.LastInteractedAt),
 		InitialIp: s.InitialIP, InitialUserAgent: s.InitialUserAgent, LastIp: s.LastIP, LastUserAgent: s.LastUserAgent,
+		AuthMethods: authMethodsToPB(s.AuthMethods),
 	}, nil
 }
 
@@ -878,11 +883,16 @@ func sessionFromPB(pb *storev1.LoginSession) (*store.LoginSession, error) {
 	if err := checkTS(pb.MfaAt, pb.AuthenticatedAt, pb.ExpiresAt, pb.IdleExpiresAt, pb.CreatedAt, pb.UpdatedAt, pb.LastInteractedAt); err != nil {
 		return nil, err
 	}
+	methods, err := authMethodsFromPB(pb.AuthMethods)
+	if err != nil {
+		return nil, err
+	}
 	return &store.LoginSession{
-		MFAAt:      tsFromPB(pb.MfaAt),
-		Origin:     pb.Origin,
-		CookieMode: pb.CookieMode,
-		TenantID:   pb.TenantId, ID: pb.Id, TokenHash: pb.TokenHash, UserID: pb.UserId,
+		AuthMethods: methods,
+		MFAAt:       tsFromPB(pb.MfaAt),
+		Origin:      pb.Origin,
+		CookieMode:  pb.CookieMode,
+		TenantID:    pb.TenantId, ID: pb.Id, TokenHash: pb.TokenHash, UserID: pb.UserId,
 		Connection: pb.Connection, AuthenticatedAt: tsFromPB(pb.AuthenticatedAt),
 		ClientIDs: stringsFromPB(pb.ClientIds), ExpiresAt: tsFromPB(pb.ExpiresAt),
 		IdleExpiresAt: tsFromPB(pb.IdleExpiresAt), CreatedAt: tsFromPB(pb.CreatedAt),

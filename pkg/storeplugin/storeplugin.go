@@ -271,3 +271,13 @@ func (o *opened) CheckOrganizationsIISupport(ctx context.Context) error {
 func (o *opened) OrganizationsIISupported() bool {
 	return o.Store.(store.OrganizationsIISupporter).OrganizationsIISupported()
 }
+
+// CheckWebAuthnSupport preserves the client's webauthn.v1 probe through the SDK wrapper.
+func (o *opened) CheckWebAuthnSupport(ctx context.Context) error {
+	return o.Store.(store.WebAuthnSupporter).CheckWebAuthnSupport(ctx)
+}
+
+// WebAuthnSupported preserves the client's latched webauthn.v1 answer.
+func (o *opened) WebAuthnSupported() bool {
+	return o.Store.(store.WebAuthnSupporter).WebAuthnSupported()
+}

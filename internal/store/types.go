@@ -44,6 +44,9 @@ type Tenant struct {
 	SessionCookieMode             string // persistent (default) or non-persistent
 	// Domains are normalized hosts that resolve to this tenant.
 	Domains []string
+	// DomainRPIDs maps an operator alias host in Domains to the WebAuthn
+	// relying party ID it uses instead of itself (Plan 33b R2); nil means none.
+	DomainRPIDs map[string]string
 	// DefaultAudience is used when a token request has no audience.
 	DefaultAudience string
 	// AllowedLogoutURLs are where /v2/logout may send a browser when the
@@ -178,6 +181,46 @@ type Client struct {
 	// OrganizationDiscoveryMethods are OrgDiscovery* values, set only with
 	// OrgBehaviorPreLoginPrompt; nil means unset.
 	OrganizationDiscoveryMethods []string
+
+	// Mobile holds the native app settings used for passkey origins and the
+	// .well-known association files (Plan 33b); nil means none.
+	Mobile *ClientMobile
+}
+
+// ClientMobile is the Management API client "mobile" setting.
+type ClientMobile struct {
+	IOS     *ClientMobileIOS
+	Android *ClientMobileAndroid
+}
+
+// ClientMobileIOS is mobile.ios: the Apple team ID and bundle identifier.
+type ClientMobileIOS struct {
+	TeamID, AppBundleIdentifier string
+}
+
+// ClientMobileAndroid is mobile.android: the package name and the signing
+// certificate SHA-256 fingerprints (hex with colons).
+type ClientMobileAndroid struct {
+	AppPackageName         string
+	SHA256CertFingerprints []string
+}
+
+// Clone returns an independent copy; nil clones to nil.
+func (m *ClientMobile) Clone() *ClientMobile {
+	if m == nil {
+		return nil
+	}
+	c := *m
+	if m.IOS != nil {
+		v := *m.IOS
+		c.IOS = &v
+	}
+	if m.Android != nil {
+		v := *m.Android
+		v.SHA256CertFingerprints = slices.Clone(m.Android.SHA256CertFingerprints)
+		c.Android = &v
+	}
+	return &c
 }
 
 // Client organization settings (D-0055).
@@ -814,6 +857,17 @@ type LoginSession struct {
 	InitialUserAgent string
 	LastIP           string
 	LastUserAgent    string
+	// AuthMethods records how the session was authenticated, first factor
+	// first, then MFA; nil for sessions created before Plan 33b.
+	AuthMethods []AuthMethod
+}
+
+// AuthMethod is one authentication step of a LoginSession. Name follows the
+// Management API's SessionAuthenticationSignal names: pwd, passkey,
+// federated, email, sms or mfa; Type is the factor for mfa and empty otherwise.
+type AuthMethod struct {
+	Name, Type string
+	At         time.Time
 }
 
 // Internal AuthTransaction.Params keys shared by authorization and federation.
@@ -1232,6 +1286,7 @@ func (t *Tenant) Clone() *Tenant {
 	}
 	c := *t
 	c.Domains = slices.Clone(t.Domains)
+	c.DomainRPIDs = maps.Clone(t.DomainRPIDs)
 	c.AllowedLogoutURLs = slices.Clone(t.AllowedLogoutURLs)
 	c.EnabledLocales = slices.Clone(t.EnabledLocales)
 	c.CustomText = t.CustomText.Clone()

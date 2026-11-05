@@ -36,6 +36,7 @@ func cloneClient(c *store.Client) *store.Client {
 		v := *c.SkipNonVerifiableCallbackURIConfirmationPrompt
 		out.SkipNonVerifiableCallbackURIConfirmationPrompt = &v
 	}
+	out.Mobile = c.Mobile.Clone()
 	return &out
 }
 
@@ -117,6 +118,7 @@ func cloneUser(u *store.User) *store.User {
 func cloneSession(s *store.LoginSession) *store.LoginSession {
 	out := *s
 	out.ClientIDs = slices.Clone(s.ClientIDs)
+	out.AuthMethods = slices.Clone(s.AuthMethods)
 	return &out
 }
 

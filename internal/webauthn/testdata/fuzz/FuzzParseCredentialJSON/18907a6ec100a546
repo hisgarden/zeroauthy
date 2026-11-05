@@ -1,0 +1,2 @@
+go test fuzz v1
+[]byte("{\"AuthentiCAtorAttAChment\":\"platform\",\"id\":\"0vpBcgQnwef-ZrTH9shZN8VaW2LfDuL0X_G77yvg_E7\",\"rAwId\":\"0vpBcgQnwef-ZrTH9shZN8VaW2LfDuL0X_G77yvg_E7\",\"response\":{\"ClientDAtAJSON\":\"0000000000000000000000000000000000000000000000000000\x8500000000000000000000000000000000\",\"\":[\"\"]},\"tYpe\":\"public-key\"}")

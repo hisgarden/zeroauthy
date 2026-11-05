@@ -15,6 +15,12 @@ type users struct{ s *Store }
 func (r users) Create(_ context.Context, u *store.User) error {
 	r.s.lock()
 	defer r.s.unlock()
+	return r.create(u)
+}
+
+// create stores a new user. The caller holds the lock; CreateUserWithPasskey
+// shares it so the user and the passkey are one atomic step.
+func (r users) create(u *store.User) error {
 	if err := r.checkPhone(u); err != nil {
 		return err
 	}

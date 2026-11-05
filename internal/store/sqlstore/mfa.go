@@ -155,13 +155,18 @@ func (r mfa) DeleteAuthenticator(ctx context.Context, tid, uid, id string) error
 	}
 	return expectRow(res)
 }
+
+// DeleteUserAuthenticators with nil types removes every MFA type: passkeys
+// are first factors and stay.
 func (r mfa) DeleteUserAuthenticators(ctx context.Context, tid, uid string, types []string) error {
 	if types != nil && len(types) == 0 {
 		return nil
 	}
 	q := `DELETE FROM mfa_authenticators WHERE tenant_id=? AND user_id=?`
 	args := []any{tid, uid}
-	if types != nil {
+	if types == nil {
+		q += ` AND type<>'passkey'`
+	} else {
 		q += ` AND type IN (`
 		for i, t := range types {
 			if i > 0 {
@@ -298,6 +303,26 @@ func (r mfa) ConsumeMFAToken(ctx context.Context, tid, hash, client string, now 
 	return v, nil
 }
 func (r mfa) CreateChallenge(ctx context.Context, v *store.MFAChallenge) error {
+	if v.UserID == "" && store.ChallengeUserOptional(v.Kind) {
+		// A usernameless passkey challenge: mfa_challenges.user_id is NOT
+		// NULL without a foreign key, so it stores "" and needs only the
+		// tenant (no user, no authenticator).
+		if v.AuthenticatorID != "" {
+			return store.ErrNotFound
+		}
+		raw, err := toJSON(v)
+		if err != nil {
+			return err
+		}
+		return r.s.atomicRetry(ctx, nil, func(s *Store) error {
+			var x int
+			if err := s.queryRow(ctx, `SELECT 1 FROM tenants WHERE id=?`, v.TenantID).Scan(&x); err != nil {
+				return mfaMissing(err)
+			}
+			_, err := s.exec(ctx, `INSERT INTO mfa_challenges (tenant_id,id,user_id,data,expires_at,attempts) VALUES (?,?,?,?,?,?)`, v.TenantID, v.ID, "", raw, micros(v.ExpiresAt), v.Attempts)
+			return s.conflict(err)
+		})
+	}
 	return r.s.atomicRetry(ctx, nil, func(s *Store) error {
 		if v.AuthenticatorID != "" {
 			if _, err := (mfa{s}).GetAuthenticator(ctx, v.TenantID, v.UserID, v.AuthenticatorID); err != nil {
@@ -495,7 +520,7 @@ func (r mfa) PurgeMFA(ctx context.Context, before time.Time, limit int) (int, er
 }
 func (r mfa) DeleteUserMFA(ctx context.Context, tid, uid string) error {
 	return r.s.atomicRetry(ctx, nil, func(s *Store) error {
-		for _, table := range []string{"mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers"} {
+		for _, table := range []string{"mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers", "webauthn_snoozes"} {
 			if _, err := s.exec(ctx, `DELETE FROM `+table+` WHERE tenant_id=? AND user_id=?`, tid, uid); err != nil {
 				return err
 			}
@@ -505,7 +530,7 @@ func (r mfa) DeleteUserMFA(ctx context.Context, tid, uid string) error {
 }
 func (r mfa) DeleteTenantMFA(ctx context.Context, tid string) error {
 	return r.s.atomicRetry(ctx, nil, func(s *Store) error {
-		for _, table := range []string{"mfa_guardian", "mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers"} {
+		for _, table := range []string{"mfa_guardian", "mfa_authenticators", "mfa_tokens", "mfa_challenges", "mfa_tickets", "mfa_browsers", "webauthn_snoozes"} {
 			if _, err := s.exec(ctx, `DELETE FROM `+table+` WHERE tenant_id=?`, tid); err != nil {
 				return err
 			}

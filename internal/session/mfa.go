@@ -27,6 +27,33 @@ func (m *Manager) MarkMFA(ctx context.Context, s *store.LoginSession) error {
 	s.MFAAt = at
 	return nil
 }
+
+// AddMethod records one further authentication step on an existing session
+// (Plan 33b section 5.4). Callers pass {Name: "mfa", Type: factor} wherever
+// MarkMFA runs, so the Actions event can list the factor that satisfied the
+// challenge. The store keeps its own copy.
+func (m *Manager) AddMethod(ctx context.Context, s *store.LoginSession, method store.AuthMethod) error {
+	if s == nil {
+		return store.ErrNotFound
+	}
+	next := append(append([]store.AuthMethod(nil), s.AuthMethods...), method)
+	if err := m.Store.Sessions().SetAuthMethods(ctx, s.TenantID, s.ID, next); err != nil {
+		return err
+	}
+	s.AuthMethods = next
+	return nil
+}
+
+// DeviceScope is the stable, non-reversible per-browser key a local passkey
+// prompt binds its snooze to (LR33b-14). The raw cookie is never stored, only
+// its hash; an absent cookie has no scope.
+func DeviceScope(cookie string) string {
+	if cookie == "" {
+		return ""
+	}
+	return secrets.HashToken(cookie)
+}
+
 func browserCookie(kind string) string {
 	switch kind {
 	case "remember":

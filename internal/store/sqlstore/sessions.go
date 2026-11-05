@@ -15,17 +15,21 @@ type sessions struct{ s *Store }
 func (s *Store) Sessions() store.Sessions { return sessions{s} }
 
 const sessionCols = `tenant_id, id, token_hash, user_id, connection, authenticated_at, client_ids, expires_at, idle_expires_at, created_at,
- updated_at, last_interacted_at, initial_ip, initial_user_agent, last_ip, last_user_agent, cookie_mode, origin, mfa_at`
+ updated_at, last_interacted_at, initial_ip, initial_user_agent, last_ip, last_user_agent, cookie_mode, origin, mfa_at, auth_methods`
 
 func (r sessions) Create(ctx context.Context, s *store.LoginSession) error {
 	clients, err := toJSON(s.ClientIDs)
 	if err != nil {
 		return err
 	}
-	_, err = r.s.write(ctx, nil, `INSERT INTO sessions (`+sessionCols+`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+	methods, err := authMethodsArg(s.AuthMethods)
+	if err != nil {
+		return err
+	}
+	_, err = r.s.write(ctx, nil, `INSERT INTO sessions (`+sessionCols+`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		s.TenantID, s.ID, s.TokenHash, s.UserID, s.Connection, micros(s.AuthenticatedAt), clients,
 		micros(s.ExpiresAt), micros(s.IdleExpiresAt), micros(s.CreatedAt),
-		micros(s.UpdatedAt), micros(s.LastInteractedAt), s.InitialIP, s.InitialUserAgent, s.LastIP, s.LastUserAgent, s.CookieMode, s.Origin, optionalMFATime(s.MFAAt))
+		micros(s.UpdatedAt), micros(s.LastInteractedAt), s.InitialIP, s.InitialUserAgent, s.LastIP, s.LastUserAgent, s.CookieMode, s.Origin, optionalMFATime(s.MFAAt), methods)
 	return r.s.conflict(err)
 }
 
@@ -34,11 +38,16 @@ func scanSession(row scanner) (*store.LoginSession, error) {
 	var clients string
 	var authAt, exp, idle, created, updated, interacted int64
 	var mfaAt sql.NullInt64
+	var methods sql.NullString
 	if err := row.Scan(&s.TenantID, &s.ID, &s.TokenHash, &s.UserID, &s.Connection, &authAt, &clients, &exp, &idle, &created,
-		&updated, &interacted, &s.InitialIP, &s.InitialUserAgent, &s.LastIP, &s.LastUserAgent, &s.CookieMode, &s.Origin, &mfaAt); err != nil {
+		&updated, &interacted, &s.InitialIP, &s.InitialUserAgent, &s.LastIP, &s.LastUserAgent, &s.CookieMode, &s.Origin, &mfaAt, &methods); err != nil {
 		return nil, err
 	}
 	if err := fromJSON(clients, &s.ClientIDs); err != nil {
+		return nil, err
+	}
+	var err error
+	if s.AuthMethods, err = fromAuthMethods(methods); err != nil {
 		return nil, err
 	}
 	s.AuthenticatedAt, s.ExpiresAt, s.IdleExpiresAt, s.CreatedAt = fromMicros(authAt), fromMicros(exp), fromMicros(idle), fromMicros(created)
@@ -160,9 +169,57 @@ func (r sessions) MarkMFA(ctx context.Context, tid, id string, at time.Time) err
 	return expectRow(res)
 }
 
+func (r sessions) SetAuthMethods(ctx context.Context, tid, id string, methods []store.AuthMethod) error {
+	arg, err := authMethodsArg(methods)
+	if err != nil {
+		return err
+	}
+	res, err := r.s.write(ctx, nil, `UPDATE sessions SET auth_methods=? WHERE tenant_id=? AND id=?`, arg, tid, id)
+	if err != nil {
+		return err
+	}
+	return expectRow(res)
+}
+
 func optionalMFATime(t time.Time) any {
 	if t.IsZero() {
 		return nil
 	}
 	return micros(t)
+}
+
+// authMethodJSON is the stored form of store.AuthMethod in
+// sessions.auth_methods: [{name, type?, at}] with at in micros.
+type authMethodJSON struct {
+	Name string `json:"name"`
+	Type string `json:"type,omitempty"`
+	At   int64  `json:"at"`
+}
+
+// authMethodsArg encodes a session's methods; nil (sessions from before Plan
+// 33b, or none recorded) is SQL NULL.
+func authMethodsArg(ms []store.AuthMethod) (any, error) {
+	if ms == nil {
+		return nil, nil
+	}
+	out := make([]authMethodJSON, len(ms))
+	for i, m := range ms {
+		out[i] = authMethodJSON{Name: m.Name, Type: m.Type, At: micros(m.At)}
+	}
+	return toJSON(out)
+}
+
+func fromAuthMethods(v sql.NullString) ([]store.AuthMethod, error) {
+	if !v.Valid {
+		return nil, nil
+	}
+	var in []authMethodJSON
+	if err := fromJSON(v.String, &in); err != nil || in == nil {
+		return nil, err
+	}
+	out := make([]store.AuthMethod, len(in))
+	for i, m := range in {
+		out[i] = store.AuthMethod{Name: m.Name, Type: m.Type, At: fromMicros(m.At)}
+	}
+	return out, nil
 }

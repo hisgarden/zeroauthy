@@ -315,6 +315,18 @@ type Security struct {
 
 	// RateLimit is the general Authentication API request limit.
 	RateLimit RateLimit `koanf:"rate_limit"`
+
+	// WebAuthn holds the deployment's rules for passkeys and security keys.
+	WebAuthn WebAuthn `koanf:"webauthn"`
+}
+
+// WebAuthn is security.webauthn: deployment-wide rules for the relying
+// party IDs that passkeys and WebAuthn MFA use.
+type WebAuthn struct {
+	// RestrictSharedRPIDs refuses relying party IDs that cover
+	// server.base_domain or another tenant's host. Turn it on for shared
+	// multi-tenant hosting.
+	RestrictSharedRPIDs bool `koanf:"restrict_shared_rp_ids"`
 }
 
 // RateLimit is security.rate_limit: a token bucket per tenant, client IP

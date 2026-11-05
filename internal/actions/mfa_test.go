@@ -79,7 +79,9 @@ func TestEnrollWithAny(t *testing.T) {
 	}
 }
 func TestPhoneFactorUnavailable(t *testing.T) {
-	for _, factor := range []string{"webauthn-platform", "webauthn-roaming", "push-notification"} {
+	// Plan 33b Task 1 moved the WebAuthn factors to available in the frozen
+	// mfarules inventory; only push stays unavailable.
+	for _, factor := range []string{"push-notification"} {
 		_, err, h := runMFAAction(t, fmt.Sprintf(`api.authentication.challengeWith({type:%q});`, factor), true)
 		requireMFAError(t, err, h, "unavailable")
 	}

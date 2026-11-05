@@ -14,6 +14,7 @@ import (
 
 	"github.com/zeroauthy/zeroauthy/internal/hostname"
 	"github.com/zeroauthy/zeroauthy/internal/store"
+	"github.com/zeroauthy/zeroauthy/internal/webauthnrules"
 )
 
 var ErrBodyTooLarge = errors.New("customdomain: request body exceeds 64 KiB")
@@ -173,14 +174,39 @@ func settings(body map[string]json.RawMessage, domain string, patch bool) (Patch
 		return out, err
 	}
 	if out.RelyingPartyIdentifier.Present && !out.RelyingPartyIdentifier.Null {
-		rp, e := NormalizeDNSName(out.RelyingPartyIdentifier.Value)
-		if e != nil || !(domain == rp || strings.HasSuffix(domain, "."+rp)) {
-			return out, invalid("relying party identifier must be the domain or a non-public-suffix ancestor")
+		rp, e := ValidateRPID(domain, out.RelyingPartyIdentifier.Value)
+		if e != nil {
+			return out, e
 		}
 		out.RelyingPartyIdentifier.Value = rp
 	}
 	return out, nil
 }
+
+// ValidateRPID is the registrable-suffix rule for a WebAuthn relying party
+// ID (spec section 3.2): at most webauthnrules.Limits.RPIDMax characters,
+// and either host itself or a normalized DNS ancestor of host that is not a
+// public suffix (pinned publicsuffix snapshot). host is a bare, normalized
+// hostname without a port. It returns the normalized RP ID. The
+// deployment-wide sharing rule (R1) is rpid.Policy.Validate's.
+func ValidateRPID(host, raw string) (string, error) {
+	if raw == "" || len(raw) > webauthnrules.Limits.RPIDMax || host == "" {
+		return "", errRPID
+	}
+	if self := strings.TrimSuffix(strings.ToLower(raw), "."); self == host {
+		// The host is always its own RP ID; it was validated when it was
+		// claimed (operator hosts may be single-label, such as localhost).
+		return self, nil
+	}
+	rp, err := NormalizeDNSName(raw)
+	if err != nil || rp != host && !strings.HasSuffix(host, "."+rp) {
+		return "", errRPID
+	}
+	return rp, nil
+}
+
+var errRPID = invalid("relying party identifier must be the domain or a non-public-suffix ancestor")
+
 func ValidateCreate(raw []byte, reserved ReservedNames) (CreateInput, error) {
 	var out CreateInput
 	body, err := readBody(raw, createFields)

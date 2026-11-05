@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/zeroauthy/zeroauthy/internal/logrules"
+	"github.com/zeroauthy/zeroauthy/internal/webauthnrules"
 )
 
 // Marker is the shared, frozen replacement for a hidden log value.
@@ -20,11 +21,23 @@ const Marker = logrules.Marker
 
 var keyNormalizer = strings.NewReplacer("_", "", "-", "", ".", "")
 
+// webauthnKeys are the Plan 33b ceremony key names (spec section 8.2,
+// webauthnrules.ScrubKeys), normalized like every key. They match exactly,
+// so unrelated keys that share a fragment ("session", "signature_alg")
+// stay visible.
+var webauthnKeys = func() map[string]bool {
+	out := map[string]bool{}
+	for _, k := range webauthnrules.ScrubKeys() {
+		out[keyNormalizer.Replace(strings.ToLower(k))] = true
+	}
+	return out
+}()
+
 // SensitiveKey deliberately accepts false positives: over-hiding is safer than
 // allowing a secret through because its name has a prefix or different casing.
 func SensitiveKey(name string) bool {
 	name = keyNormalizer.Replace(strings.ToLower(name))
-	if name == "code" || name == "ticket" || name == "cookie" || name == "bindingcode" {
+	if name == "code" || name == "ticket" || name == "cookie" || name == "bindingcode" || webauthnKeys[name] {
 		return true
 	}
 	for _, part := range [...]string{"password", "passwd", "pwd", "secret", "token", "authorization", "apikey", "privatekey", "credential", "otp", "recoverycode", "mfacode", "oobcode", "challenge", "enrollmentticket", "rememberbrowsercookie"} {

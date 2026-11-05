@@ -185,6 +185,69 @@ func TestSweepPurgesExpiredMFARecords(t *testing.T) {
 	}
 }
 
+// Expired WebAuthn snoozes are purged by the general sweep in bounded
+// batches; live snoozes and passkeys remain, and a store without the
+// webauthn.v1 capability is skipped without an error.
+func TestSweepPurgesWebAuthn(t *testing.T) {
+	ctx := context.Background()
+	now := time.Date(2026, 11, 5, 12, 0, 0, 0, time.UTC)
+	st := memory.New()
+	must := func(err error) {
+		t.Helper()
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	must(st.Tenants().Create(ctx, &store.Tenant{ID: "t", Name: "t"}))
+	must(st.Users().Create(ctx, &store.User{TenantID: "t", UserID: "u"}))
+	must(st.WebAuthn().CreatePasskey(ctx, &store.Authenticator{TenantID: "t", UserID: "u", ID: "passkey|dev_1", Type: "passkey", CredentialID: []byte("c1")}, 20))
+	put := func(kind, scope string, until time.Time) {
+		must(st.WebAuthn().PutSnooze(ctx, &store.WebAuthnSnooze{TenantID: "t", UserID: "u", Kind: kind, ScopeKey: scope, Until: until}))
+	}
+	put(store.SnoozePasskeyProgressive, "old", now.Add(-time.Second))
+	put(store.SnoozePlatformRemind, "old", now.Add(-time.Minute))
+	put(store.SnoozePasskeyProgressive, "live", now.Add(time.Hour))
+	n, err := sweep(ctx, st, now)
+	if err != nil || n != 2 {
+		t.Fatalf("sweep = %d, %v; want 2, nil", n, err)
+	}
+	if _, err := st.WebAuthn().GetSnooze(ctx, "t", "u", store.SnoozePasskeyProgressive, "live", now); err != nil {
+		t.Fatalf("live snooze purged: %v", err)
+	}
+	if _, err := st.WebAuthn().GetSnooze(ctx, "t", "u", store.SnoozePasskeyProgressive, "old", now.Add(-time.Hour)); !errors.Is(err, store.ErrNotFound) {
+		t.Fatalf("expired snooze kept: %v", err)
+	}
+	if _, err := st.WebAuthn().GetAuthenticatorByCredentialID(ctx, "t", []byte("c1")); err != nil {
+		t.Fatalf("passkey purged: %v", err)
+	}
+	// A backlog beyond one sweep's bound drains over several sweeps.
+	for i := range mfaPurgeBatch*mfaPurgeBatches + 1 {
+		put(store.SnoozePasskeyLocal, fmt.Sprintf("device-%05d", i), now.Add(-time.Second))
+	}
+	n, err = purgeWebAuthn(ctx, st, now)
+	if err != nil || n != mfaPurgeBatch*mfaPurgeBatches {
+		t.Fatalf("bounded purge = %d, %v", n, err)
+	}
+	n, err = purgeWebAuthn(ctx, st, now)
+	if err != nil || n != 1 {
+		t.Fatalf("remaining purge = %d, %v", n, err)
+	}
+	// An old storage plugin without webauthn.v1 is not an error.
+	n, err = purgeWebAuthn(ctx, noWebAuthnStore{st}, now)
+	if err != nil || n != 0 {
+		t.Fatalf("unavailable purge = %d, %v", n, err)
+	}
+	if _, err := sweep(ctx, noWebAuthnStore{st}, now); err != nil {
+		t.Fatalf("sweep with unavailable WebAuthn: %v", err)
+	}
+}
+
+// noWebAuthnStore is a store whose WebAuthn repository is unavailable, as a
+// plugin that predates webauthn.v1 would be.
+type noWebAuthnStore struct{ store.Store }
+
+func (noWebAuthnStore) WebAuthn() store.WebAuthn { return store.UnimplementedWebAuthn{} }
+
 // Expired passwordless codes and links are purged by the general sweep in
 // bounded batches; unexpired rows remain.
 func TestSweepPurgesExpiredPhoneRecords(t *testing.T) {

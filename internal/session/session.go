@@ -105,8 +105,11 @@ func (m *Manager) Current(ctx context.Context, r *http.Request, t *store.Tenant)
 
 // Start creates a session for a freshly authenticated user and sets the
 // cookie. Any session the request already carries is deleted first, so a
-// login always gets a new session identifier.
-func (m *Manager) Start(ctx context.Context, w http.ResponseWriter, r *http.Request, t *store.Tenant, userID, connection string, authTime time.Time) (*store.LoginSession, error) {
+// login always gets a new session identifier. methods records how the login
+// was authenticated, first factor first (Plan 33b section 5.4); a caller
+// that passes none leaves the record absent, which readers treat as a
+// password login.
+func (m *Manager) Start(ctx context.Context, w http.ResponseWriter, r *http.Request, t *store.Tenant, userID, connection string, authTime time.Time, methods ...store.AuthMethod) (*store.LoginSession, error) {
 	if old, err := r.Cookie(CookieName); err == nil && old.Value != "" {
 		if s, err := m.Store.Sessions().GetByTokenHash(ctx, t.ID, secrets.HashToken(old.Value)); err == nil {
 			_ = m.Store.Sessions().Delete(ctx, t.ID, s.ID)
@@ -134,6 +137,7 @@ func (m *Manager) Start(ctx context.Context, w http.ResponseWriter, r *http.Requ
 		CreatedAt:       now,
 		UpdatedAt:       now, LastInteractedAt: now,
 		InitialIP: ip, InitialUserAgent: ua, LastIP: ip, LastUserAgent: ua,
+		AuthMethods: append([]store.AuthMethod(nil), methods...),
 	}
 	if err := m.Store.Sessions().Create(ctx, s); err != nil {
 		return nil, err

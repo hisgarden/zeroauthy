@@ -2632,3 +2632,249 @@ opt-in Auth0 behaviour), an unusable refresh token is again `400`
 Auth0 does. Wrong-password answers keep Auth0's `403`: conformance does not
 exercise the password grant. Cost if wrong: an Auth0 SDK that branches on 403
 for refresh failures needs the setting.
+
+## D-0062 — Passkeys and WebAuthn MFA contracts and local rulings (2026-11-05)
+
+**2026-11-05; Plan 33b Task 1.** Evidence for the contract frozen in
+`internal/webauthnrules/inventory.json` and `api/*.yaml`, re-fetched on
+2026-11-05 (06:32 UTC) as the published Markdown pages (`<url>.md`, all HTTP
+200): [Passkey Authentication for Database Connections](https://auth0.com/docs/authenticate/database-connections/passkeys),
+[Enable and Configure Passkey Authentication](https://auth0.com/docs/authenticate/database-connections/passkeys/configure-passkey-policy),
+[Monitor Passkey Events in Tenant Logs](https://auth0.com/docs/authenticate/database-connections/passkeys/monitor-passkey-events-in-tenant-logs),
+[Passkey APIs for Embedded Applications](https://auth0.com/docs/authenticate/database-connections/passkeys/passkey-apis),
+[Register a New User With a Passkey](https://auth0.com/docs/api/authentication/passkey/register),
+[Start a Passkey Challenge](https://auth0.com/docs/api/authentication/passkey/challenge),
+[Passkeys with Multiple Custom Domains](https://auth0.com/docs/customize/custom-domains/multiple-custom-domains/passkeys),
+[Multiple Custom Domains](https://auth0.com/docs/customize/custom-domains/multiple-custom-domains),
+[FIDO Authentication with WebAuthn](https://auth0.com/docs/secure/multi-factor-authentication/fido-authentication-with-webauthn),
+[Configure WebAuthn with Security Keys](https://auth0.com/docs/secure/multi-factor-authentication/fido-authentication-with-webauthn/configure-webauthn-security-keys-for-mfa),
+[Configure WebAuthn with Device Biometrics](https://auth0.com/docs/secure/multi-factor-authentication/fido-authentication-with-webauthn/configure-webauthn-device-biometrics-for-mfa),
+[WebAuthn with Device Biometrics for Passwordless](https://auth0.com/docs/authenticate/login/auth0-universal-login/passwordless-login/webauthn-device-biometrics),
+[MFA factors](https://auth0.com/docs/secure/multi-factor-authentication/multi-factor-authentication-factors),
+[post-login trigger](https://auth0.com/docs/customize/actions/explore-triggers/post-login),
+[post-login API object](https://auth0.com/docs/customize/actions/explore-triggers/signup-and-login-triggers/login-trigger/post-login-api-object),
+[post-login event object](https://auth0.com/docs/customize/actions/explore-triggers/signup-and-login-triggers/login-trigger/post-login-event-object),
+[Customize Universal Login text](https://auth0.com/docs/customize/login-pages/universal-login/customize-text-elements),
+[Identifier First](https://auth0.com/docs/authenticate/login/auth0-universal-login/identifier-first),
+[Manage Authentication Methods with the Management API](https://auth0.com/docs/secure/multi-factor-authentication/manage-mfa-auth0-apis/manage-authentication-methods-with-management-api);
+the [Management API OpenAPI](https://auth0.com/docs/oas/management/v2/management-api-oas.json),
+the [Authentication API OpenAPI](https://auth0.com/docs/oas/authentication/authentication-api-oas.json)
+(it documents no `/passkey/*` route and no passkey grant; those come from
+the pages above) and the [logs schema](https://auth0.com/docs/oas/tenant-logs/logs-schema.json);
+W3C WebAuthn Level 2 and Level 3; RFC 8949, 9052, 9053, 8230, 8032 and FIPS
+186-4; Apple associated domains and Google Digital Asset Links; the pinned
+MIT `@auth0/auth0-auth-js` 1.16.1 for request shapes; the Plan 32 event
+catalog. The full changelog text was read on 2026-11-04 (newest entry
+2026-10-30; see `changelog-review.md`). No tenant was observed; as for Plans
+32–34, each undocumented point has a local answer and an observe-later entry
+(W1–W12 below and in the [follow-ups](../superpowers/plan-1-followups.md)).
+
+**Documented values frozen** (`webauthnrules.Rules()`, 94 rules, each with
+its page URL). Passkeys are a database-connection method behind
+`authentication_methods.passkey.enabled` with `passkey_options`
+(`challenge_ui` both/autofill/button, `progressive_enrollment_enabled`,
+`local_enrollment_enabled`), effective only with the new Universal Login
+experience, Identifier First, no required username (or flexible
+identifiers), no custom database (or import mode) and passwords still
+enabled; 20 passkeys per user; passkeys never replace other credentials; MFA
+still applies after a passkey unless an Action skips it; the login UI offers
+autofill, a button or both; progressive enrollment is skippable and delayable
+every 30 days; local enrollment follows a cross-device passkey login;
+invitation signups cannot pick a passkey. The RP ID defaults to the custom
+domain and `relying_party_identifier` (hostname, 255, a registrable suffix)
+overrides it; changing it invalidates old passkeys; the application's origin
+must be in its allowed origins. Native: first-party, OIDC-conformant clients
+holding `urn:okta:params:oauth:grant-type:webauthn`, on a custom domain,
+`/passkey/register` (`client_id`, `client_secret`, `realm`, `organization`,
+`user_profile`, `user_metadata` ≤ 10 strings) and `/passkey/challenge` return
+`auth_session` plus the creation options (`timeout` 60000, `rp.name` =
+`rp.id`, `pubKeyCredParams` -8/-7/-257, `residentKey` required,
+`userVerification` preferred) or request options (`rpId`, `userVerification`
+preferred); statuses 400/401/404/429; the grant takes `auth_session` and
+`authn_response`; the iOS and Android association files are hosted on the
+custom domain from the client's `mobile` settings. WebAuthn MFA: security
+keys with user verification Never/If supported/Required (FIDO-1 keys fail on
+Required); device biometrics cannot be the only factor, enroll through the
+progressive prompt, one device per class, recognized by user agent (OS on
+Windows and iOS 14.5+, browser on macOS, Chrome only on Android); browsers
+without JavaScript or WebAuthn are not offered either; the MFA API lists and
+removes but never enrolls WebAuthn; `challengeWith*`/`enrollWith*` accept both
+factors; tickets accept both. Logs: `ss` `authentication_methods`
+`["passkey"]`, `s` `prompts[].performed_amr` `["phr"]`,
+`gd_enrollment_complete` `authenticator.type` `passkey`,
+`gd_webauthn_enrollment_failed` `authentication_methods` `["passkey"]`;
+`gd_webauthn_*` carry `first_factor`, `failure_details`, `authenticator`;
+`passkey_challenge_*` carry `purpose` and `error.message`. Actions:
+`{name: "passkey"}` in `event.authentication.methods`, `oauth2-webauthn` as
+`event.transaction.protocol`, the WebAuthn factors in `enrolledFactors`.
+Text keys per screen are frozen in `webauthnrules.TextKeys` (the `login-id`
+passkey button and errors, both `passkeys` screens, the eight
+`mfa-webauthn` screens, `mfa-detect-browser-capabilities` and the two
+reset-password WebAuthn challenge screens, which Task 1 added to
+`internal/brandingrules/inventory.json` from `ScreenGroupNameEnum`).
+
+**Limits** (`webauthnrules.Limits`): 20 passkeys per user; hosted challenge
+5 minutes; native `timeout` 60 s plus 10 s grace; progressive and local
+snoozes 30 days; platform remind 14 days and refuse 365 days; nickname 1–20;
+challenge and user handle 32 bytes; attestation 64 KiB; client data 16 KiB;
+credential ID 1023 bytes; COSE key 16 KiB; CBOR depth 16 and 1024 items;
+RP ID 255. The documented ones are the passkey limit, the native timeout,
+the 30-day progressive delay, the nickname maximum, the credential-ID bound
+(WebAuthn L3) and the RP ID length; the rest are LR33b-6, 7, 18, 31 and 34.
+
+**Local rulings (LR33b-1…37), each with its cost if wrong.**
+
+| # | Ruling | Cost if wrong |
+| --- | --- | --- |
+| LR33b-1 | The Management API stores any passkey option combination; passkeys are offered only when the documented prerequisites hold; the console blocks enabling while one is unmet | A tool expecting Auth0 to answer 400 gets 200 and silently no passkeys |
+| LR33b-2 | Passkeys are effective only while password authentication stays enabled (documented "must still have passwords") | None known |
+| LR33b-3 | `password.api_behavior` and `signup_behavior` are stored only; `/dbconnections/signup` keeps requiring a password | Applications relying on passwordless database signup through the API fail |
+| LR33b-4 | Amended by R1. RP ID per host (canonical host = itself; custom domain = its field or the domain); no tenant-level default RP ID; RP IDs covering the deployment's own hosts are refused only under `security.webauthn.restrict_shared_rp_ids` | A tenant expecting a Dashboard default RP ID must set it per custom domain |
+| LR33b-5 | Per-RP-ID enrollment across multiple custom domains, not "first domain only" | Users may hold passkeys on several domains where Auth0 allows one |
+| LR33b-6 | Challenges: hosted 5 minutes; native `timeout` 60000 with 10 s grace; single use; the raw challenge is stored until consumed; `rp.name = rp.id` on hosted pages too | Slow users see an expired-challenge retry |
+| LR33b-7 | User handle: 32 random bytes per user, reused for that user's later passkeys | Clients that infer Auth0's handle format break (none known) |
+| LR33b-8 | Passkey ceremonies send `userVerification: preferred` and do not require the UV flag | Weaker than "required"; matches the documented option |
+| LR33b-9 | Attestation `none` is requested; the other known formats are accepted without verification; no AAGUID policy | An operator wanting attestation-based restrictions cannot have them |
+| LR33b-10 | A sign-count regression is rejected (reason `sign_count`); a BE change is rejected; BS is written back | An authenticator with a resetting counter is locked out (other factors and recovery remain) |
+| LR33b-11 | Registration offers -8, -7, -257; assertions also verify -35, -36, -37 keys imported through the API | None known |
+| LR33b-12 | Actions get `passkey` among the first-factor methods (and, by K11, `pwd`, `federated`, `email`, `sms`); passkeys are not in `enrolledFactors`; the ID token `amr` is unchanged by a passkey alone | Actions or relying parties checking `amr` see Plan 33 behaviour |
+| LR33b-13 | Progressive enrollment after MFA; "don't show again" is 30 days per user per RP ID; only when the user has no passkey for that RP ID | Prompt frequency differs from Auth0 |
+| LR33b-14 | Local enrollment when the assertion's attachment is `cross-platform` and a platform authenticator is available; snooze 30 days per user per browser | Prompt shown more or less often than Auth0 |
+| LR33b-15 | The split signup screens are used only when passkeys are effective | Identifier-first tenants without passkeys keep the single signup page |
+| LR33b-16 | Passkey login: the credential's user wins over the typed identifier; every non-blocked failure gets the generic answer | None known |
+| LR33b-17 | A hosted passkey login failure logs `gd_webauthn_challenge_failed` with `first_factor: true`; native failures log `passkey_challenge_failed` | Log consumers filtering on another code miss failures |
+| LR33b-18 | Platform enrollment snoozes 14 days ("remind me later") and 365 days ("not on this device"), borrowed from the biometrics first-factor page | Prompt frequency differs |
+| LR33b-19 | Device recognition by user-agent classification (OS; browser on macOS; class phone/tablet/desktop) | Some users are not offered their enrolled device, or are refused a second device of the same class |
+| LR33b-20 | `webauthn-platform` may be enabled alone through the API; it is offered only after another confirmed factor; explicit enroll requests are honoured after another factor | Differs if Auth0's API refuses it or Actions bypass the rule |
+| LR33b-21 | The MFA API lists WebAuthn with `authenticator_type` = factor name; associate and challenge refuse | SDKs expecting only `otp`/`oob`/`recovery-code` may ignore them |
+| LR33b-22 | The security-key user-verification setting lives in the Guardian stored JSON with a marked extension system route; default Never | The Deploy CLI cannot carry it (Auth0 has no API either) |
+| LR33b-23 | Management API `passkey` create: `key_id` and `public_key` required; defaults for RP ID, identity and user handle | Imported passkeys bound to an unexpected RP ID are unusable until fixed |
+| LR33b-24 | Linking moves passkeys to the primary user; unlinking moves them back | Differs if Auth0 drops or keeps them |
+| LR33b-25 | Amended by R2. Native: the canonical host is refused with 400; 404 when unavailable or without an effective connection; realm defaulting; grant failures `400 invalid_grant` | Status and error codes differ from Auth0 |
+| LR33b-26 | Native origins: the request host, RP-ID hosts listed in `web_origins`, Android key hashes | An application whose origin Auth0 would accept is refused (fixable by configuration) |
+| LR33b-27 | Amended by R2. `.well-known` association files on verified custom domains and aliases from first-party passkey clients; 404 when none | Applications needing other AASA sections (`applinks`) do not get them |
+| LR33b-28 | `seotpft`, `seoobft` and `sercft` are emitted with the `sepk*` codes through one dispatch | None (closes a Plan 33 gap) |
+| LR33b-29 | The 21st passkey through the Management API is `400 invalid_body` | Status differs |
+| LR33b-30 | Amended by R3. WebAuthn MFA failures count in Plan 33's throttle; passkey login failures count in the general per-IP limiter and the R3 rules | Lockout thresholds differ |
+| LR33b-31 | Key nickname 1–20 characters; default names from `authenticatorNames*` and "<browser> on <OS>" | Cosmetic |
+| LR33b-32 | Invitation signups hide the passkey choice | None (documented) |
+| LR33b-33 | No `user.updated` for passkey changes | Consumers expecting one miss it |
+| LR33b-34 | Parser bounds as in the limits above | Exotic authenticators with huge data are refused |
+| LR33b-35 | The `passkeys` partial group is stored only | Customized passkey screens look default |
+| LR33b-36 | Passkey-only users have no password; a password login gives the normal wrong-credentials answer | None known |
+| LR33b-37 | The `/u/` paths of the new screens are local | Bookmarks or tests pinned to Auth0 paths differ |
+
+**Controller calls (2026-11-05, not maintainer rulings; the maintainer has
+not used passkeys and asked for the documentation to decide).**
+**K1** per-domain enrollment under multiple custom domains (the MCD pages
+and the 2026-04-08 changelog win over the overview's "first domain only";
+LR33b-5). **K2** the MCD passkeys page's setup steps (enable security keys
+under MFA) are ignored. **K3** snake-case field names from the OpenAPI, not
+the usage guide's camel case. **K4** an explicit `webauthn-platform` enroll
+request (Action or ticket) is honoured after another confirmed factor
+(LR33b-20). **K5** the Dashboard-only tenant default RP ID is not built.
+**K6** security-key user verification gets an extension route; the MFA RP ID
+reuses the custom-domain field. **K7** `amr` unchanged by a passkey alone.
+**K8** `password.api_behavior` stored only (LR33b-3). **K9** the native
+Passkey APIs are built as generally available with no tenant flag: zeroauthy
+has no early-access tiers, and LR33b-25's 404 covers stores without
+`webauthn.v1` and tenants with no effective passkey connection. **K10** MFA
+RP IDs per domain, as K1. **K11** pulled forward from Plan 40:
+`event.authentication.methods` also lists `pwd`, `federated`, `email` and
+`sms` from the session record, closing pre-1.0 review finding
+actions-extensibility F5 (removed from the Plan 40 roadmap entry). **K12**
+`webauthn_platform_first_factor` stays Plan 44. **K13** the MCD page's
+`method.name === "webauthn"` is not emitted. **K14** a sign-count regression
+is rejected, the stricter of the two choices WebAuthn allows.
+
+**R1 (amends LR33b-4).** A custom domain or operator alias may set its RP ID
+to any registrable suffix of its own host, including a parent of
+`server.base_domain`, because sharing passkeys with the customer's own sites
+and apps is Auth0's documented customization and single-organization
+self-hosting is the common case. The deployment setting
+`security.webauthn.restrict_shared_rp_ids` (default `false`) restores the
+strict rule for shared multi-tenant hosting (Plan 47 turns it on). A stored
+RP ID that is not a registrable suffix of its host, or that the strict rule
+refuses, is never silently replaced: ceremonies on that host fail closed
+(hosted error page; native `400 invalid_request`), a WARN is logged and the
+console marks the domain. The canonical host keeps its own host as RP ID.
+**R2.** Operator alias hosts (`store.HostOperator`, seed `domains`) are
+treated like verified custom domains: RP ID defaults to the host and may be
+set per alias with a new optional seed field `relying_party_identifier`;
+they serve the native Passkey APIs and the association files. **R3 (amends
+LR33b-30).** A brute-force block on (identity, connection, IP) refuses every
+first-factor login for that identity from that IP, passkeys included, after
+the assertion identified the user and before any session exists; a
+successful passkey login resets the counter; passkey login failures spend the
+suspicious-IP login budget (by IP), and hosted passkey signup and native
+`/passkey/register` spend the registration budget before the "user exists"
+answer; all through `internal/protection`.
+
+**Observe later (W1–W12, separate observer session, optional).** W1 method
+ID formats and the exact passkey method object; W2 whether the API refuses
+passkey enablement with unmet prerequisites; W3 passkey create defaults and
+errors; W4 native error bodies, the 404 condition and the grant status; W5
+snooze semantics; W6 when local enrollment is offered; W7
+`/mfa/authenticators` output for WebAuthn; W8 exact log details (the logs
+schema lacks `authentication_methods` on `ss` although the monitor page
+documents it); W9 `DELETE`/`PUT` authentication methods on passkeys; W10 `amr`
+and `event.authentication.methods` after a passkey login; W11 linking and
+unlinking effects; W12 the hosted challenge lifetime.
+
+**Addenda to earlier decisions.** *D-0039 (clients):* `mobile` (`ios.team_id`,
+`ios.app_bundle_identifier`, `android.app_package_name`,
+`android.sha256_cert_fingerprints`) moves from accepted-and-ignored to
+stored and returned (`ClientMobile*`), and `grant_types` accepts the passkey
+grant for first-party clients. *D-0042 (database connections):*
+`authentication_methods.passkey` and `passkey_options` stay stored with the
+same shapes and defaults and are now enforced when the documented
+prerequisites hold (LR33b-1); `password.api_behavior` and `signup_behavior`
+stay stored only. *D-0059 (MFA):* `webauthn-roaming` and `webauthn-platform`
+move from stored to enforced; `passkey` joins the authentication-method
+types (creatable through `POST` per the current
+`CreatedUserAuthenticationMethodTypeEnum`); `DELETE` and `PUT
+/users/{id}/authentication-methods` exclude passkeys, as do `DELETE
+…/authenticators`, `GET …/enrollments` and `multifactor`; the MFA success
+codes `seotpft`, `seoobft`, `sercft` are emitted with `sepkotpft`,
+`sepkoobft`, `sepkrcft` (LR33b-28); `gd_auth_rejected` moves to not planned
+with push. *D-0061 (`invalid_grant`):* the passkey grant's failures are
+`400 invalid_grant` with a fixed description, consistent with keeping
+unobserved grants at 400.
+
+**Wire additions.** `api/management.yaml`: `type: passkey` on
+`MFACreateAuthenticationMethod`, `ClientMobile`, `ClientMobileIOS`,
+`ClientMobileAndroid` on client settings and responses, the passkey grant in
+the `grant_types` description, and the marked extension routes
+`GET`/`PUT /api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings`
+(`{"user_verification": discouraged|preferred|required}`) and
+`GET /api/system/tenants/{tenant}/connections/{id}/passkey-prerequisites`
+(`{effective, unmet[]}`). `api/authentication.yaml`: `POST /passkey/register`,
+`POST /passkey/challenge`, the passkey grant row and `x-passkey-grants` on
+`/oauth/token`, `auth_session` and `authn_response` on `TokenRequest`. The
+generated interfaces were regenerated; the native routes answer `501
+passkey_unavailable` through `internal/server/passkey_bridge.go` until
+Task 15. `tests/e2e/deploy-cli/manifest.json` reasons for `clients`,
+`connections`, `customDomains` and `guardianFactors` name the Plan 33b
+fields; the user-verification setting has no handler.
+
+**Spike (spec §15, `tests/e2e/m33b-spike.spec.mjs`, run 2026-11-05 with
+Playwright 1.64.0 and its Chromium 1243 build).** An in-process Node HTTPS
+server for `spike.e2e.test` with a throwaway `openssl` certificate, Chromium
+launched with `--host-resolver-rules=MAP spike.e2e.test 127.0.0.1` (and
+`--no-proxy-server`, because this container routes HTTPS through a proxy),
+a CDP virtual authenticator (`ctap2`, `internal`, resident key, user
+verification, automatic presence, backup eligible and backed up). Result:
+**`ignoreHTTPSErrors` alone is enough**; `navigator.credentials.create`,
+a button `get` with an empty allow list and a **conditional-mediation `get`
+on an `autocomplete="username webauthn"` input all resolved** (the created
+credential reported `authenticatorAttachment: "platform"` and transports
+`["internal"]`; `clientDataJSON` carried the exact `https://spike.e2e.test:<port>`
+origin and the challenge). The SPKI-pinning fallback
+(`--ignore-certificate-errors-spki-list`) was not needed and therefore not
+exercised. Task 19 can drive autofill through the browser; Task 9 still
+covers it by markup and server tests.
+
+**Cost if wrong.** Documented behaviour is implemented as written; the local
+rulings above list their individual costs. Everything here is a contract
+freeze: no passkey or WebAuthn runtime exists after Task 1, and the log codes
+stay `deferred` until Task 19 flips them.

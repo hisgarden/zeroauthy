@@ -1,0 +1,2 @@
+go test fuzz v1
+[]byte("{\"id\":\"AQI=\",\"rawId\":\"AQI=\",\"type\":\"public-key\",\"response\":{\"0lientDataJSON\":\"e3c=\",\"attestationObject\":\"oA==\"}}")

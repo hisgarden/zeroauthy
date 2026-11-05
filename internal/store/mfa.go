@@ -19,7 +19,7 @@ type GuardianSettings struct {
 	Version       int
 }
 type Authenticator struct {
-	TenantID, UserID, ID, Type, Name string // Type: totp|email|recovery-code|webauthn-roaming|webauthn-platform|phone
+	TenantID, UserID, ID, Type, Name string // Type: totp|email|recovery-code|webauthn-roaming|webauthn-platform|phone|passkey
 	PhoneMethod                      string // preferred_authentication_method: sms or voice; separate from runtime Preferred.
 	PublicData                       []byte // JSON of the bounded public WebAuthn metadata allowlist, never secrets.
 	Confirmed, Preferred             bool
@@ -38,12 +38,22 @@ type MFAToken struct {
 	ExpiresAt                                    time.Time
 }
 type MFAChallenge struct {
-	TenantID, ID, UserID, AuthenticatorID, Kind string // Kind: email|webauthn|oob
+	TenantID, ID, UserID, AuthenticatorID, Kind string // Kind: email|webauthn|oob|webauthn-register|webauthn-assert|passkey-register|passkey-login
 	CodeHash                                    string
 	Challenge                                   []byte
+	Binding                                     []byte // JSON of the ceremony binding (Plan 33b passkey.Binding); opaque to the store
 	Attempts                                    int
 	ExpiresAt                                   time.Time
 }
+
+// ChallengeUserOptional reports whether a challenge of kind may be stored
+// without a user (Plan 33b): a hosted or native passkey-login challenge is
+// issued before the credential names its user, and a passkey-register
+// challenge for a signup before the user exists.
+func ChallengeUserOptional(kind string) bool {
+	return kind == "passkey-login" || kind == "passkey-register"
+}
+
 type EnrollmentTicket struct {
 	TenantID, Hash, UserID, Factor string
 	AllowMultiple                  bool
@@ -57,7 +67,7 @@ type MFABrowser struct {
 
 // AuthenticatorTypes are every Authenticator.Type, sorted so the derived
 // method IDs are in byte order; method IDs are "<type>|<enrollment id>".
-var AuthenticatorTypes = []string{"email", "phone", "recovery-code", "totp", "webauthn-platform", "webauthn-roaming"}
+var AuthenticatorTypes = []string{"email", "passkey", "phone", "recovery-code", "totp", "webauthn-platform", "webauthn-roaming"}
 
 // AuthenticatorIDsForEnrollment returns each possible method ID for an
 // enrollment ID in byte order, or nil when the enrollment ID cannot be one.
@@ -91,7 +101,11 @@ type MFA interface {
 	GetAuthenticatorByEnrollmentID(ctx context.Context, tid, enrollmentID string) (*Authenticator, error)
 	UpdateAuthenticator(ctx context.Context, a *Authenticator) error // name, preferred, confirmed
 	DeleteAuthenticator(ctx context.Context, tid, uid, id string) error
-	DeleteUserAuthenticators(ctx context.Context, tid, uid string, types []string) error     // nil = all
+	// DeleteUserAuthenticators removes the user's authenticators of the given
+	// types. nil means every MFA type, that is every type except "passkey"
+	// (name it explicitly to remove passkeys); DeleteUserMFA and tenant
+	// deletion remove everything.
+	DeleteUserAuthenticators(ctx context.Context, tid, uid string, types []string) error
 	AcceptTOTPStep(ctx context.Context, tid, uid, id string, step int64, at time.Time) error // ErrPrecondition unless step > LastStep
 	// ReplaceRecoveryCode atomically replaces the existing recovery hash. An empty oldHash
 	// means no recovery authenticator exists yet; in that case create a confirmed record
@@ -105,6 +119,11 @@ type MFA interface {
 	ConsumeMFAToken(ctx context.Context, tid, hash, clientID string, now time.Time) (*MFAToken, error) // ErrNotFound if missing, expired, consumed or other client
 	PeekMFAToken(ctx context.Context, tid, hash string, now time.Time) (*MFAToken, error)
 
+	// CreateChallenge stores c. ErrNotFound if the user (or c.AuthenticatorID
+	// of that user) is missing, except that the passkey kinds
+	// (ChallengeUserOptional) may carry UserID "" for a usernameless login
+	// or a signup: such a row needs only an existing tenant and no
+	// authenticator. ErrConflict if the ID exists.
 	CreateChallenge(ctx context.Context, c *MFAChallenge) error
 	GetChallenge(ctx context.Context, tid, id string, now time.Time) (*MFAChallenge, error)
 	// FailChallenge atomically increments attempts up to five. Missing or consumed

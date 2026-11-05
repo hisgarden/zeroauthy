@@ -49,6 +49,8 @@ Okta products) need no row; the "Reviewed through" date covers them.
 
 | 2026-10-26 | 2026-10-26 (newest entry found) | Codex (Plan 24 Task 1) | Separate full public-HTML retrieval succeeded (4,434,886 bytes), with dated text extraction after the design's oversized-tool retrieval failed. Oct 26 Identity Conversion Suite EA covers anonymous sessions and login experimentation, outside social federation; backlog below. No newer social wire-contract change found. See observations/social-connections.md for hash and source boundary. |
 
+| 2026-11-05 | 2026-10-30 (newest entry found) | Claude (Plan 33b Task 1) | The Plan 33b design read the full changelog text (`llms-full.txt`) on 2026-11-04; Task 1 records that review here. Passkey and WebAuthn entries, in our words, are in the Plan 33b section below: WebAuthn MFA beta/GA (2020–2021), biometrics as a first factor (2021-05, Plan 44), passkeys EA then GA (2023-09/2024-01), ACUL passkey and WebAuthn screens (2025-02, 2025-05; names only), My Account passkeys and consumer portals (2025-06, 2025-10, 2026-10-27; Plan 42), passkeys on custom databases without import (2025-07; not in scope), custom RP IDs EA then GA (2026-03/2026-06), passkey screens in customized prompts (2026-04-02; partials stored only), MCD GA with passkeys per custom domain (2026-04-08). Nothing after 2026-10-30. No upstream tenant queried. |
+
 ## Relevant entries
 
 | Date | Summary | Surface | Impact | Outcome |
@@ -84,6 +86,10 @@ Okta products) need no row; the "Reviewed through" date covers them.
 | 2026-04-02 | Custom prompt fields reach custom database scripts | Sub-project 2 | open |
 | 2026-09-17 | Custom user IDs at signup via a pre-registration Action | Sub-project 2 | open |
 | 2025-07-21 | Passkeys on custom database connections | Sub-project 2 | open |
+| 2021-05-28 | WebAuthn device biometrics as a first factor on hosted login (`webauthn_platform_first_factor`) | Plan 44 (stored only since Plan 22; reuses the Plan 33b platform authenticators) | open |
+| 2025-02-06 / 2025-05-27 | ACUL screens for passkey enrollment, WebAuthn MFA and the reset-password WebAuthn challenges | Plan 44 (ACUL); the screen names are frozen by Plan 33b | open |
+| 2025-06-05 / 2025-10-01 | My Account API passkey enrollment and management; organizations with native passkeys | Plan 42 (My Account); the `organization` parameter on the native endpoints is Plan 33b | open |
+| 2026-04-02 | Passkey screens in customized prompts (`passkeys` partial group) | Plan 33b stores the partials only (LR33b-35); rendering is a later prompt-customization item | open |
 
 
 ## Plan 19 implementation disposition (2026-10-24)
@@ -190,3 +196,48 @@ members (July 29, Beta) and Organizations Search filters (August 6) are
 dashboard and `/organizations/search` items (Plan 30); My Organization API
 member management EA (September 17) is Plan 42. See D-0055 and
 `internal/orgrules/inventory.json`.
+
+## 2026-11-05 — Plan 33b Task 1 (passkeys and WebAuthn MFA)
+
+The Plan 33b design read the complete public changelog text
+(`https://auth0.com/changelog/llms-full.txt`) on 2026-11-04; the newest
+entry was dated 2026-10-30 and nothing after 2026-10-27 touches passkeys or
+WebAuthn beyond the Universal Portals entry already recorded under Plan 42.
+Coverage is now 2026-10-30. The entries that shape the frozen contract, in
+our words:
+
+- **2020-11-09, 2021-02-10, 2021-03-31** — WebAuthn with security keys and
+  with device biometrics as MFA factors, beta and then generally available.
+  Frozen in `internal/mfarules/inventory.json` (both factors now `enforced`)
+  and in `internal/webauthnrules`.
+- **2021-05-28** — device biometrics as a first factor on hosted login. Stays
+  Plan 44 (`webauthn_platform_first_factor` stored only); backlog row added.
+- **2023-09-07, 2024-01-31** — passkeys on database connections, early access
+  then generally available, with progressive enrollment and lazy migration
+  for custom databases with import mode. The core of Plan 33b.
+- **2025-02-06, 2025-05-27** — ACUL screens `passkey-enrollment`,
+  `passkey-enrollment-local`, the `mfa-webauthn-*` screens and the
+  reset-password WebAuthn challenge screens. Only the names are taken (the
+  text-key inventory and `internal/brandingrules/inventory.json`); ACUL is
+  Plan 44.
+- **2025-06-05, 2025-10-01** — My Account passkey enrollment and management,
+  and organizations on the native passkey endpoints. The My Account part is
+  Plan 42; the `organization` parameter is frozen here.
+- **2025-07-21** — passkeys on custom databases without import mode (early
+  access). Not in scope; the existing backlog row stands.
+- **2026-03-10, 2026-06-01** — custom relying party IDs for passkeys, early
+  access then generally available. Frozen as the per-host RP ID resolver
+  (D-0062, LR33b-4 as amended by R1/R2).
+- **2026-04-02** — passkey screens inside customized prompts. The `passkeys`
+  partial group stays stored only (LR33b-35).
+- **2026-04-08** — multiple custom domains generally available, including
+  passkey enrollment per custom domain. Frozen as per-domain enrollment
+  (LR33b-5, K1, K10).
+- **2026-10-27** — consumer portals with passkey enrollment: Plan 42
+  (already recorded).
+
+Decision D-0062; inventory `internal/webauthnrules/inventory.json`; API
+documents `api/management.yaml` (passkey authentication-method create,
+`ClientMobile*`, the passkey grant type, two marked extension routes) and
+`api/authentication.yaml` (`/passkey/register`, `/passkey/challenge`, the
+passkey grant). No upstream tenant was queried.

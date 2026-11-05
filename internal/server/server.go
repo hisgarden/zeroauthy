@@ -33,10 +33,12 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/mgmt"
 	"github.com/zeroauthy/zeroauthy/internal/oauth"
 	"github.com/zeroauthy/zeroauthy/internal/oidc"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/passwordless"
 	"github.com/zeroauthy/zeroauthy/internal/phone"
 	"github.com/zeroauthy/zeroauthy/internal/protection"
 	"github.com/zeroauthy/zeroauthy/internal/ratelimit"
+	"github.com/zeroauthy/zeroauthy/internal/rpid"
 	"github.com/zeroauthy/zeroauthy/internal/session"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 	"github.com/zeroauthy/zeroauthy/internal/tenant"
@@ -88,6 +90,14 @@ type Deps struct {
 	// origin CORS allows on /api/v2 and /api/system.
 	BaseDomain string
 	SystemHost string
+	// RPIDs is the deployment's WebAuthn relying party ID policy (Plan 33b
+	// R1/R2): base domain, system host, origin suffix and
+	// security.webauthn.restrict_shared_rp_ids.
+	RPIDs rpid.Policy
+	// Passkeys runs the passkey and WebAuthn ceremonies (Plan 33b) over
+	// Store with RPIDs; the hosted, native and MFA routes use it. nil
+	// offers no passkey ceremonies.
+	Passkeys *passkey.Service
 
 	// Console is the built admin console; nil means the embedded one.
 	Console fs.FS
@@ -224,6 +234,9 @@ func New(d Deps) http.Handler {
 
 	az := &authz.Handlers{MFA: d.MFA, Store: d.Store, Sessions: d.Sessions, Log: d.Log,
 		Actions: d.Actions, Wrapper: d.Wrapper, TrustProxyHeaders: d.TrustProxyHeaders}
+	if d.Passkeys != nil {
+		az.Passkeys = d.Passkeys
+	}
 	db := &identity.Database{Store: d.Store, Scripts: d.Scripts, Log: d.Log}
 	// One mailer sends every verification email: after a signup (API and
 	// hosted page) and for the Management API's verify_email.
@@ -266,6 +279,9 @@ func New(d Deps) http.Handler {
 		pwl.SMS = d.Phone
 	}
 	lg.Passwordless = pwl
+	// Passkeys runs the hosted WebAuthn ceremonies; nil leaves every passkey
+	// path off, including the login-id markup.
+	lg.Passkeys = d.Passkeys
 
 	// Authentication API: every route is tenant-scoped.
 	r.Group(func(tr chi.Router) {
@@ -324,6 +340,11 @@ func New(d Deps) http.Handler {
 		tr.Get("/u/mfa-enroll-ticket", lg.MFATicket)
 		tr.Get("/u/login", lg.LoginPage)
 		tr.Post("/u/login", lg.LoginSubmit)
+		tr.Post("/u/login/passkey", lg.LoginPasskeyPost)
+		tr.Get("/u/passkey-enrollment", lg.PasskeyEnrollmentGet)
+		tr.Post("/u/passkey-enrollment", lg.PasskeyEnrollmentPost)
+		tr.Get("/u/passkey-enrollment-local", lg.PasskeyEnrollmentLocalGet)
+		tr.Post("/u/passkey-enrollment-local", lg.PasskeyEnrollmentLocalPost)
 		for _, path := range []string{"/u/login-passwordless-email-code", "/u/login-passwordless-sms-otp"} {
 			tr.Get(path, lg.PasswordlessCodePage)
 			tr.Post(path, lg.PasswordlessCodeSubmit)
@@ -337,6 +358,12 @@ func New(d Deps) http.Handler {
 		tr.Post("/u/consent", lg.ConsentSubmit)
 		tr.Get("/u/signup", lg.SignupPage)
 		tr.Post("/u/signup", lg.SignupSubmit)
+		tr.Get("/u/signup/identifier", lg.SignupIdentifierGet)
+		tr.Post("/u/signup/identifier", lg.SignupIdentifierPost)
+		tr.Get("/u/signup/passkey", lg.SignupPasskeyGet)
+		tr.Post("/u/signup/passkey", lg.SignupPasskeyPost)
+		tr.Get("/u/signup/password", lg.SignupPasswordGet)
+		tr.Post("/u/signup/password", lg.SignupPasswordPost)
 		tr.Get("/u/reset-password/request", lg.ResetRequestPage)
 		tr.Post("/u/reset-password/request", lg.ResetRequestSubmit)
 		tr.Get("/u/reset-password", lg.ResetPasswordPage)
@@ -376,6 +403,7 @@ func New(d Deps) http.Handler {
 		BreachCheckerAvailable: sharedProtection.BreachChecker != nil,
 		Protection:             sharedProtection,
 		Domains:                d.Domains,
+		RestrictSharedRPIDs:    d.RPIDs.RestrictShared,
 	}
 	mr.Use(d.Resolver.Middleware, systemOnly, mgmtCORS(systemOrigin), auth, mh.LogMiddleware, operatorOnly)
 	if len(d.ExportKey) > 0 {

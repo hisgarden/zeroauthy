@@ -503,3 +503,43 @@ and change behaviour only where Auth0 is shown to differ.
   regenerates them with `make console`.
 - The phone trigger dry-run cases in `internal/mgmt` skip until the runner
   learns the handlers (Task 9).
+
+## Plan 33b follow-ups
+
+### Passkey and WebAuthn observation gaps (W1–W12, observation optional)
+
+Task 1 (D-0062) froze a local answer for each point from the public
+documentation alone; observe later in a firewalled observer session
+(`docs/compat/observations/passkeys-webauthn.md`) and change behaviour only
+where Auth0 is shown to differ.
+
+- **W1** passkey and WebAuthn authentication-method ID formats (`passkey|dev_…` local, D-0059 shape) and the exact `GET /users/{id}/authentication-methods` passkey object.
+- **W2** whether the Management API refuses enabling passkeys while a documented prerequisite is unmet (local: stores any combination, offers passkeys only when effective, LR33b-1).
+- **W3** `POST` passkey create defaults and errors: RP ID, identity and user-handle defaults, the 20-passkey limit (`400 invalid_body` local), duplicate `key_id` (`409` local).
+- **W4** native endpoint error bodies, the per-tenant 404 condition (local: no `webauthn.v1` or no effective passkey connection) and the grant failure status (`400 invalid_grant` local).
+- **W5** progressive and local enrollment snooze semantics (per user, per browser, per RP ID; 30 days local).
+- **W6** when local enrollment is offered (local: after a `cross-platform` assertion on a browser with a user-verifying platform authenticator).
+- **W7** `/mfa/authenticators` output for WebAuthn enrollments (local: `authenticator_type` = factor name).
+- **W8** exact log `details` for `s`, `ss`, `gd_webauthn_*` and `passkey_challenge_*` (local: the monitor-passkey-events page plus the logs schema; the schema lacks `authentication_methods` on `ss` although the page documents it).
+- **W9** `DELETE`/`PUT /users/{id}/authentication-methods` behaviour on passkeys (local: kept).
+- **W10** ID token `amr` and `event.authentication.methods` after a passkey login (local: `amr` unchanged, `passkey` entry emitted).
+- **W11** linking and unlinking effects on passkeys (local: moved to the primary, returned on unlink).
+- **W12** hosted challenge lifetime (local: 5 minutes, `timeout` 300000).
+
+Still open from the changelog: passkeys on custom database connections
+without import mode (Auth0 early access; needs the custom-database `context`
+argument, Plan 40).
+
+### Plan 33b Task 1 carry-overs
+
+- The native routes `/passkey/register` and `/passkey/challenge` are in the
+  generated Authentication API interface and bridged by
+  `internal/server/passkey_bridge.go` with `501 passkey_unavailable` until
+  Task 15; the two system extension routes fall to the generated 501 until
+  Tasks 7 and 12.
+- Console types (`console/src/api/schema.d.ts`) were not regenerated in
+  Task 1; the console task runs `make console`.
+- `make check-sources` fails on a Plan 34 `x-source` GitHub URL in
+  `api/authentication.yaml` (`github.com` answers 403 through this
+  container's proxy for every URL); the Plan 33b entries avoid GitHub URLs
+  and all resolved.

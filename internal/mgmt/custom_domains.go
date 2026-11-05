@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/zeroauthy/zeroauthy/internal/customdomain"
+	"github.com/zeroauthy/zeroauthy/internal/rpid"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 )
 
@@ -61,6 +62,28 @@ func readDomainBody(r *http.Request) ([]byte, error) {
 		return nil, badBody("Payload validation error: the body could not be read")
 	}
 	return raw, nil
+}
+
+// sharedRPIDAllowed applies the deployment's relying party ID rule (R1,
+// rpid.Policy.Validate) to an explicit relying_party_identifier that
+// ValidateCreate or ValidatePatch already accepted as a registrable suffix
+// of domain. A refusal is 400 invalid_body with a fixed message.
+func (h *Handlers) sharedRPIDAllowed(w http.ResponseWriter, r *http.Request, what, domain string, rp customdomain.Field[string]) bool {
+	if !rp.Present || rp.Null {
+		return true
+	}
+	p := rpid.Policy{BaseDomain: h.BaseDomain, SystemHost: h.SystemHost, OriginSuffix: h.Domains.Reserved().OriginSuffix, RestrictShared: h.RestrictSharedRPIDs, Store: h.Store}
+	switch err := p.Validate(r.Context(), resolved(r).ID, domain, rp.Value); {
+	case err == nil:
+		return true
+	case errors.Is(err, rpid.ErrInvalid):
+		Fail(w, badBody("the relying party identifier is not allowed for this domain"))
+	case errors.Is(err, store.ErrWebAuthnUnavailable):
+		Fail(w, errCustomDomainUnavailable)
+	default:
+		Fail(w, internalError(h, r, what, err))
+	}
+	return false
 }
 
 func (h *Handlers) domainsOn(w http.ResponseWriter) bool {
@@ -211,6 +234,9 @@ func (h *Handlers) CreateCustomDomain(w http.ResponseWriter, r *http.Request) {
 		h.domainError(w, r, "create custom domain", err)
 		return
 	}
+	if !h.sharedRPIDAllowed(w, r, "create custom domain", in.Domain, in.RelyingPartyIdentifier) {
+		return
+	}
 	d, err := h.Domains.Create(r.Context(), resolved(r).ID, in)
 	if err != nil {
 		h.domainError(w, r, "create custom domain", err)
@@ -256,6 +282,9 @@ func (h *Handlers) UpdateCustomDomain(w http.ResponseWriter, r *http.Request, id
 	in, err := customdomain.ValidatePatch(raw, cur)
 	if err != nil {
 		h.domainError(w, r, "update custom domain", err)
+		return
+	}
+	if !h.sharedRPIDAllowed(w, r, "update custom domain", cur.Domain, in.RelyingPartyIdentifier) {
 		return
 	}
 	d, err := h.Domains.Update(r.Context(), resolved(r).ID, id, in)

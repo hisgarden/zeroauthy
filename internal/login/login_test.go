@@ -161,12 +161,23 @@ func newEnvWithStore(t *testing.T, st store.Store) *env {
 	mux.HandleFunc("GET /u/login/password", h.LoginPasswordGet)
 	mux.HandleFunc("POST /u/login/password", h.LoginPasswordPost)
 	mux.HandleFunc("POST /u/login/identifier", h.LoginIdentifierResetPost)
+	mux.HandleFunc("POST /u/login/passkey", h.LoginPasskeyPost)
+	mux.HandleFunc("GET /u/passkey-enrollment", h.PasskeyEnrollmentGet)
+	mux.HandleFunc("POST /u/passkey-enrollment", h.PasskeyEnrollmentPost)
+	mux.HandleFunc("GET /u/passkey-enrollment-local", h.PasskeyEnrollmentLocalGet)
+	mux.HandleFunc("POST /u/passkey-enrollment-local", h.PasskeyEnrollmentLocalPost)
 	mux.HandleFunc("POST /u/login/social", h.SocialStart)
 	mux.HandleFunc("GET /login/callback", h.SocialCallback)
 	mux.HandleFunc("GET /u/consent", h.ConsentPage)
 	mux.HandleFunc("POST /u/consent", h.ConsentSubmit)
 	mux.HandleFunc("GET /u/signup", h.SignupPage)
 	mux.HandleFunc("POST /u/signup", h.SignupSubmit)
+	mux.HandleFunc("GET /u/signup/identifier", h.SignupIdentifierGet)
+	mux.HandleFunc("POST /u/signup/identifier", h.SignupIdentifierPost)
+	mux.HandleFunc("GET /u/signup/passkey", h.SignupPasskeyGet)
+	mux.HandleFunc("POST /u/signup/passkey", h.SignupPasskeyPost)
+	mux.HandleFunc("GET /u/signup/password", h.SignupPasswordGet)
+	mux.HandleFunc("POST /u/signup/password", h.SignupPasswordPost)
 	mux.HandleFunc("GET /u/reset-password/request", h.ResetRequestPage)
 	mux.HandleFunc("POST /u/reset-password/request", h.ResetRequestSubmit)
 	mux.HandleFunc("GET /u/reset-password", h.ResetPasswordPage)
@@ -269,6 +280,11 @@ func (b *browser) begin(t *testing.T, extra ...string) (*httptest.ResponseRecord
 	loc, _ := url.Parse(rec.Header().Get("Location"))
 	state := loc.Query().Get("state")
 	page := b.do(t, "GET", loc.RequestURI(), nil)
+	// A page may redirect (the split signup flow does); follow it once, the
+	// way a browser would, before looking for the form.
+	if page.Code == http.StatusSeeOther || page.Code == http.StatusFound {
+		page = b.do(t, "GET", page.Header().Get("Location"), nil)
+	}
 	m := csrfField.FindStringSubmatch(page.Body.String())
 	if m == nil {
 		t.Fatalf("no csrf on page %s: %s", loc, page.Body)

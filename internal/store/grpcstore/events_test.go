@@ -36,6 +36,8 @@ type eventsFaults struct {
 	mfaDomainMark      atomic.Bool
 	mfaMissing         bool
 	phoneMissing       bool
+	webauthnMissing    bool
+	webauthnProbe      atomic.Int32
 	mfaProbe           atomic.Int32
 	mfaOperation       atomic.Int32
 	mfaMark            atomic.Int32
@@ -69,6 +71,14 @@ func serveEventsFaults(t *testing.T, backing store.Store, faults *eventsFaults) 
 		}
 		if name == "PhoneCapabilities" && faults.phoneMissing {
 			return nil, status.Error(codes.Unimplemented, "pre-Phone plugin")
+		}
+		if name == "WebAuthnCapabilities" {
+			if faults.webauthnMissing {
+				return nil, status.Error(codes.Unimplemented, "pre-WebAuthn plugin")
+			}
+			if code := codes.Code(faults.webauthnProbe.Swap(0)); code != codes.OK {
+				return nil, status.Error(code, "probe failure")
+			}
 		}
 		if name == "SessionsMarkMFA" {
 			if faults.mfaDomainMark.Swap(false) {

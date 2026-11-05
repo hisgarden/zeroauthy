@@ -383,3 +383,21 @@ type (
 
 var ErrMFAUnavailable = store.ErrMFAUnavailable
 var ErrPhoneUnavailable = store.ErrPhoneUnavailable
+
+type (
+	WebAuthn              = store.WebAuthn
+	WebAuthnSupporter     = store.WebAuthnSupporter
+	UnimplementedWebAuthn = store.UnimplementedWebAuthn
+	WebAuthnSnooze        = store.WebAuthnSnooze
+	AuthMethod            = store.AuthMethod
+	ClientMobile          = store.ClientMobile
+	ClientMobileIOS       = store.ClientMobileIOS
+	ClientMobileAndroid   = store.ClientMobileAndroid
+)
+
+var ErrWebAuthnUnavailable = store.ErrWebAuthnUnavailable
+
+// ChallengeUserOptional reports whether an MFA challenge of kind may be
+// stored without a user (the Plan 33b passkey-login and passkey-register
+// kinds); see MFA.CreateChallenge.
+func ChallengeUserOptional(kind string) bool { return store.ChallengeUserOptional(kind) }

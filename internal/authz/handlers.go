@@ -23,6 +23,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/logscrub"
 	"github.com/zeroauthy/zeroauthy/internal/mfa"
 	"github.com/zeroauthy/zeroauthy/internal/orglogin"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
 	"github.com/zeroauthy/zeroauthy/internal/session"
 	"github.com/zeroauthy/zeroauthy/internal/store"
@@ -55,6 +56,18 @@ type Handlers struct {
 	// ResetContinue resumes a suspended password-reset-post-challenge flow
 	// (the hosted reset page); nil refuses reset states.
 	ResetContinue func(w http.ResponseWriter, r *http.Request, state string, req actions.RequestInfo)
+	// Passkeys evaluates the post-login enrollment prompt (Plan 33b section
+	// 3.5); nil offers no prompt.
+	Passkeys PasskeyService
+}
+
+// PasskeyService is the passkey ceremony capability authz needs to decide and
+// record an enrollment prompt. internal/passkey.Service implements it.
+type PasskeyService interface {
+	// EnrollmentPrompt reports which passkey enrollment, if any, to offer
+	// after a completed login: passkey.PromptNone, PromptProgressive or
+	// PromptLocal.
+	EnrollmentPrompt(ctx context.Context, tid string, u *store.User, conn *store.Connection, res tenant.Resolved, in passkey.LoginContext) (string, error)
 }
 
 func (h *Handlers) now() time.Time {
@@ -361,6 +374,8 @@ func (h *Handlers) Resume(w http.ResponseWriter, r *http.Request, res tenant.Res
 		return
 	}
 	fr := flowFromParams(txn.Params)
+	fr.stageParams = txn.Params
+	fr.stageParams[ParamPasskeyBrowser] = txn.CookieHash
 	client, verr, redirectable := h.validateFlow(r.Context(), res, &fr)
 	if verr != nil {
 		// The application (or the device code) changed while the user was

@@ -26,6 +26,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/logscrub"
 	"github.com/zeroauthy/zeroauthy/internal/mfa"
 	"github.com/zeroauthy/zeroauthy/internal/orglogin"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/passwordless"
 	"github.com/zeroauthy/zeroauthy/internal/protection"
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
@@ -59,6 +60,9 @@ type Handlers struct {
 	// Passwordless serves the hosted passwordless prompt (Plan 34); nil
 	// offers no email or sms connection.
 	Passwordless *passwordless.Service
+	// Passkeys runs the WebAuthn ceremonies (Plan 33b); nil disables every
+	// passkey path, including the login-id markup.
+	Passkeys *passkey.Service
 	// Device code entry limits (/activate). Each counts misses; a code
 	// that is found refunds its attempt.
 	DeviceTxnThrottle    *identity.Throttle // key: transaction ID
@@ -93,6 +97,9 @@ type flow struct {
 	clientName string
 	config     *store.HostedLoginConfig
 	org        OrgContext
+	// passkeyAttachment is the passkey login's authenticatorAttachment, used
+	// by the post-login local-enrollment prompt (Plan 33b section 3.5).
+	passkeyAttachment string
 }
 
 // loadTxn validates the transaction named by state: it must exist in this
@@ -556,6 +563,18 @@ func (h *Handlers) SignupPage(w http.ResponseWriter, r *http.Request) {
 		ui.RenderError(w, http.StatusForbidden, f.view, f.view.L.T(i18n.KeyErrSignupDisabled))
 		return
 	}
+	// With effective passkeys, /u/signup is the split flow's identifier step
+	// (LR33b-15); every other case keeps the single Plan 22 page.
+	if (f.txn.HostedState.Step == "" || f.txn.HostedState.Step == "identifier") && h.splitSignup(r, f) {
+		next := f.txn.HostedState.Clone()
+		next.Step = signupStepIdentifier
+		if err := h.transitionHosted(r, f, next); err != nil {
+			h.fail(w, r, errTxn, f)
+			return
+		}
+		http.Redirect(w, r, signupIdentifierLocation(f), http.StatusSeeOther)
+		return
+	}
 	if !h.captchaPage(w, r, f, "signup") {
 		return
 	}
@@ -586,7 +605,14 @@ func (h *Handlers) SignupSubmit(w http.ResponseWriter, r *http.Request) {
 		RequiresUsername: f.conn.RequiresUsername, LoginURL: "/u/login?" + url.Values{"state": {f.txn.ID}}.Encode(),
 		RedirectURI: f.txn.Params["redirect_uri"],
 	}
-	if !h.guardHostedForm(w, r, f, "signup", "signup", func(status int, message string) { data.Error = message; h.renderSignup(w, r, status, f, data) }) {
+	// The split flow's password step is its own prompt/screen; the single
+	// Plan 22 page keeps "signup".
+	signupPrompt, signupScreen := "signup", "signup"
+	splitPassword := f.txn.HostedState.Step == signupStepPassword || f.txn.HostedState.Step == signupStepPasskey
+	if splitPassword {
+		signupPrompt, signupScreen = "signup-password", "signup-password"
+	}
+	if !h.guardHostedForm(w, r, f, signupPrompt, signupScreen, func(status int, message string) { data.Error = message; h.renderSignup(w, r, status, f, data) }) {
 		return
 	}
 	// Missing required fields are malformed forms, not registration attempts.
@@ -805,12 +831,26 @@ func (h *Handlers) SignupSubmit(w http.ResponseWriter, r *http.Request) {
 	h.complete(w, r, f, user)
 }
 
-// complete starts the session and hands back to /authorize processing.
+// complete starts the session and hands back to /authorize processing. The
+// first factor is recorded as a password login, which is what every caller
+// but the passkey path performs.
 func (h *Handlers) complete(w http.ResponseWriter, r *http.Request, f *flow, user *store.User) {
+	h.completeWithMethods(w, r, f, user, store.AuthMethod{Name: "pwd", At: h.now()})
+}
+
+// completeWithMethods is complete with the session's first-factor record
+// (Plan 33b section 5.4).
+func (h *Handlers) completeWithMethods(w http.ResponseWriter, r *http.Request, f *flow, user *store.User, methods ...store.AuthMethod) {
 	*r = *r.WithContext(logs.WithEvent(r.Context(), logs.Event{UserID: user.UserID, UserName: passwordless.MaskIdentifier(f.conn.Strategy, user.Name)}))
 	ctx := r.Context()
 	now := h.now()
-	sess, err := h.Sessions.Start(ctx, w, r, f.res.Tenant, user.UserID, f.conn.Name, now)
+	// The post-login enrollment prompt is decided from the transaction, so
+	// what it needs about this login travels with it (Plan 33b section 3.5).
+	if err := h.recordPromptContext(r, f, methods); err != nil {
+		h.fail(w, r, err, f)
+		return
+	}
+	sess, err := h.Sessions.Start(ctx, w, r, f.res.Tenant, user.UserID, f.conn.Name, now, methods...)
 	if err != nil {
 		h.fail(w, r, err, f)
 		return
@@ -819,6 +859,40 @@ func (h *Handlers) complete(w http.ResponseWriter, r *http.Request, f *flow, use
 		h.log().WarnContext(ctx, "record login", "tenant", f.res.Tenant.ID, "err", err)
 	}
 	h.Authz.Resume(w, r, f.res, f.txn, sess)
+}
+
+// recordPromptContext stores what the enrollment prompt needs about this
+// login: the first factor (already on the session), the passkey assertion's
+// authenticator attachment and the page script's platform-authenticator
+// report. It rewrites the transaction, so it runs before the session starts.
+func (h *Handlers) recordPromptContext(r *http.Request, f *flow, methods []store.AuthMethod) error {
+	if len(methods) == 0 || methods[0].Name != "passkey" {
+		return nil
+	}
+	ctx := r.Context()
+	cur, err := h.Store.AuthTransactions().Get(ctx, f.res.Tenant.ID, f.txn.ID)
+	if err != nil {
+		return err
+	}
+	if cur.Params == nil {
+		cur.Params = map[string]string{}
+	}
+	cur.Params[authz.ParamPasskeyAttachment] = f.passkeyAttachment
+	if r.PostForm.Get("platform_authenticator") == "1" {
+		cur.Params[authz.ParamPasskeyDevice] = "1"
+	}
+	if err := h.Store.AuthTransactions().CompareAndSwapHosted(ctx, f.res.Tenant.ID, cur.ID, cur.HostedState.Revision, cur.HostedState, h.now()); err != nil {
+		return err
+	}
+	cur.HostedState.Revision++
+	if err := h.Store.AuthTransactions().Delete(ctx, f.res.Tenant.ID, cur.ID); err != nil {
+		return err
+	}
+	if err := h.Store.AuthTransactions().Create(ctx, cur); err != nil {
+		return err
+	}
+	f.txn = cur
+	return nil
 }
 
 func capitalize(s string) string {

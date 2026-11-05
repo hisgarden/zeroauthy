@@ -6149,6 +6149,116 @@ paths:
         "404": {$ref: "#/components/responses/NotFound"}
         "429": {$ref: "#/components/responses/TooManyRequests"}
         "502": {description: The provider did not accept the message.}
+  /api/system/tenants/{tenant}/guardian/factors/webauthn-roaming/settings:
+    parameters:
+      - name: tenant
+        in: path
+        required: true
+        description: The tenant's name.
+        schema: {type: string}
+    get:
+      operationId: getWebAuthnRoamingSettings
+      tags: [system]
+      summary: Read the security-key user-verification setting
+      description: |
+        A zeroauthy extension (Auth0 documents this setting only in its
+        Dashboard; decision D-0062, LR33b-22, in docs/compat/decisions.md).
+        Returns the WebAuthn security-key user-verification requirement:
+        `discouraged` ("Never", the default), `preferred` ("If supported")
+        or `required`. The value is kept in the Guardian settings store and
+        drives `userVerification` on `webauthn-roaming` enrollment and
+        challenge ceremonies. Plan 33b frozen contract; the runtime lands in
+        Task 12 and answers 501 until then.
+      x-source:
+        - https://auth0.com/docs/secure/multi-factor-authentication/fido-authentication-with-webauthn/configure-webauthn-security-keys-for-mfa
+      security: [{operatorToken: []}]
+      responses:
+        "200":
+          description: The current setting.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebAuthnRoamingSettings"
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "404": {$ref: "#/components/responses/NotFound"}
+    put:
+      operationId: putWebAuthnRoamingSettings
+      tags: [system]
+      summary: Set the security-key user-verification setting
+      description: |
+        A zeroauthy extension (decision D-0062, LR33b-22). Replaces the
+        security-key user-verification requirement. `required` makes FIDO-1
+        keys unusable, as Auth0 documents. Plan 33b frozen contract; the
+        runtime lands in Task 12.
+      x-source:
+        - https://auth0.com/docs/secure/multi-factor-authentication/fido-authentication-with-webauthn/configure-webauthn-security-keys-for-mfa
+      security: [{operatorToken: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebAuthnRoamingSettings"
+      responses:
+        "200":
+          description: The stored setting.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebAuthnRoamingSettings"
+        "400": {$ref: "#/components/responses/BadRequest"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "404": {$ref: "#/components/responses/NotFound"}
+  /api/system/tenants/{tenant}/connections/{id}/passkey-prerequisites:
+    parameters:
+      - name: tenant
+        in: path
+        required: true
+        description: The tenant's name.
+        schema: {type: string}
+      - name: id
+        in: path
+        required: true
+        description: The connection's ID (`con_` and up to 64 letters or digits).
+        schema: {type: string}
+    get:
+      operationId: getPasskeyPrerequisites
+      tags: [system]
+      summary: Read a database connection's passkey prerequisites
+      description: |
+        A zeroauthy extension (decision D-0062, LR33b-1). Auth0's Dashboard
+        blocks saving a passkey policy while a prerequisite is unmet; the
+        Management API stores any combination. This read-only route tells
+        the console whether passkeys are effective on the connection and
+        which documented prerequisites are unmet: `identifier_first`
+        (prompt settings), `universal_login` (the new experience),
+        `requires_username` (off, or flexible identifiers on),
+        `import_mode` (custom database without user import), `password`
+        (password authentication disabled), `passkey_disabled`
+        (`authentication_methods.passkey.enabled` false) and `strategy`
+        (not a database connection). Plan 33b frozen contract; the runtime
+        lands in Task 7 and answers 501 until then.
+      x-source:
+        - https://auth0.com/docs/authenticate/database-connections/passkeys/configure-passkey-policy
+      security: [{operatorToken: []}]
+      responses:
+        "200":
+          description: The connection's passkey status.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [effective, unmet]
+                properties:
+                  effective: {type: boolean, description: True when passkeys are offered on this connection.}
+                  unmet:
+                    type: array
+                    items: {type: string, enum: [identifier_first, universal_login, requires_username, import_mode, password, passkey_disabled, strategy]}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "404": {$ref: "#/components/responses/NotFound"}
   /api/system/tenants/{tenant}/connections/{id}/scripts/{name}/try:
     parameters:
       - name: tenant
@@ -12654,10 +12764,11 @@ paths:
       tags:
       - users
       summary: CreateAuthenticationMethods
-      description: Plan 33 frozen contract; runtime implementation follows in later tasks. Stored provider secrets
-        are never returned.
+      description: "Plan 33 frozen contract; runtime implementation follows in later tasks. Stored provider secrets
+        are never returned. Plan 33b adds the passkey type (see MFACreateAuthenticationMethod, D-0062)."
       x-source:
       - https://auth0.com/docs/oas/management/v2/management-api-oas.json
+      - https://auth0.com/docs/secure/multi-factor-authentication/manage-mfa-auth0-apis/manage-authentication-methods-with-management-api
       security:
       - managementToken:
         - create:authentication_methods
@@ -14828,6 +14939,17 @@ components:
     MFACreateAuthenticationMethod:
       type: object
       additionalProperties: false
+      description: |
+        Plan 33 frozen contract, extended by Plan 33b (D-0062) with
+        `type: passkey` from `CreatedUserAuthenticationMethodTypeEnum`. A
+        passkey needs `key_id` and a COSE `public_key` (LR33b-23);
+        `relying_party_identifier` defaults to the tenant's default custom
+        domain's effective RP ID, else the canonical host; `identity_user_id`
+        defaults to the user's database identity; `user_handle` to the
+        user's existing handle. The 21st passkey is `400 invalid_body`
+        (LR33b-29) and a duplicate `key_id` in the tenant `409`. Without the
+        `webauthn.v1` storage capability a passkey create is `501
+        webauthn_unavailable`.
       required:
       - type
       properties:
@@ -14837,6 +14959,7 @@ components:
           - totp
           - email
           - webauthn-roaming
+          - passkey
         name:
           type: string
         totp_secret:
@@ -21617,8 +21740,10 @@ components:
           description: |
             Grant types the application may use. zeroauthy serves
             authorization_code, refresh_token, client_credentials, password,
-            password-realm and device_code; implicit and the MFA grants are
-            stored but not served.
+            password-realm, device_code and, since Plan 33b, the passkey
+            grant `urn:okta:params:oauth:grant-type:webauthn` (first-party
+            applications; D-0062); implicit and the MFA grants are stored
+            but not served.
         callbacks: {type: array, items: {type: string}, description: Allowed redirect URIs.}
         allowed_logout_urls: {type: array, items: {type: string}, description: Where logout may return to.}
         web_origins: {type: array, items: {type: string}, description: Origins allowed for web message and silent authentication.}
@@ -21656,7 +21781,8 @@ components:
           format: uri
           description: HTTPS application login route used by organization invitation links. Omission preserves the existing value; null is rejected.
         native_social_login: {description: Accepted and ignored.}
-        mobile: {description: Accepted and ignored.}
+        mobile:
+          $ref: "#/components/schemas/ClientMobile"
         organization_usage:
           type: [string, "null"]
           enum: [deny, allow, require, null]
@@ -21685,6 +21811,46 @@ components:
             for the organization name until email discovery exists (D-0055).
         is_token_endpoint_ip_header_trusted: {description: Accepted and ignored.}
         allowed_clients: {description: Accepted and ignored.}
+    ClientMobile:
+      type: object
+      additionalProperties: false
+      description: |
+        Native application settings for the Passkey APIs (Plan 33b,
+        D-0039 addendum in D-0062): stored and returned, used to build the
+        `/.well-known/apple-app-site-association` and
+        `/.well-known/assetlinks.json` files on custom domains and the
+        Android `apk-key-hash` origins. Previously accepted and ignored.
+      properties:
+        ios: {$ref: "#/components/schemas/ClientMobileIOS"}
+        android: {$ref: "#/components/schemas/ClientMobileAndroid"}
+    WebAuthnRoamingSettings:
+      type: object
+      additionalProperties: false
+      required: [user_verification]
+      description: |
+        The security-key user-verification requirement (Plan 33b, LR33b-22):
+        `discouraged` is Auth0's "Never" (the default), `preferred` "If
+        supported" and `required` "Required".
+      properties:
+        user_verification: {type: string, enum: [discouraged, preferred, required]}
+    ClientMobileIOS:
+      type: object
+      additionalProperties: false
+      description: iOS application identity.
+      properties:
+        team_id: {type: string, description: The Apple developer team identifier.}
+        app_bundle_identifier: {type: string, description: The application's bundle identifier.}
+    ClientMobileAndroid:
+      type: object
+      additionalProperties: false
+      description: Android application identity.
+      properties:
+        app_package_name: {type: string, description: The application's package name.}
+        sha256_cert_fingerprints:
+          type: array
+          minItems: 1
+          items: {type: string, minLength: 1}
+          description: SHA-256 signing-certificate fingerprints (hex with colons); several cover debug and release builds.
     ClientCreate:
       description: |
         A new application. Unknown fields are refused (`invalid_body`).
@@ -21743,6 +21909,7 @@ components:
         web_origins: {type: array, items: {type: string}}
         allowed_origins: {type: array, items: {type: string}}
         grant_types: {type: array, items: {type: string}}
+        mobile: {$ref: "#/components/schemas/ClientMobile"}
         token_endpoint_auth_method: {$ref: "#/components/schemas/TokenEndpointAuthMethod"}
         jwt_configuration: {$ref: "#/components/schemas/JwtConfiguration"}
         refresh_token: {$ref: "#/components/schemas/RefreshTokenSettings"}

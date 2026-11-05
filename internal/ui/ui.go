@@ -32,7 +32,8 @@ var funcs = template.FuncMap{
 }
 
 func parsePage(names ...string) *template.Template {
-	names = append(names, "templates/captcha.html", "templates/social.html")
+	names = append(names, "templates/captcha.html", "templates/social.html", "templates/webauthn_script.html",
+		"templates/webauthn_create_script.html")
 	return template.Must(template.New("").Funcs(funcs).ParseFS(files, names...))
 }
 
@@ -44,6 +45,9 @@ var (
 		"login_id":               parsePage("templates/layout.html", "templates/login_id.html"),
 		"login_password":         parsePage("templates/layout.html", "templates/login_password.html"),
 		"signup":                 parsePage("templates/layout.html", "templates/signup.html"),
+		"signup_id":              parsePage("templates/layout.html", "templates/signup_id.html"),
+		"signup_password":        parsePage("templates/layout.html", "templates/signup_password.html"),
+		"passkey_enrollment":     parsePage("templates/layout.html", "templates/passkey_enrollment.html"),
 		"consent":                parsePage("templates/layout.html", "templates/consent.html"),
 		"error":                  parsePage("templates/layout.html", "templates/error.html"),
 		"logout_confirm":         parsePage("templates/layout.html", "templates/logout_confirm.html"),
@@ -160,6 +164,24 @@ type LoginData struct {
 	Error          string
 	RedirectURI    string // the client's callback; its origin is allowed as form-action
 	HostedRevision *int64
+	// Passkey, when non-nil, adds WebAuthn markup to the login-id page
+	// (Plan 33b section 3.3). Button and Autofill come from the
+	// connection's challenge_ui; Autofill adds the "webauthn" autocomplete
+	// token and the conditional get, Button adds the passkey button.
+	Passkey *PasskeyData
+}
+
+// PasskeyData is the login-id page's WebAuthn state. ChallengeID names the
+// server-side challenge the page posts back; Options is the RequestOptions
+// JSON (already base64url-encoded for the browser) embedded verbatim. It
+// carries no secret: the challenge is public by design and is consumed on
+// first use.
+type PasskeyData struct {
+	ChallengeID string
+	Options     template.JS
+	Button      bool
+	Autofill    bool
+	ButtonText  string
 }
 
 // SocialButton is one federated connection choice: Label is the display
@@ -190,6 +212,31 @@ type SignupData struct {
 	Error                        string
 	RedirectURI                  string // the client's callback; its origin is allowed as form-action
 	HostedRevision               *int64
+	// Revision is the hosted form revision of this step.
+	Revision int64
+	// BackURL returns to the previous step of the split flow.
+	BackURL string
+	// Passkey, when non-nil, marks the passkey-enrollment step of the split
+	// signup flow (Plan 33b section 3.4). PasskeyAction and PasswordAction
+	// are the two submits the screen offers.
+	Passkey        *PasskeyEnrollmentData
+	PasskeyAction  string
+	PasswordAction string
+	// SecondaryText labels the second form's submit: the enrollment prompt
+	// uses its continue text, the signup flow its "create a password" text.
+	SecondaryText string
+}
+
+// PasskeyEnrollmentData is the passkey-enrollment screen's WebAuthn state.
+// Creation selects the create ceremony (signup and progressive enrollment);
+// Local is the device-local variant of section 3.5. Options is the
+// CreationOptions JSON, embedded verbatim.
+type PasskeyEnrollmentData struct {
+	ChallengeID string
+	Options     template.JS
+	Creation    bool
+	Local       bool
+	CreateText  string
 }
 
 type page struct {
@@ -204,6 +251,22 @@ func RenderLogin(w http.ResponseWriter, status int, t Tenant, d LoginData) {
 
 func RenderSignup(w http.ResponseWriter, status int, t Tenant, d SignupData) {
 	render(w, status, "signup", t, d, formActionFor(d.RedirectURI))
+}
+
+// RenderSignupIdentifier is the split flow's first step (prompt signup-id).
+func RenderSignupIdentifier(w http.ResponseWriter, status int, t Tenant, d SignupData) {
+	render(w, status, "signup_id", t, d, formActionFor(d.RedirectURI))
+}
+
+// RenderSignupPassword is the split flow's password step.
+func RenderSignupPassword(w http.ResponseWriter, status int, t Tenant, d SignupData) {
+	render(w, status, "signup_password", t, d, formActionFor(d.RedirectURI))
+}
+
+// RenderPasskeyEnrollment is the passkey-enrollment screen of the split
+// signup, progressive and local enrollment.
+func RenderPasskeyEnrollment(w http.ResponseWriter, status int, t Tenant, d SignupData) {
+	render(w, status, "passkey_enrollment", t, d, formActionFor(d.RedirectURI))
 }
 
 type errorData struct{ Message, Detail, Reference string }

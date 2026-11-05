@@ -2,13 +2,38 @@ package mgmt_test
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
 	"github.com/zeroauthy/zeroauthy/internal/keys"
 	"github.com/zeroauthy/zeroauthy/internal/mfarules"
+	"github.com/zeroauthy/zeroauthy/internal/webauthn"
 	"strings"
 	"testing"
 )
+
+// testCOSEKey is a valid public P-256 COSE_Key (base64url, no padding) used
+// as the stored WebAuthn public key in these tests.
+var testCOSEKey = mustP256COSE()
+
+func mustP256COSE() string {
+	k, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		panic(err)
+	}
+	coord := func(b []byte) []byte {
+		out := make([]byte, 32)
+		copy(out[32-len(b):], b)
+		return append([]byte{0x58, 0x20}, out...)
+	}
+	raw := []byte{0xa5, 0x01, 0x02, 0x03, 0x26, 0x20, 0x01, 0x21}
+	raw = append(raw, coord(k.X.Bytes())...)
+	raw = append(raw, 0x22)
+	raw = append(raw, coord(k.Y.Bytes())...)
+	return base64.RawURLEncoding.EncodeToString(raw)
+}
 
 func TestGuardianStoredBindingAndPatchPreservesSecret(t *testing.T) {
 	e := newClientsEnv(t)
@@ -93,7 +118,7 @@ func TestGuardianAdminAuditCodes(t *testing.T) {
 
 func TestAuthMethodsRejectPrivateCOSE(t *testing.T) {
 	e, uid := mfaUser(t)
-	public, err := base64.RawURLEncoding.DecodeString("pQECAyYgASFYIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIlggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+	public, err := base64.RawURLEncoding.DecodeString(testCOSEKey)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,6 +128,38 @@ func TestAuthMethodsRejectPrivateCOSE(t *testing.T) {
 	r, _ := mfaCall(t, e.clientsEnv, "CreateAuthenticationMethods", uid, "", map[string]any{"type": "webauthn-roaming", "key_id": "AQID", "public_key": base64.RawURLEncoding.EncodeToString(private), "relying_party_identifier": "example.test"}, "")
 	if r.Code != 400 {
 		t.Fatalf("private COSE material accepted: %d", r.Code)
+	}
+}
+
+// TestStoredCOSESharesParser pins that the stored-key check and the WebAuthn
+// verifier use one COSE parser: whatever ParseCOSEKey refuses, the
+// Management API refuses, and whatever it accepts is stored.
+func TestStoredCOSESharesParser(t *testing.T) {
+	e, uid := mfaUser(t)
+	public, err := base64.RawURLEncoding.DecodeString(testCOSEKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := webauthn.ParseCOSEKey(public); err != nil {
+		t.Fatalf("parser refuses the valid key: %v", err)
+	}
+	offCurve := append([]byte(nil), public...)
+	offCurve[len(offCurve)-1] ^= 1
+	private := append(append([]byte(nil), public...), 0x23, 0x58, 0x20)
+	private[0] = 0xa6
+	private = append(private, make([]byte, 32)...)
+	for name, raw := range map[string][]byte{"off-curve": offCurve, "private": private, "truncated": public[:len(public)-1], "trailing": append(append([]byte(nil), public...), 0)} {
+		if _, err := webauthn.ParseCOSEKey(raw); err == nil {
+			t.Fatalf("%s: parser accepts", name)
+		}
+		r, _ := mfaCall(t, e.clientsEnv, "CreateAuthenticationMethods", uid, "", map[string]any{"type": "webauthn-roaming", "key_id": "AQID", "public_key": base64.RawURLEncoding.EncodeToString(raw), "relying_party_identifier": "example.test"}, "")
+		if r.Code != 400 {
+			t.Fatalf("%s: stored with %d", name, r.Code)
+		}
+	}
+	r, _ := mfaCall(t, e.clientsEnv, "CreateAuthenticationMethods", uid, "", map[string]any{"type": "webauthn-roaming", "key_id": "AQID", "public_key": testCOSEKey, "relying_party_identifier": "example.test"}, "")
+	if r.Code != 201 {
+		t.Fatalf("valid key refused: %d %s", r.Code, r.Body)
 	}
 }
 

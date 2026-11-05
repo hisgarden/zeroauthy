@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"github.com/zeroauthy/zeroauthy/internal/mfarules"
+	"github.com/zeroauthy/zeroauthy/internal/webauthnrules"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -57,6 +58,25 @@ func usedKeys(t *testing.T) []string {
 		}
 	}
 	used = append(used, "mfa.mfa-enroll-result.invalidTicket")
+	// The Plan 33b hosted passkey screens share data-driven prompt/screen
+	// prefixes; the frozen webauthnrules inventory names their keys. Only
+	// the screens this plan renders from a template are listed here; the
+	// WebAuthn MFA screens are added with the task that renders them.
+	for _, screen := range []string{"passkey-enrollment", "passkey-enrollment-local"} {
+		for _, key := range webauthnrules.TextKeys(screen) {
+			used = append(used, webauthnrules.Prompt(screen)+"."+screen+"."+key)
+		}
+	}
+	// The split signup screens (Plan 33b section 3.4) reuse Auth0's prompt
+	// names, so their keys are enumerated here rather than frozen there.
+	for prompt, keys := range map[string][]string{
+		"signup-id":       {"title", "description", "emailPlaceholder", "buttonText"},
+		"signup-password": {"title", "description", "passwordPlaceholder", "buttonText", "password-policy-not-conformant"},
+	} {
+		for _, key := range keys {
+			used = append(used, prompt+"."+prompt+"."+key)
+		}
+	}
 	// Hosted passwordless code screens share one template with a screen
 	// prefix (internal/login passwordlessCodeSuffixes).
 	for _, screen := range []string{"login-passwordless-email-code", "login-passwordless-sms-otp"} {

@@ -96,6 +96,10 @@ type Handlers struct {
 	TrustProxyHeaders bool
 	// Keys verifies link_with ID tokens (POST /users/{id}/identities).
 	Keys *keys.Manager
+	// RestrictSharedRPIDs is security.webauthn.restrict_shared_rp_ids: a
+	// custom domain's relying_party_identifier may not cover BaseDomain,
+	// SystemHost, the origin suffix or another tenant's host (R1).
+	RestrictSharedRPIDs bool
 
 	tryOnce     sync.Once
 	tryThrottle *identity.Throttle

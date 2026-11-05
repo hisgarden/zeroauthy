@@ -1297,3 +1297,13 @@ func (s *Server) SessionsMarkMFA(ctx context.Context, r *storev1.TouchRequest) (
 	}
 	return exec(s, r.TxId, func(st store.Store) error { return st.Sessions().MarkMFA(ctx, r.TenantId, r.Id, tsFromPB(r.At)) }), nil
 }
+
+func (s *Server) SessionsSetAuthMethods(ctx context.Context, r *storev1.SessionsSetAuthMethodsRequest) (*storev1.Result, error) {
+	methods, err := authMethodsFromPB(r.Methods)
+	if err != nil {
+		return &storev1.Result{Error: errToPB(store.ErrInvalid)}, nil
+	}
+	return exec(s, r.TxId, func(st store.Store) error {
+		return st.Sessions().SetAuthMethods(ctx, r.TenantId, r.Id, methods)
+	}), nil
+}

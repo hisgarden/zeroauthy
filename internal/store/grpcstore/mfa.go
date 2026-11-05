@@ -948,6 +948,10 @@ func (o clientMFA) CreateChallenge(ctx context.Context, v *store.MFAChallenge) e
 	if v == nil {
 		return store.ErrInvalid
 	}
+	v, err := challengeGate.write(ctx, o.c, v)
+	if err != nil {
+		return err
+	}
 	q := &storev1.MFACreateChallengeRequest{TxId: o.c.txID}
 	if err := copyMFA(&q.V, v); err != nil {
 		return err
@@ -999,7 +1003,7 @@ func (o clientMFA) GetChallenge(ctx context.Context, tid string, id string, now 
 		return out, err
 	}
 	err = copyMFA(&out, response.GetValue())
-	return out, err
+	return challengeGate.one(ctx, o.c, out, err)
 }
 func (s *Server) MFAGetChallenge(ctx context.Context, q *storev1.MFAGetChallengeRequest) (*storev1.MFAGetChallengeResponse, error) {
 	out := &storev1.MFAGetChallengeResponse{}

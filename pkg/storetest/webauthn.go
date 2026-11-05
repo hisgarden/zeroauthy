@@ -671,10 +671,57 @@ func WebAuthn(t *testing.T, factory Factory) {
 		if _, err := s.MFA().GetChallenge(ctx, "a", "c1", now); !isErr(err, store.ErrNotFound) {
 			t.Fatalf("consumed challenge: %v", err)
 		}
-		// A challenge without a user (native, pre-signup) is not supported by
-		// CreateChallenge; the kinds carry no store semantics beyond email/oob.
+		// The passkey kinds carry no attempt semantics (only email/oob do).
 		mustNoErr(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "a", ID: "c2", UserID: "u", Kind: "passkey-register", Attempts: 5, Binding: binding, ExpiresAt: now.Add(time.Minute)}))
 		mustNoErr(t, s.MFA().ConsumeChallenge(ctx, "a", "c2", now))
+	})
+	t.Run("ChallengeWithoutUser", func(t *testing.T) {
+		// Usernameless passkey logins and passkey signups have no user when
+		// the challenge is issued: the two passkey kinds may carry UserID ""
+		// (store.ChallengeUserOptional); every other kind still needs one.
+		s := setup(t)
+		binding := []byte(`{"purpose":"passkey-login","rp_id":"a.example.test","origins":["https://a.example.test"],"client_id":"cl"}`)
+		for _, kind := range []string{"passkey-login", "passkey-register"} {
+			id := "nouser-" + kind
+			mustNoErr(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "a", ID: id, Kind: kind, Challenge: []byte("chal"), Binding: binding, ExpiresAt: now.Add(time.Minute)}))
+			got, err := s.MFA().GetChallenge(ctx, "a", id, now)
+			mustNoErr(t, err)
+			if got.UserID != "" || got.Kind != kind || string(got.Binding) != string(binding) || string(got.Challenge) != "chal" {
+				t.Fatalf("%s: %+v", kind, got)
+			}
+			if _, err := s.MFA().GetChallenge(ctx, "b", id, now); !isErr(err, store.ErrNotFound) {
+				t.Fatalf("%s visible to another tenant: %v", kind, err)
+			}
+			mustErrIs(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "a", ID: id, Kind: kind, ExpiresAt: now.Add(time.Minute)}), store.ErrConflict)
+			// Consumption is still single use.
+			mustNoErr(t, s.MFA().ConsumeChallenge(ctx, "a", id, now))
+			mustErrIs(t, s.MFA().ConsumeChallenge(ctx, "a", id, now), store.ErrPrecondition)
+		}
+		// Other kinds, an authenticator without a user and a missing tenant
+		// are still refused.
+		for _, kind := range []string{"", "email", "oob", "webauthn", "webauthn-register", "webauthn-assert"} {
+			mustErrIs(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "a", ID: "k-" + kind, Kind: kind, ExpiresAt: now.Add(time.Minute)}), store.ErrNotFound)
+		}
+		mustNoErr(t, s.WebAuthn().CreatePasskey(ctx, passkey("a", "u", "1", "c1"), 20))
+		mustErrIs(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "a", ID: "with-auth", Kind: "passkey-login", AuthenticatorID: "passkey|dev_1", ExpiresAt: now.Add(time.Minute)}), store.ErrNotFound)
+		mustErrIs(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "missing", ID: "x", Kind: "passkey-login", ExpiresAt: now.Add(time.Minute)}), store.ErrNotFound)
+		// Deleting a user leaves user-less challenges alone; expiry and
+		// tenant MFA deletion remove them.
+		mustNoErr(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "a", ID: "live", Kind: "passkey-login", ExpiresAt: now.Add(time.Hour)}))
+		mustNoErr(t, s.MFA().CreateChallenge(ctx, &store.MFAChallenge{TenantID: "a", ID: "old", Kind: "passkey-register", ExpiresAt: now.Add(-time.Second)}))
+		mustNoErr(t, s.MFA().DeleteUserMFA(ctx, "a", "u"))
+		if _, err := s.MFA().GetChallenge(ctx, "a", "live", now); err != nil {
+			t.Fatalf("user deletion removed a user-less challenge: %v", err)
+		}
+		n, err := s.MFA().PurgeMFA(ctx, now, 0)
+		mustNoErr(t, err)
+		if n != 1 {
+			t.Fatalf("PurgeMFA = %d, want the expired user-less challenge", n)
+		}
+		mustNoErr(t, s.MFA().DeleteTenantMFA(ctx, "a"))
+		if _, err := s.MFA().GetChallenge(ctx, "a", "live", now); !isErr(err, store.ErrNotFound) {
+			t.Fatalf("tenant MFA deletion kept a user-less challenge: %v", err)
+		}
 	})
 	t.Run("PurgeWebAuthnExpired", func(t *testing.T) {
 		s := setup(t)

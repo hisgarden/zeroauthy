@@ -266,7 +266,11 @@ func (r mfa) PeekMFAToken(_ context.Context, tid, hash string, now time.Time) (*
 func (r mfa) CreateChallenge(_ context.Context, v *store.MFAChallenge) error {
 	r.s.lock()
 	defer r.s.unlock()
-	if r.s.users[key{v.TenantID, v.UserID}] == nil {
+	if v.UserID == "" && store.ChallengeUserOptional(v.Kind) {
+		if r.s.tenants[v.TenantID] == nil || v.AuthenticatorID != "" {
+			return store.ErrNotFound
+		}
+	} else if r.s.users[key{v.TenantID, v.UserID}] == nil {
 		return store.ErrNotFound
 	}
 	if v.AuthenticatorID != "" {

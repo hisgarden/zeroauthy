@@ -38,6 +38,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/mfa"
 	"github.com/zeroauthy/zeroauthy/internal/mgmt"
 	"github.com/zeroauthy/zeroauthy/internal/noderunner"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/phone"
 	"github.com/zeroauthy/zeroauthy/internal/protection"
 	"github.com/zeroauthy/zeroauthy/internal/ratelimit"
@@ -298,6 +299,7 @@ func build(ctx context.Context, cfg *config.Config, log *slog.Logger, st store.S
 	tenantEmail := &email.Service{Recorder: recorder, Store: st, Wrapper: wrapper, Renderer: emailRenderer, Providers: &providers.Factory{LocalSMTPAllowlist: cfg.Email.AllowLocalSMTP}, Fallback: mailer, DefaultFrom: cfg.Email.From}
 	mfaService := mfa.NewService(st, wrapper, tenantEmail, st.Protection(), log, nil)
 	mfaService.Recorder = recorder
+	passkeys := passkey.New(st, rpPolicy, nil)
 	if cfg.Email.Driver == "" || cfg.Email.Driver == "log" {
 		log.Warn("email.driver is log: emails are written to the server log and not delivered; reset links are redacted unless email.log_links is true")
 	}
@@ -439,6 +441,7 @@ func build(ctx context.Context, cfg *config.Config, log *slog.Logger, st store.S
 			BaseDomain:        cfg.Server.BaseDomain,
 			SystemHost:        systemHost,
 			RPIDs:             rpPolicy,
+			Passkeys:          passkeys,
 			Domains:           domains,
 
 			RateLimit:         rateLimit(sec.RateLimit),

@@ -33,6 +33,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/mgmt"
 	"github.com/zeroauthy/zeroauthy/internal/oauth"
 	"github.com/zeroauthy/zeroauthy/internal/oidc"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/passwordless"
 	"github.com/zeroauthy/zeroauthy/internal/phone"
 	"github.com/zeroauthy/zeroauthy/internal/protection"
@@ -93,6 +94,10 @@ type Deps struct {
 	// R1/R2): base domain, system host, origin suffix and
 	// security.webauthn.restrict_shared_rp_ids.
 	RPIDs rpid.Policy
+	// Passkeys runs the passkey and WebAuthn ceremonies (Plan 33b) over
+	// Store with RPIDs; the hosted, native and MFA routes use it. nil
+	// offers no passkey ceremonies.
+	Passkeys *passkey.Service
 
 	// Console is the built admin console; nil means the embedded one.
 	Console fs.FS

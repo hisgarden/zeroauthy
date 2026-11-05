@@ -45,6 +45,15 @@ type MFAChallenge struct {
 	Attempts                                    int
 	ExpiresAt                                   time.Time
 }
+
+// ChallengeUserOptional reports whether a challenge of kind may be stored
+// without a user (Plan 33b): a hosted or native passkey-login challenge is
+// issued before the credential names its user, and a passkey-register
+// challenge for a signup before the user exists.
+func ChallengeUserOptional(kind string) bool {
+	return kind == "passkey-login" || kind == "passkey-register"
+}
+
 type EnrollmentTicket struct {
 	TenantID, Hash, UserID, Factor string
 	AllowMultiple                  bool
@@ -110,6 +119,11 @@ type MFA interface {
 	ConsumeMFAToken(ctx context.Context, tid, hash, clientID string, now time.Time) (*MFAToken, error) // ErrNotFound if missing, expired, consumed or other client
 	PeekMFAToken(ctx context.Context, tid, hash string, now time.Time) (*MFAToken, error)
 
+	// CreateChallenge stores c. ErrNotFound if the user (or c.AuthenticatorID
+	// of that user) is missing, except that the passkey kinds
+	// (ChallengeUserOptional) may carry UserID "" for a usernameless login
+	// or a signup: such a row needs only an existing tenant and no
+	// authenticator. ErrConflict if the ID exists.
 	CreateChallenge(ctx context.Context, c *MFAChallenge) error
 	GetChallenge(ctx context.Context, tid, id string, now time.Time) (*MFAChallenge, error)
 	// FailChallenge atomically increments attempts up to five. Missing or consumed

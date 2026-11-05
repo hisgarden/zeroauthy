@@ -383,3 +383,16 @@ type (
 
 var ErrMFAUnavailable = store.ErrMFAUnavailable
 var ErrPhoneUnavailable = store.ErrPhoneUnavailable
+
+type (
+	WebAuthn              = store.WebAuthn
+	WebAuthnSupporter     = store.WebAuthnSupporter
+	UnimplementedWebAuthn = store.UnimplementedWebAuthn
+	WebAuthnSnooze        = store.WebAuthnSnooze
+	AuthMethod            = store.AuthMethod
+	ClientMobile          = store.ClientMobile
+	ClientMobileIOS       = store.ClientMobileIOS
+	ClientMobileAndroid   = store.ClientMobileAndroid
+)
+
+var ErrWebAuthnUnavailable = store.ErrWebAuthnUnavailable

@@ -46,6 +46,7 @@ func cloneMFAToken(v *store.MFAToken) *store.MFAToken {
 func cloneChallenge(v *store.MFAChallenge) *store.MFAChallenge {
 	n := *v
 	n.Challenge = bytes.Clone(v.Challenge)
+	n.Binding = bytes.Clone(v.Binding)
 	return &n
 }
 func (r mfa) GetGuardian(_ context.Context, tid string) (*store.GuardianSettings, error) {
@@ -155,7 +156,11 @@ func (r mfa) DeleteUserAuthenticators(_ context.Context, tid, uid string, types 
 	r.s.lock()
 	defer r.s.unlock()
 	for k, a := range r.s.authenticators {
-		if k.tenant == tid && a.UserID == uid && (types == nil || slices.Contains(types, a.Type)) {
+		if k.tenant != tid || a.UserID != uid {
+			continue
+		}
+		// nil means every MFA type: passkeys are first factors and stay.
+		if types == nil && a.Type != "passkey" || types != nil && slices.Contains(types, a.Type) {
 			delete(r.s.authenticators, k)
 		}
 	}
@@ -436,6 +441,11 @@ func (s *Store) deleteUserMFA(tid, uid string) {
 			delete(s.browsers, k)
 		}
 	}
+	for k, v := range s.snoozes {
+		if k.tenant == tid && v.UserID == uid {
+			delete(s.snoozes, k)
+		}
+	}
 }
 func (r mfa) DeleteTenantMFA(_ context.Context, tid string) error {
 	r.s.lock()
@@ -450,4 +460,5 @@ func (s *Store) deleteTenantMFA(tid string) {
 	purge(s.challenges, tid)
 	purge(s.tickets, tid)
 	purge(s.browsers, tid)
+	purge(s.snoozes, tid)
 }

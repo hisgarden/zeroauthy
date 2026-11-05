@@ -176,6 +176,7 @@ func (h *Handlers) signupStageData(f *flow, r *http.Request) ui.SignupData {
 		BackURL:          signupIdentifierLocation(f),
 		PasskeyAction:    "/u/signup/passkey",
 		PasswordAction:   "/u/signup/password",
+		SecondaryText:    f.view.L.T("passkeys.passkey-enrollment.usePasswordButtonText"),
 	}
 }
 

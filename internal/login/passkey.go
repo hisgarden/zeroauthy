@@ -174,6 +174,11 @@ func (h *Handlers) authenticatePasskey(w http.ResponseWriter, r *http.Request, f
 		h.fail(w, r, err, f)
 		return
 	}
+	// The assertion's authenticator attachment decides the local-enrollment
+	// prompt after this login (spec section 3.5, Review Focus 5).
+	if res.Assertion != nil {
+		f.passkeyAttachment = res.Assertion.Attachment
+	}
 	h.completeWithMethods(w, r, f, res.User, store.AuthMethod{Name: "passkey", At: h.now()})
 }
 

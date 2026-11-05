@@ -234,6 +234,9 @@ func New(d Deps) http.Handler {
 
 	az := &authz.Handlers{MFA: d.MFA, Store: d.Store, Sessions: d.Sessions, Log: d.Log,
 		Actions: d.Actions, Wrapper: d.Wrapper, TrustProxyHeaders: d.TrustProxyHeaders}
+	if d.Passkeys != nil {
+		az.Passkeys = d.Passkeys
+	}
 	db := &identity.Database{Store: d.Store, Scripts: d.Scripts, Log: d.Log}
 	// One mailer sends every verification email: after a signup (API and
 	// hosted page) and for the Management API's verify_email.
@@ -338,6 +341,10 @@ func New(d Deps) http.Handler {
 		tr.Get("/u/login", lg.LoginPage)
 		tr.Post("/u/login", lg.LoginSubmit)
 		tr.Post("/u/login/passkey", lg.LoginPasskeyPost)
+		tr.Get("/u/passkey-enrollment", lg.PasskeyEnrollmentGet)
+		tr.Post("/u/passkey-enrollment", lg.PasskeyEnrollmentPost)
+		tr.Get("/u/passkey-enrollment-local", lg.PasskeyEnrollmentLocalGet)
+		tr.Post("/u/passkey-enrollment-local", lg.PasskeyEnrollmentLocalPost)
 		for _, path := range []string{"/u/login-passwordless-email-code", "/u/login-passwordless-sms-otp"} {
 			tr.Get(path, lg.PasswordlessCodePage)
 			tr.Post(path, lg.PasswordlessCodeSubmit)

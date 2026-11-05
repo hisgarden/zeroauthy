@@ -9,7 +9,8 @@
 <input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
 {{with .Data.Passkey}}{{if .Autofill}}<input type="hidden" name="challenge_id" value="{{.ChallengeID}}">
 <input type="hidden" name="credential" value="">
-<input type="hidden" name="webauthn_error" value="">{{end}}{{end}}
+<input type="hidden" name="webauthn_error" value="">
+<input type="hidden" name="platform_authenticator" value="">{{end}}{{end}}
 {{.Tenant.Partials.FormContentStart}}
 <label for="username">{{t .Tenant.L "login-id.login-id.usernamePlaceholder"}}</label>
 <input id="username" name="username" type="text" autocomplete="{{if and .Data.Passkey .Data.Passkey.Autofill}}username webauthn{{else}}username{{end}}" autocapitalize="none" value="{{.Data.Login}}" required autofocus>

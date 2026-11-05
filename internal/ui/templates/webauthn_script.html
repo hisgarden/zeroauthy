@@ -10,6 +10,7 @@
   if (!form) { return; }
   var credField = form.querySelector('input[name="credential"]');
   var errField = form.querySelector('input[name="webauthn_error"]');
+  var platField = form.querySelector('input[name="platform_authenticator"]');
   var controller = null;
   var done = false;
 
@@ -66,6 +67,14 @@
   function request(mediation) {
     controller = new AbortController();
     return navigator.credentials.get({ publicKey: toPublicKey(opts), mediation: mediation, signal: controller.signal });
+  }
+
+  // The local-enrollment prompt is offered only when this browser has a
+  // user-verifying platform authenticator (spec section 3.5).
+  if (platField && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
+    PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(function (ok) {
+      if (ok) { platField.value = "1"; }
+    }, function () {});
   }
 
   form.addEventListener("submit", function () { if (!done) { abortPending(); } });

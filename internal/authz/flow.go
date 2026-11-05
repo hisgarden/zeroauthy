@@ -44,6 +44,10 @@ const deviceGrant = "urn:ietf:params:oauth:grant-type:device_code"
 type flowReq struct {
 	Request
 	DeviceCodeHash string
+	// stage params are the login transaction's own Plan 33b prompt markers;
+	// they live on the transaction, not on the OAuth request, so the prompt
+	// decision reads them here.
+	stageParams map[string]string
 }
 
 func (f flowReq) device() bool { return f.DeviceCodeHash != "" }
@@ -121,6 +125,11 @@ func (h *Handlers) flowError(w http.ResponseWriter, r *http.Request, res tenant.
 // for the token endpoint.
 func (h *Handlers) approve(w http.ResponseWriter, r *http.Request, res tenant.Resolved, client *store.Client, fr flowReq, sess *store.LoginSession, scopes []string, eff *actions.Effects) {
 	if h.requireMFA(w, r, res, client, fr, sess, eff) {
+		return
+	}
+	// The post-login enrollment prompt runs after MFA and before consent
+	// (spec section 3.5): answering it is a stage of this transaction.
+	if h.passkeyPrompt(w, r, res, client, fr, sess, false) {
 		return
 	}
 	if !fr.device() {

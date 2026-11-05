@@ -44,6 +44,16 @@ func (m *Manager) AddMethod(ctx context.Context, s *store.LoginSession, method s
 	return nil
 }
 
+// DeviceScope is the stable, non-reversible per-browser key a local passkey
+// prompt binds its snooze to (LR33b-14). The raw cookie is never stored, only
+// its hash; an absent cookie has no scope.
+func DeviceScope(cookie string) string {
+	if cookie == "" {
+		return ""
+	}
+	return secrets.HashToken(cookie)
+}
+
 func browserCookie(kind string) string {
 	switch kind {
 	case "remember":

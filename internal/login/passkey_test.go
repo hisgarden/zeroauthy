@@ -49,6 +49,8 @@ func (e *env) enablePasskeys(t *testing.T, ui string) {
 	}
 	e.setPrompts(t, map[string]any{"identifier_first": true, "universal_login_experience": "new"})
 	e.h.Passkeys = passkey.New(e.st, rpid.Policy{BaseDomain: "example.test", Store: e.st}, fixedNow)
+	// authz decides and stages the post-login enrollment prompt.
+	e.h.Authz.Passkeys = e.h.Passkeys
 }
 
 // setPrompts upserts the tenant's hosted-login prompt settings.

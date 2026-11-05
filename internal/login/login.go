@@ -97,6 +97,9 @@ type flow struct {
 	clientName string
 	config     *store.HostedLoginConfig
 	org        OrgContext
+	// passkeyAttachment is the passkey login's authenticatorAttachment, used
+	// by the post-login local-enrollment prompt (Plan 33b section 3.5).
+	passkeyAttachment string
 }
 
 // loadTxn validates the transaction named by state: it must exist in this
@@ -841,6 +844,12 @@ func (h *Handlers) completeWithMethods(w http.ResponseWriter, r *http.Request, f
 	*r = *r.WithContext(logs.WithEvent(r.Context(), logs.Event{UserID: user.UserID, UserName: passwordless.MaskIdentifier(f.conn.Strategy, user.Name)}))
 	ctx := r.Context()
 	now := h.now()
+	// The post-login enrollment prompt is decided from the transaction, so
+	// what it needs about this login travels with it (Plan 33b section 3.5).
+	if err := h.recordPromptContext(r, f, methods); err != nil {
+		h.fail(w, r, err, f)
+		return
+	}
 	sess, err := h.Sessions.Start(ctx, w, r, f.res.Tenant, user.UserID, f.conn.Name, now, methods...)
 	if err != nil {
 		h.fail(w, r, err, f)
@@ -850,6 +859,40 @@ func (h *Handlers) completeWithMethods(w http.ResponseWriter, r *http.Request, f
 		h.log().WarnContext(ctx, "record login", "tenant", f.res.Tenant.ID, "err", err)
 	}
 	h.Authz.Resume(w, r, f.res, f.txn, sess)
+}
+
+// recordPromptContext stores what the enrollment prompt needs about this
+// login: the first factor (already on the session), the passkey assertion's
+// authenticator attachment and the page script's platform-authenticator
+// report. It rewrites the transaction, so it runs before the session starts.
+func (h *Handlers) recordPromptContext(r *http.Request, f *flow, methods []store.AuthMethod) error {
+	if len(methods) == 0 || methods[0].Name != "passkey" {
+		return nil
+	}
+	ctx := r.Context()
+	cur, err := h.Store.AuthTransactions().Get(ctx, f.res.Tenant.ID, f.txn.ID)
+	if err != nil {
+		return err
+	}
+	if cur.Params == nil {
+		cur.Params = map[string]string{}
+	}
+	cur.Params[authz.ParamPasskeyAttachment] = f.passkeyAttachment
+	if r.PostForm.Get("platform_authenticator") == "1" {
+		cur.Params[authz.ParamPasskeyDevice] = "1"
+	}
+	if err := h.Store.AuthTransactions().CompareAndSwapHosted(ctx, f.res.Tenant.ID, cur.ID, cur.HostedState.Revision, cur.HostedState, h.now()); err != nil {
+		return err
+	}
+	cur.HostedState.Revision++
+	if err := h.Store.AuthTransactions().Delete(ctx, f.res.Tenant.ID, cur.ID); err != nil {
+		return err
+	}
+	if err := h.Store.AuthTransactions().Create(ctx, cur); err != nil {
+		return err
+	}
+	f.txn = cur
+	return nil
 }
 
 func capitalize(s string) string {

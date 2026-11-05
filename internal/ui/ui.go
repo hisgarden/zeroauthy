@@ -222,6 +222,9 @@ type SignupData struct {
 	Passkey        *PasskeyEnrollmentData
 	PasskeyAction  string
 	PasswordAction string
+	// SecondaryText labels the second form's submit: the enrollment prompt
+	// uses its continue text, the signup flow its "create a password" text.
+	SecondaryText string
 }
 
 // PasskeyEnrollmentData is the passkey-enrollment screen's WebAuthn state.

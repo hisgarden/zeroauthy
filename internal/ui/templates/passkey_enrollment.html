@@ -28,7 +28,8 @@
 <input type="hidden" name="state" value="{{.Data.State}}">
 <input type="hidden" name="csrf" value="{{.Data.CSRF}}">
 <input type="hidden" name="hosted_revision" value="{{.Data.Revision}}">
-<button type="submit" id="za-use-password">{{t .Tenant.L "passkeys.passkey-enrollment.usePasswordButtonText"}}</button>
+<label for="checkbox"><input type="checkbox" id="checkbox" name="checkbox" value="on">{{t .Tenant.L "passkeys.passkey-enrollment.checkboxText"}}</label>
+<button type="submit" id="za-use-password">{{.Data.SecondaryText}}</button>
 </form>
 {{with .Data.Passkey}}{{if .Creation}}{{template "webauthn-create-script" $.Nonce}}{{end}}{{end}}
 {{end}}

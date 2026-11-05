@@ -185,3 +185,17 @@ The split `signup-id` → `passkey-enrollment` → `signup-password` flow lands
 for connections where passkeys are effective (LR33b-15), with the passkey
 branch creating the user and the passkey in one transaction and no password.
 Detail: [task 10 record](2026-11-05-plan-33b-record-task-10.md).
+
+## Task 11 — progressive and local passkey enrollment
+
+The post-login enrollment prompt lands as a login-transaction stage between
+MFA and consent: progressive after a password login with no passkey for the
+effective RP ID, local after a cross-platform passkey login on a browser with
+a user-verifying platform authenticator. Both honour the connection's
+options, the 20-passkey limit and 30-day snoozes.
+Detail: [task 11 record](2026-11-05-plan-33b-record-task-11.md).
+
+Third pre-existing failure set found: `internal/authz` fails 12
+Actions-runtime-dependent tests on this branch, reproduced with every Task 11
+change stashed, the same way `internal/login`'s 15 do. Task 19 must report
+both sets as environment-blocked, never as passing.

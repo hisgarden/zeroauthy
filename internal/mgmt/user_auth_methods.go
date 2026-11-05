@@ -9,6 +9,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
 	"github.com/zeroauthy/zeroauthy/internal/store"
 	"github.com/zeroauthy/zeroauthy/internal/tenantrules"
+	"github.com/zeroauthy/zeroauthy/internal/webauthn"
 	"net/http"
 	"net/url"
 	"strings"
@@ -83,7 +84,11 @@ func (h *Handlers) newMethod(tid, uid string, b map[string]any) (store.Authentic
 		}
 		a.RPID = text("relying_party_identifier")
 		parsed, parseErr := url.Parse("https://" + a.RPID)
-		if a.RPID == "" || parseErr != nil || parsed.Host != a.RPID || parsed.Hostname() != a.RPID || parsed.Path != "" || parsed.RawQuery != "" || parsed.Fragment != "" || strings.ContainsAny(a.RPID, " *@") || !validStoredCOSE(a.PublicKey) {
+		// The stored key goes through the same parser the verifier uses, so
+		// a key the Management API accepts is one assertions can be checked
+		// against, and private material is refused with everything else.
+		_, keyErr := webauthn.ParseCOSEKey(a.PublicKey)
+		if a.RPID == "" || parseErr != nil || parsed.Host != a.RPID || parsed.Hostname() != a.RPID || parsed.Path != "" || parsed.RawQuery != "" || parsed.Fragment != "" || strings.ContainsAny(a.RPID, " *@") || keyErr != nil {
 			err = store.ErrInvalid
 		}
 	default:

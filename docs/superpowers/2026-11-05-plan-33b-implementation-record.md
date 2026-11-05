@@ -158,3 +158,23 @@ sent challenge, `crossOrigin` absent. The SPKI-pinning fallback
 (`--ignore-certificate-errors-spki-list`) is implemented in the spec but was
 not needed and so was not exercised. Autofill can therefore be driven by the
 browser in Task 19; Task 9 still covers it by markup and server tests.
+
+## Task 9 — hosted passkey login and session methods
+
+Landed on this branch (Tasks 1–8 already in): the `login-id` page gains the
+§3.3 WebAuthn markup and an in-tree inline script, `POST /u/login/passkey`
+consumes a bound single-use challenge and continues through the password
+path's MFA/consent/organization chain, and the session records its first
+factor (`pwd`/`passkey`) per §5.4. Full detail, commands and results:
+[task 9 record](2026-11-05-plan-33b-record-task-9.md).
+
+Two findings for later tasks:
+
+- **`internal/login` has 15 pre-existing failing tests on this branch**,
+  reproduced with every Task 9 change stashed. They all need the Actions
+  Node runtime to execute a script, which is unavailable here. Task 19 must
+  report them as environment-blocked, never as passing.
+- `logs.RecordEvent` silently drops a code whose inventory `emitted` is
+  false, so the ten Plan 33b codes cannot be asserted in a test until Task 19
+  flips them. Tasks 10–15 should assert the emission rule and the bounded
+  details, and leave the emitted-status assertion to Task 19.

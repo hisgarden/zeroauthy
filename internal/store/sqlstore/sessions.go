@@ -169,6 +169,18 @@ func (r sessions) MarkMFA(ctx context.Context, tid, id string, at time.Time) err
 	return expectRow(res)
 }
 
+func (r sessions) SetAuthMethods(ctx context.Context, tid, id string, methods []store.AuthMethod) error {
+	arg, err := authMethodsArg(methods)
+	if err != nil {
+		return err
+	}
+	res, err := r.s.write(ctx, nil, `UPDATE sessions SET auth_methods=? WHERE tenant_id=? AND id=?`, arg, tid, id)
+	if err != nil {
+		return err
+	}
+	return expectRow(res)
+}
+
 func optionalMFATime(t time.Time) any {
 	if t.IsZero() {
 		return nil

@@ -348,6 +348,12 @@ type Users interface {
 // methods, so concurrent requests cannot overwrite each other's writes.
 type Sessions interface {
 	MarkMFA(ctx context.Context, tenantID, id string, at time.Time) error
+	// SetAuthMethods replaces the session's authentication-method record
+	// (Plan 33b section 5.4): how the session was authenticated, first
+	// factor first. A nil slice stores no record; readers then treat the
+	// session as a legacy password login. It returns ErrNotFound if the
+	// session is absent.
+	SetAuthMethods(ctx context.Context, tenantID, id string, methods []AuthMethod) error
 	// Create returns ErrConflict if the ID or TokenHash exists.
 	Create(ctx context.Context, s *LoginSession) error
 	GetByTokenHash(ctx context.Context, tenantID, tokenHash string) (*LoginSession, error)

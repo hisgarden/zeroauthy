@@ -276,6 +276,9 @@ func New(d Deps) http.Handler {
 		pwl.SMS = d.Phone
 	}
 	lg.Passwordless = pwl
+	// Passkeys runs the hosted WebAuthn ceremonies; nil leaves every passkey
+	// path off, including the login-id markup.
+	lg.Passkeys = d.Passkeys
 
 	// Authentication API: every route is tenant-scoped.
 	r.Group(func(tr chi.Router) {
@@ -334,6 +337,7 @@ func New(d Deps) http.Handler {
 		tr.Get("/u/mfa-enroll-ticket", lg.MFATicket)
 		tr.Get("/u/login", lg.LoginPage)
 		tr.Post("/u/login", lg.LoginSubmit)
+		tr.Post("/u/login/passkey", lg.LoginPasskeyPost)
 		for _, path := range []string{"/u/login-passwordless-email-code", "/u/login-passwordless-sms-otp"} {
 			tr.Get(path, lg.PasswordlessCodePage)
 			tr.Post(path, lg.PasswordlessCodeSubmit)

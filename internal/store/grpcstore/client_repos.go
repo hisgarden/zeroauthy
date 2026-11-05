@@ -1321,6 +1321,16 @@ func (r clientHostedLogins) Put(ctx context.Context, c *store.HostedLoginConfig,
 	return do("HostedLoginsPut", result, err)
 }
 
+func (a clientSessions) SetAuthMethods(ctx context.Context, tid, id string, methods []store.AuthMethod) error {
+	r, err := a.c.rpc.SessionsSetAuthMethods(ctx, &storev1.SessionsSetAuthMethodsRequest{
+		TxId: a.c.txID, TenantId: tid, Id: id, Methods: authMethodsToPB(methods),
+	})
+	if status.Code(err) == codes.Unimplemented {
+		return store.ErrWebAuthnUnavailable
+	}
+	return do("SessionsSetAuthMethods", r, err)
+}
+
 func (a clientSessions) MarkMFA(ctx context.Context, tid, id string, at time.Time) error {
 	if err := a.c.CheckMFASupport(ctx); err != nil {
 		return err

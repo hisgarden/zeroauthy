@@ -90,6 +90,10 @@ service StoreService {
   rpc MFADeleteUserMFA(MFADeleteUserMFARequest) returns (MFADeleteUserMFAResponse);
   rpc MFADeleteTenantMFA(MFADeleteTenantMFARequest) returns (MFADeleteTenantMFAResponse);
   rpc SessionsMarkMFA(TouchRequest) returns (Result);
+  // SessionsSetAuthMethods lands with webauthn.v1 (Plan 33b section 5.4).
+  // A plugin that predates it answers Unimplemented, which the client
+  // reports as ErrWebAuthnUnavailable.
+  rpc SessionsSetAuthMethods(SessionsSetAuthMethodsRequest) returns (Result);
   rpc PhoneCapabilities(PingRequest) returns (EventsCapabilitiesResult);
   rpc PhoneListProviders(PhoneTenantRequest) returns (PhoneListProvidersResponse);
   rpc PhoneGetProvider(PhoneIDRequest) returns (PhoneProviderResponse);
@@ -560,6 +564,12 @@ message TouchRequest {
   google.protobuf.Timestamp idle_expires_at = 4;
   // SessionsTouch only (a plugin that predates them drops them silently):
   google.protobuf.Timestamp at = 5; string ip = 6; string user_agent = 7;
+}
+message SessionsSetAuthMethodsRequest {
+  string tx_id = 1; string tenant_id = 2; string id = 3;
+  // An empty list stores no record (nil); the RPC cannot distinguish empty
+  // from nil, which readers treat the same way.
+  AuthMethodList methods = 4;
 }
 message DeleteExpiredRequest {
  string tx_id = 1;

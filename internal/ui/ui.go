@@ -32,7 +32,7 @@ var funcs = template.FuncMap{
 }
 
 func parsePage(names ...string) *template.Template {
-	names = append(names, "templates/captcha.html", "templates/social.html")
+	names = append(names, "templates/captcha.html", "templates/social.html", "templates/webauthn_script.html")
 	return template.Must(template.New("").Funcs(funcs).ParseFS(files, names...))
 }
 
@@ -160,6 +160,24 @@ type LoginData struct {
 	Error          string
 	RedirectURI    string // the client's callback; its origin is allowed as form-action
 	HostedRevision *int64
+	// Passkey, when non-nil, adds WebAuthn markup to the login-id page
+	// (Plan 33b section 3.3). Button and Autofill come from the
+	// connection's challenge_ui; Autofill adds the "webauthn" autocomplete
+	// token and the conditional get, Button adds the passkey button.
+	Passkey *PasskeyData
+}
+
+// PasskeyData is the login-id page's WebAuthn state. ChallengeID names the
+// server-side challenge the page posts back; Options is the RequestOptions
+// JSON (already base64url-encoded for the browser) embedded verbatim. It
+// carries no secret: the challenge is public by design and is consumed on
+// first use.
+type PasskeyData struct {
+	ChallengeID string
+	Options     template.JS
+	Button      bool
+	Autofill    bool
+	ButtonText  string
 }
 
 // SocialButton is one federated connection choice: Label is the display

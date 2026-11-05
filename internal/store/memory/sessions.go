@@ -143,3 +143,14 @@ func (r sessions) MarkMFA(_ context.Context, tid, id string, at time.Time) error
 	v.MFAAt = at
 	return nil
 }
+
+func (r sessions) SetAuthMethods(_ context.Context, tid, id string, methods []store.AuthMethod) error {
+	r.s.lock()
+	defer r.s.unlock()
+	v := r.s.sessions[key{tid, id}]
+	if v == nil {
+		return store.ErrNotFound
+	}
+	v.AuthMethods = append([]store.AuthMethod(nil), methods...)
+	return nil
+}

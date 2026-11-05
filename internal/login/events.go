@@ -33,6 +33,31 @@ func (h *Handlers) event(r *http.Request, f *flow, code string, u *store.User) {
 	}
 	logs.RecordEvent(r.Context(), h.Recorder, e)
 }
+
+// eventWithDetails is event with structured log details attached. The
+// details must already be bounded: they reach a log sink verbatim.
+func (h *Handlers) eventWithDetails(r *http.Request, f *flow, code string, u *store.User, details map[string]any) {
+	e := logs.FromRequest(r)
+	e.Type = code
+	e.Details = details
+	if f != nil {
+		e.TenantID = f.res.Tenant.ID
+		e.ClientID = f.txn.ClientID
+		e.ClientName = f.clientName
+		e.OrganizationID = f.txn.Params[store.TxnParamOrgID]
+		if f.conn != nil {
+			e.Connection = f.conn.Name
+			e.ConnectionID = f.conn.ID
+			e.Strategy = f.conn.Strategy
+			e.StrategyType = logs.StrategyType(f.conn.Strategy)
+		}
+	}
+	if u != nil {
+		e.UserID = u.UserID
+		e.UserName = u.Name
+	}
+	logs.RecordEvent(r.Context(), h.Recorder, e)
+}
 func (h *Handlers) maskRequest(r *http.Request) {
 	values := []string{}
 	for _, fields := range []url.Values{r.URL.Query(), r.PostForm} {

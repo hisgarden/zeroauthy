@@ -26,6 +26,7 @@ import (
 	"github.com/zeroauthy/zeroauthy/internal/logscrub"
 	"github.com/zeroauthy/zeroauthy/internal/mfa"
 	"github.com/zeroauthy/zeroauthy/internal/orglogin"
+	"github.com/zeroauthy/zeroauthy/internal/passkey"
 	"github.com/zeroauthy/zeroauthy/internal/passwordless"
 	"github.com/zeroauthy/zeroauthy/internal/protection"
 	"github.com/zeroauthy/zeroauthy/internal/secrets"
@@ -59,6 +60,9 @@ type Handlers struct {
 	// Passwordless serves the hosted passwordless prompt (Plan 34); nil
 	// offers no email or sms connection.
 	Passwordless *passwordless.Service
+	// Passkeys runs the WebAuthn ceremonies (Plan 33b); nil disables every
+	// passkey path, including the login-id markup.
+	Passkeys *passkey.Service
 	// Device code entry limits (/activate). Each counts misses; a code
 	// that is found refunds its attempt.
 	DeviceTxnThrottle    *identity.Throttle // key: transaction ID
@@ -805,12 +809,20 @@ func (h *Handlers) SignupSubmit(w http.ResponseWriter, r *http.Request) {
 	h.complete(w, r, f, user)
 }
 
-// complete starts the session and hands back to /authorize processing.
+// complete starts the session and hands back to /authorize processing. The
+// first factor is recorded as a password login, which is what every caller
+// but the passkey path performs.
 func (h *Handlers) complete(w http.ResponseWriter, r *http.Request, f *flow, user *store.User) {
+	h.completeWithMethods(w, r, f, user, store.AuthMethod{Name: "pwd", At: h.now()})
+}
+
+// completeWithMethods is complete with the session's first-factor record
+// (Plan 33b section 5.4).
+func (h *Handlers) completeWithMethods(w http.ResponseWriter, r *http.Request, f *flow, user *store.User, methods ...store.AuthMethod) {
 	*r = *r.WithContext(logs.WithEvent(r.Context(), logs.Event{UserID: user.UserID, UserName: passwordless.MaskIdentifier(f.conn.Strategy, user.Name)}))
 	ctx := r.Context()
 	now := h.now()
-	sess, err := h.Sessions.Start(ctx, w, r, f.res.Tenant, user.UserID, f.conn.Name, now)
+	sess, err := h.Sessions.Start(ctx, w, r, f.res.Tenant, user.UserID, f.conn.Name, now, methods...)
 	if err != nil {
 		h.fail(w, r, err, f)
 		return

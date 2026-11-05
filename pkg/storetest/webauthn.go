@@ -541,6 +541,29 @@ func WebAuthn(t *testing.T, factory Factory) {
 		if len(got.AuthMethods) != 0 {
 			t.Fatalf("empty methods = %v", got.AuthMethods)
 		}
+		// SetAuthMethods replaces the whole record, including with nil.
+		steps := []store.AuthMethod{{Name: "passkey", At: now}}
+		mustNoErr(t, s.Sessions().SetAuthMethods(ctx, "a", "s2", steps))
+		steps[0].Name = "changed" // the store keeps its own copy
+		got, err = s.Sessions().Get(ctx, "a", "s2")
+		mustNoErr(t, err)
+		mustEqual(t, got.AuthMethods, []store.AuthMethod{{Name: "passkey", At: now}})
+		got.AuthMethods[0].Name = "changed"
+		again, err := s.Sessions().GetByTokenHash(ctx, "a", "h2")
+		mustNoErr(t, err)
+		mustEqual(t, again.AuthMethods, []store.AuthMethod{{Name: "passkey", At: now}})
+		mustNoErr(t, s.Sessions().SetAuthMethods(ctx, "a", "s2", nil))
+		got, err = s.Sessions().Get(ctx, "a", "s2")
+		mustNoErr(t, err)
+		if got.AuthMethods != nil {
+			t.Fatalf("nil replacement = %v", got.AuthMethods)
+		}
+		if err := s.Sessions().SetAuthMethods(ctx, "a", "absent", nil); !errors.Is(err, store.ErrNotFound) {
+			t.Fatalf("unknown session = %v", err)
+		}
+		if err := s.Sessions().SetAuthMethods(ctx, "b", "s2", nil); !errors.Is(err, store.ErrNotFound) {
+			t.Fatalf("foreign tenant = %v", err)
+		}
 	})
 	t.Run("ClientMobileRoundTrip", func(t *testing.T) {
 		s := setup(t)

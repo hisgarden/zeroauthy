@@ -49,6 +49,7 @@ const (
 	StoreService_MFADeleteUserMFA_FullMethodName                        = "/zeroauthy.store.v1.StoreService/MFADeleteUserMFA"
 	StoreService_MFADeleteTenantMFA_FullMethodName                      = "/zeroauthy.store.v1.StoreService/MFADeleteTenantMFA"
 	StoreService_SessionsMarkMFA_FullMethodName                         = "/zeroauthy.store.v1.StoreService/SessionsMarkMFA"
+	StoreService_SessionsSetAuthMethods_FullMethodName                  = "/zeroauthy.store.v1.StoreService/SessionsSetAuthMethods"
 	StoreService_PhoneCapabilities_FullMethodName                       = "/zeroauthy.store.v1.StoreService/PhoneCapabilities"
 	StoreService_PhoneListProviders_FullMethodName                      = "/zeroauthy.store.v1.StoreService/PhoneListProviders"
 	StoreService_PhoneGetProvider_FullMethodName                        = "/zeroauthy.store.v1.StoreService/PhoneGetProvider"
@@ -496,6 +497,10 @@ type StoreServiceClient interface {
 	MFADeleteUserMFA(ctx context.Context, in *MFADeleteUserMFARequest, opts ...grpc.CallOption) (*MFADeleteUserMFAResponse, error)
 	MFADeleteTenantMFA(ctx context.Context, in *MFADeleteTenantMFARequest, opts ...grpc.CallOption) (*MFADeleteTenantMFAResponse, error)
 	SessionsMarkMFA(ctx context.Context, in *TouchRequest, opts ...grpc.CallOption) (*Result, error)
+	// SessionsSetAuthMethods lands with webauthn.v1 (Plan 33b section 5.4).
+	// A plugin that predates it answers Unimplemented, which the client
+	// reports as ErrWebAuthnUnavailable.
+	SessionsSetAuthMethods(ctx context.Context, in *SessionsSetAuthMethodsRequest, opts ...grpc.CallOption) (*Result, error)
 	PhoneCapabilities(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*EventsCapabilitiesResult, error)
 	PhoneListProviders(ctx context.Context, in *PhoneTenantRequest, opts ...grpc.CallOption) (*PhoneListProvidersResponse, error)
 	PhoneGetProvider(ctx context.Context, in *PhoneIDRequest, opts ...grpc.CallOption) (*PhoneProviderResponse, error)
@@ -1181,6 +1186,16 @@ func (c *storeServiceClient) SessionsMarkMFA(ctx context.Context, in *TouchReque
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Result)
 	err := c.cc.Invoke(ctx, StoreService_SessionsMarkMFA_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storeServiceClient) SessionsSetAuthMethods(ctx context.Context, in *SessionsSetAuthMethodsRequest, opts ...grpc.CallOption) (*Result, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Result)
+	err := c.cc.Invoke(ctx, StoreService_SessionsSetAuthMethods_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -4830,6 +4845,10 @@ type StoreServiceServer interface {
 	MFADeleteUserMFA(context.Context, *MFADeleteUserMFARequest) (*MFADeleteUserMFAResponse, error)
 	MFADeleteTenantMFA(context.Context, *MFADeleteTenantMFARequest) (*MFADeleteTenantMFAResponse, error)
 	SessionsMarkMFA(context.Context, *TouchRequest) (*Result, error)
+	// SessionsSetAuthMethods lands with webauthn.v1 (Plan 33b section 5.4).
+	// A plugin that predates it answers Unimplemented, which the client
+	// reports as ErrWebAuthnUnavailable.
+	SessionsSetAuthMethods(context.Context, *SessionsSetAuthMethodsRequest) (*Result, error)
 	PhoneCapabilities(context.Context, *PingRequest) (*EventsCapabilitiesResult, error)
 	PhoneListProviders(context.Context, *PhoneTenantRequest) (*PhoneListProvidersResponse, error)
 	PhoneGetProvider(context.Context, *PhoneIDRequest) (*PhoneProviderResponse, error)
@@ -5310,6 +5329,9 @@ func (UnimplementedStoreServiceServer) MFADeleteTenantMFA(context.Context, *MFAD
 }
 func (UnimplementedStoreServiceServer) SessionsMarkMFA(context.Context, *TouchRequest) (*Result, error) {
 	return nil, status.Error(codes.Unimplemented, "method SessionsMarkMFA not implemented")
+}
+func (UnimplementedStoreServiceServer) SessionsSetAuthMethods(context.Context, *SessionsSetAuthMethodsRequest) (*Result, error) {
+	return nil, status.Error(codes.Unimplemented, "method SessionsSetAuthMethods not implemented")
 }
 func (UnimplementedStoreServiceServer) PhoneCapabilities(context.Context, *PingRequest) (*EventsCapabilitiesResult, error) {
 	return nil, status.Error(codes.Unimplemented, "method PhoneCapabilities not implemented")
@@ -6927,6 +6949,24 @@ func _StoreService_SessionsMarkMFA_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(StoreServiceServer).SessionsMarkMFA(ctx, req.(*TouchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StoreService_SessionsSetAuthMethods_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SessionsSetAuthMethodsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StoreServiceServer).SessionsSetAuthMethods(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StoreService_SessionsSetAuthMethods_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StoreServiceServer).SessionsSetAuthMethods(ctx, req.(*SessionsSetAuthMethodsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -13386,6 +13426,10 @@ var StoreService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SessionsMarkMFA",
 			Handler:    _StoreService_SessionsMarkMFA_Handler,
+		},
+		{
+			MethodName: "SessionsSetAuthMethods",
+			Handler:    _StoreService_SessionsSetAuthMethods_Handler,
 		},
 		{
 			MethodName: "PhoneCapabilities",

@@ -178,7 +178,7 @@ func (x UserQuery_Op) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserQuery_Op.Descriptor instead.
 func (UserQuery_Op) EnumDescriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{132, 0}
+	return file_store_proto_rawDescGZIP(), []int{133, 0}
 }
 
 type UserQuery_Kind int32
@@ -230,7 +230,7 @@ func (x UserQuery_Kind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserQuery_Kind.Descriptor instead.
 func (UserQuery_Kind) EnumDescriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{132, 1}
+	return file_store_proto_rawDescGZIP(), []int{133, 1}
 }
 
 type Error struct {
@@ -857,6 +857,76 @@ func (x *TouchRequest) GetUserAgent() string {
 	return ""
 }
 
+type SessionsSetAuthMethodsRequest struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	TxId     string                 `protobuf:"bytes,1,opt,name=tx_id,json=txId,proto3" json:"tx_id,omitempty"`
+	TenantId string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Id       string                 `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
+	// An empty list stores no record (nil); the RPC cannot distinguish empty
+	// from nil, which readers treat the same way.
+	Methods       *AuthMethodList `protobuf:"bytes,4,opt,name=methods,proto3" json:"methods,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SessionsSetAuthMethodsRequest) Reset() {
+	*x = SessionsSetAuthMethodsRequest{}
+	mi := &file_store_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SessionsSetAuthMethodsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SessionsSetAuthMethodsRequest) ProtoMessage() {}
+
+func (x *SessionsSetAuthMethodsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_store_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SessionsSetAuthMethodsRequest.ProtoReflect.Descriptor instead.
+func (*SessionsSetAuthMethodsRequest) Descriptor() ([]byte, []int) {
+	return file_store_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *SessionsSetAuthMethodsRequest) GetTxId() string {
+	if x != nil {
+		return x.TxId
+	}
+	return ""
+}
+
+func (x *SessionsSetAuthMethodsRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *SessionsSetAuthMethodsRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SessionsSetAuthMethodsRequest) GetMethods() *AuthMethodList {
+	if x != nil {
+		return x.Methods
+	}
+	return nil
+}
+
 type DeleteExpiredRequest struct {
 	state  protoimpl.MessageState `protogen:"open.v1"`
 	TxId   string                 `protobuf:"bytes,1,opt,name=tx_id,json=txId,proto3" json:"tx_id,omitempty"`
@@ -870,7 +940,7 @@ type DeleteExpiredRequest struct {
 
 func (x *DeleteExpiredRequest) Reset() {
 	*x = DeleteExpiredRequest{}
-	mi := &file_store_proto_msgTypes[11]
+	mi := &file_store_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -882,7 +952,7 @@ func (x *DeleteExpiredRequest) String() string {
 func (*DeleteExpiredRequest) ProtoMessage() {}
 
 func (x *DeleteExpiredRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[11]
+	mi := &file_store_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -895,7 +965,7 @@ func (x *DeleteExpiredRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteExpiredRequest.ProtoReflect.Descriptor instead.
 func (*DeleteExpiredRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{11}
+	return file_store_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *DeleteExpiredRequest) GetTxId() string {
@@ -931,7 +1001,7 @@ type ConsumeRequest struct {
 
 func (x *ConsumeRequest) Reset() {
 	*x = ConsumeRequest{}
-	mi := &file_store_proto_msgTypes[12]
+	mi := &file_store_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -943,7 +1013,7 @@ func (x *ConsumeRequest) String() string {
 func (*ConsumeRequest) ProtoMessage() {}
 
 func (x *ConsumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[12]
+	mi := &file_store_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -956,7 +1026,7 @@ func (x *ConsumeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsumeRequest.ProtoReflect.Descriptor instead.
 func (*ConsumeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{12}
+	return file_store_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ConsumeRequest) GetTxId() string {
@@ -999,7 +1069,7 @@ type RevokeRequest struct {
 
 func (x *RevokeRequest) Reset() {
 	*x = RevokeRequest{}
-	mi := &file_store_proto_msgTypes[13]
+	mi := &file_store_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1011,7 +1081,7 @@ func (x *RevokeRequest) String() string {
 func (*RevokeRequest) ProtoMessage() {}
 
 func (x *RevokeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[13]
+	mi := &file_store_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1024,7 +1094,7 @@ func (x *RevokeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeRequest.ProtoReflect.Descriptor instead.
 func (*RevokeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{13}
+	return file_store_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *RevokeRequest) GetTxId() string {
@@ -1064,7 +1134,7 @@ type StringList struct {
 
 func (x *StringList) Reset() {
 	*x = StringList{}
-	mi := &file_store_proto_msgTypes[14]
+	mi := &file_store_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1076,7 +1146,7 @@ func (x *StringList) String() string {
 func (*StringList) ProtoMessage() {}
 
 func (x *StringList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[14]
+	mi := &file_store_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1089,7 +1159,7 @@ func (x *StringList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StringList.ProtoReflect.Descriptor instead.
 func (*StringList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{14}
+	return file_store_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *StringList) GetValues() []string {
@@ -1108,7 +1178,7 @@ type StringMap struct {
 
 func (x *StringMap) Reset() {
 	*x = StringMap{}
-	mi := &file_store_proto_msgTypes[15]
+	mi := &file_store_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1120,7 +1190,7 @@ func (x *StringMap) String() string {
 func (*StringMap) ProtoMessage() {}
 
 func (x *StringMap) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[15]
+	mi := &file_store_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1133,7 +1203,7 @@ func (x *StringMap) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StringMap.ProtoReflect.Descriptor instead.
 func (*StringMap) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{15}
+	return file_store_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *StringMap) GetValues() map[string]string {
@@ -1187,7 +1257,7 @@ type Tenant struct {
 
 func (x *Tenant) Reset() {
 	*x = Tenant{}
-	mi := &file_store_proto_msgTypes[16]
+	mi := &file_store_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1199,7 +1269,7 @@ func (x *Tenant) String() string {
 func (*Tenant) ProtoMessage() {}
 
 func (x *Tenant) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[16]
+	mi := &file_store_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1212,7 +1282,7 @@ func (x *Tenant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tenant.ProtoReflect.Descriptor instead.
 func (*Tenant) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{16}
+	return file_store_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *Tenant) GetId() string {
@@ -1463,7 +1533,7 @@ type Branding struct {
 
 func (x *Branding) Reset() {
 	*x = Branding{}
-	mi := &file_store_proto_msgTypes[17]
+	mi := &file_store_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1475,7 +1545,7 @@ func (x *Branding) String() string {
 func (*Branding) ProtoMessage() {}
 
 func (x *Branding) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[17]
+	mi := &file_store_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1488,7 +1558,7 @@ func (x *Branding) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Branding.ProtoReflect.Descriptor instead.
 func (*Branding) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{17}
+	return file_store_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Branding) GetLogoUrl() string {
@@ -1519,7 +1589,7 @@ type ClientSecret struct {
 
 func (x *ClientSecret) Reset() {
 	*x = ClientSecret{}
-	mi := &file_store_proto_msgTypes[18]
+	mi := &file_store_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1531,7 +1601,7 @@ func (x *ClientSecret) String() string {
 func (*ClientSecret) ProtoMessage() {}
 
 func (x *ClientSecret) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[18]
+	mi := &file_store_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1544,7 +1614,7 @@ func (x *ClientSecret) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientSecret.ProtoReflect.Descriptor instead.
 func (*ClientSecret) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{18}
+	return file_store_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ClientSecret) GetHash() string {
@@ -1584,7 +1654,7 @@ type ClientSecretList struct {
 
 func (x *ClientSecretList) Reset() {
 	*x = ClientSecretList{}
-	mi := &file_store_proto_msgTypes[19]
+	mi := &file_store_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1596,7 +1666,7 @@ func (x *ClientSecretList) String() string {
 func (*ClientSecretList) ProtoMessage() {}
 
 func (x *ClientSecretList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[19]
+	mi := &file_store_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1609,7 +1679,7 @@ func (x *ClientSecretList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientSecretList.ProtoReflect.Descriptor instead.
 func (*ClientSecretList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{19}
+	return file_store_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ClientSecretList) GetValues() []*ClientSecret {
@@ -1632,7 +1702,7 @@ type RefreshTokenPolicy struct {
 
 func (x *RefreshTokenPolicy) Reset() {
 	*x = RefreshTokenPolicy{}
-	mi := &file_store_proto_msgTypes[20]
+	mi := &file_store_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1644,7 +1714,7 @@ func (x *RefreshTokenPolicy) String() string {
 func (*RefreshTokenPolicy) ProtoMessage() {}
 
 func (x *RefreshTokenPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[20]
+	mi := &file_store_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1657,7 +1727,7 @@ func (x *RefreshTokenPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshTokenPolicy.ProtoReflect.Descriptor instead.
 func (*RefreshTokenPolicy) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{20}
+	return file_store_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *RefreshTokenPolicy) GetRotating() bool {
@@ -1733,7 +1803,7 @@ type Client struct {
 
 func (x *Client) Reset() {
 	*x = Client{}
-	mi := &file_store_proto_msgTypes[21]
+	mi := &file_store_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1745,7 +1815,7 @@ func (x *Client) String() string {
 func (*Client) ProtoMessage() {}
 
 func (x *Client) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[21]
+	mi := &file_store_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1758,7 +1828,7 @@ func (x *Client) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Client.ProtoReflect.Descriptor instead.
 func (*Client) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{21}
+	return file_store_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *Client) GetTenantId() string {
@@ -1946,7 +2016,7 @@ type ClientMobile struct {
 
 func (x *ClientMobile) Reset() {
 	*x = ClientMobile{}
-	mi := &file_store_proto_msgTypes[22]
+	mi := &file_store_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1958,7 +2028,7 @@ func (x *ClientMobile) String() string {
 func (*ClientMobile) ProtoMessage() {}
 
 func (x *ClientMobile) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[22]
+	mi := &file_store_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1971,7 +2041,7 @@ func (x *ClientMobile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientMobile.ProtoReflect.Descriptor instead.
 func (*ClientMobile) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{22}
+	return file_store_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ClientMobile) GetIos() *ClientMobileIOS {
@@ -1998,7 +2068,7 @@ type ClientMobileIOS struct {
 
 func (x *ClientMobileIOS) Reset() {
 	*x = ClientMobileIOS{}
-	mi := &file_store_proto_msgTypes[23]
+	mi := &file_store_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2010,7 +2080,7 @@ func (x *ClientMobileIOS) String() string {
 func (*ClientMobileIOS) ProtoMessage() {}
 
 func (x *ClientMobileIOS) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[23]
+	mi := &file_store_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2023,7 +2093,7 @@ func (x *ClientMobileIOS) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientMobileIOS.ProtoReflect.Descriptor instead.
 func (*ClientMobileIOS) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{23}
+	return file_store_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ClientMobileIOS) GetTeamId() string {
@@ -2050,7 +2120,7 @@ type ClientMobileAndroid struct {
 
 func (x *ClientMobileAndroid) Reset() {
 	*x = ClientMobileAndroid{}
-	mi := &file_store_proto_msgTypes[24]
+	mi := &file_store_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2062,7 +2132,7 @@ func (x *ClientMobileAndroid) String() string {
 func (*ClientMobileAndroid) ProtoMessage() {}
 
 func (x *ClientMobileAndroid) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[24]
+	mi := &file_store_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2075,7 +2145,7 @@ func (x *ClientMobileAndroid) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientMobileAndroid.ProtoReflect.Descriptor instead.
 func (*ClientMobileAndroid) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{24}
+	return file_store_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ClientMobileAndroid) GetAppPackageName() string {
@@ -2102,7 +2172,7 @@ type Scope struct {
 
 func (x *Scope) Reset() {
 	*x = Scope{}
-	mi := &file_store_proto_msgTypes[25]
+	mi := &file_store_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2114,7 +2184,7 @@ func (x *Scope) String() string {
 func (*Scope) ProtoMessage() {}
 
 func (x *Scope) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[25]
+	mi := &file_store_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2127,7 +2197,7 @@ func (x *Scope) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Scope.ProtoReflect.Descriptor instead.
 func (*Scope) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{25}
+	return file_store_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *Scope) GetValue() string {
@@ -2153,7 +2223,7 @@ type ScopeList struct {
 
 func (x *ScopeList) Reset() {
 	*x = ScopeList{}
-	mi := &file_store_proto_msgTypes[26]
+	mi := &file_store_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2165,7 +2235,7 @@ func (x *ScopeList) String() string {
 func (*ScopeList) ProtoMessage() {}
 
 func (x *ScopeList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[26]
+	mi := &file_store_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2178,7 +2248,7 @@ func (x *ScopeList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScopeList.ProtoReflect.Descriptor instead.
 func (*ScopeList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{26}
+	return file_store_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ScopeList) GetValues() []*Scope {
@@ -2213,7 +2283,7 @@ type ResourceServer struct {
 
 func (x *ResourceServer) Reset() {
 	*x = ResourceServer{}
-	mi := &file_store_proto_msgTypes[27]
+	mi := &file_store_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2225,7 +2295,7 @@ func (x *ResourceServer) String() string {
 func (*ResourceServer) ProtoMessage() {}
 
 func (x *ResourceServer) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[27]
+	mi := &file_store_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2238,7 +2308,7 @@ func (x *ResourceServer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceServer.ProtoReflect.Descriptor instead.
 func (*ResourceServer) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{27}
+	return file_store_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ResourceServer) GetTenantId() string {
@@ -2372,7 +2442,7 @@ type ResourceServerRenameSystemRequest struct {
 
 func (x *ResourceServerRenameSystemRequest) Reset() {
 	*x = ResourceServerRenameSystemRequest{}
-	mi := &file_store_proto_msgTypes[28]
+	mi := &file_store_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2384,7 +2454,7 @@ func (x *ResourceServerRenameSystemRequest) String() string {
 func (*ResourceServerRenameSystemRequest) ProtoMessage() {}
 
 func (x *ResourceServerRenameSystemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[28]
+	mi := &file_store_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2397,7 +2467,7 @@ func (x *ResourceServerRenameSystemRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ResourceServerRenameSystemRequest.ProtoReflect.Descriptor instead.
 func (*ResourceServerRenameSystemRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{28}
+	return file_store_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ResourceServerRenameSystemRequest) GetTxId() string {
@@ -2447,7 +2517,7 @@ type ClientGrant struct {
 
 func (x *ClientGrant) Reset() {
 	*x = ClientGrant{}
-	mi := &file_store_proto_msgTypes[29]
+	mi := &file_store_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2459,7 +2529,7 @@ func (x *ClientGrant) String() string {
 func (*ClientGrant) ProtoMessage() {}
 
 func (x *ClientGrant) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[29]
+	mi := &file_store_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2472,7 +2542,7 @@ func (x *ClientGrant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientGrant.ProtoReflect.Descriptor instead.
 func (*ClientGrant) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{29}
+	return file_store_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ClientGrant) GetTenantId() string {
@@ -2568,7 +2638,7 @@ type UserGrant struct {
 
 func (x *UserGrant) Reset() {
 	*x = UserGrant{}
-	mi := &file_store_proto_msgTypes[30]
+	mi := &file_store_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2580,7 +2650,7 @@ func (x *UserGrant) String() string {
 func (*UserGrant) ProtoMessage() {}
 
 func (x *UserGrant) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[30]
+	mi := &file_store_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2593,7 +2663,7 @@ func (x *UserGrant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserGrant.ProtoReflect.Descriptor instead.
 func (*UserGrant) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{30}
+	return file_store_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *UserGrant) GetTenantId() string {
@@ -2671,7 +2741,7 @@ type SigningKey struct {
 
 func (x *SigningKey) Reset() {
 	*x = SigningKey{}
-	mi := &file_store_proto_msgTypes[31]
+	mi := &file_store_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2683,7 +2753,7 @@ func (x *SigningKey) String() string {
 func (*SigningKey) ProtoMessage() {}
 
 func (x *SigningKey) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[31]
+	mi := &file_store_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2696,7 +2766,7 @@ func (x *SigningKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKey.ProtoReflect.Descriptor instead.
 func (*SigningKey) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{31}
+	return file_store_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *SigningKey) GetTenantId() string {
@@ -2786,7 +2856,7 @@ type SigningKeyResult struct {
 
 func (x *SigningKeyResult) Reset() {
 	*x = SigningKeyResult{}
-	mi := &file_store_proto_msgTypes[32]
+	mi := &file_store_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2798,7 +2868,7 @@ func (x *SigningKeyResult) String() string {
 func (*SigningKeyResult) ProtoMessage() {}
 
 func (x *SigningKeyResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[32]
+	mi := &file_store_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2811,7 +2881,7 @@ func (x *SigningKeyResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyResult.ProtoReflect.Descriptor instead.
 func (*SigningKeyResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{32}
+	return file_store_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *SigningKeyResult) GetError() *Error {
@@ -2838,7 +2908,7 @@ type SigningKeyRotation struct {
 
 func (x *SigningKeyRotation) Reset() {
 	*x = SigningKeyRotation{}
-	mi := &file_store_proto_msgTypes[33]
+	mi := &file_store_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2850,7 +2920,7 @@ func (x *SigningKeyRotation) String() string {
 func (*SigningKeyRotation) ProtoMessage() {}
 
 func (x *SigningKeyRotation) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[33]
+	mi := &file_store_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2863,7 +2933,7 @@ func (x *SigningKeyRotation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyRotation.ProtoReflect.Descriptor instead.
 func (*SigningKeyRotation) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{33}
+	return file_store_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *SigningKeyRotation) GetCurrent() *SigningKey {
@@ -2890,7 +2960,7 @@ type SigningKeyRotationResult struct {
 
 func (x *SigningKeyRotationResult) Reset() {
 	*x = SigningKeyRotationResult{}
-	mi := &file_store_proto_msgTypes[34]
+	mi := &file_store_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2902,7 +2972,7 @@ func (x *SigningKeyRotationResult) String() string {
 func (*SigningKeyRotationResult) ProtoMessage() {}
 
 func (x *SigningKeyRotationResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[34]
+	mi := &file_store_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2915,7 +2985,7 @@ func (x *SigningKeyRotationResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyRotationResult.ProtoReflect.Descriptor instead.
 func (*SigningKeyRotationResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{34}
+	return file_store_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *SigningKeyRotationResult) GetError() *Error {
@@ -2944,7 +3014,7 @@ type SigningKeyRevokeRequest struct {
 
 func (x *SigningKeyRevokeRequest) Reset() {
 	*x = SigningKeyRevokeRequest{}
-	mi := &file_store_proto_msgTypes[35]
+	mi := &file_store_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2956,7 +3026,7 @@ func (x *SigningKeyRevokeRequest) String() string {
 func (*SigningKeyRevokeRequest) ProtoMessage() {}
 
 func (x *SigningKeyRevokeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[35]
+	mi := &file_store_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2969,7 +3039,7 @@ func (x *SigningKeyRevokeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyRevokeRequest.ProtoReflect.Descriptor instead.
 func (*SigningKeyRevokeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{35}
+	return file_store_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *SigningKeyRevokeRequest) GetTxId() string {
@@ -3012,7 +3082,7 @@ type SigningKeyCertificateRequest struct {
 
 func (x *SigningKeyCertificateRequest) Reset() {
 	*x = SigningKeyCertificateRequest{}
-	mi := &file_store_proto_msgTypes[36]
+	mi := &file_store_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3024,7 +3094,7 @@ func (x *SigningKeyCertificateRequest) String() string {
 func (*SigningKeyCertificateRequest) ProtoMessage() {}
 
 func (x *SigningKeyCertificateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[36]
+	mi := &file_store_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3037,7 +3107,7 @@ func (x *SigningKeyCertificateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyCertificateRequest.ProtoReflect.Descriptor instead.
 func (*SigningKeyCertificateRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{36}
+	return file_store_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *SigningKeyCertificateRequest) GetTxId() string {
@@ -3078,7 +3148,7 @@ type CustomSigningKeySet struct {
 
 func (x *CustomSigningKeySet) Reset() {
 	*x = CustomSigningKeySet{}
-	mi := &file_store_proto_msgTypes[37]
+	mi := &file_store_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3090,7 +3160,7 @@ func (x *CustomSigningKeySet) String() string {
 func (*CustomSigningKeySet) ProtoMessage() {}
 
 func (x *CustomSigningKeySet) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[37]
+	mi := &file_store_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3103,7 +3173,7 @@ func (x *CustomSigningKeySet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomSigningKeySet.ProtoReflect.Descriptor instead.
 func (*CustomSigningKeySet) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{37}
+	return file_store_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *CustomSigningKeySet) GetTenantId() string {
@@ -3130,7 +3200,7 @@ type CustomSigningKeySetResult struct {
 
 func (x *CustomSigningKeySetResult) Reset() {
 	*x = CustomSigningKeySetResult{}
-	mi := &file_store_proto_msgTypes[38]
+	mi := &file_store_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3142,7 +3212,7 @@ func (x *CustomSigningKeySetResult) String() string {
 func (*CustomSigningKeySetResult) ProtoMessage() {}
 
 func (x *CustomSigningKeySetResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[38]
+	mi := &file_store_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3155,7 +3225,7 @@ func (x *CustomSigningKeySetResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomSigningKeySetResult.ProtoReflect.Descriptor instead.
 func (*CustomSigningKeySetResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{38}
+	return file_store_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *CustomSigningKeySetResult) GetError() *Error {
@@ -3182,7 +3252,7 @@ type CustomSigningKeySetWrite struct {
 
 func (x *CustomSigningKeySetWrite) Reset() {
 	*x = CustomSigningKeySetWrite{}
-	mi := &file_store_proto_msgTypes[39]
+	mi := &file_store_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3194,7 +3264,7 @@ func (x *CustomSigningKeySetWrite) String() string {
 func (*CustomSigningKeySetWrite) ProtoMessage() {}
 
 func (x *CustomSigningKeySetWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[39]
+	mi := &file_store_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3207,7 +3277,7 @@ func (x *CustomSigningKeySetWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomSigningKeySetWrite.ProtoReflect.Descriptor instead.
 func (*CustomSigningKeySetWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{39}
+	return file_store_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *CustomSigningKeySetWrite) GetTxId() string {
@@ -3235,7 +3305,7 @@ type HostedLoginConfig struct {
 
 func (x *HostedLoginConfig) Reset() {
 	*x = HostedLoginConfig{}
-	mi := &file_store_proto_msgTypes[40]
+	mi := &file_store_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3247,7 +3317,7 @@ func (x *HostedLoginConfig) String() string {
 func (*HostedLoginConfig) ProtoMessage() {}
 
 func (x *HostedLoginConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[40]
+	mi := &file_store_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3260,7 +3330,7 @@ func (x *HostedLoginConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HostedLoginConfig.ProtoReflect.Descriptor instead.
 func (*HostedLoginConfig) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{40}
+	return file_store_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *HostedLoginConfig) GetTenantId() string {
@@ -3294,7 +3364,7 @@ type HostedLoginConfigResult struct {
 
 func (x *HostedLoginConfigResult) Reset() {
 	*x = HostedLoginConfigResult{}
-	mi := &file_store_proto_msgTypes[41]
+	mi := &file_store_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3306,7 +3376,7 @@ func (x *HostedLoginConfigResult) String() string {
 func (*HostedLoginConfigResult) ProtoMessage() {}
 
 func (x *HostedLoginConfigResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[41]
+	mi := &file_store_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3319,7 +3389,7 @@ func (x *HostedLoginConfigResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HostedLoginConfigResult.ProtoReflect.Descriptor instead.
 func (*HostedLoginConfigResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{41}
+	return file_store_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *HostedLoginConfigResult) GetError() *Error {
@@ -3347,7 +3417,7 @@ type HostedLoginConfigWrite struct {
 
 func (x *HostedLoginConfigWrite) Reset() {
 	*x = HostedLoginConfigWrite{}
-	mi := &file_store_proto_msgTypes[42]
+	mi := &file_store_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3359,7 +3429,7 @@ func (x *HostedLoginConfigWrite) String() string {
 func (*HostedLoginConfigWrite) ProtoMessage() {}
 
 func (x *HostedLoginConfigWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[42]
+	mi := &file_store_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3372,7 +3442,7 @@ func (x *HostedLoginConfigWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HostedLoginConfigWrite.ProtoReflect.Descriptor instead.
 func (*HostedLoginConfigWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{42}
+	return file_store_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *HostedLoginConfigWrite) GetTxId() string {
@@ -3411,7 +3481,7 @@ type FederationEndpoints struct {
 
 func (x *FederationEndpoints) Reset() {
 	*x = FederationEndpoints{}
-	mi := &file_store_proto_msgTypes[43]
+	mi := &file_store_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3423,7 +3493,7 @@ func (x *FederationEndpoints) String() string {
 func (*FederationEndpoints) ProtoMessage() {}
 
 func (x *FederationEndpoints) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[43]
+	mi := &file_store_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3436,7 +3506,7 @@ func (x *FederationEndpoints) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationEndpoints.ProtoReflect.Descriptor instead.
 func (*FederationEndpoints) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{43}
+	return file_store_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *FederationEndpoints) GetAuthorizationUrl() string {
@@ -3498,7 +3568,7 @@ type FederationAttempt struct {
 
 func (x *FederationAttempt) Reset() {
 	*x = FederationAttempt{}
-	mi := &file_store_proto_msgTypes[44]
+	mi := &file_store_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3510,7 +3580,7 @@ func (x *FederationAttempt) String() string {
 func (*FederationAttempt) ProtoMessage() {}
 
 func (x *FederationAttempt) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[44]
+	mi := &file_store_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3523,7 +3593,7 @@ func (x *FederationAttempt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationAttempt.ProtoReflect.Descriptor instead.
 func (*FederationAttempt) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{44}
+	return file_store_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *FederationAttempt) GetStateHash() string {
@@ -3648,7 +3718,7 @@ type FederationAttemptWrite struct {
 
 func (x *FederationAttemptWrite) Reset() {
 	*x = FederationAttemptWrite{}
-	mi := &file_store_proto_msgTypes[45]
+	mi := &file_store_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3660,7 +3730,7 @@ func (x *FederationAttemptWrite) String() string {
 func (*FederationAttemptWrite) ProtoMessage() {}
 
 func (x *FederationAttemptWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[45]
+	mi := &file_store_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3673,7 +3743,7 @@ func (x *FederationAttemptWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationAttemptWrite.ProtoReflect.Descriptor instead.
 func (*FederationAttemptWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{45}
+	return file_store_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *FederationAttemptWrite) GetTxId() string {
@@ -3701,7 +3771,7 @@ type FederationAttemptKey struct {
 
 func (x *FederationAttemptKey) Reset() {
 	*x = FederationAttemptKey{}
-	mi := &file_store_proto_msgTypes[46]
+	mi := &file_store_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3713,7 +3783,7 @@ func (x *FederationAttemptKey) String() string {
 func (*FederationAttemptKey) ProtoMessage() {}
 
 func (x *FederationAttemptKey) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[46]
+	mi := &file_store_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3726,7 +3796,7 @@ func (x *FederationAttemptKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationAttemptKey.ProtoReflect.Descriptor instead.
 func (*FederationAttemptKey) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{46}
+	return file_store_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *FederationAttemptKey) GetTxId() string {
@@ -3764,7 +3834,7 @@ type FederationClaimRequest struct {
 
 func (x *FederationClaimRequest) Reset() {
 	*x = FederationClaimRequest{}
-	mi := &file_store_proto_msgTypes[47]
+	mi := &file_store_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3776,7 +3846,7 @@ func (x *FederationClaimRequest) String() string {
 func (*FederationClaimRequest) ProtoMessage() {}
 
 func (x *FederationClaimRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[47]
+	mi := &file_store_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3789,7 +3859,7 @@ func (x *FederationClaimRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationClaimRequest.ProtoReflect.Descriptor instead.
 func (*FederationClaimRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{47}
+	return file_store_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *FederationClaimRequest) GetTxId() string {
@@ -3844,7 +3914,7 @@ type FederationAttemptResult struct {
 
 func (x *FederationAttemptResult) Reset() {
 	*x = FederationAttemptResult{}
-	mi := &file_store_proto_msgTypes[48]
+	mi := &file_store_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3856,7 +3926,7 @@ func (x *FederationAttemptResult) String() string {
 func (*FederationAttemptResult) ProtoMessage() {}
 
 func (x *FederationAttemptResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[48]
+	mi := &file_store_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3869,7 +3939,7 @@ func (x *FederationAttemptResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationAttemptResult.ProtoReflect.Descriptor instead.
 func (*FederationAttemptResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{48}
+	return file_store_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *FederationAttemptResult) GetError() *Error {
@@ -3897,7 +3967,7 @@ type FederatedIdentityKey struct {
 
 func (x *FederatedIdentityKey) Reset() {
 	*x = FederatedIdentityKey{}
-	mi := &file_store_proto_msgTypes[49]
+	mi := &file_store_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3909,7 +3979,7 @@ func (x *FederatedIdentityKey) String() string {
 func (*FederatedIdentityKey) ProtoMessage() {}
 
 func (x *FederatedIdentityKey) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[49]
+	mi := &file_store_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3922,7 +3992,7 @@ func (x *FederatedIdentityKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederatedIdentityKey.ProtoReflect.Descriptor instead.
 func (*FederatedIdentityKey) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{49}
+	return file_store_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *FederatedIdentityKey) GetTenantId() string {
@@ -3956,7 +4026,7 @@ type FederatedIdentityRequest struct {
 
 func (x *FederatedIdentityRequest) Reset() {
 	*x = FederatedIdentityRequest{}
-	mi := &file_store_proto_msgTypes[50]
+	mi := &file_store_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3968,7 +4038,7 @@ func (x *FederatedIdentityRequest) String() string {
 func (*FederatedIdentityRequest) ProtoMessage() {}
 
 func (x *FederatedIdentityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[50]
+	mi := &file_store_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3981,7 +4051,7 @@ func (x *FederatedIdentityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederatedIdentityRequest.ProtoReflect.Descriptor instead.
 func (*FederatedIdentityRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{50}
+	return file_store_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *FederatedIdentityRequest) GetTxId() string {
@@ -4009,7 +4079,7 @@ type FederatedIdentityWrite struct {
 
 func (x *FederatedIdentityWrite) Reset() {
 	*x = FederatedIdentityWrite{}
-	mi := &file_store_proto_msgTypes[51]
+	mi := &file_store_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4021,7 +4091,7 @@ func (x *FederatedIdentityWrite) String() string {
 func (*FederatedIdentityWrite) ProtoMessage() {}
 
 func (x *FederatedIdentityWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[51]
+	mi := &file_store_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4034,7 +4104,7 @@ func (x *FederatedIdentityWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederatedIdentityWrite.ProtoReflect.Descriptor instead.
 func (*FederatedIdentityWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{51}
+	return file_store_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *FederatedIdentityWrite) GetTxId() string {
@@ -4069,7 +4139,7 @@ type FederatedTokensWrite struct {
 
 func (x *FederatedTokensWrite) Reset() {
 	*x = FederatedTokensWrite{}
-	mi := &file_store_proto_msgTypes[52]
+	mi := &file_store_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4081,7 +4151,7 @@ func (x *FederatedTokensWrite) String() string {
 func (*FederatedTokensWrite) ProtoMessage() {}
 
 func (x *FederatedTokensWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[52]
+	mi := &file_store_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4094,7 +4164,7 @@ func (x *FederatedTokensWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederatedTokensWrite.ProtoReflect.Descriptor instead.
 func (*FederatedTokensWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{52}
+	return file_store_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *FederatedTokensWrite) GetTxId() string {
@@ -4128,7 +4198,7 @@ type FederatedTokensResult struct {
 
 func (x *FederatedTokensResult) Reset() {
 	*x = FederatedTokensResult{}
-	mi := &file_store_proto_msgTypes[53]
+	mi := &file_store_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4140,7 +4210,7 @@ func (x *FederatedTokensResult) String() string {
 func (*FederatedTokensResult) ProtoMessage() {}
 
 func (x *FederatedTokensResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[53]
+	mi := &file_store_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4153,7 +4223,7 @@ func (x *FederatedTokensResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederatedTokensResult.ProtoReflect.Descriptor instead.
 func (*FederatedTokensResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{53}
+	return file_store_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *FederatedTokensResult) GetError() *Error {
@@ -4180,7 +4250,7 @@ type UsersFindByIdentityRequest struct {
 
 func (x *UsersFindByIdentityRequest) Reset() {
 	*x = UsersFindByIdentityRequest{}
-	mi := &file_store_proto_msgTypes[54]
+	mi := &file_store_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4192,7 +4262,7 @@ func (x *UsersFindByIdentityRequest) String() string {
 func (*UsersFindByIdentityRequest) ProtoMessage() {}
 
 func (x *UsersFindByIdentityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[54]
+	mi := &file_store_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4205,7 +4275,7 @@ func (x *UsersFindByIdentityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersFindByIdentityRequest.ProtoReflect.Descriptor instead.
 func (*UsersFindByIdentityRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{54}
+	return file_store_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *UsersFindByIdentityRequest) GetTxId() string {
@@ -4236,7 +4306,7 @@ type HostedStateCASRequest struct {
 
 func (x *HostedStateCASRequest) Reset() {
 	*x = HostedStateCASRequest{}
-	mi := &file_store_proto_msgTypes[55]
+	mi := &file_store_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4248,7 +4318,7 @@ func (x *HostedStateCASRequest) String() string {
 func (*HostedStateCASRequest) ProtoMessage() {}
 
 func (x *HostedStateCASRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[55]
+	mi := &file_store_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4261,7 +4331,7 @@ func (x *HostedStateCASRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HostedStateCASRequest.ProtoReflect.Descriptor instead.
 func (*HostedStateCASRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{55}
+	return file_store_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *HostedStateCASRequest) GetTxId() string {
@@ -4322,7 +4392,7 @@ type EmailProvider struct {
 
 func (x *EmailProvider) Reset() {
 	*x = EmailProvider{}
-	mi := &file_store_proto_msgTypes[56]
+	mi := &file_store_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4334,7 +4404,7 @@ func (x *EmailProvider) String() string {
 func (*EmailProvider) ProtoMessage() {}
 
 func (x *EmailProvider) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[56]
+	mi := &file_store_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4347,7 +4417,7 @@ func (x *EmailProvider) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailProvider.ProtoReflect.Descriptor instead.
 func (*EmailProvider) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{56}
+	return file_store_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *EmailProvider) GetTenantId() string {
@@ -4409,7 +4479,7 @@ type EmailProviderResult struct {
 
 func (x *EmailProviderResult) Reset() {
 	*x = EmailProviderResult{}
-	mi := &file_store_proto_msgTypes[57]
+	mi := &file_store_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4421,7 +4491,7 @@ func (x *EmailProviderResult) String() string {
 func (*EmailProviderResult) ProtoMessage() {}
 
 func (x *EmailProviderResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[57]
+	mi := &file_store_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4434,7 +4504,7 @@ func (x *EmailProviderResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailProviderResult.ProtoReflect.Descriptor instead.
 func (*EmailProviderResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{57}
+	return file_store_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *EmailProviderResult) GetError() *Error {
@@ -4462,7 +4532,7 @@ type EmailProviderWrite struct {
 
 func (x *EmailProviderWrite) Reset() {
 	*x = EmailProviderWrite{}
-	mi := &file_store_proto_msgTypes[58]
+	mi := &file_store_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4474,7 +4544,7 @@ func (x *EmailProviderWrite) String() string {
 func (*EmailProviderWrite) ProtoMessage() {}
 
 func (x *EmailProviderWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[58]
+	mi := &file_store_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4487,7 +4557,7 @@ func (x *EmailProviderWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailProviderWrite.ProtoReflect.Descriptor instead.
 func (*EmailProviderWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{58}
+	return file_store_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *EmailProviderWrite) GetTxId() string {
@@ -4522,7 +4592,7 @@ type EmailProviderDeleteRequest struct {
 
 func (x *EmailProviderDeleteRequest) Reset() {
 	*x = EmailProviderDeleteRequest{}
-	mi := &file_store_proto_msgTypes[59]
+	mi := &file_store_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4534,7 +4604,7 @@ func (x *EmailProviderDeleteRequest) String() string {
 func (*EmailProviderDeleteRequest) ProtoMessage() {}
 
 func (x *EmailProviderDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[59]
+	mi := &file_store_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4547,7 +4617,7 @@ func (x *EmailProviderDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailProviderDeleteRequest.ProtoReflect.Descriptor instead.
 func (*EmailProviderDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{59}
+	return file_store_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *EmailProviderDeleteRequest) GetTxId() string {
@@ -4583,7 +4653,7 @@ type EmailTemplate struct {
 
 func (x *EmailTemplate) Reset() {
 	*x = EmailTemplate{}
-	mi := &file_store_proto_msgTypes[60]
+	mi := &file_store_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4595,7 +4665,7 @@ func (x *EmailTemplate) String() string {
 func (*EmailTemplate) ProtoMessage() {}
 
 func (x *EmailTemplate) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[60]
+	mi := &file_store_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4608,7 +4678,7 @@ func (x *EmailTemplate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailTemplate.ProtoReflect.Descriptor instead.
 func (*EmailTemplate) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{60}
+	return file_store_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *EmailTemplate) GetTenantId() string {
@@ -4650,7 +4720,7 @@ type EmailTemplateKey struct {
 
 func (x *EmailTemplateKey) Reset() {
 	*x = EmailTemplateKey{}
-	mi := &file_store_proto_msgTypes[61]
+	mi := &file_store_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4662,7 +4732,7 @@ func (x *EmailTemplateKey) String() string {
 func (*EmailTemplateKey) ProtoMessage() {}
 
 func (x *EmailTemplateKey) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[61]
+	mi := &file_store_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4675,7 +4745,7 @@ func (x *EmailTemplateKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailTemplateKey.ProtoReflect.Descriptor instead.
 func (*EmailTemplateKey) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{61}
+	return file_store_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *EmailTemplateKey) GetTxId() string {
@@ -4709,7 +4779,7 @@ type EmailTemplateResult struct {
 
 func (x *EmailTemplateResult) Reset() {
 	*x = EmailTemplateResult{}
-	mi := &file_store_proto_msgTypes[62]
+	mi := &file_store_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4721,7 +4791,7 @@ func (x *EmailTemplateResult) String() string {
 func (*EmailTemplateResult) ProtoMessage() {}
 
 func (x *EmailTemplateResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[62]
+	mi := &file_store_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4734,7 +4804,7 @@ func (x *EmailTemplateResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailTemplateResult.ProtoReflect.Descriptor instead.
 func (*EmailTemplateResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{62}
+	return file_store_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *EmailTemplateResult) GetError() *Error {
@@ -4762,7 +4832,7 @@ type EmailTemplateWrite struct {
 
 func (x *EmailTemplateWrite) Reset() {
 	*x = EmailTemplateWrite{}
-	mi := &file_store_proto_msgTypes[63]
+	mi := &file_store_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4774,7 +4844,7 @@ func (x *EmailTemplateWrite) String() string {
 func (*EmailTemplateWrite) ProtoMessage() {}
 
 func (x *EmailTemplateWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[63]
+	mi := &file_store_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4787,7 +4857,7 @@ func (x *EmailTemplateWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailTemplateWrite.ProtoReflect.Descriptor instead.
 func (*EmailTemplateWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{63}
+	return file_store_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *EmailTemplateWrite) GetTxId() string {
@@ -4827,7 +4897,7 @@ type EmailNotificationClaimRequest struct {
 
 func (x *EmailNotificationClaimRequest) Reset() {
 	*x = EmailNotificationClaimRequest{}
-	mi := &file_store_proto_msgTypes[64]
+	mi := &file_store_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4839,7 +4909,7 @@ func (x *EmailNotificationClaimRequest) String() string {
 func (*EmailNotificationClaimRequest) ProtoMessage() {}
 
 func (x *EmailNotificationClaimRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[64]
+	mi := &file_store_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4852,7 +4922,7 @@ func (x *EmailNotificationClaimRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailNotificationClaimRequest.ProtoReflect.Descriptor instead.
 func (*EmailNotificationClaimRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{64}
+	return file_store_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *EmailNotificationClaimRequest) GetTxId() string {
@@ -4921,7 +4991,7 @@ type EmailNotificationClaimResult struct {
 
 func (x *EmailNotificationClaimResult) Reset() {
 	*x = EmailNotificationClaimResult{}
-	mi := &file_store_proto_msgTypes[65]
+	mi := &file_store_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4933,7 +5003,7 @@ func (x *EmailNotificationClaimResult) String() string {
 func (*EmailNotificationClaimResult) ProtoMessage() {}
 
 func (x *EmailNotificationClaimResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[65]
+	mi := &file_store_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4946,7 +5016,7 @@ func (x *EmailNotificationClaimResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailNotificationClaimResult.ProtoReflect.Descriptor instead.
 func (*EmailNotificationClaimResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{65}
+	return file_store_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *EmailNotificationClaimResult) GetError() *Error {
@@ -4974,7 +5044,7 @@ type EmailNotificationSweepRequest struct {
 
 func (x *EmailNotificationSweepRequest) Reset() {
 	*x = EmailNotificationSweepRequest{}
-	mi := &file_store_proto_msgTypes[66]
+	mi := &file_store_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4986,7 +5056,7 @@ func (x *EmailNotificationSweepRequest) String() string {
 func (*EmailNotificationSweepRequest) ProtoMessage() {}
 
 func (x *EmailNotificationSweepRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[66]
+	mi := &file_store_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4999,7 +5069,7 @@ func (x *EmailNotificationSweepRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailNotificationSweepRequest.ProtoReflect.Descriptor instead.
 func (*EmailNotificationSweepRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{66}
+	return file_store_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *EmailNotificationSweepRequest) GetTxId() string {
@@ -5037,7 +5107,7 @@ type PasswordPolicy struct {
 
 func (x *PasswordPolicy) Reset() {
 	*x = PasswordPolicy{}
-	mi := &file_store_proto_msgTypes[67]
+	mi := &file_store_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5049,7 +5119,7 @@ func (x *PasswordPolicy) String() string {
 func (*PasswordPolicy) ProtoMessage() {}
 
 func (x *PasswordPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[67]
+	mi := &file_store_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5062,7 +5132,7 @@ func (x *PasswordPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordPolicy.ProtoReflect.Descriptor instead.
 func (*PasswordPolicy) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{67}
+	return file_store_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *PasswordPolicy) GetMinLength() int64 {
@@ -5094,7 +5164,7 @@ type PasswordComplexity struct {
 
 func (x *PasswordComplexity) Reset() {
 	*x = PasswordComplexity{}
-	mi := &file_store_proto_msgTypes[68]
+	mi := &file_store_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5106,7 +5176,7 @@ func (x *PasswordComplexity) String() string {
 func (*PasswordComplexity) ProtoMessage() {}
 
 func (x *PasswordComplexity) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[68]
+	mi := &file_store_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5119,7 +5189,7 @@ func (x *PasswordComplexity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordComplexity.ProtoReflect.Descriptor instead.
 func (*PasswordComplexity) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{68}
+	return file_store_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *PasswordComplexity) GetMinLength() int64 {
@@ -5181,7 +5251,7 @@ type PasswordHistorySettings struct {
 
 func (x *PasswordHistorySettings) Reset() {
 	*x = PasswordHistorySettings{}
-	mi := &file_store_proto_msgTypes[69]
+	mi := &file_store_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5193,7 +5263,7 @@ func (x *PasswordHistorySettings) String() string {
 func (*PasswordHistorySettings) ProtoMessage() {}
 
 func (x *PasswordHistorySettings) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[69]
+	mi := &file_store_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5206,7 +5276,7 @@ func (x *PasswordHistorySettings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordHistorySettings.ProtoReflect.Descriptor instead.
 func (*PasswordHistorySettings) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{69}
+	return file_store_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *PasswordHistorySettings) GetActive() bool {
@@ -5234,7 +5304,7 @@ type PasswordDictionary struct {
 
 func (x *PasswordDictionary) Reset() {
 	*x = PasswordDictionary{}
-	mi := &file_store_proto_msgTypes[70]
+	mi := &file_store_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5246,7 +5316,7 @@ func (x *PasswordDictionary) String() string {
 func (*PasswordDictionary) ProtoMessage() {}
 
 func (x *PasswordDictionary) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[70]
+	mi := &file_store_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5259,7 +5329,7 @@ func (x *PasswordDictionary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordDictionary.ProtoReflect.Descriptor instead.
 func (*PasswordDictionary) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{70}
+	return file_store_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *PasswordDictionary) GetActive() bool {
@@ -5293,7 +5363,7 @@ type PasswordProfileData struct {
 
 func (x *PasswordProfileData) Reset() {
 	*x = PasswordProfileData{}
-	mi := &file_store_proto_msgTypes[71]
+	mi := &file_store_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5305,7 +5375,7 @@ func (x *PasswordProfileData) String() string {
 func (*PasswordProfileData) ProtoMessage() {}
 
 func (x *PasswordProfileData) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[71]
+	mi := &file_store_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5318,7 +5388,7 @@ func (x *PasswordProfileData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordProfileData.ProtoReflect.Descriptor instead.
 func (*PasswordProfileData) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{71}
+	return file_store_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *PasswordProfileData) GetActive() bool {
@@ -5347,7 +5417,7 @@ type PasswordOptions struct {
 
 func (x *PasswordOptions) Reset() {
 	*x = PasswordOptions{}
-	mi := &file_store_proto_msgTypes[72]
+	mi := &file_store_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5359,7 +5429,7 @@ func (x *PasswordOptions) String() string {
 func (*PasswordOptions) ProtoMessage() {}
 
 func (x *PasswordOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[72]
+	mi := &file_store_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5372,7 +5442,7 @@ func (x *PasswordOptions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordOptions.ProtoReflect.Descriptor instead.
 func (*PasswordOptions) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{72}
+	return file_store_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *PasswordOptions) GetComplexity() *PasswordComplexity {
@@ -5434,7 +5504,7 @@ type Connection struct {
 
 func (x *Connection) Reset() {
 	*x = Connection{}
-	mi := &file_store_proto_msgTypes[73]
+	mi := &file_store_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5446,7 +5516,7 @@ func (x *Connection) String() string {
 func (*Connection) ProtoMessage() {}
 
 func (x *Connection) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[73]
+	mi := &file_store_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5459,7 +5529,7 @@ func (x *Connection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Connection.ProtoReflect.Descriptor instead.
 func (*Connection) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{73}
+	return file_store_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *Connection) GetTenantId() string {
@@ -5637,7 +5707,7 @@ type Identity struct {
 
 func (x *Identity) Reset() {
 	*x = Identity{}
-	mi := &file_store_proto_msgTypes[74]
+	mi := &file_store_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5649,7 +5719,7 @@ func (x *Identity) String() string {
 func (*Identity) ProtoMessage() {}
 
 func (x *Identity) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[74]
+	mi := &file_store_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5662,7 +5732,7 @@ func (x *Identity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Identity.ProtoReflect.Descriptor instead.
 func (*Identity) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{74}
+	return file_store_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *Identity) GetConnection() string {
@@ -5716,7 +5786,7 @@ type IdentityList struct {
 
 func (x *IdentityList) Reset() {
 	*x = IdentityList{}
-	mi := &file_store_proto_msgTypes[75]
+	mi := &file_store_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5728,7 +5798,7 @@ func (x *IdentityList) String() string {
 func (*IdentityList) ProtoMessage() {}
 
 func (x *IdentityList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[75]
+	mi := &file_store_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5741,7 +5811,7 @@ func (x *IdentityList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IdentityList.ProtoReflect.Descriptor instead.
 func (*IdentityList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{75}
+	return file_store_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *IdentityList) GetValues() []*Identity {
@@ -5784,7 +5854,7 @@ type User struct {
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_store_proto_msgTypes[76]
+	mi := &file_store_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5796,7 +5866,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[76]
+	mi := &file_store_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5809,7 +5879,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{76}
+	return file_store_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *User) GetTenantId() string {
@@ -6017,7 +6087,7 @@ type LoginSession struct {
 
 func (x *LoginSession) Reset() {
 	*x = LoginSession{}
-	mi := &file_store_proto_msgTypes[77]
+	mi := &file_store_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6029,7 +6099,7 @@ func (x *LoginSession) String() string {
 func (*LoginSession) ProtoMessage() {}
 
 func (x *LoginSession) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[77]
+	mi := &file_store_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6042,7 +6112,7 @@ func (x *LoginSession) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginSession.ProtoReflect.Descriptor instead.
 func (*LoginSession) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{77}
+	return file_store_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *LoginSession) GetTenantId() string {
@@ -6196,7 +6266,7 @@ type AuthMethod struct {
 
 func (x *AuthMethod) Reset() {
 	*x = AuthMethod{}
-	mi := &file_store_proto_msgTypes[78]
+	mi := &file_store_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6208,7 +6278,7 @@ func (x *AuthMethod) String() string {
 func (*AuthMethod) ProtoMessage() {}
 
 func (x *AuthMethod) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[78]
+	mi := &file_store_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6221,7 +6291,7 @@ func (x *AuthMethod) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthMethod.ProtoReflect.Descriptor instead.
 func (*AuthMethod) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{78}
+	return file_store_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *AuthMethod) GetName() string {
@@ -6254,7 +6324,7 @@ type AuthMethodList struct {
 
 func (x *AuthMethodList) Reset() {
 	*x = AuthMethodList{}
-	mi := &file_store_proto_msgTypes[79]
+	mi := &file_store_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6266,7 +6336,7 @@ func (x *AuthMethodList) String() string {
 func (*AuthMethodList) ProtoMessage() {}
 
 func (x *AuthMethodList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[79]
+	mi := &file_store_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6279,7 +6349,7 @@ func (x *AuthMethodList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthMethodList.ProtoReflect.Descriptor instead.
 func (*AuthMethodList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{79}
+	return file_store_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *AuthMethodList) GetValues() []*AuthMethod {
@@ -6307,7 +6377,7 @@ type AuthTransaction struct {
 
 func (x *AuthTransaction) Reset() {
 	*x = AuthTransaction{}
-	mi := &file_store_proto_msgTypes[80]
+	mi := &file_store_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6319,7 +6389,7 @@ func (x *AuthTransaction) String() string {
 func (*AuthTransaction) ProtoMessage() {}
 
 func (x *AuthTransaction) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[80]
+	mi := &file_store_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6332,7 +6402,7 @@ func (x *AuthTransaction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthTransaction.ProtoReflect.Descriptor instead.
 func (*AuthTransaction) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{80}
+	return file_store_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *AuthTransaction) GetTenantId() string {
@@ -6433,7 +6503,7 @@ type AuthCode struct {
 
 func (x *AuthCode) Reset() {
 	*x = AuthCode{}
-	mi := &file_store_proto_msgTypes[81]
+	mi := &file_store_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6445,7 +6515,7 @@ func (x *AuthCode) String() string {
 func (*AuthCode) ProtoMessage() {}
 
 func (x *AuthCode) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[81]
+	mi := &file_store_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6458,7 +6528,7 @@ func (x *AuthCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthCode.ProtoReflect.Descriptor instead.
 func (*AuthCode) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{81}
+	return file_store_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *AuthCode) GetTenantId() string {
@@ -6617,7 +6687,7 @@ type PushedAuthRequest struct {
 
 func (x *PushedAuthRequest) Reset() {
 	*x = PushedAuthRequest{}
-	mi := &file_store_proto_msgTypes[82]
+	mi := &file_store_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6629,7 +6699,7 @@ func (x *PushedAuthRequest) String() string {
 func (*PushedAuthRequest) ProtoMessage() {}
 
 func (x *PushedAuthRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[82]
+	mi := &file_store_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6642,7 +6712,7 @@ func (x *PushedAuthRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushedAuthRequest.ProtoReflect.Descriptor instead.
 func (*PushedAuthRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{82}
+	return file_store_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *PushedAuthRequest) GetTenantId() string {
@@ -6724,7 +6794,7 @@ type DeviceCode struct {
 
 func (x *DeviceCode) Reset() {
 	*x = DeviceCode{}
-	mi := &file_store_proto_msgTypes[83]
+	mi := &file_store_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6736,7 +6806,7 @@ func (x *DeviceCode) String() string {
 func (*DeviceCode) ProtoMessage() {}
 
 func (x *DeviceCode) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[83]
+	mi := &file_store_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6749,7 +6819,7 @@ func (x *DeviceCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeviceCode.ProtoReflect.Descriptor instead.
 func (*DeviceCode) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{83}
+	return file_store_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *DeviceCode) GetTenantId() string {
@@ -6884,7 +6954,7 @@ type RefreshToken struct {
 
 func (x *RefreshToken) Reset() {
 	*x = RefreshToken{}
-	mi := &file_store_proto_msgTypes[84]
+	mi := &file_store_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6896,7 +6966,7 @@ func (x *RefreshToken) String() string {
 func (*RefreshToken) ProtoMessage() {}
 
 func (x *RefreshToken) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[84]
+	mi := &file_store_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6909,7 +6979,7 @@ func (x *RefreshToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshToken.ProtoReflect.Descriptor instead.
 func (*RefreshToken) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{84}
+	return file_store_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *RefreshToken) GetTenantId() string {
@@ -7070,7 +7140,7 @@ type PasswordResetTicket struct {
 
 func (x *PasswordResetTicket) Reset() {
 	*x = PasswordResetTicket{}
-	mi := &file_store_proto_msgTypes[85]
+	mi := &file_store_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7082,7 +7152,7 @@ func (x *PasswordResetTicket) String() string {
 func (*PasswordResetTicket) ProtoMessage() {}
 
 func (x *PasswordResetTicket) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[85]
+	mi := &file_store_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7095,7 +7165,7 @@ func (x *PasswordResetTicket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordResetTicket.ProtoReflect.Descriptor instead.
 func (*PasswordResetTicket) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{85}
+	return file_store_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *PasswordResetTicket) GetTenantId() string {
@@ -7239,7 +7309,7 @@ type EmailVerificationTicket struct {
 
 func (x *EmailVerificationTicket) Reset() {
 	*x = EmailVerificationTicket{}
-	mi := &file_store_proto_msgTypes[86]
+	mi := &file_store_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7251,7 +7321,7 @@ func (x *EmailVerificationTicket) String() string {
 func (*EmailVerificationTicket) ProtoMessage() {}
 
 func (x *EmailVerificationTicket) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[86]
+	mi := &file_store_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7264,7 +7334,7 @@ func (x *EmailVerificationTicket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailVerificationTicket.ProtoReflect.Descriptor instead.
 func (*EmailVerificationTicket) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{86}
+	return file_store_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *EmailVerificationTicket) GetTenantId() string {
@@ -7379,7 +7449,7 @@ type JobSummary struct {
 
 func (x *JobSummary) Reset() {
 	*x = JobSummary{}
-	mi := &file_store_proto_msgTypes[87]
+	mi := &file_store_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7391,7 +7461,7 @@ func (x *JobSummary) String() string {
 func (*JobSummary) ProtoMessage() {}
 
 func (x *JobSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[87]
+	mi := &file_store_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7404,7 +7474,7 @@ func (x *JobSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobSummary.ProtoReflect.Descriptor instead.
 func (*JobSummary) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{87}
+	return file_store_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *JobSummary) GetFailed() int64 {
@@ -7463,7 +7533,7 @@ type Job struct {
 
 func (x *Job) Reset() {
 	*x = Job{}
-	mi := &file_store_proto_msgTypes[88]
+	mi := &file_store_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7475,7 +7545,7 @@ func (x *Job) String() string {
 func (*Job) ProtoMessage() {}
 
 func (x *Job) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[88]
+	mi := &file_store_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7488,7 +7558,7 @@ func (x *Job) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Job.ProtoReflect.Descriptor instead.
 func (*Job) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{88}
+	return file_store_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *Job) GetTenantId() string {
@@ -7642,7 +7712,7 @@ type JobErrorItem struct {
 
 func (x *JobErrorItem) Reset() {
 	*x = JobErrorItem{}
-	mi := &file_store_proto_msgTypes[89]
+	mi := &file_store_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7654,7 +7724,7 @@ func (x *JobErrorItem) String() string {
 func (*JobErrorItem) ProtoMessage() {}
 
 func (x *JobErrorItem) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[89]
+	mi := &file_store_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7667,7 +7737,7 @@ func (x *JobErrorItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobErrorItem.ProtoReflect.Descriptor instead.
 func (*JobErrorItem) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{89}
+	return file_store_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *JobErrorItem) GetCode() string {
@@ -7700,7 +7770,7 @@ type JobErrorItems struct {
 
 func (x *JobErrorItems) Reset() {
 	*x = JobErrorItems{}
-	mi := &file_store_proto_msgTypes[90]
+	mi := &file_store_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7712,7 +7782,7 @@ func (x *JobErrorItems) String() string {
 func (*JobErrorItems) ProtoMessage() {}
 
 func (x *JobErrorItems) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[90]
+	mi := &file_store_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7725,7 +7795,7 @@ func (x *JobErrorItems) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobErrorItems.ProtoReflect.Descriptor instead.
 func (*JobErrorItems) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{90}
+	return file_store_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *JobErrorItems) GetValues() []*JobErrorItem {
@@ -7746,7 +7816,7 @@ type JobError struct {
 
 func (x *JobError) Reset() {
 	*x = JobError{}
-	mi := &file_store_proto_msgTypes[91]
+	mi := &file_store_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7758,7 +7828,7 @@ func (x *JobError) String() string {
 func (*JobError) ProtoMessage() {}
 
 func (x *JobError) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[91]
+	mi := &file_store_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7771,7 +7841,7 @@ func (x *JobError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobError.ProtoReflect.Descriptor instead.
 func (*JobError) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{91}
+	return file_store_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *JobError) GetIndex() int64 {
@@ -7808,7 +7878,7 @@ type Operator struct {
 
 func (x *Operator) Reset() {
 	*x = Operator{}
-	mi := &file_store_proto_msgTypes[92]
+	mi := &file_store_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7820,7 +7890,7 @@ func (x *Operator) String() string {
 func (*Operator) ProtoMessage() {}
 
 func (x *Operator) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[92]
+	mi := &file_store_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7833,7 +7903,7 @@ func (x *Operator) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Operator.ProtoReflect.Descriptor instead.
 func (*Operator) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{92}
+	return file_store_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *Operator) GetTenantId() string {
@@ -7881,7 +7951,7 @@ type TenantWrite struct {
 
 func (x *TenantWrite) Reset() {
 	*x = TenantWrite{}
-	mi := &file_store_proto_msgTypes[93]
+	mi := &file_store_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7893,7 +7963,7 @@ func (x *TenantWrite) String() string {
 func (*TenantWrite) ProtoMessage() {}
 
 func (x *TenantWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[93]
+	mi := &file_store_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7906,7 +7976,7 @@ func (x *TenantWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantWrite.ProtoReflect.Descriptor instead.
 func (*TenantWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{93}
+	return file_store_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *TenantWrite) GetTxId() string {
@@ -7933,7 +8003,7 @@ type TenantsGetRequest struct {
 
 func (x *TenantsGetRequest) Reset() {
 	*x = TenantsGetRequest{}
-	mi := &file_store_proto_msgTypes[94]
+	mi := &file_store_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7945,7 +8015,7 @@ func (x *TenantsGetRequest) String() string {
 func (*TenantsGetRequest) ProtoMessage() {}
 
 func (x *TenantsGetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[94]
+	mi := &file_store_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7958,7 +8028,7 @@ func (x *TenantsGetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantsGetRequest.ProtoReflect.Descriptor instead.
 func (*TenantsGetRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{94}
+	return file_store_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *TenantsGetRequest) GetTxId() string {
@@ -7984,7 +8054,7 @@ type TenantsListRequest struct {
 
 func (x *TenantsListRequest) Reset() {
 	*x = TenantsListRequest{}
-	mi := &file_store_proto_msgTypes[95]
+	mi := &file_store_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7996,7 +8066,7 @@ func (x *TenantsListRequest) String() string {
 func (*TenantsListRequest) ProtoMessage() {}
 
 func (x *TenantsListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[95]
+	mi := &file_store_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8009,7 +8079,7 @@ func (x *TenantsListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantsListRequest.ProtoReflect.Descriptor instead.
 func (*TenantsListRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{95}
+	return file_store_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *TenantsListRequest) GetTxId() string {
@@ -8029,7 +8099,7 @@ type TenantResult struct {
 
 func (x *TenantResult) Reset() {
 	*x = TenantResult{}
-	mi := &file_store_proto_msgTypes[96]
+	mi := &file_store_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8041,7 +8111,7 @@ func (x *TenantResult) String() string {
 func (*TenantResult) ProtoMessage() {}
 
 func (x *TenantResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[96]
+	mi := &file_store_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8054,7 +8124,7 @@ func (x *TenantResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantResult.ProtoReflect.Descriptor instead.
 func (*TenantResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{96}
+	return file_store_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *TenantResult) GetError() *Error {
@@ -8081,7 +8151,7 @@ type TenantList struct {
 
 func (x *TenantList) Reset() {
 	*x = TenantList{}
-	mi := &file_store_proto_msgTypes[97]
+	mi := &file_store_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8093,7 +8163,7 @@ func (x *TenantList) String() string {
 func (*TenantList) ProtoMessage() {}
 
 func (x *TenantList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[97]
+	mi := &file_store_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8106,7 +8176,7 @@ func (x *TenantList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantList.ProtoReflect.Descriptor instead.
 func (*TenantList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{97}
+	return file_store_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *TenantList) GetError() *Error {
@@ -8133,7 +8203,7 @@ type ClientWrite struct {
 
 func (x *ClientWrite) Reset() {
 	*x = ClientWrite{}
-	mi := &file_store_proto_msgTypes[98]
+	mi := &file_store_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8145,7 +8215,7 @@ func (x *ClientWrite) String() string {
 func (*ClientWrite) ProtoMessage() {}
 
 func (x *ClientWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[98]
+	mi := &file_store_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8158,7 +8228,7 @@ func (x *ClientWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientWrite.ProtoReflect.Descriptor instead.
 func (*ClientWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{98}
+	return file_store_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *ClientWrite) GetTxId() string {
@@ -8185,7 +8255,7 @@ type ClientResult struct {
 
 func (x *ClientResult) Reset() {
 	*x = ClientResult{}
-	mi := &file_store_proto_msgTypes[99]
+	mi := &file_store_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8197,7 +8267,7 @@ func (x *ClientResult) String() string {
 func (*ClientResult) ProtoMessage() {}
 
 func (x *ClientResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[99]
+	mi := &file_store_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8210,7 +8280,7 @@ func (x *ClientResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientResult.ProtoReflect.Descriptor instead.
 func (*ClientResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{99}
+	return file_store_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *ClientResult) GetError() *Error {
@@ -8237,7 +8307,7 @@ type ClientList struct {
 
 func (x *ClientList) Reset() {
 	*x = ClientList{}
-	mi := &file_store_proto_msgTypes[100]
+	mi := &file_store_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8249,7 +8319,7 @@ func (x *ClientList) String() string {
 func (*ClientList) ProtoMessage() {}
 
 func (x *ClientList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[100]
+	mi := &file_store_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8262,7 +8332,7 @@ func (x *ClientList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientList.ProtoReflect.Descriptor instead.
 func (*ClientList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{100}
+	return file_store_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *ClientList) GetError() *Error {
@@ -8299,7 +8369,7 @@ type ClientsListPageRequest struct {
 
 func (x *ClientsListPageRequest) Reset() {
 	*x = ClientsListPageRequest{}
-	mi := &file_store_proto_msgTypes[101]
+	mi := &file_store_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8311,7 +8381,7 @@ func (x *ClientsListPageRequest) String() string {
 func (*ClientsListPageRequest) ProtoMessage() {}
 
 func (x *ClientsListPageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[101]
+	mi := &file_store_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8324,7 +8394,7 @@ func (x *ClientsListPageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientsListPageRequest.ProtoReflect.Descriptor instead.
 func (*ClientsListPageRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{101}
+	return file_store_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *ClientsListPageRequest) GetTxId() string {
@@ -8387,7 +8457,7 @@ type ClientPage struct {
 
 func (x *ClientPage) Reset() {
 	*x = ClientPage{}
-	mi := &file_store_proto_msgTypes[102]
+	mi := &file_store_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8399,7 +8469,7 @@ func (x *ClientPage) String() string {
 func (*ClientPage) ProtoMessage() {}
 
 func (x *ClientPage) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[102]
+	mi := &file_store_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8412,7 +8482,7 @@ func (x *ClientPage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientPage.ProtoReflect.Descriptor instead.
 func (*ClientPage) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{102}
+	return file_store_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *ClientPage) GetError() *Error {
@@ -8446,7 +8516,7 @@ type ResourceServerWrite struct {
 
 func (x *ResourceServerWrite) Reset() {
 	*x = ResourceServerWrite{}
-	mi := &file_store_proto_msgTypes[103]
+	mi := &file_store_proto_msgTypes[104]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8458,7 +8528,7 @@ func (x *ResourceServerWrite) String() string {
 func (*ResourceServerWrite) ProtoMessage() {}
 
 func (x *ResourceServerWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[103]
+	mi := &file_store_proto_msgTypes[104]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8471,7 +8541,7 @@ func (x *ResourceServerWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceServerWrite.ProtoReflect.Descriptor instead.
 func (*ResourceServerWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{103}
+	return file_store_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *ResourceServerWrite) GetTxId() string {
@@ -8498,7 +8568,7 @@ type ResourceServerResult struct {
 
 func (x *ResourceServerResult) Reset() {
 	*x = ResourceServerResult{}
-	mi := &file_store_proto_msgTypes[104]
+	mi := &file_store_proto_msgTypes[105]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8510,7 +8580,7 @@ func (x *ResourceServerResult) String() string {
 func (*ResourceServerResult) ProtoMessage() {}
 
 func (x *ResourceServerResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[104]
+	mi := &file_store_proto_msgTypes[105]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8523,7 +8593,7 @@ func (x *ResourceServerResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceServerResult.ProtoReflect.Descriptor instead.
 func (*ResourceServerResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{104}
+	return file_store_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *ResourceServerResult) GetError() *Error {
@@ -8552,7 +8622,7 @@ type ResourceServerList struct {
 
 func (x *ResourceServerList) Reset() {
 	*x = ResourceServerList{}
-	mi := &file_store_proto_msgTypes[105]
+	mi := &file_store_proto_msgTypes[106]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8564,7 +8634,7 @@ func (x *ResourceServerList) String() string {
 func (*ResourceServerList) ProtoMessage() {}
 
 func (x *ResourceServerList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[105]
+	mi := &file_store_proto_msgTypes[106]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8577,7 +8647,7 @@ func (x *ResourceServerList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceServerList.ProtoReflect.Descriptor instead.
 func (*ResourceServerList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{105}
+	return file_store_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *ResourceServerList) GetError() *Error {
@@ -8604,7 +8674,7 @@ type ClientGrantWrite struct {
 
 func (x *ClientGrantWrite) Reset() {
 	*x = ClientGrantWrite{}
-	mi := &file_store_proto_msgTypes[106]
+	mi := &file_store_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8616,7 +8686,7 @@ func (x *ClientGrantWrite) String() string {
 func (*ClientGrantWrite) ProtoMessage() {}
 
 func (x *ClientGrantWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[106]
+	mi := &file_store_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8629,7 +8699,7 @@ func (x *ClientGrantWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientGrantWrite.ProtoReflect.Descriptor instead.
 func (*ClientGrantWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{106}
+	return file_store_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *ClientGrantWrite) GetTxId() string {
@@ -8659,7 +8729,7 @@ type ClientGrantsFindRequest struct {
 
 func (x *ClientGrantsFindRequest) Reset() {
 	*x = ClientGrantsFindRequest{}
-	mi := &file_store_proto_msgTypes[107]
+	mi := &file_store_proto_msgTypes[108]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8671,7 +8741,7 @@ func (x *ClientGrantsFindRequest) String() string {
 func (*ClientGrantsFindRequest) ProtoMessage() {}
 
 func (x *ClientGrantsFindRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[107]
+	mi := &file_store_proto_msgTypes[108]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8684,7 +8754,7 @@ func (x *ClientGrantsFindRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientGrantsFindRequest.ProtoReflect.Descriptor instead.
 func (*ClientGrantsFindRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{107}
+	return file_store_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *ClientGrantsFindRequest) GetTxId() string {
@@ -8732,7 +8802,7 @@ type ClientGrantResult struct {
 
 func (x *ClientGrantResult) Reset() {
 	*x = ClientGrantResult{}
-	mi := &file_store_proto_msgTypes[108]
+	mi := &file_store_proto_msgTypes[109]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8744,7 +8814,7 @@ func (x *ClientGrantResult) String() string {
 func (*ClientGrantResult) ProtoMessage() {}
 
 func (x *ClientGrantResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[108]
+	mi := &file_store_proto_msgTypes[109]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8757,7 +8827,7 @@ func (x *ClientGrantResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientGrantResult.ProtoReflect.Descriptor instead.
 func (*ClientGrantResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{108}
+	return file_store_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *ClientGrantResult) GetError() *Error {
@@ -8794,7 +8864,7 @@ type ClientGrantsListRequest struct {
 
 func (x *ClientGrantsListRequest) Reset() {
 	*x = ClientGrantsListRequest{}
-	mi := &file_store_proto_msgTypes[109]
+	mi := &file_store_proto_msgTypes[110]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8806,7 +8876,7 @@ func (x *ClientGrantsListRequest) String() string {
 func (*ClientGrantsListRequest) ProtoMessage() {}
 
 func (x *ClientGrantsListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[109]
+	mi := &file_store_proto_msgTypes[110]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8819,7 +8889,7 @@ func (x *ClientGrantsListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientGrantsListRequest.ProtoReflect.Descriptor instead.
 func (*ClientGrantsListRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{109}
+	return file_store_proto_rawDescGZIP(), []int{110}
 }
 
 func (x *ClientGrantsListRequest) GetTxId() string {
@@ -8896,7 +8966,7 @@ type ClientGrantList struct {
 
 func (x *ClientGrantList) Reset() {
 	*x = ClientGrantList{}
-	mi := &file_store_proto_msgTypes[110]
+	mi := &file_store_proto_msgTypes[111]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8908,7 +8978,7 @@ func (x *ClientGrantList) String() string {
 func (*ClientGrantList) ProtoMessage() {}
 
 func (x *ClientGrantList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[110]
+	mi := &file_store_proto_msgTypes[111]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8921,7 +8991,7 @@ func (x *ClientGrantList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientGrantList.ProtoReflect.Descriptor instead.
 func (*ClientGrantList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{110}
+	return file_store_proto_rawDescGZIP(), []int{111}
 }
 
 func (x *ClientGrantList) GetError() *Error {
@@ -8955,7 +9025,7 @@ type UserGrantWrite struct {
 
 func (x *UserGrantWrite) Reset() {
 	*x = UserGrantWrite{}
-	mi := &file_store_proto_msgTypes[111]
+	mi := &file_store_proto_msgTypes[112]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8967,7 +9037,7 @@ func (x *UserGrantWrite) String() string {
 func (*UserGrantWrite) ProtoMessage() {}
 
 func (x *UserGrantWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[111]
+	mi := &file_store_proto_msgTypes[112]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8980,7 +9050,7 @@ func (x *UserGrantWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserGrantWrite.ProtoReflect.Descriptor instead.
 func (*UserGrantWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{111}
+	return file_store_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *UserGrantWrite) GetTxId() string {
@@ -9010,7 +9080,7 @@ type UserGrantsFindRequest struct {
 
 func (x *UserGrantsFindRequest) Reset() {
 	*x = UserGrantsFindRequest{}
-	mi := &file_store_proto_msgTypes[112]
+	mi := &file_store_proto_msgTypes[113]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9022,7 +9092,7 @@ func (x *UserGrantsFindRequest) String() string {
 func (*UserGrantsFindRequest) ProtoMessage() {}
 
 func (x *UserGrantsFindRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[112]
+	mi := &file_store_proto_msgTypes[113]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9035,7 +9105,7 @@ func (x *UserGrantsFindRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserGrantsFindRequest.ProtoReflect.Descriptor instead.
 func (*UserGrantsFindRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{112}
+	return file_store_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *UserGrantsFindRequest) GetTxId() string {
@@ -9083,7 +9153,7 @@ type UserGrantResult struct {
 
 func (x *UserGrantResult) Reset() {
 	*x = UserGrantResult{}
-	mi := &file_store_proto_msgTypes[113]
+	mi := &file_store_proto_msgTypes[114]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9095,7 +9165,7 @@ func (x *UserGrantResult) String() string {
 func (*UserGrantResult) ProtoMessage() {}
 
 func (x *UserGrantResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[113]
+	mi := &file_store_proto_msgTypes[114]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9108,7 +9178,7 @@ func (x *UserGrantResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserGrantResult.ProtoReflect.Descriptor instead.
 func (*UserGrantResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{113}
+	return file_store_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *UserGrantResult) GetError() *Error {
@@ -9136,7 +9206,7 @@ type UserGrantList struct {
 
 func (x *UserGrantList) Reset() {
 	*x = UserGrantList{}
-	mi := &file_store_proto_msgTypes[114]
+	mi := &file_store_proto_msgTypes[115]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9148,7 +9218,7 @@ func (x *UserGrantList) String() string {
 func (*UserGrantList) ProtoMessage() {}
 
 func (x *UserGrantList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[114]
+	mi := &file_store_proto_msgTypes[115]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9161,7 +9231,7 @@ func (x *UserGrantList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserGrantList.ProtoReflect.Descriptor instead.
 func (*UserGrantList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{114}
+	return file_store_proto_rawDescGZIP(), []int{115}
 }
 
 func (x *UserGrantList) GetError() *Error {
@@ -9203,7 +9273,7 @@ type UserGrantsListRequest struct {
 
 func (x *UserGrantsListRequest) Reset() {
 	*x = UserGrantsListRequest{}
-	mi := &file_store_proto_msgTypes[115]
+	mi := &file_store_proto_msgTypes[116]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9215,7 +9285,7 @@ func (x *UserGrantsListRequest) String() string {
 func (*UserGrantsListRequest) ProtoMessage() {}
 
 func (x *UserGrantsListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[115]
+	mi := &file_store_proto_msgTypes[116]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9228,7 +9298,7 @@ func (x *UserGrantsListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserGrantsListRequest.ProtoReflect.Descriptor instead.
 func (*UserGrantsListRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{115}
+	return file_store_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *UserGrantsListRequest) GetTxId() string {
@@ -9290,7 +9360,7 @@ type SigningKeyWrite struct {
 
 func (x *SigningKeyWrite) Reset() {
 	*x = SigningKeyWrite{}
-	mi := &file_store_proto_msgTypes[116]
+	mi := &file_store_proto_msgTypes[117]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9302,7 +9372,7 @@ func (x *SigningKeyWrite) String() string {
 func (*SigningKeyWrite) ProtoMessage() {}
 
 func (x *SigningKeyWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[116]
+	mi := &file_store_proto_msgTypes[117]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9315,7 +9385,7 @@ func (x *SigningKeyWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyWrite.ProtoReflect.Descriptor instead.
 func (*SigningKeyWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{116}
+	return file_store_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *SigningKeyWrite) GetTxId() string {
@@ -9342,7 +9412,7 @@ type SigningKeyList struct {
 
 func (x *SigningKeyList) Reset() {
 	*x = SigningKeyList{}
-	mi := &file_store_proto_msgTypes[117]
+	mi := &file_store_proto_msgTypes[118]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9354,7 +9424,7 @@ func (x *SigningKeyList) String() string {
 func (*SigningKeyList) ProtoMessage() {}
 
 func (x *SigningKeyList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[117]
+	mi := &file_store_proto_msgTypes[118]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9367,7 +9437,7 @@ func (x *SigningKeyList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeyList.ProtoReflect.Descriptor instead.
 func (*SigningKeyList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{117}
+	return file_store_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *SigningKeyList) GetError() *Error {
@@ -9396,7 +9466,7 @@ type SigningKeysRotateRequest struct {
 
 func (x *SigningKeysRotateRequest) Reset() {
 	*x = SigningKeysRotateRequest{}
-	mi := &file_store_proto_msgTypes[118]
+	mi := &file_store_proto_msgTypes[119]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9408,7 +9478,7 @@ func (x *SigningKeysRotateRequest) String() string {
 func (*SigningKeysRotateRequest) ProtoMessage() {}
 
 func (x *SigningKeysRotateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[118]
+	mi := &file_store_proto_msgTypes[119]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9421,7 +9491,7 @@ func (x *SigningKeysRotateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SigningKeysRotateRequest.ProtoReflect.Descriptor instead.
 func (*SigningKeysRotateRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{118}
+	return file_store_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *SigningKeysRotateRequest) GetTxId() string {
@@ -9462,7 +9532,7 @@ type ConnectionWrite struct {
 
 func (x *ConnectionWrite) Reset() {
 	*x = ConnectionWrite{}
-	mi := &file_store_proto_msgTypes[119]
+	mi := &file_store_proto_msgTypes[120]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9474,7 +9544,7 @@ func (x *ConnectionWrite) String() string {
 func (*ConnectionWrite) ProtoMessage() {}
 
 func (x *ConnectionWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[119]
+	mi := &file_store_proto_msgTypes[120]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9487,7 +9557,7 @@ func (x *ConnectionWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionWrite.ProtoReflect.Descriptor instead.
 func (*ConnectionWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{119}
+	return file_store_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *ConnectionWrite) GetTxId() string {
@@ -9514,7 +9584,7 @@ type ConnectionResult struct {
 
 func (x *ConnectionResult) Reset() {
 	*x = ConnectionResult{}
-	mi := &file_store_proto_msgTypes[120]
+	mi := &file_store_proto_msgTypes[121]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9526,7 +9596,7 @@ func (x *ConnectionResult) String() string {
 func (*ConnectionResult) ProtoMessage() {}
 
 func (x *ConnectionResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[120]
+	mi := &file_store_proto_msgTypes[121]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9539,7 +9609,7 @@ func (x *ConnectionResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionResult.ProtoReflect.Descriptor instead.
 func (*ConnectionResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{120}
+	return file_store_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *ConnectionResult) GetError() *Error {
@@ -9566,7 +9636,7 @@ type ConnectionList struct {
 
 func (x *ConnectionList) Reset() {
 	*x = ConnectionList{}
-	mi := &file_store_proto_msgTypes[121]
+	mi := &file_store_proto_msgTypes[122]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9578,7 +9648,7 @@ func (x *ConnectionList) String() string {
 func (*ConnectionList) ProtoMessage() {}
 
 func (x *ConnectionList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[121]
+	mi := &file_store_proto_msgTypes[122]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9591,7 +9661,7 @@ func (x *ConnectionList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionList.ProtoReflect.Descriptor instead.
 func (*ConnectionList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{121}
+	return file_store_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *ConnectionList) GetError() *Error {
@@ -9626,7 +9696,7 @@ type ConnectionsListPageRequest struct {
 
 func (x *ConnectionsListPageRequest) Reset() {
 	*x = ConnectionsListPageRequest{}
-	mi := &file_store_proto_msgTypes[122]
+	mi := &file_store_proto_msgTypes[123]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9638,7 +9708,7 @@ func (x *ConnectionsListPageRequest) String() string {
 func (*ConnectionsListPageRequest) ProtoMessage() {}
 
 func (x *ConnectionsListPageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[122]
+	mi := &file_store_proto_msgTypes[123]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9651,7 +9721,7 @@ func (x *ConnectionsListPageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionsListPageRequest.ProtoReflect.Descriptor instead.
 func (*ConnectionsListPageRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{122}
+	return file_store_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *ConnectionsListPageRequest) GetTxId() string {
@@ -9707,7 +9777,7 @@ type ConnectionPage struct {
 
 func (x *ConnectionPage) Reset() {
 	*x = ConnectionPage{}
-	mi := &file_store_proto_msgTypes[123]
+	mi := &file_store_proto_msgTypes[124]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9719,7 +9789,7 @@ func (x *ConnectionPage) String() string {
 func (*ConnectionPage) ProtoMessage() {}
 
 func (x *ConnectionPage) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[123]
+	mi := &file_store_proto_msgTypes[124]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9732,7 +9802,7 @@ func (x *ConnectionPage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionPage.ProtoReflect.Descriptor instead.
 func (*ConnectionPage) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{123}
+	return file_store_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *ConnectionPage) GetError() *Error {
@@ -9769,7 +9839,7 @@ type PasswordHistoryAdd struct {
 
 func (x *PasswordHistoryAdd) Reset() {
 	*x = PasswordHistoryAdd{}
-	mi := &file_store_proto_msgTypes[124]
+	mi := &file_store_proto_msgTypes[125]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9781,7 +9851,7 @@ func (x *PasswordHistoryAdd) String() string {
 func (*PasswordHistoryAdd) ProtoMessage() {}
 
 func (x *PasswordHistoryAdd) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[124]
+	mi := &file_store_proto_msgTypes[125]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9794,7 +9864,7 @@ func (x *PasswordHistoryAdd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordHistoryAdd.ProtoReflect.Descriptor instead.
 func (*PasswordHistoryAdd) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{124}
+	return file_store_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *PasswordHistoryAdd) GetTxId() string {
@@ -9842,7 +9912,7 @@ type PasswordHistoryList struct {
 
 func (x *PasswordHistoryList) Reset() {
 	*x = PasswordHistoryList{}
-	mi := &file_store_proto_msgTypes[125]
+	mi := &file_store_proto_msgTypes[126]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9854,7 +9924,7 @@ func (x *PasswordHistoryList) String() string {
 func (*PasswordHistoryList) ProtoMessage() {}
 
 func (x *PasswordHistoryList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[125]
+	mi := &file_store_proto_msgTypes[126]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9867,7 +9937,7 @@ func (x *PasswordHistoryList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordHistoryList.ProtoReflect.Descriptor instead.
 func (*PasswordHistoryList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{125}
+	return file_store_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *PasswordHistoryList) GetError() *Error {
@@ -9894,7 +9964,7 @@ type UserWrite struct {
 
 func (x *UserWrite) Reset() {
 	*x = UserWrite{}
-	mi := &file_store_proto_msgTypes[126]
+	mi := &file_store_proto_msgTypes[127]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9906,7 +9976,7 @@ func (x *UserWrite) String() string {
 func (*UserWrite) ProtoMessage() {}
 
 func (x *UserWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[126]
+	mi := &file_store_proto_msgTypes[127]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9919,7 +9989,7 @@ func (x *UserWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserWrite.ProtoReflect.Descriptor instead.
 func (*UserWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{126}
+	return file_store_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *UserWrite) GetTxId() string {
@@ -9946,7 +10016,7 @@ type UserResult struct {
 
 func (x *UserResult) Reset() {
 	*x = UserResult{}
-	mi := &file_store_proto_msgTypes[127]
+	mi := &file_store_proto_msgTypes[128]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9958,7 +10028,7 @@ func (x *UserResult) String() string {
 func (*UserResult) ProtoMessage() {}
 
 func (x *UserResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[127]
+	mi := &file_store_proto_msgTypes[128]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9971,7 +10041,7 @@ func (x *UserResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserResult.ProtoReflect.Descriptor instead.
 func (*UserResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{127}
+	return file_store_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *UserResult) GetError() *Error {
@@ -10000,7 +10070,7 @@ type UsersFindByLoginRequest struct {
 
 func (x *UsersFindByLoginRequest) Reset() {
 	*x = UsersFindByLoginRequest{}
-	mi := &file_store_proto_msgTypes[128]
+	mi := &file_store_proto_msgTypes[129]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10012,7 +10082,7 @@ func (x *UsersFindByLoginRequest) String() string {
 func (*UsersFindByLoginRequest) ProtoMessage() {}
 
 func (x *UsersFindByLoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[128]
+	mi := &file_store_proto_msgTypes[129]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10025,7 +10095,7 @@ func (x *UsersFindByLoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersFindByLoginRequest.ProtoReflect.Descriptor instead.
 func (*UsersFindByLoginRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{128}
+	return file_store_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *UsersFindByLoginRequest) GetTxId() string {
@@ -10069,7 +10139,7 @@ type UsersRecordLoginRequest struct {
 
 func (x *UsersRecordLoginRequest) Reset() {
 	*x = UsersRecordLoginRequest{}
-	mi := &file_store_proto_msgTypes[129]
+	mi := &file_store_proto_msgTypes[130]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10081,7 +10151,7 @@ func (x *UsersRecordLoginRequest) String() string {
 func (*UsersRecordLoginRequest) ProtoMessage() {}
 
 func (x *UsersRecordLoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[129]
+	mi := &file_store_proto_msgTypes[130]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10094,7 +10164,7 @@ func (x *UsersRecordLoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersRecordLoginRequest.ProtoReflect.Descriptor instead.
 func (*UsersRecordLoginRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{129}
+	return file_store_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *UsersRecordLoginRequest) GetTxId() string {
@@ -10143,7 +10213,7 @@ type UsersFindByEmailRequest struct {
 
 func (x *UsersFindByEmailRequest) Reset() {
 	*x = UsersFindByEmailRequest{}
-	mi := &file_store_proto_msgTypes[130]
+	mi := &file_store_proto_msgTypes[131]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10155,7 +10225,7 @@ func (x *UsersFindByEmailRequest) String() string {
 func (*UsersFindByEmailRequest) ProtoMessage() {}
 
 func (x *UsersFindByEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[130]
+	mi := &file_store_proto_msgTypes[131]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10168,7 +10238,7 @@ func (x *UsersFindByEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersFindByEmailRequest.ProtoReflect.Descriptor instead.
 func (*UsersFindByEmailRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{130}
+	return file_store_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *UsersFindByEmailRequest) GetTxId() string {
@@ -10203,7 +10273,7 @@ type UserListResult struct {
 
 func (x *UserListResult) Reset() {
 	*x = UserListResult{}
-	mi := &file_store_proto_msgTypes[131]
+	mi := &file_store_proto_msgTypes[132]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10215,7 +10285,7 @@ func (x *UserListResult) String() string {
 func (*UserListResult) ProtoMessage() {}
 
 func (x *UserListResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[131]
+	mi := &file_store_proto_msgTypes[132]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10228,7 +10298,7 @@ func (x *UserListResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserListResult.ProtoReflect.Descriptor instead.
 func (*UserListResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{131}
+	return file_store_proto_rawDescGZIP(), []int{132}
 }
 
 func (x *UserListResult) GetError() *Error {
@@ -10270,7 +10340,7 @@ type UserQuery struct {
 
 func (x *UserQuery) Reset() {
 	*x = UserQuery{}
-	mi := &file_store_proto_msgTypes[132]
+	mi := &file_store_proto_msgTypes[133]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10282,7 +10352,7 @@ func (x *UserQuery) String() string {
 func (*UserQuery) ProtoMessage() {}
 
 func (x *UserQuery) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[132]
+	mi := &file_store_proto_msgTypes[133]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10295,7 +10365,7 @@ func (x *UserQuery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserQuery.ProtoReflect.Descriptor instead.
 func (*UserQuery) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{132}
+	return file_store_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *UserQuery) GetOp() UserQuery_Op {
@@ -10378,7 +10448,7 @@ type UsersListRequest struct {
 
 func (x *UsersListRequest) Reset() {
 	*x = UsersListRequest{}
-	mi := &file_store_proto_msgTypes[133]
+	mi := &file_store_proto_msgTypes[134]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10390,7 +10460,7 @@ func (x *UsersListRequest) String() string {
 func (*UsersListRequest) ProtoMessage() {}
 
 func (x *UsersListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[133]
+	mi := &file_store_proto_msgTypes[134]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10403,7 +10473,7 @@ func (x *UsersListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersListRequest.ProtoReflect.Descriptor instead.
 func (*UsersListRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{133}
+	return file_store_proto_rawDescGZIP(), []int{134}
 }
 
 func (x *UsersListRequest) GetTxId() string {
@@ -10465,7 +10535,7 @@ type VersionResult struct {
 
 func (x *VersionResult) Reset() {
 	*x = VersionResult{}
-	mi := &file_store_proto_msgTypes[134]
+	mi := &file_store_proto_msgTypes[135]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10477,7 +10547,7 @@ func (x *VersionResult) String() string {
 func (*VersionResult) ProtoMessage() {}
 
 func (x *VersionResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[134]
+	mi := &file_store_proto_msgTypes[135]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10490,7 +10560,7 @@ func (x *VersionResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionResult.ProtoReflect.Descriptor instead.
 func (*VersionResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{134}
+	return file_store_proto_rawDescGZIP(), []int{135}
 }
 
 func (x *VersionResult) GetError() *Error {
@@ -10521,7 +10591,7 @@ type UsersSetPasswordHashRequest struct {
 
 func (x *UsersSetPasswordHashRequest) Reset() {
 	*x = UsersSetPasswordHashRequest{}
-	mi := &file_store_proto_msgTypes[135]
+	mi := &file_store_proto_msgTypes[136]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10533,7 +10603,7 @@ func (x *UsersSetPasswordHashRequest) String() string {
 func (*UsersSetPasswordHashRequest) ProtoMessage() {}
 
 func (x *UsersSetPasswordHashRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[135]
+	mi := &file_store_proto_msgTypes[136]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10546,7 +10616,7 @@ func (x *UsersSetPasswordHashRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersSetPasswordHashRequest.ProtoReflect.Descriptor instead.
 func (*UsersSetPasswordHashRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{135}
+	return file_store_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *UsersSetPasswordHashRequest) GetTxId() string {
@@ -10601,7 +10671,7 @@ type SessionWrite struct {
 
 func (x *SessionWrite) Reset() {
 	*x = SessionWrite{}
-	mi := &file_store_proto_msgTypes[136]
+	mi := &file_store_proto_msgTypes[137]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10613,7 +10683,7 @@ func (x *SessionWrite) String() string {
 func (*SessionWrite) ProtoMessage() {}
 
 func (x *SessionWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[136]
+	mi := &file_store_proto_msgTypes[137]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10626,7 +10696,7 @@ func (x *SessionWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionWrite.ProtoReflect.Descriptor instead.
 func (*SessionWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{136}
+	return file_store_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *SessionWrite) GetTxId() string {
@@ -10653,7 +10723,7 @@ type SessionResult struct {
 
 func (x *SessionResult) Reset() {
 	*x = SessionResult{}
-	mi := &file_store_proto_msgTypes[137]
+	mi := &file_store_proto_msgTypes[138]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10665,7 +10735,7 @@ func (x *SessionResult) String() string {
 func (*SessionResult) ProtoMessage() {}
 
 func (x *SessionResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[137]
+	mi := &file_store_proto_msgTypes[138]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10678,7 +10748,7 @@ func (x *SessionResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionResult.ProtoReflect.Descriptor instead.
 func (*SessionResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{137}
+	return file_store_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *SessionResult) GetError() *Error {
@@ -10705,7 +10775,7 @@ type SessionList struct {
 
 func (x *SessionList) Reset() {
 	*x = SessionList{}
-	mi := &file_store_proto_msgTypes[138]
+	mi := &file_store_proto_msgTypes[139]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10717,7 +10787,7 @@ func (x *SessionList) String() string {
 func (*SessionList) ProtoMessage() {}
 
 func (x *SessionList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[138]
+	mi := &file_store_proto_msgTypes[139]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10730,7 +10800,7 @@ func (x *SessionList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionList.ProtoReflect.Descriptor instead.
 func (*SessionList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{138}
+	return file_store_proto_rawDescGZIP(), []int{139}
 }
 
 func (x *SessionList) GetError() *Error {
@@ -10759,7 +10829,7 @@ type SessionsAddClientRequest struct {
 
 func (x *SessionsAddClientRequest) Reset() {
 	*x = SessionsAddClientRequest{}
-	mi := &file_store_proto_msgTypes[139]
+	mi := &file_store_proto_msgTypes[140]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10771,7 +10841,7 @@ func (x *SessionsAddClientRequest) String() string {
 func (*SessionsAddClientRequest) ProtoMessage() {}
 
 func (x *SessionsAddClientRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[139]
+	mi := &file_store_proto_msgTypes[140]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10784,7 +10854,7 @@ func (x *SessionsAddClientRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionsAddClientRequest.ProtoReflect.Descriptor instead.
 func (*SessionsAddClientRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{139}
+	return file_store_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *SessionsAddClientRequest) GetTxId() string {
@@ -10825,7 +10895,7 @@ type AuthTransactionWrite struct {
 
 func (x *AuthTransactionWrite) Reset() {
 	*x = AuthTransactionWrite{}
-	mi := &file_store_proto_msgTypes[140]
+	mi := &file_store_proto_msgTypes[141]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10837,7 +10907,7 @@ func (x *AuthTransactionWrite) String() string {
 func (*AuthTransactionWrite) ProtoMessage() {}
 
 func (x *AuthTransactionWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[140]
+	mi := &file_store_proto_msgTypes[141]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10850,7 +10920,7 @@ func (x *AuthTransactionWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthTransactionWrite.ProtoReflect.Descriptor instead.
 func (*AuthTransactionWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{140}
+	return file_store_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *AuthTransactionWrite) GetTxId() string {
@@ -10877,7 +10947,7 @@ type AuthTransactionResult struct {
 
 func (x *AuthTransactionResult) Reset() {
 	*x = AuthTransactionResult{}
-	mi := &file_store_proto_msgTypes[141]
+	mi := &file_store_proto_msgTypes[142]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10889,7 +10959,7 @@ func (x *AuthTransactionResult) String() string {
 func (*AuthTransactionResult) ProtoMessage() {}
 
 func (x *AuthTransactionResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[141]
+	mi := &file_store_proto_msgTypes[142]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10902,7 +10972,7 @@ func (x *AuthTransactionResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthTransactionResult.ProtoReflect.Descriptor instead.
 func (*AuthTransactionResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{141}
+	return file_store_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *AuthTransactionResult) GetError() *Error {
@@ -10929,7 +10999,7 @@ type AuthCodeWrite struct {
 
 func (x *AuthCodeWrite) Reset() {
 	*x = AuthCodeWrite{}
-	mi := &file_store_proto_msgTypes[142]
+	mi := &file_store_proto_msgTypes[143]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10941,7 +11011,7 @@ func (x *AuthCodeWrite) String() string {
 func (*AuthCodeWrite) ProtoMessage() {}
 
 func (x *AuthCodeWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[142]
+	mi := &file_store_proto_msgTypes[143]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10954,7 +11024,7 @@ func (x *AuthCodeWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthCodeWrite.ProtoReflect.Descriptor instead.
 func (*AuthCodeWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{142}
+	return file_store_proto_rawDescGZIP(), []int{143}
 }
 
 func (x *AuthCodeWrite) GetTxId() string {
@@ -10981,7 +11051,7 @@ type AuthCodeResult struct {
 
 func (x *AuthCodeResult) Reset() {
 	*x = AuthCodeResult{}
-	mi := &file_store_proto_msgTypes[143]
+	mi := &file_store_proto_msgTypes[144]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10993,7 +11063,7 @@ func (x *AuthCodeResult) String() string {
 func (*AuthCodeResult) ProtoMessage() {}
 
 func (x *AuthCodeResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[143]
+	mi := &file_store_proto_msgTypes[144]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11006,7 +11076,7 @@ func (x *AuthCodeResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthCodeResult.ProtoReflect.Descriptor instead.
 func (*AuthCodeResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{143}
+	return file_store_proto_rawDescGZIP(), []int{144}
 }
 
 func (x *AuthCodeResult) GetError() *Error {
@@ -11033,7 +11103,7 @@ type PushedAuthRequestWrite struct {
 
 func (x *PushedAuthRequestWrite) Reset() {
 	*x = PushedAuthRequestWrite{}
-	mi := &file_store_proto_msgTypes[144]
+	mi := &file_store_proto_msgTypes[145]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11045,7 +11115,7 @@ func (x *PushedAuthRequestWrite) String() string {
 func (*PushedAuthRequestWrite) ProtoMessage() {}
 
 func (x *PushedAuthRequestWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[144]
+	mi := &file_store_proto_msgTypes[145]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11058,7 +11128,7 @@ func (x *PushedAuthRequestWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushedAuthRequestWrite.ProtoReflect.Descriptor instead.
 func (*PushedAuthRequestWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{144}
+	return file_store_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *PushedAuthRequestWrite) GetTxId() string {
@@ -11085,7 +11155,7 @@ type PushedAuthRequestResult struct {
 
 func (x *PushedAuthRequestResult) Reset() {
 	*x = PushedAuthRequestResult{}
-	mi := &file_store_proto_msgTypes[145]
+	mi := &file_store_proto_msgTypes[146]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11097,7 +11167,7 @@ func (x *PushedAuthRequestResult) String() string {
 func (*PushedAuthRequestResult) ProtoMessage() {}
 
 func (x *PushedAuthRequestResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[145]
+	mi := &file_store_proto_msgTypes[146]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11110,7 +11180,7 @@ func (x *PushedAuthRequestResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushedAuthRequestResult.ProtoReflect.Descriptor instead.
 func (*PushedAuthRequestResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{145}
+	return file_store_proto_rawDescGZIP(), []int{146}
 }
 
 func (x *PushedAuthRequestResult) GetError() *Error {
@@ -11137,7 +11207,7 @@ type DeviceCodeWrite struct {
 
 func (x *DeviceCodeWrite) Reset() {
 	*x = DeviceCodeWrite{}
-	mi := &file_store_proto_msgTypes[146]
+	mi := &file_store_proto_msgTypes[147]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11149,7 +11219,7 @@ func (x *DeviceCodeWrite) String() string {
 func (*DeviceCodeWrite) ProtoMessage() {}
 
 func (x *DeviceCodeWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[146]
+	mi := &file_store_proto_msgTypes[147]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11162,7 +11232,7 @@ func (x *DeviceCodeWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeviceCodeWrite.ProtoReflect.Descriptor instead.
 func (*DeviceCodeWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{146}
+	return file_store_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *DeviceCodeWrite) GetTxId() string {
@@ -11189,7 +11259,7 @@ type DeviceCodeResult struct {
 
 func (x *DeviceCodeResult) Reset() {
 	*x = DeviceCodeResult{}
-	mi := &file_store_proto_msgTypes[147]
+	mi := &file_store_proto_msgTypes[148]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11201,7 +11271,7 @@ func (x *DeviceCodeResult) String() string {
 func (*DeviceCodeResult) ProtoMessage() {}
 
 func (x *DeviceCodeResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[147]
+	mi := &file_store_proto_msgTypes[148]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11214,7 +11284,7 @@ func (x *DeviceCodeResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeviceCodeResult.ProtoReflect.Descriptor instead.
 func (*DeviceCodeResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{147}
+	return file_store_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *DeviceCodeResult) GetError() *Error {
@@ -11246,7 +11316,7 @@ type DeviceDecisionRequest struct {
 
 func (x *DeviceDecisionRequest) Reset() {
 	*x = DeviceDecisionRequest{}
-	mi := &file_store_proto_msgTypes[148]
+	mi := &file_store_proto_msgTypes[149]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11258,7 +11328,7 @@ func (x *DeviceDecisionRequest) String() string {
 func (*DeviceDecisionRequest) ProtoMessage() {}
 
 func (x *DeviceDecisionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[148]
+	mi := &file_store_proto_msgTypes[149]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11271,7 +11341,7 @@ func (x *DeviceDecisionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeviceDecisionRequest.ProtoReflect.Descriptor instead.
 func (*DeviceDecisionRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{148}
+	return file_store_proto_rawDescGZIP(), []int{149}
 }
 
 func (x *DeviceDecisionRequest) GetTxId() string {
@@ -11335,7 +11405,7 @@ type DevicePollRequest struct {
 
 func (x *DevicePollRequest) Reset() {
 	*x = DevicePollRequest{}
-	mi := &file_store_proto_msgTypes[149]
+	mi := &file_store_proto_msgTypes[150]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11347,7 +11417,7 @@ func (x *DevicePollRequest) String() string {
 func (*DevicePollRequest) ProtoMessage() {}
 
 func (x *DevicePollRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[149]
+	mi := &file_store_proto_msgTypes[150]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11360,7 +11430,7 @@ func (x *DevicePollRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevicePollRequest.ProtoReflect.Descriptor instead.
 func (*DevicePollRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{149}
+	return file_store_proto_rawDescGZIP(), []int{150}
 }
 
 func (x *DevicePollRequest) GetTxId() string {
@@ -11404,7 +11474,7 @@ type DevicePollResult struct {
 
 func (x *DevicePollResult) Reset() {
 	*x = DevicePollResult{}
-	mi := &file_store_proto_msgTypes[150]
+	mi := &file_store_proto_msgTypes[151]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11416,7 +11486,7 @@ func (x *DevicePollResult) String() string {
 func (*DevicePollResult) ProtoMessage() {}
 
 func (x *DevicePollResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[150]
+	mi := &file_store_proto_msgTypes[151]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11429,7 +11499,7 @@ func (x *DevicePollResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevicePollResult.ProtoReflect.Descriptor instead.
 func (*DevicePollResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{150}
+	return file_store_proto_rawDescGZIP(), []int{151}
 }
 
 func (x *DevicePollResult) GetError() *Error {
@@ -11463,7 +11533,7 @@ type RefreshTokenWrite struct {
 
 func (x *RefreshTokenWrite) Reset() {
 	*x = RefreshTokenWrite{}
-	mi := &file_store_proto_msgTypes[151]
+	mi := &file_store_proto_msgTypes[152]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11475,7 +11545,7 @@ func (x *RefreshTokenWrite) String() string {
 func (*RefreshTokenWrite) ProtoMessage() {}
 
 func (x *RefreshTokenWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[151]
+	mi := &file_store_proto_msgTypes[152]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11488,7 +11558,7 @@ func (x *RefreshTokenWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshTokenWrite.ProtoReflect.Descriptor instead.
 func (*RefreshTokenWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{151}
+	return file_store_proto_rawDescGZIP(), []int{152}
 }
 
 func (x *RefreshTokenWrite) GetTxId() string {
@@ -11515,7 +11585,7 @@ type RefreshTokenResult struct {
 
 func (x *RefreshTokenResult) Reset() {
 	*x = RefreshTokenResult{}
-	mi := &file_store_proto_msgTypes[152]
+	mi := &file_store_proto_msgTypes[153]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11527,7 +11597,7 @@ func (x *RefreshTokenResult) String() string {
 func (*RefreshTokenResult) ProtoMessage() {}
 
 func (x *RefreshTokenResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[152]
+	mi := &file_store_proto_msgTypes[153]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11540,7 +11610,7 @@ func (x *RefreshTokenResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshTokenResult.ProtoReflect.Descriptor instead.
 func (*RefreshTokenResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{152}
+	return file_store_proto_rawDescGZIP(), []int{153}
 }
 
 func (x *RefreshTokenResult) GetError() *Error {
@@ -11567,7 +11637,7 @@ type RefreshTokenList struct {
 
 func (x *RefreshTokenList) Reset() {
 	*x = RefreshTokenList{}
-	mi := &file_store_proto_msgTypes[153]
+	mi := &file_store_proto_msgTypes[154]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11579,7 +11649,7 @@ func (x *RefreshTokenList) String() string {
 func (*RefreshTokenList) ProtoMessage() {}
 
 func (x *RefreshTokenList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[153]
+	mi := &file_store_proto_msgTypes[154]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11592,7 +11662,7 @@ func (x *RefreshTokenList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshTokenList.ProtoReflect.Descriptor instead.
 func (*RefreshTokenList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{153}
+	return file_store_proto_rawDescGZIP(), []int{154}
 }
 
 func (x *RefreshTokenList) GetError() *Error {
@@ -11623,7 +11693,7 @@ type RefreshTokensRotateRequest struct {
 
 func (x *RefreshTokensRotateRequest) Reset() {
 	*x = RefreshTokensRotateRequest{}
-	mi := &file_store_proto_msgTypes[154]
+	mi := &file_store_proto_msgTypes[155]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11635,7 +11705,7 @@ func (x *RefreshTokensRotateRequest) String() string {
 func (*RefreshTokensRotateRequest) ProtoMessage() {}
 
 func (x *RefreshTokensRotateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[154]
+	mi := &file_store_proto_msgTypes[155]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11648,7 +11718,7 @@ func (x *RefreshTokensRotateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshTokensRotateRequest.ProtoReflect.Descriptor instead.
 func (*RefreshTokensRotateRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{154}
+	return file_store_proto_rawDescGZIP(), []int{155}
 }
 
 func (x *RefreshTokensRotateRequest) GetTxId() string {
@@ -11706,7 +11776,7 @@ type PasswordResetTicketChallengeRequest struct {
 
 func (x *PasswordResetTicketChallengeRequest) Reset() {
 	*x = PasswordResetTicketChallengeRequest{}
-	mi := &file_store_proto_msgTypes[155]
+	mi := &file_store_proto_msgTypes[156]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11718,7 +11788,7 @@ func (x *PasswordResetTicketChallengeRequest) String() string {
 func (*PasswordResetTicketChallengeRequest) ProtoMessage() {}
 
 func (x *PasswordResetTicketChallengeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[155]
+	mi := &file_store_proto_msgTypes[156]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11731,7 +11801,7 @@ func (x *PasswordResetTicketChallengeRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use PasswordResetTicketChallengeRequest.ProtoReflect.Descriptor instead.
 func (*PasswordResetTicketChallengeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{155}
+	return file_store_proto_rawDescGZIP(), []int{156}
 }
 
 func (x *PasswordResetTicketChallengeRequest) GetTxId() string {
@@ -11779,7 +11849,7 @@ type PasswordResetTicketWrite struct {
 
 func (x *PasswordResetTicketWrite) Reset() {
 	*x = PasswordResetTicketWrite{}
-	mi := &file_store_proto_msgTypes[156]
+	mi := &file_store_proto_msgTypes[157]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11791,7 +11861,7 @@ func (x *PasswordResetTicketWrite) String() string {
 func (*PasswordResetTicketWrite) ProtoMessage() {}
 
 func (x *PasswordResetTicketWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[156]
+	mi := &file_store_proto_msgTypes[157]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11804,7 +11874,7 @@ func (x *PasswordResetTicketWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordResetTicketWrite.ProtoReflect.Descriptor instead.
 func (*PasswordResetTicketWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{156}
+	return file_store_proto_rawDescGZIP(), []int{157}
 }
 
 func (x *PasswordResetTicketWrite) GetTxId() string {
@@ -11831,7 +11901,7 @@ type PasswordResetTicketResult struct {
 
 func (x *PasswordResetTicketResult) Reset() {
 	*x = PasswordResetTicketResult{}
-	mi := &file_store_proto_msgTypes[157]
+	mi := &file_store_proto_msgTypes[158]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11843,7 +11913,7 @@ func (x *PasswordResetTicketResult) String() string {
 func (*PasswordResetTicketResult) ProtoMessage() {}
 
 func (x *PasswordResetTicketResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[157]
+	mi := &file_store_proto_msgTypes[158]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11856,7 +11926,7 @@ func (x *PasswordResetTicketResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordResetTicketResult.ProtoReflect.Descriptor instead.
 func (*PasswordResetTicketResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{157}
+	return file_store_proto_rawDescGZIP(), []int{158}
 }
 
 func (x *PasswordResetTicketResult) GetError() *Error {
@@ -11883,7 +11953,7 @@ type EmailVerificationTicketWrite struct {
 
 func (x *EmailVerificationTicketWrite) Reset() {
 	*x = EmailVerificationTicketWrite{}
-	mi := &file_store_proto_msgTypes[158]
+	mi := &file_store_proto_msgTypes[159]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11895,7 +11965,7 @@ func (x *EmailVerificationTicketWrite) String() string {
 func (*EmailVerificationTicketWrite) ProtoMessage() {}
 
 func (x *EmailVerificationTicketWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[158]
+	mi := &file_store_proto_msgTypes[159]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11908,7 +11978,7 @@ func (x *EmailVerificationTicketWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailVerificationTicketWrite.ProtoReflect.Descriptor instead.
 func (*EmailVerificationTicketWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{158}
+	return file_store_proto_rawDescGZIP(), []int{159}
 }
 
 func (x *EmailVerificationTicketWrite) GetTxId() string {
@@ -11935,7 +12005,7 @@ type EmailVerificationTicketResult struct {
 
 func (x *EmailVerificationTicketResult) Reset() {
 	*x = EmailVerificationTicketResult{}
-	mi := &file_store_proto_msgTypes[159]
+	mi := &file_store_proto_msgTypes[160]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11947,7 +12017,7 @@ func (x *EmailVerificationTicketResult) String() string {
 func (*EmailVerificationTicketResult) ProtoMessage() {}
 
 func (x *EmailVerificationTicketResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[159]
+	mi := &file_store_proto_msgTypes[160]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11960,7 +12030,7 @@ func (x *EmailVerificationTicketResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailVerificationTicketResult.ProtoReflect.Descriptor instead.
 func (*EmailVerificationTicketResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{159}
+	return file_store_proto_rawDescGZIP(), []int{160}
 }
 
 func (x *EmailVerificationTicketResult) GetError() *Error {
@@ -11987,7 +12057,7 @@ type OperatorWrite struct {
 
 func (x *OperatorWrite) Reset() {
 	*x = OperatorWrite{}
-	mi := &file_store_proto_msgTypes[160]
+	mi := &file_store_proto_msgTypes[161]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11999,7 +12069,7 @@ func (x *OperatorWrite) String() string {
 func (*OperatorWrite) ProtoMessage() {}
 
 func (x *OperatorWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[160]
+	mi := &file_store_proto_msgTypes[161]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12012,7 +12082,7 @@ func (x *OperatorWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OperatorWrite.ProtoReflect.Descriptor instead.
 func (*OperatorWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{160}
+	return file_store_proto_rawDescGZIP(), []int{161}
 }
 
 func (x *OperatorWrite) GetTxId() string {
@@ -12039,7 +12109,7 @@ type OperatorResult struct {
 
 func (x *OperatorResult) Reset() {
 	*x = OperatorResult{}
-	mi := &file_store_proto_msgTypes[161]
+	mi := &file_store_proto_msgTypes[162]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12051,7 +12121,7 @@ func (x *OperatorResult) String() string {
 func (*OperatorResult) ProtoMessage() {}
 
 func (x *OperatorResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[161]
+	mi := &file_store_proto_msgTypes[162]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12064,7 +12134,7 @@ func (x *OperatorResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OperatorResult.ProtoReflect.Descriptor instead.
 func (*OperatorResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{161}
+	return file_store_proto_rawDescGZIP(), []int{162}
 }
 
 func (x *OperatorResult) GetError() *Error {
@@ -12091,7 +12161,7 @@ type OperatorList struct {
 
 func (x *OperatorList) Reset() {
 	*x = OperatorList{}
-	mi := &file_store_proto_msgTypes[162]
+	mi := &file_store_proto_msgTypes[163]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12103,7 +12173,7 @@ func (x *OperatorList) String() string {
 func (*OperatorList) ProtoMessage() {}
 
 func (x *OperatorList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[162]
+	mi := &file_store_proto_msgTypes[163]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12116,7 +12186,7 @@ func (x *OperatorList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OperatorList.ProtoReflect.Descriptor instead.
 func (*OperatorList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{162}
+	return file_store_proto_rawDescGZIP(), []int{163}
 }
 
 func (x *OperatorList) GetError() *Error {
@@ -12148,7 +12218,7 @@ type UsersUpgradeImportedHashRequest struct {
 
 func (x *UsersUpgradeImportedHashRequest) Reset() {
 	*x = UsersUpgradeImportedHashRequest{}
-	mi := &file_store_proto_msgTypes[163]
+	mi := &file_store_proto_msgTypes[164]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12160,7 +12230,7 @@ func (x *UsersUpgradeImportedHashRequest) String() string {
 func (*UsersUpgradeImportedHashRequest) ProtoMessage() {}
 
 func (x *UsersUpgradeImportedHashRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[163]
+	mi := &file_store_proto_msgTypes[164]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12173,7 +12243,7 @@ func (x *UsersUpgradeImportedHashRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UsersUpgradeImportedHashRequest.ProtoReflect.Descriptor instead.
 func (*UsersUpgradeImportedHashRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{163}
+	return file_store_proto_rawDescGZIP(), []int{164}
 }
 
 func (x *UsersUpgradeImportedHashRequest) GetTxId() string {
@@ -12235,7 +12305,7 @@ type JobWrite struct {
 
 func (x *JobWrite) Reset() {
 	*x = JobWrite{}
-	mi := &file_store_proto_msgTypes[164]
+	mi := &file_store_proto_msgTypes[165]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12247,7 +12317,7 @@ func (x *JobWrite) String() string {
 func (*JobWrite) ProtoMessage() {}
 
 func (x *JobWrite) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[164]
+	mi := &file_store_proto_msgTypes[165]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12260,7 +12330,7 @@ func (x *JobWrite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobWrite.ProtoReflect.Descriptor instead.
 func (*JobWrite) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{164}
+	return file_store_proto_rawDescGZIP(), []int{165}
 }
 
 func (x *JobWrite) GetTxId() string {
@@ -12287,7 +12357,7 @@ type JobResult struct {
 
 func (x *JobResult) Reset() {
 	*x = JobResult{}
-	mi := &file_store_proto_msgTypes[165]
+	mi := &file_store_proto_msgTypes[166]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12299,7 +12369,7 @@ func (x *JobResult) String() string {
 func (*JobResult) ProtoMessage() {}
 
 func (x *JobResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[165]
+	mi := &file_store_proto_msgTypes[166]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12312,7 +12382,7 @@ func (x *JobResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobResult.ProtoReflect.Descriptor instead.
 func (*JobResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{165}
+	return file_store_proto_rawDescGZIP(), []int{166}
 }
 
 func (x *JobResult) GetError() *Error {
@@ -12340,7 +12410,7 @@ type JobPage struct {
 
 func (x *JobPage) Reset() {
 	*x = JobPage{}
-	mi := &file_store_proto_msgTypes[166]
+	mi := &file_store_proto_msgTypes[167]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12352,7 +12422,7 @@ func (x *JobPage) String() string {
 func (*JobPage) ProtoMessage() {}
 
 func (x *JobPage) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[166]
+	mi := &file_store_proto_msgTypes[167]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12365,7 +12435,7 @@ func (x *JobPage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobPage.ProtoReflect.Descriptor instead.
 func (*JobPage) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{166}
+	return file_store_proto_rawDescGZIP(), []int{167}
 }
 
 func (x *JobPage) GetError() *Error {
@@ -12401,7 +12471,7 @@ type JobsListRequest struct {
 
 func (x *JobsListRequest) Reset() {
 	*x = JobsListRequest{}
-	mi := &file_store_proto_msgTypes[167]
+	mi := &file_store_proto_msgTypes[168]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12413,7 +12483,7 @@ func (x *JobsListRequest) String() string {
 func (*JobsListRequest) ProtoMessage() {}
 
 func (x *JobsListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[167]
+	mi := &file_store_proto_msgTypes[168]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12426,7 +12496,7 @@ func (x *JobsListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobsListRequest.ProtoReflect.Descriptor instead.
 func (*JobsListRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{167}
+	return file_store_proto_rawDescGZIP(), []int{168}
 }
 
 func (x *JobsListRequest) GetTxId() string {
@@ -12468,7 +12538,7 @@ type JobsCountActiveRequest struct {
 
 func (x *JobsCountActiveRequest) Reset() {
 	*x = JobsCountActiveRequest{}
-	mi := &file_store_proto_msgTypes[168]
+	mi := &file_store_proto_msgTypes[169]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12480,7 +12550,7 @@ func (x *JobsCountActiveRequest) String() string {
 func (*JobsCountActiveRequest) ProtoMessage() {}
 
 func (x *JobsCountActiveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[168]
+	mi := &file_store_proto_msgTypes[169]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12493,7 +12563,7 @@ func (x *JobsCountActiveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobsCountActiveRequest.ProtoReflect.Descriptor instead.
 func (*JobsCountActiveRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{168}
+	return file_store_proto_rawDescGZIP(), []int{169}
 }
 
 func (x *JobsCountActiveRequest) GetTxId() string {
@@ -12529,7 +12599,7 @@ type JobsClaimRequest struct {
 
 func (x *JobsClaimRequest) Reset() {
 	*x = JobsClaimRequest{}
-	mi := &file_store_proto_msgTypes[169]
+	mi := &file_store_proto_msgTypes[170]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12541,7 +12611,7 @@ func (x *JobsClaimRequest) String() string {
 func (*JobsClaimRequest) ProtoMessage() {}
 
 func (x *JobsClaimRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[169]
+	mi := &file_store_proto_msgTypes[170]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12554,7 +12624,7 @@ func (x *JobsClaimRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobsClaimRequest.ProtoReflect.Descriptor instead.
 func (*JobsClaimRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{169}
+	return file_store_proto_rawDescGZIP(), []int{170}
 }
 
 func (x *JobsClaimRequest) GetTxId() string {
@@ -12598,7 +12668,7 @@ type JobsRenewRequest struct {
 
 func (x *JobsRenewRequest) Reset() {
 	*x = JobsRenewRequest{}
-	mi := &file_store_proto_msgTypes[170]
+	mi := &file_store_proto_msgTypes[171]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12610,7 +12680,7 @@ func (x *JobsRenewRequest) String() string {
 func (*JobsRenewRequest) ProtoMessage() {}
 
 func (x *JobsRenewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[170]
+	mi := &file_store_proto_msgTypes[171]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12623,7 +12693,7 @@ func (x *JobsRenewRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobsRenewRequest.ProtoReflect.Descriptor instead.
 func (*JobsRenewRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{170}
+	return file_store_proto_rawDescGZIP(), []int{171}
 }
 
 func (x *JobsRenewRequest) GetTxId() string {
@@ -12676,7 +12746,7 @@ type JobsCheckpointRequest struct {
 
 func (x *JobsCheckpointRequest) Reset() {
 	*x = JobsCheckpointRequest{}
-	mi := &file_store_proto_msgTypes[171]
+	mi := &file_store_proto_msgTypes[172]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12688,7 +12758,7 @@ func (x *JobsCheckpointRequest) String() string {
 func (*JobsCheckpointRequest) ProtoMessage() {}
 
 func (x *JobsCheckpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[171]
+	mi := &file_store_proto_msgTypes[172]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12701,7 +12771,7 @@ func (x *JobsCheckpointRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobsCheckpointRequest.ProtoReflect.Descriptor instead.
 func (*JobsCheckpointRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{171}
+	return file_store_proto_rawDescGZIP(), []int{172}
 }
 
 func (x *JobsCheckpointRequest) GetTxId() string {
@@ -12768,7 +12838,7 @@ type JobsFinishRequest struct {
 
 func (x *JobsFinishRequest) Reset() {
 	*x = JobsFinishRequest{}
-	mi := &file_store_proto_msgTypes[172]
+	mi := &file_store_proto_msgTypes[173]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12780,7 +12850,7 @@ func (x *JobsFinishRequest) String() string {
 func (*JobsFinishRequest) ProtoMessage() {}
 
 func (x *JobsFinishRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[172]
+	mi := &file_store_proto_msgTypes[173]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12793,7 +12863,7 @@ func (x *JobsFinishRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobsFinishRequest.ProtoReflect.Descriptor instead.
 func (*JobsFinishRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{172}
+	return file_store_proto_rawDescGZIP(), []int{173}
 }
 
 func (x *JobsFinishRequest) GetTxId() string {
@@ -12855,7 +12925,7 @@ type JobErrorList struct {
 
 func (x *JobErrorList) Reset() {
 	*x = JobErrorList{}
-	mi := &file_store_proto_msgTypes[173]
+	mi := &file_store_proto_msgTypes[174]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12867,7 +12937,7 @@ func (x *JobErrorList) String() string {
 func (*JobErrorList) ProtoMessage() {}
 
 func (x *JobErrorList) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[173]
+	mi := &file_store_proto_msgTypes[174]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12880,7 +12950,7 @@ func (x *JobErrorList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobErrorList.ProtoReflect.Descriptor instead.
 func (*JobErrorList) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{173}
+	return file_store_proto_rawDescGZIP(), []int{174}
 }
 
 func (x *JobErrorList) GetError() *Error {
@@ -12911,7 +12981,7 @@ type JobsAppendFileRequest struct {
 
 func (x *JobsAppendFileRequest) Reset() {
 	*x = JobsAppendFileRequest{}
-	mi := &file_store_proto_msgTypes[174]
+	mi := &file_store_proto_msgTypes[175]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12923,7 +12993,7 @@ func (x *JobsAppendFileRequest) String() string {
 func (*JobsAppendFileRequest) ProtoMessage() {}
 
 func (x *JobsAppendFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[174]
+	mi := &file_store_proto_msgTypes[175]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12936,7 +13006,7 @@ func (x *JobsAppendFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobsAppendFileRequest.ProtoReflect.Descriptor instead.
 func (*JobsAppendFileRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{174}
+	return file_store_proto_rawDescGZIP(), []int{175}
 }
 
 func (x *JobsAppendFileRequest) GetTxId() string {
@@ -12991,7 +13061,7 @@ type JobFileChunk struct {
 
 func (x *JobFileChunk) Reset() {
 	*x = JobFileChunk{}
-	mi := &file_store_proto_msgTypes[175]
+	mi := &file_store_proto_msgTypes[176]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13003,7 +13073,7 @@ func (x *JobFileChunk) String() string {
 func (*JobFileChunk) ProtoMessage() {}
 
 func (x *JobFileChunk) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[175]
+	mi := &file_store_proto_msgTypes[176]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13016,7 +13086,7 @@ func (x *JobFileChunk) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobFileChunk.ProtoReflect.Descriptor instead.
 func (*JobFileChunk) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{175}
+	return file_store_proto_rawDescGZIP(), []int{176}
 }
 
 func (x *JobFileChunk) GetError() *Error {
@@ -13047,7 +13117,7 @@ type ProtectionKey struct {
 
 func (x *ProtectionKey) Reset() {
 	*x = ProtectionKey{}
-	mi := &file_store_proto_msgTypes[176]
+	mi := &file_store_proto_msgTypes[177]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13059,7 +13129,7 @@ func (x *ProtectionKey) String() string {
 func (*ProtectionKey) ProtoMessage() {}
 
 func (x *ProtectionKey) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[176]
+	mi := &file_store_proto_msgTypes[177]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13072,7 +13142,7 @@ func (x *ProtectionKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProtectionKey.ProtoReflect.Descriptor instead.
 func (*ProtectionKey) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{176}
+	return file_store_proto_rawDescGZIP(), []int{177}
 }
 
 func (x *ProtectionKey) GetTenantId() string {
@@ -13124,7 +13194,7 @@ type ProtectionLimit struct {
 
 func (x *ProtectionLimit) Reset() {
 	*x = ProtectionLimit{}
-	mi := &file_store_proto_msgTypes[177]
+	mi := &file_store_proto_msgTypes[178]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13136,7 +13206,7 @@ func (x *ProtectionLimit) String() string {
 func (*ProtectionLimit) ProtoMessage() {}
 
 func (x *ProtectionLimit) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[177]
+	mi := &file_store_proto_msgTypes[178]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13149,7 +13219,7 @@ func (x *ProtectionLimit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProtectionLimit.ProtoReflect.Descriptor instead.
 func (*ProtectionLimit) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{177}
+	return file_store_proto_rawDescGZIP(), []int{178}
 }
 
 func (x *ProtectionLimit) GetKey() *ProtectionKey {
@@ -13204,7 +13274,7 @@ type ProtectionBlock struct {
 
 func (x *ProtectionBlock) Reset() {
 	*x = ProtectionBlock{}
-	mi := &file_store_proto_msgTypes[178]
+	mi := &file_store_proto_msgTypes[179]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13216,7 +13286,7 @@ func (x *ProtectionBlock) String() string {
 func (*ProtectionBlock) ProtoMessage() {}
 
 func (x *ProtectionBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[178]
+	mi := &file_store_proto_msgTypes[179]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13229,7 +13299,7 @@ func (x *ProtectionBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProtectionBlock.ProtoReflect.Descriptor instead.
 func (*ProtectionBlock) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{178}
+	return file_store_proto_rawDescGZIP(), []int{179}
 }
 
 func (x *ProtectionBlock) GetKey() *ProtectionKey {
@@ -13266,7 +13336,7 @@ type ProtectionRequest struct {
 
 func (x *ProtectionRequest) Reset() {
 	*x = ProtectionRequest{}
-	mi := &file_store_proto_msgTypes[179]
+	mi := &file_store_proto_msgTypes[180]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13278,7 +13348,7 @@ func (x *ProtectionRequest) String() string {
 func (*ProtectionRequest) ProtoMessage() {}
 
 func (x *ProtectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[179]
+	mi := &file_store_proto_msgTypes[180]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13291,7 +13361,7 @@ func (x *ProtectionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProtectionRequest.ProtoReflect.Descriptor instead.
 func (*ProtectionRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{179}
+	return file_store_proto_rawDescGZIP(), []int{180}
 }
 
 func (x *ProtectionRequest) GetTxId() string {
@@ -13396,7 +13466,7 @@ type ProtectionResult struct {
 
 func (x *ProtectionResult) Reset() {
 	*x = ProtectionResult{}
-	mi := &file_store_proto_msgTypes[180]
+	mi := &file_store_proto_msgTypes[181]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13408,7 +13478,7 @@ func (x *ProtectionResult) String() string {
 func (*ProtectionResult) ProtoMessage() {}
 
 func (x *ProtectionResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[180]
+	mi := &file_store_proto_msgTypes[181]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13421,7 +13491,7 @@ func (x *ProtectionResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProtectionResult.ProtoReflect.Descriptor instead.
 func (*ProtectionResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{180}
+	return file_store_proto_rawDescGZIP(), []int{181}
 }
 
 func (x *ProtectionResult) GetError() *Error {
@@ -13529,7 +13599,7 @@ type CustomDomain struct {
 
 func (x *CustomDomain) Reset() {
 	*x = CustomDomain{}
-	mi := &file_store_proto_msgTypes[181]
+	mi := &file_store_proto_msgTypes[182]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13541,7 +13611,7 @@ func (x *CustomDomain) String() string {
 func (*CustomDomain) ProtoMessage() {}
 
 func (x *CustomDomain) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[181]
+	mi := &file_store_proto_msgTypes[182]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13554,7 +13624,7 @@ func (x *CustomDomain) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomDomain.ProtoReflect.Descriptor instead.
 func (*CustomDomain) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{181}
+	return file_store_proto_rawDescGZIP(), []int{182}
 }
 
 func (x *CustomDomain) GetTenantId() string {
@@ -13788,7 +13858,7 @@ type HostBinding struct {
 
 func (x *HostBinding) Reset() {
 	*x = HostBinding{}
-	mi := &file_store_proto_msgTypes[182]
+	mi := &file_store_proto_msgTypes[183]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13800,7 +13870,7 @@ func (x *HostBinding) String() string {
 func (*HostBinding) ProtoMessage() {}
 
 func (x *HostBinding) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[182]
+	mi := &file_store_proto_msgTypes[183]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13813,7 +13883,7 @@ func (x *HostBinding) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HostBinding.ProtoReflect.Descriptor instead.
 func (*HostBinding) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{182}
+	return file_store_proto_rawDescGZIP(), []int{183}
 }
 
 func (x *HostBinding) GetHost() string {
@@ -13882,7 +13952,7 @@ type TLSPublicData struct {
 
 func (x *TLSPublicData) Reset() {
 	*x = TLSPublicData{}
-	mi := &file_store_proto_msgTypes[183]
+	mi := &file_store_proto_msgTypes[184]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13894,7 +13964,7 @@ func (x *TLSPublicData) String() string {
 func (*TLSPublicData) ProtoMessage() {}
 
 func (x *TLSPublicData) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[183]
+	mi := &file_store_proto_msgTypes[184]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13907,7 +13977,7 @@ func (x *TLSPublicData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TLSPublicData.ProtoReflect.Descriptor instead.
 func (*TLSPublicData) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{183}
+	return file_store_proto_rawDescGZIP(), []int{184}
 }
 
 func (x *TLSPublicData) GetVersion() int64 {
@@ -14039,7 +14109,7 @@ type TLSAsset struct {
 
 func (x *TLSAsset) Reset() {
 	*x = TLSAsset{}
-	mi := &file_store_proto_msgTypes[184]
+	mi := &file_store_proto_msgTypes[185]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14051,7 +14121,7 @@ func (x *TLSAsset) String() string {
 func (*TLSAsset) ProtoMessage() {}
 
 func (x *TLSAsset) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[184]
+	mi := &file_store_proto_msgTypes[185]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14064,7 +14134,7 @@ func (x *TLSAsset) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TLSAsset.ProtoReflect.Descriptor instead.
 func (*TLSAsset) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{184}
+	return file_store_proto_rawDescGZIP(), []int{185}
 }
 
 func (x *TLSAsset) GetKey() string {
@@ -14142,7 +14212,7 @@ type TLSLease struct {
 
 func (x *TLSLease) Reset() {
 	*x = TLSLease{}
-	mi := &file_store_proto_msgTypes[185]
+	mi := &file_store_proto_msgTypes[186]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14154,7 +14224,7 @@ func (x *TLSLease) String() string {
 func (*TLSLease) ProtoMessage() {}
 
 func (x *TLSLease) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[185]
+	mi := &file_store_proto_msgTypes[186]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14167,7 +14237,7 @@ func (x *TLSLease) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TLSLease.ProtoReflect.Descriptor instead.
 func (*TLSLease) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{185}
+	return file_store_proto_rawDescGZIP(), []int{186}
 }
 
 func (x *TLSLease) GetKey() string {
@@ -14209,7 +14279,7 @@ type CustomDomainCapabilitiesRequest struct {
 
 func (x *CustomDomainCapabilitiesRequest) Reset() {
 	*x = CustomDomainCapabilitiesRequest{}
-	mi := &file_store_proto_msgTypes[186]
+	mi := &file_store_proto_msgTypes[187]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14221,7 +14291,7 @@ func (x *CustomDomainCapabilitiesRequest) String() string {
 func (*CustomDomainCapabilitiesRequest) ProtoMessage() {}
 
 func (x *CustomDomainCapabilitiesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[186]
+	mi := &file_store_proto_msgTypes[187]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14234,7 +14304,7 @@ func (x *CustomDomainCapabilitiesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomDomainCapabilitiesRequest.ProtoReflect.Descriptor instead.
 func (*CustomDomainCapabilitiesRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{186}
+	return file_store_proto_rawDescGZIP(), []int{187}
 }
 
 func (x *CustomDomainCapabilitiesRequest) GetTxId() string {
@@ -14261,7 +14331,7 @@ type CustomDomainRequest struct {
 
 func (x *CustomDomainRequest) Reset() {
 	*x = CustomDomainRequest{}
-	mi := &file_store_proto_msgTypes[187]
+	mi := &file_store_proto_msgTypes[188]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14273,7 +14343,7 @@ func (x *CustomDomainRequest) String() string {
 func (*CustomDomainRequest) ProtoMessage() {}
 
 func (x *CustomDomainRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[187]
+	mi := &file_store_proto_msgTypes[188]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14286,7 +14356,7 @@ func (x *CustomDomainRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomDomainRequest.ProtoReflect.Descriptor instead.
 func (*CustomDomainRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{187}
+	return file_store_proto_rawDescGZIP(), []int{188}
 }
 
 func (x *CustomDomainRequest) GetTxId() string {
@@ -14366,7 +14436,7 @@ type CustomDomainResult struct {
 
 func (x *CustomDomainResult) Reset() {
 	*x = CustomDomainResult{}
-	mi := &file_store_proto_msgTypes[188]
+	mi := &file_store_proto_msgTypes[189]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14378,7 +14448,7 @@ func (x *CustomDomainResult) String() string {
 func (*CustomDomainResult) ProtoMessage() {}
 
 func (x *CustomDomainResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[188]
+	mi := &file_store_proto_msgTypes[189]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14391,7 +14461,7 @@ func (x *CustomDomainResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomDomainResult.ProtoReflect.Descriptor instead.
 func (*CustomDomainResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{188}
+	return file_store_proto_rawDescGZIP(), []int{189}
 }
 
 func (x *CustomDomainResult) GetError() *Error {
@@ -14452,7 +14522,7 @@ type TLSAssetRequest struct {
 
 func (x *TLSAssetRequest) Reset() {
 	*x = TLSAssetRequest{}
-	mi := &file_store_proto_msgTypes[189]
+	mi := &file_store_proto_msgTypes[190]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14464,7 +14534,7 @@ func (x *TLSAssetRequest) String() string {
 func (*TLSAssetRequest) ProtoMessage() {}
 
 func (x *TLSAssetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[189]
+	mi := &file_store_proto_msgTypes[190]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14477,7 +14547,7 @@ func (x *TLSAssetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TLSAssetRequest.ProtoReflect.Descriptor instead.
 func (*TLSAssetRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{189}
+	return file_store_proto_rawDescGZIP(), []int{190}
 }
 
 func (x *TLSAssetRequest) GetTxId() string {
@@ -14548,7 +14618,7 @@ type TLSAssetResult struct {
 
 func (x *TLSAssetResult) Reset() {
 	*x = TLSAssetResult{}
-	mi := &file_store_proto_msgTypes[190]
+	mi := &file_store_proto_msgTypes[191]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14560,7 +14630,7 @@ func (x *TLSAssetResult) String() string {
 func (*TLSAssetResult) ProtoMessage() {}
 
 func (x *TLSAssetResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[190]
+	mi := &file_store_proto_msgTypes[191]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14573,7 +14643,7 @@ func (x *TLSAssetResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TLSAssetResult.ProtoReflect.Descriptor instead.
 func (*TLSAssetResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{190}
+	return file_store_proto_rawDescGZIP(), []int{191}
 }
 
 func (x *TLSAssetResult) GetError() *Error {
@@ -14613,7 +14683,7 @@ type MicrosoftFederationCapabilitiesRequest struct {
 
 func (x *MicrosoftFederationCapabilitiesRequest) Reset() {
 	*x = MicrosoftFederationCapabilitiesRequest{}
-	mi := &file_store_proto_msgTypes[191]
+	mi := &file_store_proto_msgTypes[192]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14625,7 +14695,7 @@ func (x *MicrosoftFederationCapabilitiesRequest) String() string {
 func (*MicrosoftFederationCapabilitiesRequest) ProtoMessage() {}
 
 func (x *MicrosoftFederationCapabilitiesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[191]
+	mi := &file_store_proto_msgTypes[192]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14638,7 +14708,7 @@ func (x *MicrosoftFederationCapabilitiesRequest) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use MicrosoftFederationCapabilitiesRequest.ProtoReflect.Descriptor instead.
 func (*MicrosoftFederationCapabilitiesRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{191}
+	return file_store_proto_rawDescGZIP(), []int{192}
 }
 
 func (x *MicrosoftFederationCapabilitiesRequest) GetTxId() string {
@@ -14661,7 +14731,7 @@ type RBACRole struct {
 
 func (x *RBACRole) Reset() {
 	*x = RBACRole{}
-	mi := &file_store_proto_msgTypes[192]
+	mi := &file_store_proto_msgTypes[193]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14673,7 +14743,7 @@ func (x *RBACRole) String() string {
 func (*RBACRole) ProtoMessage() {}
 
 func (x *RBACRole) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[192]
+	mi := &file_store_proto_msgTypes[193]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14686,7 +14756,7 @@ func (x *RBACRole) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACRole.ProtoReflect.Descriptor instead.
 func (*RBACRole) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{192}
+	return file_store_proto_rawDescGZIP(), []int{193}
 }
 
 func (x *RBACRole) GetTenantId() string {
@@ -14727,7 +14797,7 @@ type RBACPermissionKey struct {
 
 func (x *RBACPermissionKey) Reset() {
 	*x = RBACPermissionKey{}
-	mi := &file_store_proto_msgTypes[193]
+	mi := &file_store_proto_msgTypes[194]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14739,7 +14809,7 @@ func (x *RBACPermissionKey) String() string {
 func (*RBACPermissionKey) ProtoMessage() {}
 
 func (x *RBACPermissionKey) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[193]
+	mi := &file_store_proto_msgTypes[194]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14752,7 +14822,7 @@ func (x *RBACPermissionKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACPermissionKey.ProtoReflect.Descriptor instead.
 func (*RBACPermissionKey) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{193}
+	return file_store_proto_rawDescGZIP(), []int{194}
 }
 
 func (x *RBACPermissionKey) GetResourceServerIdentifier() string {
@@ -14780,7 +14850,7 @@ type RBACSource struct {
 
 func (x *RBACSource) Reset() {
 	*x = RBACSource{}
-	mi := &file_store_proto_msgTypes[194]
+	mi := &file_store_proto_msgTypes[195]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14792,7 +14862,7 @@ func (x *RBACSource) String() string {
 func (*RBACSource) ProtoMessage() {}
 
 func (x *RBACSource) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[194]
+	mi := &file_store_proto_msgTypes[195]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14805,7 +14875,7 @@ func (x *RBACSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACSource.ProtoReflect.Descriptor instead.
 func (*RBACSource) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{194}
+	return file_store_proto_rawDescGZIP(), []int{195}
 }
 
 func (x *RBACSource) GetType() string {
@@ -14841,7 +14911,7 @@ type RBACPermissionGrant struct {
 
 func (x *RBACPermissionGrant) Reset() {
 	*x = RBACPermissionGrant{}
-	mi := &file_store_proto_msgTypes[195]
+	mi := &file_store_proto_msgTypes[196]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14853,7 +14923,7 @@ func (x *RBACPermissionGrant) String() string {
 func (*RBACPermissionGrant) ProtoMessage() {}
 
 func (x *RBACPermissionGrant) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[195]
+	mi := &file_store_proto_msgTypes[196]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14866,7 +14936,7 @@ func (x *RBACPermissionGrant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACPermissionGrant.ProtoReflect.Descriptor instead.
 func (*RBACPermissionGrant) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{195}
+	return file_store_proto_rawDescGZIP(), []int{196}
 }
 
 func (x *RBACPermissionGrant) GetKey() *RBACPermissionKey {
@@ -14910,7 +14980,7 @@ type RBACPage struct {
 
 func (x *RBACPage) Reset() {
 	*x = RBACPage{}
-	mi := &file_store_proto_msgTypes[196]
+	mi := &file_store_proto_msgTypes[197]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14922,7 +14992,7 @@ func (x *RBACPage) String() string {
 func (*RBACPage) ProtoMessage() {}
 
 func (x *RBACPage) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[196]
+	mi := &file_store_proto_msgTypes[197]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14935,7 +15005,7 @@ func (x *RBACPage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACPage.ProtoReflect.Descriptor instead.
 func (*RBACPage) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{196}
+	return file_store_proto_rawDescGZIP(), []int{197}
 }
 
 func (x *RBACPage) GetPage() int64 {
@@ -14990,7 +15060,7 @@ type RBACRequest struct {
 
 func (x *RBACRequest) Reset() {
 	*x = RBACRequest{}
-	mi := &file_store_proto_msgTypes[197]
+	mi := &file_store_proto_msgTypes[198]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15002,7 +15072,7 @@ func (x *RBACRequest) String() string {
 func (*RBACRequest) ProtoMessage() {}
 
 func (x *RBACRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[197]
+	mi := &file_store_proto_msgTypes[198]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15015,7 +15085,7 @@ func (x *RBACRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACRequest.ProtoReflect.Descriptor instead.
 func (*RBACRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{197}
+	return file_store_proto_rawDescGZIP(), []int{198}
 }
 
 func (x *RBACRequest) GetTxId() string {
@@ -15091,7 +15161,7 @@ type RBACSnapshot struct {
 
 func (x *RBACSnapshot) Reset() {
 	*x = RBACSnapshot{}
-	mi := &file_store_proto_msgTypes[198]
+	mi := &file_store_proto_msgTypes[199]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15103,7 +15173,7 @@ func (x *RBACSnapshot) String() string {
 func (*RBACSnapshot) ProtoMessage() {}
 
 func (x *RBACSnapshot) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[198]
+	mi := &file_store_proto_msgTypes[199]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15116,7 +15186,7 @@ func (x *RBACSnapshot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACSnapshot.ProtoReflect.Descriptor instead.
 func (*RBACSnapshot) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{198}
+	return file_store_proto_rawDescGZIP(), []int{199}
 }
 
 func (x *RBACSnapshot) GetApi() *ResourceServer {
@@ -15149,7 +15219,7 @@ type RBACResponse struct {
 
 func (x *RBACResponse) Reset() {
 	*x = RBACResponse{}
-	mi := &file_store_proto_msgTypes[199]
+	mi := &file_store_proto_msgTypes[200]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15161,7 +15231,7 @@ func (x *RBACResponse) String() string {
 func (*RBACResponse) ProtoMessage() {}
 
 func (x *RBACResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[199]
+	mi := &file_store_proto_msgTypes[200]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15174,7 +15244,7 @@ func (x *RBACResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACResponse.ProtoReflect.Descriptor instead.
 func (*RBACResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{199}
+	return file_store_proto_rawDescGZIP(), []int{200}
 }
 
 func (x *RBACResponse) GetError() *Error {
@@ -15243,7 +15313,7 @@ type RBACCapabilitiesResult struct {
 
 func (x *RBACCapabilitiesResult) Reset() {
 	*x = RBACCapabilitiesResult{}
-	mi := &file_store_proto_msgTypes[200]
+	mi := &file_store_proto_msgTypes[201]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15255,7 +15325,7 @@ func (x *RBACCapabilitiesResult) String() string {
 func (*RBACCapabilitiesResult) ProtoMessage() {}
 
 func (x *RBACCapabilitiesResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[200]
+	mi := &file_store_proto_msgTypes[201]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15268,7 +15338,7 @@ func (x *RBACCapabilitiesResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RBACCapabilitiesResult.ProtoReflect.Descriptor instead.
 func (*RBACCapabilitiesResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{200}
+	return file_store_proto_rawDescGZIP(), []int{201}
 }
 
 func (x *RBACCapabilitiesResult) GetError() *Error {
@@ -15295,7 +15365,7 @@ type OrganizationColorsMsg struct {
 
 func (x *OrganizationColorsMsg) Reset() {
 	*x = OrganizationColorsMsg{}
-	mi := &file_store_proto_msgTypes[201]
+	mi := &file_store_proto_msgTypes[202]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15307,7 +15377,7 @@ func (x *OrganizationColorsMsg) String() string {
 func (*OrganizationColorsMsg) ProtoMessage() {}
 
 func (x *OrganizationColorsMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[201]
+	mi := &file_store_proto_msgTypes[202]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15320,7 +15390,7 @@ func (x *OrganizationColorsMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationColorsMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationColorsMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{201}
+	return file_store_proto_rawDescGZIP(), []int{202}
 }
 
 func (x *OrganizationColorsMsg) GetPrimary() string {
@@ -15347,7 +15417,7 @@ type OrganizationBrandingMsg struct {
 
 func (x *OrganizationBrandingMsg) Reset() {
 	*x = OrganizationBrandingMsg{}
-	mi := &file_store_proto_msgTypes[202]
+	mi := &file_store_proto_msgTypes[203]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15359,7 +15429,7 @@ func (x *OrganizationBrandingMsg) String() string {
 func (*OrganizationBrandingMsg) ProtoMessage() {}
 
 func (x *OrganizationBrandingMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[202]
+	mi := &file_store_proto_msgTypes[203]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15372,7 +15442,7 @@ func (x *OrganizationBrandingMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationBrandingMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationBrandingMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{202}
+	return file_store_proto_rawDescGZIP(), []int{203}
 }
 
 func (x *OrganizationBrandingMsg) GetLogoUrl() string {
@@ -15409,7 +15479,7 @@ type OrganizationMsg struct {
 
 func (x *OrganizationMsg) Reset() {
 	*x = OrganizationMsg{}
-	mi := &file_store_proto_msgTypes[203]
+	mi := &file_store_proto_msgTypes[204]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15421,7 +15491,7 @@ func (x *OrganizationMsg) String() string {
 func (*OrganizationMsg) ProtoMessage() {}
 
 func (x *OrganizationMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[203]
+	mi := &file_store_proto_msgTypes[204]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15434,7 +15504,7 @@ func (x *OrganizationMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{203}
+	return file_store_proto_rawDescGZIP(), []int{204}
 }
 
 func (x *OrganizationMsg) GetTenantId() string {
@@ -15541,7 +15611,7 @@ type OrganizationConnectionMsg struct {
 
 func (x *OrganizationConnectionMsg) Reset() {
 	*x = OrganizationConnectionMsg{}
-	mi := &file_store_proto_msgTypes[204]
+	mi := &file_store_proto_msgTypes[205]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15553,7 +15623,7 @@ func (x *OrganizationConnectionMsg) String() string {
 func (*OrganizationConnectionMsg) ProtoMessage() {}
 
 func (x *OrganizationConnectionMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[204]
+	mi := &file_store_proto_msgTypes[205]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15566,7 +15636,7 @@ func (x *OrganizationConnectionMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationConnectionMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationConnectionMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{204}
+	return file_store_proto_rawDescGZIP(), []int{205}
 }
 
 func (x *OrganizationConnectionMsg) GetTenantId() string {
@@ -15668,7 +15738,7 @@ type OrganizationPageMsg struct {
 
 func (x *OrganizationPageMsg) Reset() {
 	*x = OrganizationPageMsg{}
-	mi := &file_store_proto_msgTypes[205]
+	mi := &file_store_proto_msgTypes[206]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15680,7 +15750,7 @@ func (x *OrganizationPageMsg) String() string {
 func (*OrganizationPageMsg) ProtoMessage() {}
 
 func (x *OrganizationPageMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[205]
+	mi := &file_store_proto_msgTypes[206]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15693,7 +15763,7 @@ func (x *OrganizationPageMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationPageMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationPageMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{205}
+	return file_store_proto_rawDescGZIP(), []int{206}
 }
 
 func (x *OrganizationPageMsg) GetPage() int64 {
@@ -15769,7 +15839,7 @@ type OrganizationsRequest struct {
 
 func (x *OrganizationsRequest) Reset() {
 	*x = OrganizationsRequest{}
-	mi := &file_store_proto_msgTypes[206]
+	mi := &file_store_proto_msgTypes[207]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15781,7 +15851,7 @@ func (x *OrganizationsRequest) String() string {
 func (*OrganizationsRequest) ProtoMessage() {}
 
 func (x *OrganizationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[206]
+	mi := &file_store_proto_msgTypes[207]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15794,7 +15864,7 @@ func (x *OrganizationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationsRequest.ProtoReflect.Descriptor instead.
 func (*OrganizationsRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{206}
+	return file_store_proto_rawDescGZIP(), []int{207}
 }
 
 func (x *OrganizationsRequest) GetTxId() string {
@@ -15912,7 +15982,7 @@ type OrganizationsResponse struct {
 
 func (x *OrganizationsResponse) Reset() {
 	*x = OrganizationsResponse{}
-	mi := &file_store_proto_msgTypes[207]
+	mi := &file_store_proto_msgTypes[208]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15924,7 +15994,7 @@ func (x *OrganizationsResponse) String() string {
 func (*OrganizationsResponse) ProtoMessage() {}
 
 func (x *OrganizationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[207]
+	mi := &file_store_proto_msgTypes[208]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15937,7 +16007,7 @@ func (x *OrganizationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationsResponse.ProtoReflect.Descriptor instead.
 func (*OrganizationsResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{207}
+	return file_store_proto_rawDescGZIP(), []int{208}
 }
 
 func (x *OrganizationsResponse) GetError() *Error {
@@ -16013,7 +16083,7 @@ type OrganizationsCapabilitiesResult struct {
 
 func (x *OrganizationsCapabilitiesResult) Reset() {
 	*x = OrganizationsCapabilitiesResult{}
-	mi := &file_store_proto_msgTypes[208]
+	mi := &file_store_proto_msgTypes[209]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16025,7 +16095,7 @@ func (x *OrganizationsCapabilitiesResult) String() string {
 func (*OrganizationsCapabilitiesResult) ProtoMessage() {}
 
 func (x *OrganizationsCapabilitiesResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[208]
+	mi := &file_store_proto_msgTypes[209]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16038,7 +16108,7 @@ func (x *OrganizationsCapabilitiesResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationsCapabilitiesResult.ProtoReflect.Descriptor instead.
 func (*OrganizationsCapabilitiesResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{208}
+	return file_store_proto_rawDescGZIP(), []int{209}
 }
 
 func (x *OrganizationsCapabilitiesResult) GetError() *Error {
@@ -16065,7 +16135,7 @@ type ActionDependency struct {
 
 func (x *ActionDependency) Reset() {
 	*x = ActionDependency{}
-	mi := &file_store_proto_msgTypes[209]
+	mi := &file_store_proto_msgTypes[210]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16077,7 +16147,7 @@ func (x *ActionDependency) String() string {
 func (*ActionDependency) ProtoMessage() {}
 
 func (x *ActionDependency) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[209]
+	mi := &file_store_proto_msgTypes[210]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16090,7 +16160,7 @@ func (x *ActionDependency) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionDependency.ProtoReflect.Descriptor instead.
 func (*ActionDependency) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{209}
+	return file_store_proto_rawDescGZIP(), []int{210}
 }
 
 func (x *ActionDependency) GetName() string {
@@ -16118,7 +16188,7 @@ type ActionSecretMsg struct {
 
 func (x *ActionSecretMsg) Reset() {
 	*x = ActionSecretMsg{}
-	mi := &file_store_proto_msgTypes[210]
+	mi := &file_store_proto_msgTypes[211]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16130,7 +16200,7 @@ func (x *ActionSecretMsg) String() string {
 func (*ActionSecretMsg) ProtoMessage() {}
 
 func (x *ActionSecretMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[210]
+	mi := &file_store_proto_msgTypes[211]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16143,7 +16213,7 @@ func (x *ActionSecretMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionSecretMsg.ProtoReflect.Descriptor instead.
 func (*ActionSecretMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{210}
+	return file_store_proto_rawDescGZIP(), []int{211}
 }
 
 func (x *ActionSecretMsg) GetName() string {
@@ -16188,7 +16258,7 @@ type ActionMsg struct {
 
 func (x *ActionMsg) Reset() {
 	*x = ActionMsg{}
-	mi := &file_store_proto_msgTypes[211]
+	mi := &file_store_proto_msgTypes[212]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16200,7 +16270,7 @@ func (x *ActionMsg) String() string {
 func (*ActionMsg) ProtoMessage() {}
 
 func (x *ActionMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[211]
+	mi := &file_store_proto_msgTypes[212]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16213,7 +16283,7 @@ func (x *ActionMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionMsg.ProtoReflect.Descriptor instead.
 func (*ActionMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{211}
+	return file_store_proto_rawDescGZIP(), []int{212}
 }
 
 func (x *ActionMsg) GetTenantId() string {
@@ -16326,7 +16396,7 @@ type ActionVersionMsg struct {
 
 func (x *ActionVersionMsg) Reset() {
 	*x = ActionVersionMsg{}
-	mi := &file_store_proto_msgTypes[212]
+	mi := &file_store_proto_msgTypes[213]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16338,7 +16408,7 @@ func (x *ActionVersionMsg) String() string {
 func (*ActionVersionMsg) ProtoMessage() {}
 
 func (x *ActionVersionMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[212]
+	mi := &file_store_proto_msgTypes[213]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16351,7 +16421,7 @@ func (x *ActionVersionMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionVersionMsg.ProtoReflect.Descriptor instead.
 func (*ActionVersionMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{212}
+	return file_store_proto_rawDescGZIP(), []int{213}
 }
 
 func (x *ActionVersionMsg) GetTenantId() string {
@@ -16447,7 +16517,7 @@ type ActionBuildMsg struct {
 
 func (x *ActionBuildMsg) Reset() {
 	*x = ActionBuildMsg{}
-	mi := &file_store_proto_msgTypes[213]
+	mi := &file_store_proto_msgTypes[214]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16459,7 +16529,7 @@ func (x *ActionBuildMsg) String() string {
 func (*ActionBuildMsg) ProtoMessage() {}
 
 func (x *ActionBuildMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[213]
+	mi := &file_store_proto_msgTypes[214]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16472,7 +16542,7 @@ func (x *ActionBuildMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionBuildMsg.ProtoReflect.Descriptor instead.
 func (*ActionBuildMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{213}
+	return file_store_proto_rawDescGZIP(), []int{214}
 }
 
 func (x *ActionBuildMsg) GetTenantId() string {
@@ -16546,7 +16616,7 @@ type ActionBindingMsg struct {
 
 func (x *ActionBindingMsg) Reset() {
 	*x = ActionBindingMsg{}
-	mi := &file_store_proto_msgTypes[214]
+	mi := &file_store_proto_msgTypes[215]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16558,7 +16628,7 @@ func (x *ActionBindingMsg) String() string {
 func (*ActionBindingMsg) ProtoMessage() {}
 
 func (x *ActionBindingMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[214]
+	mi := &file_store_proto_msgTypes[215]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16571,7 +16641,7 @@ func (x *ActionBindingMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionBindingMsg.ProtoReflect.Descriptor instead.
 func (*ActionBindingMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{214}
+	return file_store_proto_rawDescGZIP(), []int{215}
 }
 
 func (x *ActionBindingMsg) GetTenantId() string {
@@ -16634,7 +16704,7 @@ type ActionBoundMsg struct {
 
 func (x *ActionBoundMsg) Reset() {
 	*x = ActionBoundMsg{}
-	mi := &file_store_proto_msgTypes[215]
+	mi := &file_store_proto_msgTypes[216]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16646,7 +16716,7 @@ func (x *ActionBoundMsg) String() string {
 func (*ActionBoundMsg) ProtoMessage() {}
 
 func (x *ActionBoundMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[215]
+	mi := &file_store_proto_msgTypes[216]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16659,7 +16729,7 @@ func (x *ActionBoundMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionBoundMsg.ProtoReflect.Descriptor instead.
 func (*ActionBoundMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{215}
+	return file_store_proto_rawDescGZIP(), []int{216}
 }
 
 func (x *ActionBoundMsg) GetBinding() *ActionBindingMsg {
@@ -16701,7 +16771,7 @@ type ActionExecutionResultMsg struct {
 
 func (x *ActionExecutionResultMsg) Reset() {
 	*x = ActionExecutionResultMsg{}
-	mi := &file_store_proto_msgTypes[216]
+	mi := &file_store_proto_msgTypes[217]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16713,7 +16783,7 @@ func (x *ActionExecutionResultMsg) String() string {
 func (*ActionExecutionResultMsg) ProtoMessage() {}
 
 func (x *ActionExecutionResultMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[216]
+	mi := &file_store_proto_msgTypes[217]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16726,7 +16796,7 @@ func (x *ActionExecutionResultMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionExecutionResultMsg.ProtoReflect.Descriptor instead.
 func (*ActionExecutionResultMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{216}
+	return file_store_proto_rawDescGZIP(), []int{217}
 }
 
 func (x *ActionExecutionResultMsg) GetLogs() []string {
@@ -16814,7 +16884,7 @@ type ActionExecutionMsg struct {
 
 func (x *ActionExecutionMsg) Reset() {
 	*x = ActionExecutionMsg{}
-	mi := &file_store_proto_msgTypes[217]
+	mi := &file_store_proto_msgTypes[218]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16826,7 +16896,7 @@ func (x *ActionExecutionMsg) String() string {
 func (*ActionExecutionMsg) ProtoMessage() {}
 
 func (x *ActionExecutionMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[217]
+	mi := &file_store_proto_msgTypes[218]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16839,7 +16909,7 @@ func (x *ActionExecutionMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionExecutionMsg.ProtoReflect.Descriptor instead.
 func (*ActionExecutionMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{217}
+	return file_store_proto_rawDescGZIP(), []int{218}
 }
 
 func (x *ActionExecutionMsg) GetTenantId() string {
@@ -16905,7 +16975,7 @@ type ActionContinueMsg struct {
 
 func (x *ActionContinueMsg) Reset() {
 	*x = ActionContinueMsg{}
-	mi := &file_store_proto_msgTypes[218]
+	mi := &file_store_proto_msgTypes[219]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16917,7 +16987,7 @@ func (x *ActionContinueMsg) String() string {
 func (*ActionContinueMsg) ProtoMessage() {}
 
 func (x *ActionContinueMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[218]
+	mi := &file_store_proto_msgTypes[219]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16930,7 +17000,7 @@ func (x *ActionContinueMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionContinueMsg.ProtoReflect.Descriptor instead.
 func (*ActionContinueMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{218}
+	return file_store_proto_rawDescGZIP(), []int{219}
 }
 
 func (x *ActionContinueMsg) GetTenantId() string {
@@ -17008,7 +17078,7 @@ type ActionsRequest struct {
 
 func (x *ActionsRequest) Reset() {
 	*x = ActionsRequest{}
-	mi := &file_store_proto_msgTypes[219]
+	mi := &file_store_proto_msgTypes[220]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17020,7 +17090,7 @@ func (x *ActionsRequest) String() string {
 func (*ActionsRequest) ProtoMessage() {}
 
 func (x *ActionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[219]
+	mi := &file_store_proto_msgTypes[220]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17033,7 +17103,7 @@ func (x *ActionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionsRequest.ProtoReflect.Descriptor instead.
 func (*ActionsRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{219}
+	return file_store_proto_rawDescGZIP(), []int{220}
 }
 
 func (x *ActionsRequest) GetTxId() string {
@@ -17239,7 +17309,7 @@ type ActionsResponse struct {
 
 func (x *ActionsResponse) Reset() {
 	*x = ActionsResponse{}
-	mi := &file_store_proto_msgTypes[220]
+	mi := &file_store_proto_msgTypes[221]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17251,7 +17321,7 @@ func (x *ActionsResponse) String() string {
 func (*ActionsResponse) ProtoMessage() {}
 
 func (x *ActionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[220]
+	mi := &file_store_proto_msgTypes[221]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17264,7 +17334,7 @@ func (x *ActionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionsResponse.ProtoReflect.Descriptor instead.
 func (*ActionsResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{220}
+	return file_store_proto_rawDescGZIP(), []int{221}
 }
 
 func (x *ActionsResponse) GetError() *Error {
@@ -17422,7 +17492,7 @@ type ActionsArtifactChunk struct {
 
 func (x *ActionsArtifactChunk) Reset() {
 	*x = ActionsArtifactChunk{}
-	mi := &file_store_proto_msgTypes[221]
+	mi := &file_store_proto_msgTypes[222]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17434,7 +17504,7 @@ func (x *ActionsArtifactChunk) String() string {
 func (*ActionsArtifactChunk) ProtoMessage() {}
 
 func (x *ActionsArtifactChunk) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[221]
+	mi := &file_store_proto_msgTypes[222]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17447,7 +17517,7 @@ func (x *ActionsArtifactChunk) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionsArtifactChunk.ProtoReflect.Descriptor instead.
 func (*ActionsArtifactChunk) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{221}
+	return file_store_proto_rawDescGZIP(), []int{222}
 }
 
 func (x *ActionsArtifactChunk) GetError() *Error {
@@ -17509,7 +17579,7 @@ type ActionsCapabilitiesResult struct {
 
 func (x *ActionsCapabilitiesResult) Reset() {
 	*x = ActionsCapabilitiesResult{}
-	mi := &file_store_proto_msgTypes[222]
+	mi := &file_store_proto_msgTypes[223]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17521,7 +17591,7 @@ func (x *ActionsCapabilitiesResult) String() string {
 func (*ActionsCapabilitiesResult) ProtoMessage() {}
 
 func (x *ActionsCapabilitiesResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[222]
+	mi := &file_store_proto_msgTypes[223]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17534,7 +17604,7 @@ func (x *ActionsCapabilitiesResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionsCapabilitiesResult.ProtoReflect.Descriptor instead.
 func (*ActionsCapabilitiesResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{222}
+	return file_store_proto_rawDescGZIP(), []int{223}
 }
 
 func (x *ActionsCapabilitiesResult) GetError() *Error {
@@ -17564,7 +17634,7 @@ type ActionModuleRefMsg struct {
 
 func (x *ActionModuleRefMsg) Reset() {
 	*x = ActionModuleRefMsg{}
-	mi := &file_store_proto_msgTypes[223]
+	mi := &file_store_proto_msgTypes[224]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17576,7 +17646,7 @@ func (x *ActionModuleRefMsg) String() string {
 func (*ActionModuleRefMsg) ProtoMessage() {}
 
 func (x *ActionModuleRefMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[223]
+	mi := &file_store_proto_msgTypes[224]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17589,7 +17659,7 @@ func (x *ActionModuleRefMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionModuleRefMsg.ProtoReflect.Descriptor instead.
 func (*ActionModuleRefMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{223}
+	return file_store_proto_rawDescGZIP(), []int{224}
 }
 
 func (x *ActionModuleRefMsg) GetModuleId() string {
@@ -17639,7 +17709,7 @@ type ActionModuleMsg struct {
 
 func (x *ActionModuleMsg) Reset() {
 	*x = ActionModuleMsg{}
-	mi := &file_store_proto_msgTypes[224]
+	mi := &file_store_proto_msgTypes[225]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17651,7 +17721,7 @@ func (x *ActionModuleMsg) String() string {
 func (*ActionModuleMsg) ProtoMessage() {}
 
 func (x *ActionModuleMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[224]
+	mi := &file_store_proto_msgTypes[225]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17664,7 +17734,7 @@ func (x *ActionModuleMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionModuleMsg.ProtoReflect.Descriptor instead.
 func (*ActionModuleMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{224}
+	return file_store_proto_rawDescGZIP(), []int{225}
 }
 
 func (x *ActionModuleMsg) GetTenantId() string {
@@ -17761,7 +17831,7 @@ type ActionModuleVersionMsg struct {
 
 func (x *ActionModuleVersionMsg) Reset() {
 	*x = ActionModuleVersionMsg{}
-	mi := &file_store_proto_msgTypes[225]
+	mi := &file_store_proto_msgTypes[226]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17773,7 +17843,7 @@ func (x *ActionModuleVersionMsg) String() string {
 func (*ActionModuleVersionMsg) ProtoMessage() {}
 
 func (x *ActionModuleVersionMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[225]
+	mi := &file_store_proto_msgTypes[226]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17786,7 +17856,7 @@ func (x *ActionModuleVersionMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionModuleVersionMsg.ProtoReflect.Descriptor instead.
 func (*ActionModuleVersionMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{225}
+	return file_store_proto_rawDescGZIP(), []int{226}
 }
 
 func (x *ActionModuleVersionMsg) GetTenantId() string {
@@ -17863,7 +17933,7 @@ type ActionModuleUserMsg struct {
 
 func (x *ActionModuleUserMsg) Reset() {
 	*x = ActionModuleUserMsg{}
-	mi := &file_store_proto_msgTypes[226]
+	mi := &file_store_proto_msgTypes[227]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17875,7 +17945,7 @@ func (x *ActionModuleUserMsg) String() string {
 func (*ActionModuleUserMsg) ProtoMessage() {}
 
 func (x *ActionModuleUserMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[226]
+	mi := &file_store_proto_msgTypes[227]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17888,7 +17958,7 @@ func (x *ActionModuleUserMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionModuleUserMsg.ProtoReflect.Descriptor instead.
 func (*ActionModuleUserMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{226}
+	return file_store_proto_rawDescGZIP(), []int{227}
 }
 
 func (x *ActionModuleUserMsg) GetAction() *ActionMsg {
@@ -17932,7 +18002,7 @@ type ActionJobMsg struct {
 
 func (x *ActionJobMsg) Reset() {
 	*x = ActionJobMsg{}
-	mi := &file_store_proto_msgTypes[227]
+	mi := &file_store_proto_msgTypes[228]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17944,7 +18014,7 @@ func (x *ActionJobMsg) String() string {
 func (*ActionJobMsg) ProtoMessage() {}
 
 func (x *ActionJobMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[227]
+	mi := &file_store_proto_msgTypes[228]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17957,7 +18027,7 @@ func (x *ActionJobMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionJobMsg.ProtoReflect.Descriptor instead.
 func (*ActionJobMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{227}
+	return file_store_proto_rawDescGZIP(), []int{228}
 }
 
 func (x *ActionJobMsg) GetTenantId() string {
@@ -18068,7 +18138,7 @@ type OrganizationInvitationMsg struct {
 
 func (x *OrganizationInvitationMsg) Reset() {
 	*x = OrganizationInvitationMsg{}
-	mi := &file_store_proto_msgTypes[228]
+	mi := &file_store_proto_msgTypes[229]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18080,7 +18150,7 @@ func (x *OrganizationInvitationMsg) String() string {
 func (*OrganizationInvitationMsg) ProtoMessage() {}
 
 func (x *OrganizationInvitationMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[228]
+	mi := &file_store_proto_msgTypes[229]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18093,7 +18163,7 @@ func (x *OrganizationInvitationMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationInvitationMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationInvitationMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{228}
+	return file_store_proto_rawDescGZIP(), []int{229}
 }
 
 func (x *OrganizationInvitationMsg) GetTenantId() string {
@@ -18222,7 +18292,7 @@ type InvitationReceiptMsg struct {
 
 func (x *InvitationReceiptMsg) Reset() {
 	*x = InvitationReceiptMsg{}
-	mi := &file_store_proto_msgTypes[229]
+	mi := &file_store_proto_msgTypes[230]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18234,7 +18304,7 @@ func (x *InvitationReceiptMsg) String() string {
 func (*InvitationReceiptMsg) ProtoMessage() {}
 
 func (x *InvitationReceiptMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[229]
+	mi := &file_store_proto_msgTypes[230]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18247,7 +18317,7 @@ func (x *InvitationReceiptMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InvitationReceiptMsg.ProtoReflect.Descriptor instead.
 func (*InvitationReceiptMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{229}
+	return file_store_proto_rawDescGZIP(), []int{230}
 }
 
 func (x *InvitationReceiptMsg) GetTenantId() string {
@@ -18304,7 +18374,7 @@ type OrganizationClientMsg struct {
 
 func (x *OrganizationClientMsg) Reset() {
 	*x = OrganizationClientMsg{}
-	mi := &file_store_proto_msgTypes[230]
+	mi := &file_store_proto_msgTypes[231]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18316,7 +18386,7 @@ func (x *OrganizationClientMsg) String() string {
 func (*OrganizationClientMsg) ProtoMessage() {}
 
 func (x *OrganizationClientMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[230]
+	mi := &file_store_proto_msgTypes[231]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18329,7 +18399,7 @@ func (x *OrganizationClientMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationClientMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationClientMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{230}
+	return file_store_proto_rawDescGZIP(), []int{231}
 }
 
 func (x *OrganizationClientMsg) GetTenantId() string {
@@ -18376,7 +18446,7 @@ type OrganizationDiscoveryDomainMsg struct {
 
 func (x *OrganizationDiscoveryDomainMsg) Reset() {
 	*x = OrganizationDiscoveryDomainMsg{}
-	mi := &file_store_proto_msgTypes[231]
+	mi := &file_store_proto_msgTypes[232]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18388,7 +18458,7 @@ func (x *OrganizationDiscoveryDomainMsg) String() string {
 func (*OrganizationDiscoveryDomainMsg) ProtoMessage() {}
 
 func (x *OrganizationDiscoveryDomainMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[231]
+	mi := &file_store_proto_msgTypes[232]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18401,7 +18471,7 @@ func (x *OrganizationDiscoveryDomainMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationDiscoveryDomainMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationDiscoveryDomainMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{231}
+	return file_store_proto_rawDescGZIP(), []int{232}
 }
 
 func (x *OrganizationDiscoveryDomainMsg) GetTenantId() string {
@@ -18487,7 +18557,7 @@ type OrganizationsIIRequest struct {
 
 func (x *OrganizationsIIRequest) Reset() {
 	*x = OrganizationsIIRequest{}
-	mi := &file_store_proto_msgTypes[232]
+	mi := &file_store_proto_msgTypes[233]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18499,7 +18569,7 @@ func (x *OrganizationsIIRequest) String() string {
 func (*OrganizationsIIRequest) ProtoMessage() {}
 
 func (x *OrganizationsIIRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[232]
+	mi := &file_store_proto_msgTypes[233]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18512,7 +18582,7 @@ func (x *OrganizationsIIRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationsIIRequest.ProtoReflect.Descriptor instead.
 func (*OrganizationsIIRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{232}
+	return file_store_proto_rawDescGZIP(), []int{233}
 }
 
 func (x *OrganizationsIIRequest) GetTxId() string {
@@ -18669,7 +18739,7 @@ type OrganizationsIIResponse struct {
 
 func (x *OrganizationsIIResponse) Reset() {
 	*x = OrganizationsIIResponse{}
-	mi := &file_store_proto_msgTypes[233]
+	mi := &file_store_proto_msgTypes[234]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18681,7 +18751,7 @@ func (x *OrganizationsIIResponse) String() string {
 func (*OrganizationsIIResponse) ProtoMessage() {}
 
 func (x *OrganizationsIIResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[233]
+	mi := &file_store_proto_msgTypes[234]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18694,7 +18764,7 @@ func (x *OrganizationsIIResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationsIIResponse.ProtoReflect.Descriptor instead.
 func (*OrganizationsIIResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{233}
+	return file_store_proto_rawDescGZIP(), []int{234}
 }
 
 func (x *OrganizationsIIResponse) GetError() *Error {
@@ -18805,7 +18875,7 @@ type OrganizationQueryMsg struct {
 
 func (x *OrganizationQueryMsg) Reset() {
 	*x = OrganizationQueryMsg{}
-	mi := &file_store_proto_msgTypes[234]
+	mi := &file_store_proto_msgTypes[235]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18817,7 +18887,7 @@ func (x *OrganizationQueryMsg) String() string {
 func (*OrganizationQueryMsg) ProtoMessage() {}
 
 func (x *OrganizationQueryMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[234]
+	mi := &file_store_proto_msgTypes[235]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18830,7 +18900,7 @@ func (x *OrganizationQueryMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationQueryMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationQueryMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{234}
+	return file_store_proto_rawDescGZIP(), []int{235}
 }
 
 func (x *OrganizationQueryMsg) GetOp() string {
@@ -18901,7 +18971,7 @@ type OrganizationSearchPageMsg struct {
 
 func (x *OrganizationSearchPageMsg) Reset() {
 	*x = OrganizationSearchPageMsg{}
-	mi := &file_store_proto_msgTypes[235]
+	mi := &file_store_proto_msgTypes[236]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18913,7 +18983,7 @@ func (x *OrganizationSearchPageMsg) String() string {
 func (*OrganizationSearchPageMsg) ProtoMessage() {}
 
 func (x *OrganizationSearchPageMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[235]
+	mi := &file_store_proto_msgTypes[236]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18926,7 +18996,7 @@ func (x *OrganizationSearchPageMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationSearchPageMsg.ProtoReflect.Descriptor instead.
 func (*OrganizationSearchPageMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{235}
+	return file_store_proto_rawDescGZIP(), []int{236}
 }
 
 func (x *OrganizationSearchPageMsg) GetTake() int64 {
@@ -18970,7 +19040,7 @@ type LogsCapabilitiesResult struct {
 
 func (x *LogsCapabilitiesResult) Reset() {
 	*x = LogsCapabilitiesResult{}
-	mi := &file_store_proto_msgTypes[236]
+	mi := &file_store_proto_msgTypes[237]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18982,7 +19052,7 @@ func (x *LogsCapabilitiesResult) String() string {
 func (*LogsCapabilitiesResult) ProtoMessage() {}
 
 func (x *LogsCapabilitiesResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[236]
+	mi := &file_store_proto_msgTypes[237]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18995,7 +19065,7 @@ func (x *LogsCapabilitiesResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogsCapabilitiesResult.ProtoReflect.Descriptor instead.
 func (*LogsCapabilitiesResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{236}
+	return file_store_proto_rawDescGZIP(), []int{237}
 }
 
 func (x *LogsCapabilitiesResult) GetVersion() uint32 {
@@ -19031,7 +19101,7 @@ type LogEventMsg struct {
 
 func (x *LogEventMsg) Reset() {
 	*x = LogEventMsg{}
-	mi := &file_store_proto_msgTypes[237]
+	mi := &file_store_proto_msgTypes[238]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19043,7 +19113,7 @@ func (x *LogEventMsg) String() string {
 func (*LogEventMsg) ProtoMessage() {}
 
 func (x *LogEventMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[237]
+	mi := &file_store_proto_msgTypes[238]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19056,7 +19126,7 @@ func (x *LogEventMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogEventMsg.ProtoReflect.Descriptor instead.
 func (*LogEventMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{237}
+	return file_store_proto_rawDescGZIP(), []int{238}
 }
 
 func (x *LogEventMsg) GetTenantId() string {
@@ -19152,7 +19222,7 @@ type LogQueryMsg struct {
 
 func (x *LogQueryMsg) Reset() {
 	*x = LogQueryMsg{}
-	mi := &file_store_proto_msgTypes[238]
+	mi := &file_store_proto_msgTypes[239]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19164,7 +19234,7 @@ func (x *LogQueryMsg) String() string {
 func (*LogQueryMsg) ProtoMessage() {}
 
 func (x *LogQueryMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[238]
+	mi := &file_store_proto_msgTypes[239]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19177,7 +19247,7 @@ func (x *LogQueryMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogQueryMsg.ProtoReflect.Descriptor instead.
 func (*LogQueryMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{238}
+	return file_store_proto_rawDescGZIP(), []int{239}
 }
 
 func (x *LogQueryMsg) GetOp() string {
@@ -19248,7 +19318,7 @@ type LogPageMsg struct {
 
 func (x *LogPageMsg) Reset() {
 	*x = LogPageMsg{}
-	mi := &file_store_proto_msgTypes[239]
+	mi := &file_store_proto_msgTypes[240]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19260,7 +19330,7 @@ func (x *LogPageMsg) String() string {
 func (*LogPageMsg) ProtoMessage() {}
 
 func (x *LogPageMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[239]
+	mi := &file_store_proto_msgTypes[240]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19273,7 +19343,7 @@ func (x *LogPageMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogPageMsg.ProtoReflect.Descriptor instead.
 func (*LogPageMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{239}
+	return file_store_proto_rawDescGZIP(), []int{240}
 }
 
 func (x *LogPageMsg) GetPage() int64 {
@@ -19314,7 +19384,7 @@ type LogStreamFilterMsg struct {
 
 func (x *LogStreamFilterMsg) Reset() {
 	*x = LogStreamFilterMsg{}
-	mi := &file_store_proto_msgTypes[240]
+	mi := &file_store_proto_msgTypes[241]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19326,7 +19396,7 @@ func (x *LogStreamFilterMsg) String() string {
 func (*LogStreamFilterMsg) ProtoMessage() {}
 
 func (x *LogStreamFilterMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[240]
+	mi := &file_store_proto_msgTypes[241]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19339,7 +19409,7 @@ func (x *LogStreamFilterMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogStreamFilterMsg.ProtoReflect.Descriptor instead.
 func (*LogStreamFilterMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{240}
+	return file_store_proto_rawDescGZIP(), []int{241}
 }
 
 func (x *LogStreamFilterMsg) GetType() string {
@@ -19365,7 +19435,7 @@ type LogStreamFiltersMsg struct {
 
 func (x *LogStreamFiltersMsg) Reset() {
 	*x = LogStreamFiltersMsg{}
-	mi := &file_store_proto_msgTypes[241]
+	mi := &file_store_proto_msgTypes[242]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19377,7 +19447,7 @@ func (x *LogStreamFiltersMsg) String() string {
 func (*LogStreamFiltersMsg) ProtoMessage() {}
 
 func (x *LogStreamFiltersMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[241]
+	mi := &file_store_proto_msgTypes[242]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19390,7 +19460,7 @@ func (x *LogStreamFiltersMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogStreamFiltersMsg.ProtoReflect.Descriptor instead.
 func (*LogStreamFiltersMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{241}
+	return file_store_proto_rawDescGZIP(), []int{242}
 }
 
 func (x *LogStreamFiltersMsg) GetValues() []*LogStreamFilterMsg {
@@ -19411,7 +19481,7 @@ type LogStreamPIIMsg struct {
 
 func (x *LogStreamPIIMsg) Reset() {
 	*x = LogStreamPIIMsg{}
-	mi := &file_store_proto_msgTypes[242]
+	mi := &file_store_proto_msgTypes[243]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19423,7 +19493,7 @@ func (x *LogStreamPIIMsg) String() string {
 func (*LogStreamPIIMsg) ProtoMessage() {}
 
 func (x *LogStreamPIIMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[242]
+	mi := &file_store_proto_msgTypes[243]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19436,7 +19506,7 @@ func (x *LogStreamPIIMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogStreamPIIMsg.ProtoReflect.Descriptor instead.
 func (*LogStreamPIIMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{242}
+	return file_store_proto_rawDescGZIP(), []int{243}
 }
 
 func (x *LogStreamPIIMsg) GetLogFields() *StringList {
@@ -19490,7 +19560,7 @@ type LogStreamMsg struct {
 
 func (x *LogStreamMsg) Reset() {
 	*x = LogStreamMsg{}
-	mi := &file_store_proto_msgTypes[243]
+	mi := &file_store_proto_msgTypes[244]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19502,7 +19572,7 @@ func (x *LogStreamMsg) String() string {
 func (*LogStreamMsg) ProtoMessage() {}
 
 func (x *LogStreamMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[243]
+	mi := &file_store_proto_msgTypes[244]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19515,7 +19585,7 @@ func (x *LogStreamMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogStreamMsg.ProtoReflect.Descriptor instead.
 func (*LogStreamMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{243}
+	return file_store_proto_rawDescGZIP(), []int{244}
 }
 
 func (x *LogStreamMsg) GetTenantId() string {
@@ -19687,7 +19757,7 @@ type LogStreamDeliveryMsg struct {
 
 func (x *LogStreamDeliveryMsg) Reset() {
 	*x = LogStreamDeliveryMsg{}
-	mi := &file_store_proto_msgTypes[244]
+	mi := &file_store_proto_msgTypes[245]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19699,7 +19769,7 @@ func (x *LogStreamDeliveryMsg) String() string {
 func (*LogStreamDeliveryMsg) ProtoMessage() {}
 
 func (x *LogStreamDeliveryMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[244]
+	mi := &file_store_proto_msgTypes[245]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19712,7 +19782,7 @@ func (x *LogStreamDeliveryMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogStreamDeliveryMsg.ProtoReflect.Descriptor instead.
 func (*LogStreamDeliveryMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{244}
+	return file_store_proto_rawDescGZIP(), []int{245}
 }
 
 func (x *LogStreamDeliveryMsg) GetCheckpoint() int64 {
@@ -19777,7 +19847,7 @@ type DailyStatDeltaMsg struct {
 
 func (x *DailyStatDeltaMsg) Reset() {
 	*x = DailyStatDeltaMsg{}
-	mi := &file_store_proto_msgTypes[245]
+	mi := &file_store_proto_msgTypes[246]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19789,7 +19859,7 @@ func (x *DailyStatDeltaMsg) String() string {
 func (*DailyStatDeltaMsg) ProtoMessage() {}
 
 func (x *DailyStatDeltaMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[245]
+	mi := &file_store_proto_msgTypes[246]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19802,7 +19872,7 @@ func (x *DailyStatDeltaMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DailyStatDeltaMsg.ProtoReflect.Descriptor instead.
 func (*DailyStatDeltaMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{245}
+	return file_store_proto_rawDescGZIP(), []int{246}
 }
 
 func (x *DailyStatDeltaMsg) GetTenantId() string {
@@ -19854,7 +19924,7 @@ type DailyStatMsg struct {
 
 func (x *DailyStatMsg) Reset() {
 	*x = DailyStatMsg{}
-	mi := &file_store_proto_msgTypes[246]
+	mi := &file_store_proto_msgTypes[247]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19866,7 +19936,7 @@ func (x *DailyStatMsg) String() string {
 func (*DailyStatMsg) ProtoMessage() {}
 
 func (x *DailyStatMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[246]
+	mi := &file_store_proto_msgTypes[247]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19879,7 +19949,7 @@ func (x *DailyStatMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DailyStatMsg.ProtoReflect.Descriptor instead.
 func (*DailyStatMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{246}
+	return file_store_proto_rawDescGZIP(), []int{247}
 }
 
 func (x *DailyStatMsg) GetDay() string {
@@ -19953,7 +20023,7 @@ type LogsRequest struct {
 
 func (x *LogsRequest) Reset() {
 	*x = LogsRequest{}
-	mi := &file_store_proto_msgTypes[247]
+	mi := &file_store_proto_msgTypes[248]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19965,7 +20035,7 @@ func (x *LogsRequest) String() string {
 func (*LogsRequest) ProtoMessage() {}
 
 func (x *LogsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[247]
+	mi := &file_store_proto_msgTypes[248]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19978,7 +20048,7 @@ func (x *LogsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogsRequest.ProtoReflect.Descriptor instead.
 func (*LogsRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{247}
+	return file_store_proto_rawDescGZIP(), []int{248}
 }
 
 func (x *LogsRequest) GetTxId() string {
@@ -20144,7 +20214,7 @@ type LogsResponse struct {
 
 func (x *LogsResponse) Reset() {
 	*x = LogsResponse{}
-	mi := &file_store_proto_msgTypes[248]
+	mi := &file_store_proto_msgTypes[249]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20156,7 +20226,7 @@ func (x *LogsResponse) String() string {
 func (*LogsResponse) ProtoMessage() {}
 
 func (x *LogsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[248]
+	mi := &file_store_proto_msgTypes[249]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20169,7 +20239,7 @@ func (x *LogsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogsResponse.ProtoReflect.Descriptor instead.
 func (*LogsResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{248}
+	return file_store_proto_rawDescGZIP(), []int{249}
 }
 
 func (x *LogsResponse) GetError() *Error {
@@ -20247,7 +20317,7 @@ type EventsCapabilitiesResult struct {
 
 func (x *EventsCapabilitiesResult) Reset() {
 	*x = EventsCapabilitiesResult{}
-	mi := &file_store_proto_msgTypes[249]
+	mi := &file_store_proto_msgTypes[250]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20259,7 +20329,7 @@ func (x *EventsCapabilitiesResult) String() string {
 func (*EventsCapabilitiesResult) ProtoMessage() {}
 
 func (x *EventsCapabilitiesResult) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[249]
+	mi := &file_store_proto_msgTypes[250]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20272,7 +20342,7 @@ func (x *EventsCapabilitiesResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventsCapabilitiesResult.ProtoReflect.Descriptor instead.
 func (*EventsCapabilitiesResult) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{249}
+	return file_store_proto_rawDescGZIP(), []int{250}
 }
 
 func (x *EventsCapabilitiesResult) GetVersion() uint32 {
@@ -20303,7 +20373,7 @@ type TenantEventMsg struct {
 
 func (x *TenantEventMsg) Reset() {
 	*x = TenantEventMsg{}
-	mi := &file_store_proto_msgTypes[250]
+	mi := &file_store_proto_msgTypes[251]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20315,7 +20385,7 @@ func (x *TenantEventMsg) String() string {
 func (*TenantEventMsg) ProtoMessage() {}
 
 func (x *TenantEventMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[250]
+	mi := &file_store_proto_msgTypes[251]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20328,7 +20398,7 @@ func (x *TenantEventMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantEventMsg.ProtoReflect.Descriptor instead.
 func (*TenantEventMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{250}
+	return file_store_proto_rawDescGZIP(), []int{251}
 }
 
 func (x *TenantEventMsg) GetTenantId() string {
@@ -20397,7 +20467,7 @@ type EventStreamMsg struct {
 
 func (x *EventStreamMsg) Reset() {
 	*x = EventStreamMsg{}
-	mi := &file_store_proto_msgTypes[251]
+	mi := &file_store_proto_msgTypes[252]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20409,7 +20479,7 @@ func (x *EventStreamMsg) String() string {
 func (*EventStreamMsg) ProtoMessage() {}
 
 func (x *EventStreamMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[251]
+	mi := &file_store_proto_msgTypes[252]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20422,7 +20492,7 @@ func (x *EventStreamMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventStreamMsg.ProtoReflect.Descriptor instead.
 func (*EventStreamMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{251}
+	return file_store_proto_rawDescGZIP(), []int{252}
 }
 
 func (x *EventStreamMsg) GetTenantId() string {
@@ -20549,7 +20619,7 @@ type DeliveryAttemptMsg struct {
 
 func (x *DeliveryAttemptMsg) Reset() {
 	*x = DeliveryAttemptMsg{}
-	mi := &file_store_proto_msgTypes[252]
+	mi := &file_store_proto_msgTypes[253]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20561,7 +20631,7 @@ func (x *DeliveryAttemptMsg) String() string {
 func (*DeliveryAttemptMsg) ProtoMessage() {}
 
 func (x *DeliveryAttemptMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[252]
+	mi := &file_store_proto_msgTypes[253]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20574,7 +20644,7 @@ func (x *DeliveryAttemptMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryAttemptMsg.ProtoReflect.Descriptor instead.
 func (*DeliveryAttemptMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{252}
+	return file_store_proto_rawDescGZIP(), []int{253}
 }
 
 func (x *DeliveryAttemptMsg) GetStatus() string {
@@ -20614,7 +20684,7 @@ type DeliveryAttemptsMsg struct {
 
 func (x *DeliveryAttemptsMsg) Reset() {
 	*x = DeliveryAttemptsMsg{}
-	mi := &file_store_proto_msgTypes[253]
+	mi := &file_store_proto_msgTypes[254]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20626,7 +20696,7 @@ func (x *DeliveryAttemptsMsg) String() string {
 func (*DeliveryAttemptsMsg) ProtoMessage() {}
 
 func (x *DeliveryAttemptsMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[253]
+	mi := &file_store_proto_msgTypes[254]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20639,7 +20709,7 @@ func (x *DeliveryAttemptsMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryAttemptsMsg.ProtoReflect.Descriptor instead.
 func (*DeliveryAttemptsMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{253}
+	return file_store_proto_rawDescGZIP(), []int{254}
 }
 
 func (x *DeliveryAttemptsMsg) GetValues() []*DeliveryAttemptMsg {
@@ -20666,7 +20736,7 @@ type EventDeliveryMsg struct {
 
 func (x *EventDeliveryMsg) Reset() {
 	*x = EventDeliveryMsg{}
-	mi := &file_store_proto_msgTypes[254]
+	mi := &file_store_proto_msgTypes[255]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20678,7 +20748,7 @@ func (x *EventDeliveryMsg) String() string {
 func (*EventDeliveryMsg) ProtoMessage() {}
 
 func (x *EventDeliveryMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[254]
+	mi := &file_store_proto_msgTypes[255]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20691,7 +20761,7 @@ func (x *EventDeliveryMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventDeliveryMsg.ProtoReflect.Descriptor instead.
 func (*EventDeliveryMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{254}
+	return file_store_proto_rawDescGZIP(), []int{255}
 }
 
 func (x *EventDeliveryMsg) GetTenantId() string {
@@ -20769,7 +20839,7 @@ type DeliveryFilterMsg struct {
 
 func (x *DeliveryFilterMsg) Reset() {
 	*x = DeliveryFilterMsg{}
-	mi := &file_store_proto_msgTypes[255]
+	mi := &file_store_proto_msgTypes[256]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20781,7 +20851,7 @@ func (x *DeliveryFilterMsg) String() string {
 func (*DeliveryFilterMsg) ProtoMessage() {}
 
 func (x *DeliveryFilterMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[255]
+	mi := &file_store_proto_msgTypes[256]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20794,7 +20864,7 @@ func (x *DeliveryFilterMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryFilterMsg.ProtoReflect.Descriptor instead.
 func (*DeliveryFilterMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{255}
+	return file_store_proto_rawDescGZIP(), []int{256}
 }
 
 func (x *DeliveryFilterMsg) GetStatuses() *StringList {
@@ -20839,7 +20909,7 @@ type DeliveryOutcomeMsg struct {
 
 func (x *DeliveryOutcomeMsg) Reset() {
 	*x = DeliveryOutcomeMsg{}
-	mi := &file_store_proto_msgTypes[256]
+	mi := &file_store_proto_msgTypes[257]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20851,7 +20921,7 @@ func (x *DeliveryOutcomeMsg) String() string {
 func (*DeliveryOutcomeMsg) ProtoMessage() {}
 
 func (x *DeliveryOutcomeMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[256]
+	mi := &file_store_proto_msgTypes[257]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20864,7 +20934,7 @@ func (x *DeliveryOutcomeMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryOutcomeMsg.ProtoReflect.Descriptor instead.
 func (*DeliveryOutcomeMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{256}
+	return file_store_proto_rawDescGZIP(), []int{257}
 }
 
 func (x *DeliveryOutcomeMsg) GetCheckpoint() int64 {
@@ -20938,7 +21008,7 @@ type EventsRequest struct {
 
 func (x *EventsRequest) Reset() {
 	*x = EventsRequest{}
-	mi := &file_store_proto_msgTypes[257]
+	mi := &file_store_proto_msgTypes[258]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20950,7 +21020,7 @@ func (x *EventsRequest) String() string {
 func (*EventsRequest) ProtoMessage() {}
 
 func (x *EventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[257]
+	mi := &file_store_proto_msgTypes[258]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20963,7 +21033,7 @@ func (x *EventsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventsRequest.ProtoReflect.Descriptor instead.
 func (*EventsRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{257}
+	return file_store_proto_rawDescGZIP(), []int{258}
 }
 
 func (x *EventsRequest) GetTxId() string {
@@ -21131,7 +21201,7 @@ type EventsResponse struct {
 
 func (x *EventsResponse) Reset() {
 	*x = EventsResponse{}
-	mi := &file_store_proto_msgTypes[258]
+	mi := &file_store_proto_msgTypes[259]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21143,7 +21213,7 @@ func (x *EventsResponse) String() string {
 func (*EventsResponse) ProtoMessage() {}
 
 func (x *EventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[258]
+	mi := &file_store_proto_msgTypes[259]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21156,7 +21226,7 @@ func (x *EventsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventsResponse.ProtoReflect.Descriptor instead.
 func (*EventsResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{258}
+	return file_store_proto_rawDescGZIP(), []int{259}
 }
 
 func (x *EventsResponse) GetError() *Error {
@@ -21244,7 +21314,7 @@ type MFAGuardian struct {
 
 func (x *MFAGuardian) Reset() {
 	*x = MFAGuardian{}
-	mi := &file_store_proto_msgTypes[259]
+	mi := &file_store_proto_msgTypes[260]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21256,7 +21326,7 @@ func (x *MFAGuardian) String() string {
 func (*MFAGuardian) ProtoMessage() {}
 
 func (x *MFAGuardian) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[259]
+	mi := &file_store_proto_msgTypes[260]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21269,7 +21339,7 @@ func (x *MFAGuardian) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGuardian.ProtoReflect.Descriptor instead.
 func (*MFAGuardian) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{259}
+	return file_store_proto_rawDescGZIP(), []int{260}
 }
 
 func (x *MFAGuardian) GetTenantId() string {
@@ -21342,7 +21412,7 @@ type MFAAuthenticator struct {
 
 func (x *MFAAuthenticator) Reset() {
 	*x = MFAAuthenticator{}
-	mi := &file_store_proto_msgTypes[260]
+	mi := &file_store_proto_msgTypes[261]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21354,7 +21424,7 @@ func (x *MFAAuthenticator) String() string {
 func (*MFAAuthenticator) ProtoMessage() {}
 
 func (x *MFAAuthenticator) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[260]
+	mi := &file_store_proto_msgTypes[261]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21367,7 +21437,7 @@ func (x *MFAAuthenticator) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAAuthenticator.ProtoReflect.Descriptor instead.
 func (*MFAAuthenticator) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{260}
+	return file_store_proto_rawDescGZIP(), []int{261}
 }
 
 func (x *MFAAuthenticator) GetTenantId() string {
@@ -21525,7 +21595,7 @@ type MFATokenMsg struct {
 
 func (x *MFATokenMsg) Reset() {
 	*x = MFATokenMsg{}
-	mi := &file_store_proto_msgTypes[261]
+	mi := &file_store_proto_msgTypes[262]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21537,7 +21607,7 @@ func (x *MFATokenMsg) String() string {
 func (*MFATokenMsg) ProtoMessage() {}
 
 func (x *MFATokenMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[261]
+	mi := &file_store_proto_msgTypes[262]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21550,7 +21620,7 @@ func (x *MFATokenMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFATokenMsg.ProtoReflect.Descriptor instead.
 func (*MFATokenMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{261}
+	return file_store_proto_rawDescGZIP(), []int{262}
 }
 
 func (x *MFATokenMsg) GetTenantId() string {
@@ -21620,7 +21690,7 @@ type MFAChallengeMsg struct {
 
 func (x *MFAChallengeMsg) Reset() {
 	*x = MFAChallengeMsg{}
-	mi := &file_store_proto_msgTypes[262]
+	mi := &file_store_proto_msgTypes[263]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21632,7 +21702,7 @@ func (x *MFAChallengeMsg) String() string {
 func (*MFAChallengeMsg) ProtoMessage() {}
 
 func (x *MFAChallengeMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[262]
+	mi := &file_store_proto_msgTypes[263]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21645,7 +21715,7 @@ func (x *MFAChallengeMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAChallengeMsg.ProtoReflect.Descriptor instead.
 func (*MFAChallengeMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{262}
+	return file_store_proto_rawDescGZIP(), []int{263}
 }
 
 func (x *MFAChallengeMsg) GetTenantId() string {
@@ -21732,7 +21802,7 @@ type MFAEnrollmentTicket struct {
 
 func (x *MFAEnrollmentTicket) Reset() {
 	*x = MFAEnrollmentTicket{}
-	mi := &file_store_proto_msgTypes[263]
+	mi := &file_store_proto_msgTypes[264]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21744,7 +21814,7 @@ func (x *MFAEnrollmentTicket) String() string {
 func (*MFAEnrollmentTicket) ProtoMessage() {}
 
 func (x *MFAEnrollmentTicket) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[263]
+	mi := &file_store_proto_msgTypes[264]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21757,7 +21827,7 @@ func (x *MFAEnrollmentTicket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAEnrollmentTicket.ProtoReflect.Descriptor instead.
 func (*MFAEnrollmentTicket) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{263}
+	return file_store_proto_rawDescGZIP(), []int{264}
 }
 
 func (x *MFAEnrollmentTicket) GetTenantId() string {
@@ -21816,7 +21886,7 @@ type MFABrowserMsg struct {
 
 func (x *MFABrowserMsg) Reset() {
 	*x = MFABrowserMsg{}
-	mi := &file_store_proto_msgTypes[264]
+	mi := &file_store_proto_msgTypes[265]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21828,7 +21898,7 @@ func (x *MFABrowserMsg) String() string {
 func (*MFABrowserMsg) ProtoMessage() {}
 
 func (x *MFABrowserMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[264]
+	mi := &file_store_proto_msgTypes[265]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21841,7 +21911,7 @@ func (x *MFABrowserMsg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFABrowserMsg.ProtoReflect.Descriptor instead.
 func (*MFABrowserMsg) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{264}
+	return file_store_proto_rawDescGZIP(), []int{265}
 }
 
 func (x *MFABrowserMsg) GetTenantId() string {
@@ -21896,7 +21966,7 @@ type MFAGetGuardianRequest struct {
 
 func (x *MFAGetGuardianRequest) Reset() {
 	*x = MFAGetGuardianRequest{}
-	mi := &file_store_proto_msgTypes[265]
+	mi := &file_store_proto_msgTypes[266]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21908,7 +21978,7 @@ func (x *MFAGetGuardianRequest) String() string {
 func (*MFAGetGuardianRequest) ProtoMessage() {}
 
 func (x *MFAGetGuardianRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[265]
+	mi := &file_store_proto_msgTypes[266]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21921,7 +21991,7 @@ func (x *MFAGetGuardianRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetGuardianRequest.ProtoReflect.Descriptor instead.
 func (*MFAGetGuardianRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{265}
+	return file_store_proto_rawDescGZIP(), []int{266}
 }
 
 func (x *MFAGetGuardianRequest) GetTxId() string {
@@ -21948,7 +22018,7 @@ type MFAGetGuardianResponse struct {
 
 func (x *MFAGetGuardianResponse) Reset() {
 	*x = MFAGetGuardianResponse{}
-	mi := &file_store_proto_msgTypes[266]
+	mi := &file_store_proto_msgTypes[267]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21960,7 +22030,7 @@ func (x *MFAGetGuardianResponse) String() string {
 func (*MFAGetGuardianResponse) ProtoMessage() {}
 
 func (x *MFAGetGuardianResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[266]
+	mi := &file_store_proto_msgTypes[267]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21973,7 +22043,7 @@ func (x *MFAGetGuardianResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetGuardianResponse.ProtoReflect.Descriptor instead.
 func (*MFAGetGuardianResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{266}
+	return file_store_proto_rawDescGZIP(), []int{267}
 }
 
 func (x *MFAGetGuardianResponse) GetError() *Error {
@@ -22001,7 +22071,7 @@ type MFAPutGuardianRequest struct {
 
 func (x *MFAPutGuardianRequest) Reset() {
 	*x = MFAPutGuardianRequest{}
-	mi := &file_store_proto_msgTypes[267]
+	mi := &file_store_proto_msgTypes[268]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22013,7 +22083,7 @@ func (x *MFAPutGuardianRequest) String() string {
 func (*MFAPutGuardianRequest) ProtoMessage() {}
 
 func (x *MFAPutGuardianRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[267]
+	mi := &file_store_proto_msgTypes[268]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22026,7 +22096,7 @@ func (x *MFAPutGuardianRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPutGuardianRequest.ProtoReflect.Descriptor instead.
 func (*MFAPutGuardianRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{267}
+	return file_store_proto_rawDescGZIP(), []int{268}
 }
 
 func (x *MFAPutGuardianRequest) GetTxId() string {
@@ -22059,7 +22129,7 @@ type MFAPutGuardianResponse struct {
 
 func (x *MFAPutGuardianResponse) Reset() {
 	*x = MFAPutGuardianResponse{}
-	mi := &file_store_proto_msgTypes[268]
+	mi := &file_store_proto_msgTypes[269]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22071,7 +22141,7 @@ func (x *MFAPutGuardianResponse) String() string {
 func (*MFAPutGuardianResponse) ProtoMessage() {}
 
 func (x *MFAPutGuardianResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[268]
+	mi := &file_store_proto_msgTypes[269]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22084,7 +22154,7 @@ func (x *MFAPutGuardianResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPutGuardianResponse.ProtoReflect.Descriptor instead.
 func (*MFAPutGuardianResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{268}
+	return file_store_proto_rawDescGZIP(), []int{269}
 }
 
 func (x *MFAPutGuardianResponse) GetError() *Error {
@@ -22104,7 +22174,7 @@ type MFACreateAuthenticatorRequest struct {
 
 func (x *MFACreateAuthenticatorRequest) Reset() {
 	*x = MFACreateAuthenticatorRequest{}
-	mi := &file_store_proto_msgTypes[269]
+	mi := &file_store_proto_msgTypes[270]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22116,7 +22186,7 @@ func (x *MFACreateAuthenticatorRequest) String() string {
 func (*MFACreateAuthenticatorRequest) ProtoMessage() {}
 
 func (x *MFACreateAuthenticatorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[269]
+	mi := &file_store_proto_msgTypes[270]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22129,7 +22199,7 @@ func (x *MFACreateAuthenticatorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateAuthenticatorRequest.ProtoReflect.Descriptor instead.
 func (*MFACreateAuthenticatorRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{269}
+	return file_store_proto_rawDescGZIP(), []int{270}
 }
 
 func (x *MFACreateAuthenticatorRequest) GetTxId() string {
@@ -22155,7 +22225,7 @@ type MFACreateAuthenticatorResponse struct {
 
 func (x *MFACreateAuthenticatorResponse) Reset() {
 	*x = MFACreateAuthenticatorResponse{}
-	mi := &file_store_proto_msgTypes[270]
+	mi := &file_store_proto_msgTypes[271]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22167,7 +22237,7 @@ func (x *MFACreateAuthenticatorResponse) String() string {
 func (*MFACreateAuthenticatorResponse) ProtoMessage() {}
 
 func (x *MFACreateAuthenticatorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[270]
+	mi := &file_store_proto_msgTypes[271]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22180,7 +22250,7 @@ func (x *MFACreateAuthenticatorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateAuthenticatorResponse.ProtoReflect.Descriptor instead.
 func (*MFACreateAuthenticatorResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{270}
+	return file_store_proto_rawDescGZIP(), []int{271}
 }
 
 func (x *MFACreateAuthenticatorResponse) GetError() *Error {
@@ -22202,7 +22272,7 @@ type MFAGetAuthenticatorRequest struct {
 
 func (x *MFAGetAuthenticatorRequest) Reset() {
 	*x = MFAGetAuthenticatorRequest{}
-	mi := &file_store_proto_msgTypes[271]
+	mi := &file_store_proto_msgTypes[272]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22214,7 +22284,7 @@ func (x *MFAGetAuthenticatorRequest) String() string {
 func (*MFAGetAuthenticatorRequest) ProtoMessage() {}
 
 func (x *MFAGetAuthenticatorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[271]
+	mi := &file_store_proto_msgTypes[272]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22227,7 +22297,7 @@ func (x *MFAGetAuthenticatorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetAuthenticatorRequest.ProtoReflect.Descriptor instead.
 func (*MFAGetAuthenticatorRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{271}
+	return file_store_proto_rawDescGZIP(), []int{272}
 }
 
 func (x *MFAGetAuthenticatorRequest) GetTxId() string {
@@ -22268,7 +22338,7 @@ type MFAGetAuthenticatorResponse struct {
 
 func (x *MFAGetAuthenticatorResponse) Reset() {
 	*x = MFAGetAuthenticatorResponse{}
-	mi := &file_store_proto_msgTypes[272]
+	mi := &file_store_proto_msgTypes[273]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22280,7 +22350,7 @@ func (x *MFAGetAuthenticatorResponse) String() string {
 func (*MFAGetAuthenticatorResponse) ProtoMessage() {}
 
 func (x *MFAGetAuthenticatorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[272]
+	mi := &file_store_proto_msgTypes[273]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22293,7 +22363,7 @@ func (x *MFAGetAuthenticatorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetAuthenticatorResponse.ProtoReflect.Descriptor instead.
 func (*MFAGetAuthenticatorResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{272}
+	return file_store_proto_rawDescGZIP(), []int{273}
 }
 
 func (x *MFAGetAuthenticatorResponse) GetError() *Error {
@@ -22321,7 +22391,7 @@ type MFAGetAuthenticatorByEnrollmentIDRequest struct {
 
 func (x *MFAGetAuthenticatorByEnrollmentIDRequest) Reset() {
 	*x = MFAGetAuthenticatorByEnrollmentIDRequest{}
-	mi := &file_store_proto_msgTypes[273]
+	mi := &file_store_proto_msgTypes[274]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22333,7 +22403,7 @@ func (x *MFAGetAuthenticatorByEnrollmentIDRequest) String() string {
 func (*MFAGetAuthenticatorByEnrollmentIDRequest) ProtoMessage() {}
 
 func (x *MFAGetAuthenticatorByEnrollmentIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[273]
+	mi := &file_store_proto_msgTypes[274]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22346,7 +22416,7 @@ func (x *MFAGetAuthenticatorByEnrollmentIDRequest) ProtoReflect() protoreflect.M
 
 // Deprecated: Use MFAGetAuthenticatorByEnrollmentIDRequest.ProtoReflect.Descriptor instead.
 func (*MFAGetAuthenticatorByEnrollmentIDRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{273}
+	return file_store_proto_rawDescGZIP(), []int{274}
 }
 
 func (x *MFAGetAuthenticatorByEnrollmentIDRequest) GetTxId() string {
@@ -22380,7 +22450,7 @@ type MFAGetAuthenticatorByEnrollmentIDResponse struct {
 
 func (x *MFAGetAuthenticatorByEnrollmentIDResponse) Reset() {
 	*x = MFAGetAuthenticatorByEnrollmentIDResponse{}
-	mi := &file_store_proto_msgTypes[274]
+	mi := &file_store_proto_msgTypes[275]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22392,7 +22462,7 @@ func (x *MFAGetAuthenticatorByEnrollmentIDResponse) String() string {
 func (*MFAGetAuthenticatorByEnrollmentIDResponse) ProtoMessage() {}
 
 func (x *MFAGetAuthenticatorByEnrollmentIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[274]
+	mi := &file_store_proto_msgTypes[275]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22405,7 +22475,7 @@ func (x *MFAGetAuthenticatorByEnrollmentIDResponse) ProtoReflect() protoreflect.
 
 // Deprecated: Use MFAGetAuthenticatorByEnrollmentIDResponse.ProtoReflect.Descriptor instead.
 func (*MFAGetAuthenticatorByEnrollmentIDResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{274}
+	return file_store_proto_rawDescGZIP(), []int{275}
 }
 
 func (x *MFAGetAuthenticatorByEnrollmentIDResponse) GetError() *Error {
@@ -22433,7 +22503,7 @@ type MFAListAuthenticatorsRequest struct {
 
 func (x *MFAListAuthenticatorsRequest) Reset() {
 	*x = MFAListAuthenticatorsRequest{}
-	mi := &file_store_proto_msgTypes[275]
+	mi := &file_store_proto_msgTypes[276]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22445,7 +22515,7 @@ func (x *MFAListAuthenticatorsRequest) String() string {
 func (*MFAListAuthenticatorsRequest) ProtoMessage() {}
 
 func (x *MFAListAuthenticatorsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[275]
+	mi := &file_store_proto_msgTypes[276]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22458,7 +22528,7 @@ func (x *MFAListAuthenticatorsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAListAuthenticatorsRequest.ProtoReflect.Descriptor instead.
 func (*MFAListAuthenticatorsRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{275}
+	return file_store_proto_rawDescGZIP(), []int{276}
 }
 
 func (x *MFAListAuthenticatorsRequest) GetTxId() string {
@@ -22492,7 +22562,7 @@ type MFAListAuthenticatorsResponse struct {
 
 func (x *MFAListAuthenticatorsResponse) Reset() {
 	*x = MFAListAuthenticatorsResponse{}
-	mi := &file_store_proto_msgTypes[276]
+	mi := &file_store_proto_msgTypes[277]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22504,7 +22574,7 @@ func (x *MFAListAuthenticatorsResponse) String() string {
 func (*MFAListAuthenticatorsResponse) ProtoMessage() {}
 
 func (x *MFAListAuthenticatorsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[276]
+	mi := &file_store_proto_msgTypes[277]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22517,7 +22587,7 @@ func (x *MFAListAuthenticatorsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAListAuthenticatorsResponse.ProtoReflect.Descriptor instead.
 func (*MFAListAuthenticatorsResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{276}
+	return file_store_proto_rawDescGZIP(), []int{277}
 }
 
 func (x *MFAListAuthenticatorsResponse) GetError() *Error {
@@ -22544,7 +22614,7 @@ type MFAUpdateAuthenticatorRequest struct {
 
 func (x *MFAUpdateAuthenticatorRequest) Reset() {
 	*x = MFAUpdateAuthenticatorRequest{}
-	mi := &file_store_proto_msgTypes[277]
+	mi := &file_store_proto_msgTypes[278]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22556,7 +22626,7 @@ func (x *MFAUpdateAuthenticatorRequest) String() string {
 func (*MFAUpdateAuthenticatorRequest) ProtoMessage() {}
 
 func (x *MFAUpdateAuthenticatorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[277]
+	mi := &file_store_proto_msgTypes[278]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22569,7 +22639,7 @@ func (x *MFAUpdateAuthenticatorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAUpdateAuthenticatorRequest.ProtoReflect.Descriptor instead.
 func (*MFAUpdateAuthenticatorRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{277}
+	return file_store_proto_rawDescGZIP(), []int{278}
 }
 
 func (x *MFAUpdateAuthenticatorRequest) GetTxId() string {
@@ -22595,7 +22665,7 @@ type MFAUpdateAuthenticatorResponse struct {
 
 func (x *MFAUpdateAuthenticatorResponse) Reset() {
 	*x = MFAUpdateAuthenticatorResponse{}
-	mi := &file_store_proto_msgTypes[278]
+	mi := &file_store_proto_msgTypes[279]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22607,7 +22677,7 @@ func (x *MFAUpdateAuthenticatorResponse) String() string {
 func (*MFAUpdateAuthenticatorResponse) ProtoMessage() {}
 
 func (x *MFAUpdateAuthenticatorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[278]
+	mi := &file_store_proto_msgTypes[279]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22620,7 +22690,7 @@ func (x *MFAUpdateAuthenticatorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAUpdateAuthenticatorResponse.ProtoReflect.Descriptor instead.
 func (*MFAUpdateAuthenticatorResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{278}
+	return file_store_proto_rawDescGZIP(), []int{279}
 }
 
 func (x *MFAUpdateAuthenticatorResponse) GetError() *Error {
@@ -22642,7 +22712,7 @@ type MFADeleteAuthenticatorRequest struct {
 
 func (x *MFADeleteAuthenticatorRequest) Reset() {
 	*x = MFADeleteAuthenticatorRequest{}
-	mi := &file_store_proto_msgTypes[279]
+	mi := &file_store_proto_msgTypes[280]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22654,7 +22724,7 @@ func (x *MFADeleteAuthenticatorRequest) String() string {
 func (*MFADeleteAuthenticatorRequest) ProtoMessage() {}
 
 func (x *MFADeleteAuthenticatorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[279]
+	mi := &file_store_proto_msgTypes[280]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22667,7 +22737,7 @@ func (x *MFADeleteAuthenticatorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFADeleteAuthenticatorRequest.ProtoReflect.Descriptor instead.
 func (*MFADeleteAuthenticatorRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{279}
+	return file_store_proto_rawDescGZIP(), []int{280}
 }
 
 func (x *MFADeleteAuthenticatorRequest) GetTxId() string {
@@ -22707,7 +22777,7 @@ type MFADeleteAuthenticatorResponse struct {
 
 func (x *MFADeleteAuthenticatorResponse) Reset() {
 	*x = MFADeleteAuthenticatorResponse{}
-	mi := &file_store_proto_msgTypes[280]
+	mi := &file_store_proto_msgTypes[281]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22719,7 +22789,7 @@ func (x *MFADeleteAuthenticatorResponse) String() string {
 func (*MFADeleteAuthenticatorResponse) ProtoMessage() {}
 
 func (x *MFADeleteAuthenticatorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[280]
+	mi := &file_store_proto_msgTypes[281]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22732,7 +22802,7 @@ func (x *MFADeleteAuthenticatorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFADeleteAuthenticatorResponse.ProtoReflect.Descriptor instead.
 func (*MFADeleteAuthenticatorResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{280}
+	return file_store_proto_rawDescGZIP(), []int{281}
 }
 
 func (x *MFADeleteAuthenticatorResponse) GetError() *Error {
@@ -22754,7 +22824,7 @@ type MFADeleteUserAuthenticatorsRequest struct {
 
 func (x *MFADeleteUserAuthenticatorsRequest) Reset() {
 	*x = MFADeleteUserAuthenticatorsRequest{}
-	mi := &file_store_proto_msgTypes[281]
+	mi := &file_store_proto_msgTypes[282]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22766,7 +22836,7 @@ func (x *MFADeleteUserAuthenticatorsRequest) String() string {
 func (*MFADeleteUserAuthenticatorsRequest) ProtoMessage() {}
 
 func (x *MFADeleteUserAuthenticatorsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[281]
+	mi := &file_store_proto_msgTypes[282]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22779,7 +22849,7 @@ func (x *MFADeleteUserAuthenticatorsRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use MFADeleteUserAuthenticatorsRequest.ProtoReflect.Descriptor instead.
 func (*MFADeleteUserAuthenticatorsRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{281}
+	return file_store_proto_rawDescGZIP(), []int{282}
 }
 
 func (x *MFADeleteUserAuthenticatorsRequest) GetTxId() string {
@@ -22819,7 +22889,7 @@ type MFADeleteUserAuthenticatorsResponse struct {
 
 func (x *MFADeleteUserAuthenticatorsResponse) Reset() {
 	*x = MFADeleteUserAuthenticatorsResponse{}
-	mi := &file_store_proto_msgTypes[282]
+	mi := &file_store_proto_msgTypes[283]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22831,7 +22901,7 @@ func (x *MFADeleteUserAuthenticatorsResponse) String() string {
 func (*MFADeleteUserAuthenticatorsResponse) ProtoMessage() {}
 
 func (x *MFADeleteUserAuthenticatorsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[282]
+	mi := &file_store_proto_msgTypes[283]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22844,7 +22914,7 @@ func (x *MFADeleteUserAuthenticatorsResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use MFADeleteUserAuthenticatorsResponse.ProtoReflect.Descriptor instead.
 func (*MFADeleteUserAuthenticatorsResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{282}
+	return file_store_proto_rawDescGZIP(), []int{283}
 }
 
 func (x *MFADeleteUserAuthenticatorsResponse) GetError() *Error {
@@ -22868,7 +22938,7 @@ type MFAAcceptTOTPStepRequest struct {
 
 func (x *MFAAcceptTOTPStepRequest) Reset() {
 	*x = MFAAcceptTOTPStepRequest{}
-	mi := &file_store_proto_msgTypes[283]
+	mi := &file_store_proto_msgTypes[284]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22880,7 +22950,7 @@ func (x *MFAAcceptTOTPStepRequest) String() string {
 func (*MFAAcceptTOTPStepRequest) ProtoMessage() {}
 
 func (x *MFAAcceptTOTPStepRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[283]
+	mi := &file_store_proto_msgTypes[284]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22893,7 +22963,7 @@ func (x *MFAAcceptTOTPStepRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAAcceptTOTPStepRequest.ProtoReflect.Descriptor instead.
 func (*MFAAcceptTOTPStepRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{283}
+	return file_store_proto_rawDescGZIP(), []int{284}
 }
 
 func (x *MFAAcceptTOTPStepRequest) GetTxId() string {
@@ -22947,7 +23017,7 @@ type MFAAcceptTOTPStepResponse struct {
 
 func (x *MFAAcceptTOTPStepResponse) Reset() {
 	*x = MFAAcceptTOTPStepResponse{}
-	mi := &file_store_proto_msgTypes[284]
+	mi := &file_store_proto_msgTypes[285]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22959,7 +23029,7 @@ func (x *MFAAcceptTOTPStepResponse) String() string {
 func (*MFAAcceptTOTPStepResponse) ProtoMessage() {}
 
 func (x *MFAAcceptTOTPStepResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[284]
+	mi := &file_store_proto_msgTypes[285]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22972,7 +23042,7 @@ func (x *MFAAcceptTOTPStepResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAAcceptTOTPStepResponse.ProtoReflect.Descriptor instead.
 func (*MFAAcceptTOTPStepResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{284}
+	return file_store_proto_rawDescGZIP(), []int{285}
 }
 
 func (x *MFAAcceptTOTPStepResponse) GetError() *Error {
@@ -22996,7 +23066,7 @@ type MFAReplaceRecoveryCodeRequest struct {
 
 func (x *MFAReplaceRecoveryCodeRequest) Reset() {
 	*x = MFAReplaceRecoveryCodeRequest{}
-	mi := &file_store_proto_msgTypes[285]
+	mi := &file_store_proto_msgTypes[286]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23008,7 +23078,7 @@ func (x *MFAReplaceRecoveryCodeRequest) String() string {
 func (*MFAReplaceRecoveryCodeRequest) ProtoMessage() {}
 
 func (x *MFAReplaceRecoveryCodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[285]
+	mi := &file_store_proto_msgTypes[286]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23021,7 +23091,7 @@ func (x *MFAReplaceRecoveryCodeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAReplaceRecoveryCodeRequest.ProtoReflect.Descriptor instead.
 func (*MFAReplaceRecoveryCodeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{285}
+	return file_store_proto_rawDescGZIP(), []int{286}
 }
 
 func (x *MFAReplaceRecoveryCodeRequest) GetTxId() string {
@@ -23075,7 +23145,7 @@ type MFAReplaceRecoveryCodeResponse struct {
 
 func (x *MFAReplaceRecoveryCodeResponse) Reset() {
 	*x = MFAReplaceRecoveryCodeResponse{}
-	mi := &file_store_proto_msgTypes[286]
+	mi := &file_store_proto_msgTypes[287]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23087,7 +23157,7 @@ func (x *MFAReplaceRecoveryCodeResponse) String() string {
 func (*MFAReplaceRecoveryCodeResponse) ProtoMessage() {}
 
 func (x *MFAReplaceRecoveryCodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[286]
+	mi := &file_store_proto_msgTypes[287]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23100,7 +23170,7 @@ func (x *MFAReplaceRecoveryCodeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAReplaceRecoveryCodeResponse.ProtoReflect.Descriptor instead.
 func (*MFAReplaceRecoveryCodeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{286}
+	return file_store_proto_rawDescGZIP(), []int{287}
 }
 
 func (x *MFAReplaceRecoveryCodeResponse) GetError() *Error {
@@ -23124,7 +23194,7 @@ type MFAAcceptSignCountRequest struct {
 
 func (x *MFAAcceptSignCountRequest) Reset() {
 	*x = MFAAcceptSignCountRequest{}
-	mi := &file_store_proto_msgTypes[287]
+	mi := &file_store_proto_msgTypes[288]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23136,7 +23206,7 @@ func (x *MFAAcceptSignCountRequest) String() string {
 func (*MFAAcceptSignCountRequest) ProtoMessage() {}
 
 func (x *MFAAcceptSignCountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[287]
+	mi := &file_store_proto_msgTypes[288]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23149,7 +23219,7 @@ func (x *MFAAcceptSignCountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAAcceptSignCountRequest.ProtoReflect.Descriptor instead.
 func (*MFAAcceptSignCountRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{287}
+	return file_store_proto_rawDescGZIP(), []int{288}
 }
 
 func (x *MFAAcceptSignCountRequest) GetTxId() string {
@@ -23203,7 +23273,7 @@ type MFAAcceptSignCountResponse struct {
 
 func (x *MFAAcceptSignCountResponse) Reset() {
 	*x = MFAAcceptSignCountResponse{}
-	mi := &file_store_proto_msgTypes[288]
+	mi := &file_store_proto_msgTypes[289]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23215,7 +23285,7 @@ func (x *MFAAcceptSignCountResponse) String() string {
 func (*MFAAcceptSignCountResponse) ProtoMessage() {}
 
 func (x *MFAAcceptSignCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[288]
+	mi := &file_store_proto_msgTypes[289]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23228,7 +23298,7 @@ func (x *MFAAcceptSignCountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAAcceptSignCountResponse.ProtoReflect.Descriptor instead.
 func (*MFAAcceptSignCountResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{288}
+	return file_store_proto_rawDescGZIP(), []int{289}
 }
 
 func (x *MFAAcceptSignCountResponse) GetError() *Error {
@@ -23248,7 +23318,7 @@ type MFACreateMFATokenRequest struct {
 
 func (x *MFACreateMFATokenRequest) Reset() {
 	*x = MFACreateMFATokenRequest{}
-	mi := &file_store_proto_msgTypes[289]
+	mi := &file_store_proto_msgTypes[290]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23260,7 +23330,7 @@ func (x *MFACreateMFATokenRequest) String() string {
 func (*MFACreateMFATokenRequest) ProtoMessage() {}
 
 func (x *MFACreateMFATokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[289]
+	mi := &file_store_proto_msgTypes[290]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23273,7 +23343,7 @@ func (x *MFACreateMFATokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateMFATokenRequest.ProtoReflect.Descriptor instead.
 func (*MFACreateMFATokenRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{289}
+	return file_store_proto_rawDescGZIP(), []int{290}
 }
 
 func (x *MFACreateMFATokenRequest) GetTxId() string {
@@ -23299,7 +23369,7 @@ type MFACreateMFATokenResponse struct {
 
 func (x *MFACreateMFATokenResponse) Reset() {
 	*x = MFACreateMFATokenResponse{}
-	mi := &file_store_proto_msgTypes[290]
+	mi := &file_store_proto_msgTypes[291]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23311,7 +23381,7 @@ func (x *MFACreateMFATokenResponse) String() string {
 func (*MFACreateMFATokenResponse) ProtoMessage() {}
 
 func (x *MFACreateMFATokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[290]
+	mi := &file_store_proto_msgTypes[291]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23324,7 +23394,7 @@ func (x *MFACreateMFATokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateMFATokenResponse.ProtoReflect.Descriptor instead.
 func (*MFACreateMFATokenResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{290}
+	return file_store_proto_rawDescGZIP(), []int{291}
 }
 
 func (x *MFACreateMFATokenResponse) GetError() *Error {
@@ -23347,7 +23417,7 @@ type MFAConsumeMFATokenRequest struct {
 
 func (x *MFAConsumeMFATokenRequest) Reset() {
 	*x = MFAConsumeMFATokenRequest{}
-	mi := &file_store_proto_msgTypes[291]
+	mi := &file_store_proto_msgTypes[292]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23359,7 +23429,7 @@ func (x *MFAConsumeMFATokenRequest) String() string {
 func (*MFAConsumeMFATokenRequest) ProtoMessage() {}
 
 func (x *MFAConsumeMFATokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[291]
+	mi := &file_store_proto_msgTypes[292]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23372,7 +23442,7 @@ func (x *MFAConsumeMFATokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAConsumeMFATokenRequest.ProtoReflect.Descriptor instead.
 func (*MFAConsumeMFATokenRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{291}
+	return file_store_proto_rawDescGZIP(), []int{292}
 }
 
 func (x *MFAConsumeMFATokenRequest) GetTxId() string {
@@ -23420,7 +23490,7 @@ type MFAConsumeMFATokenResponse struct {
 
 func (x *MFAConsumeMFATokenResponse) Reset() {
 	*x = MFAConsumeMFATokenResponse{}
-	mi := &file_store_proto_msgTypes[292]
+	mi := &file_store_proto_msgTypes[293]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23432,7 +23502,7 @@ func (x *MFAConsumeMFATokenResponse) String() string {
 func (*MFAConsumeMFATokenResponse) ProtoMessage() {}
 
 func (x *MFAConsumeMFATokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[292]
+	mi := &file_store_proto_msgTypes[293]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23445,7 +23515,7 @@ func (x *MFAConsumeMFATokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAConsumeMFATokenResponse.ProtoReflect.Descriptor instead.
 func (*MFAConsumeMFATokenResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{292}
+	return file_store_proto_rawDescGZIP(), []int{293}
 }
 
 func (x *MFAConsumeMFATokenResponse) GetError() *Error {
@@ -23474,7 +23544,7 @@ type MFAPeekMFATokenRequest struct {
 
 func (x *MFAPeekMFATokenRequest) Reset() {
 	*x = MFAPeekMFATokenRequest{}
-	mi := &file_store_proto_msgTypes[293]
+	mi := &file_store_proto_msgTypes[294]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23486,7 +23556,7 @@ func (x *MFAPeekMFATokenRequest) String() string {
 func (*MFAPeekMFATokenRequest) ProtoMessage() {}
 
 func (x *MFAPeekMFATokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[293]
+	mi := &file_store_proto_msgTypes[294]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23499,7 +23569,7 @@ func (x *MFAPeekMFATokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPeekMFATokenRequest.ProtoReflect.Descriptor instead.
 func (*MFAPeekMFATokenRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{293}
+	return file_store_proto_rawDescGZIP(), []int{294}
 }
 
 func (x *MFAPeekMFATokenRequest) GetTxId() string {
@@ -23540,7 +23610,7 @@ type MFAPeekMFATokenResponse struct {
 
 func (x *MFAPeekMFATokenResponse) Reset() {
 	*x = MFAPeekMFATokenResponse{}
-	mi := &file_store_proto_msgTypes[294]
+	mi := &file_store_proto_msgTypes[295]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23552,7 +23622,7 @@ func (x *MFAPeekMFATokenResponse) String() string {
 func (*MFAPeekMFATokenResponse) ProtoMessage() {}
 
 func (x *MFAPeekMFATokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[294]
+	mi := &file_store_proto_msgTypes[295]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23565,7 +23635,7 @@ func (x *MFAPeekMFATokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPeekMFATokenResponse.ProtoReflect.Descriptor instead.
 func (*MFAPeekMFATokenResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{294}
+	return file_store_proto_rawDescGZIP(), []int{295}
 }
 
 func (x *MFAPeekMFATokenResponse) GetError() *Error {
@@ -23592,7 +23662,7 @@ type MFACreateChallengeRequest struct {
 
 func (x *MFACreateChallengeRequest) Reset() {
 	*x = MFACreateChallengeRequest{}
-	mi := &file_store_proto_msgTypes[295]
+	mi := &file_store_proto_msgTypes[296]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23604,7 +23674,7 @@ func (x *MFACreateChallengeRequest) String() string {
 func (*MFACreateChallengeRequest) ProtoMessage() {}
 
 func (x *MFACreateChallengeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[295]
+	mi := &file_store_proto_msgTypes[296]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23617,7 +23687,7 @@ func (x *MFACreateChallengeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateChallengeRequest.ProtoReflect.Descriptor instead.
 func (*MFACreateChallengeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{295}
+	return file_store_proto_rawDescGZIP(), []int{296}
 }
 
 func (x *MFACreateChallengeRequest) GetTxId() string {
@@ -23643,7 +23713,7 @@ type MFACreateChallengeResponse struct {
 
 func (x *MFACreateChallengeResponse) Reset() {
 	*x = MFACreateChallengeResponse{}
-	mi := &file_store_proto_msgTypes[296]
+	mi := &file_store_proto_msgTypes[297]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23655,7 +23725,7 @@ func (x *MFACreateChallengeResponse) String() string {
 func (*MFACreateChallengeResponse) ProtoMessage() {}
 
 func (x *MFACreateChallengeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[296]
+	mi := &file_store_proto_msgTypes[297]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23668,7 +23738,7 @@ func (x *MFACreateChallengeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateChallengeResponse.ProtoReflect.Descriptor instead.
 func (*MFACreateChallengeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{296}
+	return file_store_proto_rawDescGZIP(), []int{297}
 }
 
 func (x *MFACreateChallengeResponse) GetError() *Error {
@@ -23690,7 +23760,7 @@ type MFAGetChallengeRequest struct {
 
 func (x *MFAGetChallengeRequest) Reset() {
 	*x = MFAGetChallengeRequest{}
-	mi := &file_store_proto_msgTypes[297]
+	mi := &file_store_proto_msgTypes[298]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23702,7 +23772,7 @@ func (x *MFAGetChallengeRequest) String() string {
 func (*MFAGetChallengeRequest) ProtoMessage() {}
 
 func (x *MFAGetChallengeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[297]
+	mi := &file_store_proto_msgTypes[298]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23715,7 +23785,7 @@ func (x *MFAGetChallengeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetChallengeRequest.ProtoReflect.Descriptor instead.
 func (*MFAGetChallengeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{297}
+	return file_store_proto_rawDescGZIP(), []int{298}
 }
 
 func (x *MFAGetChallengeRequest) GetTxId() string {
@@ -23756,7 +23826,7 @@ type MFAGetChallengeResponse struct {
 
 func (x *MFAGetChallengeResponse) Reset() {
 	*x = MFAGetChallengeResponse{}
-	mi := &file_store_proto_msgTypes[298]
+	mi := &file_store_proto_msgTypes[299]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23768,7 +23838,7 @@ func (x *MFAGetChallengeResponse) String() string {
 func (*MFAGetChallengeResponse) ProtoMessage() {}
 
 func (x *MFAGetChallengeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[298]
+	mi := &file_store_proto_msgTypes[299]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23781,7 +23851,7 @@ func (x *MFAGetChallengeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetChallengeResponse.ProtoReflect.Descriptor instead.
 func (*MFAGetChallengeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{298}
+	return file_store_proto_rawDescGZIP(), []int{299}
 }
 
 func (x *MFAGetChallengeResponse) GetError() *Error {
@@ -23809,7 +23879,7 @@ type MFAFailChallengeRequest struct {
 
 func (x *MFAFailChallengeRequest) Reset() {
 	*x = MFAFailChallengeRequest{}
-	mi := &file_store_proto_msgTypes[299]
+	mi := &file_store_proto_msgTypes[300]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23821,7 +23891,7 @@ func (x *MFAFailChallengeRequest) String() string {
 func (*MFAFailChallengeRequest) ProtoMessage() {}
 
 func (x *MFAFailChallengeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[299]
+	mi := &file_store_proto_msgTypes[300]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23834,7 +23904,7 @@ func (x *MFAFailChallengeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAFailChallengeRequest.ProtoReflect.Descriptor instead.
 func (*MFAFailChallengeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{299}
+	return file_store_proto_rawDescGZIP(), []int{300}
 }
 
 func (x *MFAFailChallengeRequest) GetTxId() string {
@@ -23868,7 +23938,7 @@ type MFAFailChallengeResponse struct {
 
 func (x *MFAFailChallengeResponse) Reset() {
 	*x = MFAFailChallengeResponse{}
-	mi := &file_store_proto_msgTypes[300]
+	mi := &file_store_proto_msgTypes[301]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23880,7 +23950,7 @@ func (x *MFAFailChallengeResponse) String() string {
 func (*MFAFailChallengeResponse) ProtoMessage() {}
 
 func (x *MFAFailChallengeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[300]
+	mi := &file_store_proto_msgTypes[301]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23893,7 +23963,7 @@ func (x *MFAFailChallengeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAFailChallengeResponse.ProtoReflect.Descriptor instead.
 func (*MFAFailChallengeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{300}
+	return file_store_proto_rawDescGZIP(), []int{301}
 }
 
 func (x *MFAFailChallengeResponse) GetError() *Error {
@@ -23922,7 +23992,7 @@ type MFAConsumeChallengeRequest struct {
 
 func (x *MFAConsumeChallengeRequest) Reset() {
 	*x = MFAConsumeChallengeRequest{}
-	mi := &file_store_proto_msgTypes[301]
+	mi := &file_store_proto_msgTypes[302]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23934,7 +24004,7 @@ func (x *MFAConsumeChallengeRequest) String() string {
 func (*MFAConsumeChallengeRequest) ProtoMessage() {}
 
 func (x *MFAConsumeChallengeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[301]
+	mi := &file_store_proto_msgTypes[302]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23947,7 +24017,7 @@ func (x *MFAConsumeChallengeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAConsumeChallengeRequest.ProtoReflect.Descriptor instead.
 func (*MFAConsumeChallengeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{301}
+	return file_store_proto_rawDescGZIP(), []int{302}
 }
 
 func (x *MFAConsumeChallengeRequest) GetTxId() string {
@@ -23987,7 +24057,7 @@ type MFAConsumeChallengeResponse struct {
 
 func (x *MFAConsumeChallengeResponse) Reset() {
 	*x = MFAConsumeChallengeResponse{}
-	mi := &file_store_proto_msgTypes[302]
+	mi := &file_store_proto_msgTypes[303]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23999,7 +24069,7 @@ func (x *MFAConsumeChallengeResponse) String() string {
 func (*MFAConsumeChallengeResponse) ProtoMessage() {}
 
 func (x *MFAConsumeChallengeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[302]
+	mi := &file_store_proto_msgTypes[303]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24012,7 +24082,7 @@ func (x *MFAConsumeChallengeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAConsumeChallengeResponse.ProtoReflect.Descriptor instead.
 func (*MFAConsumeChallengeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{302}
+	return file_store_proto_rawDescGZIP(), []int{303}
 }
 
 func (x *MFAConsumeChallengeResponse) GetError() *Error {
@@ -24032,7 +24102,7 @@ type MFACreateTicketRequest struct {
 
 func (x *MFACreateTicketRequest) Reset() {
 	*x = MFACreateTicketRequest{}
-	mi := &file_store_proto_msgTypes[303]
+	mi := &file_store_proto_msgTypes[304]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24044,7 +24114,7 @@ func (x *MFACreateTicketRequest) String() string {
 func (*MFACreateTicketRequest) ProtoMessage() {}
 
 func (x *MFACreateTicketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[303]
+	mi := &file_store_proto_msgTypes[304]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24057,7 +24127,7 @@ func (x *MFACreateTicketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateTicketRequest.ProtoReflect.Descriptor instead.
 func (*MFACreateTicketRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{303}
+	return file_store_proto_rawDescGZIP(), []int{304}
 }
 
 func (x *MFACreateTicketRequest) GetTxId() string {
@@ -24083,7 +24153,7 @@ type MFACreateTicketResponse struct {
 
 func (x *MFACreateTicketResponse) Reset() {
 	*x = MFACreateTicketResponse{}
-	mi := &file_store_proto_msgTypes[304]
+	mi := &file_store_proto_msgTypes[305]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24095,7 +24165,7 @@ func (x *MFACreateTicketResponse) String() string {
 func (*MFACreateTicketResponse) ProtoMessage() {}
 
 func (x *MFACreateTicketResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[304]
+	mi := &file_store_proto_msgTypes[305]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24108,7 +24178,7 @@ func (x *MFACreateTicketResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFACreateTicketResponse.ProtoReflect.Descriptor instead.
 func (*MFACreateTicketResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{304}
+	return file_store_proto_rawDescGZIP(), []int{305}
 }
 
 func (x *MFACreateTicketResponse) GetError() *Error {
@@ -24130,7 +24200,7 @@ type MFAConsumeTicketRequest struct {
 
 func (x *MFAConsumeTicketRequest) Reset() {
 	*x = MFAConsumeTicketRequest{}
-	mi := &file_store_proto_msgTypes[305]
+	mi := &file_store_proto_msgTypes[306]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24142,7 +24212,7 @@ func (x *MFAConsumeTicketRequest) String() string {
 func (*MFAConsumeTicketRequest) ProtoMessage() {}
 
 func (x *MFAConsumeTicketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[305]
+	mi := &file_store_proto_msgTypes[306]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24155,7 +24225,7 @@ func (x *MFAConsumeTicketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAConsumeTicketRequest.ProtoReflect.Descriptor instead.
 func (*MFAConsumeTicketRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{305}
+	return file_store_proto_rawDescGZIP(), []int{306}
 }
 
 func (x *MFAConsumeTicketRequest) GetTxId() string {
@@ -24196,7 +24266,7 @@ type MFAConsumeTicketResponse struct {
 
 func (x *MFAConsumeTicketResponse) Reset() {
 	*x = MFAConsumeTicketResponse{}
-	mi := &file_store_proto_msgTypes[306]
+	mi := &file_store_proto_msgTypes[307]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24208,7 +24278,7 @@ func (x *MFAConsumeTicketResponse) String() string {
 func (*MFAConsumeTicketResponse) ProtoMessage() {}
 
 func (x *MFAConsumeTicketResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[306]
+	mi := &file_store_proto_msgTypes[307]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24221,7 +24291,7 @@ func (x *MFAConsumeTicketResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAConsumeTicketResponse.ProtoReflect.Descriptor instead.
 func (*MFAConsumeTicketResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{306}
+	return file_store_proto_rawDescGZIP(), []int{307}
 }
 
 func (x *MFAConsumeTicketResponse) GetError() *Error {
@@ -24250,7 +24320,7 @@ type MFAPeekTicketRequest struct {
 
 func (x *MFAPeekTicketRequest) Reset() {
 	*x = MFAPeekTicketRequest{}
-	mi := &file_store_proto_msgTypes[307]
+	mi := &file_store_proto_msgTypes[308]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24262,7 +24332,7 @@ func (x *MFAPeekTicketRequest) String() string {
 func (*MFAPeekTicketRequest) ProtoMessage() {}
 
 func (x *MFAPeekTicketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[307]
+	mi := &file_store_proto_msgTypes[308]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24275,7 +24345,7 @@ func (x *MFAPeekTicketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPeekTicketRequest.ProtoReflect.Descriptor instead.
 func (*MFAPeekTicketRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{307}
+	return file_store_proto_rawDescGZIP(), []int{308}
 }
 
 func (x *MFAPeekTicketRequest) GetTxId() string {
@@ -24316,7 +24386,7 @@ type MFAPeekTicketResponse struct {
 
 func (x *MFAPeekTicketResponse) Reset() {
 	*x = MFAPeekTicketResponse{}
-	mi := &file_store_proto_msgTypes[308]
+	mi := &file_store_proto_msgTypes[309]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24328,7 +24398,7 @@ func (x *MFAPeekTicketResponse) String() string {
 func (*MFAPeekTicketResponse) ProtoMessage() {}
 
 func (x *MFAPeekTicketResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[308]
+	mi := &file_store_proto_msgTypes[309]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24341,7 +24411,7 @@ func (x *MFAPeekTicketResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPeekTicketResponse.ProtoReflect.Descriptor instead.
 func (*MFAPeekTicketResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{308}
+	return file_store_proto_rawDescGZIP(), []int{309}
 }
 
 func (x *MFAPeekTicketResponse) GetError() *Error {
@@ -24368,7 +24438,7 @@ type MFAPutBrowserRequest struct {
 
 func (x *MFAPutBrowserRequest) Reset() {
 	*x = MFAPutBrowserRequest{}
-	mi := &file_store_proto_msgTypes[309]
+	mi := &file_store_proto_msgTypes[310]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24380,7 +24450,7 @@ func (x *MFAPutBrowserRequest) String() string {
 func (*MFAPutBrowserRequest) ProtoMessage() {}
 
 func (x *MFAPutBrowserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[309]
+	mi := &file_store_proto_msgTypes[310]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24393,7 +24463,7 @@ func (x *MFAPutBrowserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPutBrowserRequest.ProtoReflect.Descriptor instead.
 func (*MFAPutBrowserRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{309}
+	return file_store_proto_rawDescGZIP(), []int{310}
 }
 
 func (x *MFAPutBrowserRequest) GetTxId() string {
@@ -24419,7 +24489,7 @@ type MFAPutBrowserResponse struct {
 
 func (x *MFAPutBrowserResponse) Reset() {
 	*x = MFAPutBrowserResponse{}
-	mi := &file_store_proto_msgTypes[310]
+	mi := &file_store_proto_msgTypes[311]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24431,7 +24501,7 @@ func (x *MFAPutBrowserResponse) String() string {
 func (*MFAPutBrowserResponse) ProtoMessage() {}
 
 func (x *MFAPutBrowserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[310]
+	mi := &file_store_proto_msgTypes[311]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24444,7 +24514,7 @@ func (x *MFAPutBrowserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPutBrowserResponse.ProtoReflect.Descriptor instead.
 func (*MFAPutBrowserResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{310}
+	return file_store_proto_rawDescGZIP(), []int{311}
 }
 
 func (x *MFAPutBrowserResponse) GetError() *Error {
@@ -24466,7 +24536,7 @@ type MFAGetBrowserRequest struct {
 
 func (x *MFAGetBrowserRequest) Reset() {
 	*x = MFAGetBrowserRequest{}
-	mi := &file_store_proto_msgTypes[311]
+	mi := &file_store_proto_msgTypes[312]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24478,7 +24548,7 @@ func (x *MFAGetBrowserRequest) String() string {
 func (*MFAGetBrowserRequest) ProtoMessage() {}
 
 func (x *MFAGetBrowserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[311]
+	mi := &file_store_proto_msgTypes[312]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24491,7 +24561,7 @@ func (x *MFAGetBrowserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetBrowserRequest.ProtoReflect.Descriptor instead.
 func (*MFAGetBrowserRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{311}
+	return file_store_proto_rawDescGZIP(), []int{312}
 }
 
 func (x *MFAGetBrowserRequest) GetTxId() string {
@@ -24532,7 +24602,7 @@ type MFAGetBrowserResponse struct {
 
 func (x *MFAGetBrowserResponse) Reset() {
 	*x = MFAGetBrowserResponse{}
-	mi := &file_store_proto_msgTypes[312]
+	mi := &file_store_proto_msgTypes[313]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24544,7 +24614,7 @@ func (x *MFAGetBrowserResponse) String() string {
 func (*MFAGetBrowserResponse) ProtoMessage() {}
 
 func (x *MFAGetBrowserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[312]
+	mi := &file_store_proto_msgTypes[313]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24557,7 +24627,7 @@ func (x *MFAGetBrowserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAGetBrowserResponse.ProtoReflect.Descriptor instead.
 func (*MFAGetBrowserResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{312}
+	return file_store_proto_rawDescGZIP(), []int{313}
 }
 
 func (x *MFAGetBrowserResponse) GetError() *Error {
@@ -24585,7 +24655,7 @@ type MFABumpRememberEpochRequest struct {
 
 func (x *MFABumpRememberEpochRequest) Reset() {
 	*x = MFABumpRememberEpochRequest{}
-	mi := &file_store_proto_msgTypes[313]
+	mi := &file_store_proto_msgTypes[314]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24597,7 +24667,7 @@ func (x *MFABumpRememberEpochRequest) String() string {
 func (*MFABumpRememberEpochRequest) ProtoMessage() {}
 
 func (x *MFABumpRememberEpochRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[313]
+	mi := &file_store_proto_msgTypes[314]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24610,7 +24680,7 @@ func (x *MFABumpRememberEpochRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFABumpRememberEpochRequest.ProtoReflect.Descriptor instead.
 func (*MFABumpRememberEpochRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{313}
+	return file_store_proto_rawDescGZIP(), []int{314}
 }
 
 func (x *MFABumpRememberEpochRequest) GetTxId() string {
@@ -24643,7 +24713,7 @@ type MFABumpRememberEpochResponse struct {
 
 func (x *MFABumpRememberEpochResponse) Reset() {
 	*x = MFABumpRememberEpochResponse{}
-	mi := &file_store_proto_msgTypes[314]
+	mi := &file_store_proto_msgTypes[315]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24655,7 +24725,7 @@ func (x *MFABumpRememberEpochResponse) String() string {
 func (*MFABumpRememberEpochResponse) ProtoMessage() {}
 
 func (x *MFABumpRememberEpochResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[314]
+	mi := &file_store_proto_msgTypes[315]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24668,7 +24738,7 @@ func (x *MFABumpRememberEpochResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFABumpRememberEpochResponse.ProtoReflect.Descriptor instead.
 func (*MFABumpRememberEpochResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{314}
+	return file_store_proto_rawDescGZIP(), []int{315}
 }
 
 func (x *MFABumpRememberEpochResponse) GetError() *Error {
@@ -24689,7 +24759,7 @@ type MFAPurgeMFARequest struct {
 
 func (x *MFAPurgeMFARequest) Reset() {
 	*x = MFAPurgeMFARequest{}
-	mi := &file_store_proto_msgTypes[315]
+	mi := &file_store_proto_msgTypes[316]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24701,7 +24771,7 @@ func (x *MFAPurgeMFARequest) String() string {
 func (*MFAPurgeMFARequest) ProtoMessage() {}
 
 func (x *MFAPurgeMFARequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[315]
+	mi := &file_store_proto_msgTypes[316]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24714,7 +24784,7 @@ func (x *MFAPurgeMFARequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPurgeMFARequest.ProtoReflect.Descriptor instead.
 func (*MFAPurgeMFARequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{315}
+	return file_store_proto_rawDescGZIP(), []int{316}
 }
 
 func (x *MFAPurgeMFARequest) GetTxId() string {
@@ -24748,7 +24818,7 @@ type MFAPurgeMFAResponse struct {
 
 func (x *MFAPurgeMFAResponse) Reset() {
 	*x = MFAPurgeMFAResponse{}
-	mi := &file_store_proto_msgTypes[316]
+	mi := &file_store_proto_msgTypes[317]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24760,7 +24830,7 @@ func (x *MFAPurgeMFAResponse) String() string {
 func (*MFAPurgeMFAResponse) ProtoMessage() {}
 
 func (x *MFAPurgeMFAResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[316]
+	mi := &file_store_proto_msgTypes[317]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24773,7 +24843,7 @@ func (x *MFAPurgeMFAResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFAPurgeMFAResponse.ProtoReflect.Descriptor instead.
 func (*MFAPurgeMFAResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{316}
+	return file_store_proto_rawDescGZIP(), []int{317}
 }
 
 func (x *MFAPurgeMFAResponse) GetError() *Error {
@@ -24801,7 +24871,7 @@ type MFADeleteUserMFARequest struct {
 
 func (x *MFADeleteUserMFARequest) Reset() {
 	*x = MFADeleteUserMFARequest{}
-	mi := &file_store_proto_msgTypes[317]
+	mi := &file_store_proto_msgTypes[318]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24813,7 +24883,7 @@ func (x *MFADeleteUserMFARequest) String() string {
 func (*MFADeleteUserMFARequest) ProtoMessage() {}
 
 func (x *MFADeleteUserMFARequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[317]
+	mi := &file_store_proto_msgTypes[318]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24826,7 +24896,7 @@ func (x *MFADeleteUserMFARequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFADeleteUserMFARequest.ProtoReflect.Descriptor instead.
 func (*MFADeleteUserMFARequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{317}
+	return file_store_proto_rawDescGZIP(), []int{318}
 }
 
 func (x *MFADeleteUserMFARequest) GetTxId() string {
@@ -24859,7 +24929,7 @@ type MFADeleteUserMFAResponse struct {
 
 func (x *MFADeleteUserMFAResponse) Reset() {
 	*x = MFADeleteUserMFAResponse{}
-	mi := &file_store_proto_msgTypes[318]
+	mi := &file_store_proto_msgTypes[319]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24871,7 +24941,7 @@ func (x *MFADeleteUserMFAResponse) String() string {
 func (*MFADeleteUserMFAResponse) ProtoMessage() {}
 
 func (x *MFADeleteUserMFAResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[318]
+	mi := &file_store_proto_msgTypes[319]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24884,7 +24954,7 @@ func (x *MFADeleteUserMFAResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFADeleteUserMFAResponse.ProtoReflect.Descriptor instead.
 func (*MFADeleteUserMFAResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{318}
+	return file_store_proto_rawDescGZIP(), []int{319}
 }
 
 func (x *MFADeleteUserMFAResponse) GetError() *Error {
@@ -24904,7 +24974,7 @@ type MFADeleteTenantMFARequest struct {
 
 func (x *MFADeleteTenantMFARequest) Reset() {
 	*x = MFADeleteTenantMFARequest{}
-	mi := &file_store_proto_msgTypes[319]
+	mi := &file_store_proto_msgTypes[320]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24916,7 +24986,7 @@ func (x *MFADeleteTenantMFARequest) String() string {
 func (*MFADeleteTenantMFARequest) ProtoMessage() {}
 
 func (x *MFADeleteTenantMFARequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[319]
+	mi := &file_store_proto_msgTypes[320]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24929,7 +24999,7 @@ func (x *MFADeleteTenantMFARequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFADeleteTenantMFARequest.ProtoReflect.Descriptor instead.
 func (*MFADeleteTenantMFARequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{319}
+	return file_store_proto_rawDescGZIP(), []int{320}
 }
 
 func (x *MFADeleteTenantMFARequest) GetTxId() string {
@@ -24955,7 +25025,7 @@ type MFADeleteTenantMFAResponse struct {
 
 func (x *MFADeleteTenantMFAResponse) Reset() {
 	*x = MFADeleteTenantMFAResponse{}
-	mi := &file_store_proto_msgTypes[320]
+	mi := &file_store_proto_msgTypes[321]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24967,7 +25037,7 @@ func (x *MFADeleteTenantMFAResponse) String() string {
 func (*MFADeleteTenantMFAResponse) ProtoMessage() {}
 
 func (x *MFADeleteTenantMFAResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[320]
+	mi := &file_store_proto_msgTypes[321]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24980,7 +25050,7 @@ func (x *MFADeleteTenantMFAResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MFADeleteTenantMFAResponse.ProtoReflect.Descriptor instead.
 func (*MFADeleteTenantMFAResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{320}
+	return file_store_proto_rawDescGZIP(), []int{321}
 }
 
 func (x *MFADeleteTenantMFAResponse) GetError() *Error {
@@ -25008,7 +25078,7 @@ type PhoneProvider struct {
 
 func (x *PhoneProvider) Reset() {
 	*x = PhoneProvider{}
-	mi := &file_store_proto_msgTypes[321]
+	mi := &file_store_proto_msgTypes[322]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25020,7 +25090,7 @@ func (x *PhoneProvider) String() string {
 func (*PhoneProvider) ProtoMessage() {}
 
 func (x *PhoneProvider) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[321]
+	mi := &file_store_proto_msgTypes[322]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25033,7 +25103,7 @@ func (x *PhoneProvider) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneProvider.ProtoReflect.Descriptor instead.
 func (*PhoneProvider) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{321}
+	return file_store_proto_rawDescGZIP(), []int{322}
 }
 
 func (x *PhoneProvider) GetTenantId() string {
@@ -25108,7 +25178,7 @@ type PhoneTemplate struct {
 
 func (x *PhoneTemplate) Reset() {
 	*x = PhoneTemplate{}
-	mi := &file_store_proto_msgTypes[322]
+	mi := &file_store_proto_msgTypes[323]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25120,7 +25190,7 @@ func (x *PhoneTemplate) String() string {
 func (*PhoneTemplate) ProtoMessage() {}
 
 func (x *PhoneTemplate) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[322]
+	mi := &file_store_proto_msgTypes[323]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25133,7 +25203,7 @@ func (x *PhoneTemplate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneTemplate.ProtoReflect.Descriptor instead.
 func (*PhoneTemplate) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{322}
+	return file_store_proto_rawDescGZIP(), []int{323}
 }
 
 func (x *PhoneTemplate) GetTenantId() string {
@@ -25210,7 +25280,7 @@ type PasswordlessCode struct {
 
 func (x *PasswordlessCode) Reset() {
 	*x = PasswordlessCode{}
-	mi := &file_store_proto_msgTypes[323]
+	mi := &file_store_proto_msgTypes[324]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25222,7 +25292,7 @@ func (x *PasswordlessCode) String() string {
 func (*PasswordlessCode) ProtoMessage() {}
 
 func (x *PasswordlessCode) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[323]
+	mi := &file_store_proto_msgTypes[324]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25235,7 +25305,7 @@ func (x *PasswordlessCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordlessCode.ProtoReflect.Descriptor instead.
 func (*PasswordlessCode) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{323}
+	return file_store_proto_rawDescGZIP(), []int{324}
 }
 
 func (x *PasswordlessCode) GetTenantId() string {
@@ -25317,7 +25387,7 @@ type PhoneErrorResponse struct {
 
 func (x *PhoneErrorResponse) Reset() {
 	*x = PhoneErrorResponse{}
-	mi := &file_store_proto_msgTypes[324]
+	mi := &file_store_proto_msgTypes[325]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25329,7 +25399,7 @@ func (x *PhoneErrorResponse) String() string {
 func (*PhoneErrorResponse) ProtoMessage() {}
 
 func (x *PhoneErrorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[324]
+	mi := &file_store_proto_msgTypes[325]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25342,7 +25412,7 @@ func (x *PhoneErrorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneErrorResponse.ProtoReflect.Descriptor instead.
 func (*PhoneErrorResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{324}
+	return file_store_proto_rawDescGZIP(), []int{325}
 }
 
 func (x *PhoneErrorResponse) GetError() *Error {
@@ -25362,7 +25432,7 @@ type PhoneTenantRequest struct {
 
 func (x *PhoneTenantRequest) Reset() {
 	*x = PhoneTenantRequest{}
-	mi := &file_store_proto_msgTypes[325]
+	mi := &file_store_proto_msgTypes[326]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25374,7 +25444,7 @@ func (x *PhoneTenantRequest) String() string {
 func (*PhoneTenantRequest) ProtoMessage() {}
 
 func (x *PhoneTenantRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[325]
+	mi := &file_store_proto_msgTypes[326]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25387,7 +25457,7 @@ func (x *PhoneTenantRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneTenantRequest.ProtoReflect.Descriptor instead.
 func (*PhoneTenantRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{325}
+	return file_store_proto_rawDescGZIP(), []int{326}
 }
 
 func (x *PhoneTenantRequest) GetTxId() string {
@@ -25415,7 +25485,7 @@ type PhoneIDRequest struct {
 
 func (x *PhoneIDRequest) Reset() {
 	*x = PhoneIDRequest{}
-	mi := &file_store_proto_msgTypes[326]
+	mi := &file_store_proto_msgTypes[327]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25427,7 +25497,7 @@ func (x *PhoneIDRequest) String() string {
 func (*PhoneIDRequest) ProtoMessage() {}
 
 func (x *PhoneIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[326]
+	mi := &file_store_proto_msgTypes[327]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25440,7 +25510,7 @@ func (x *PhoneIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneIDRequest.ProtoReflect.Descriptor instead.
 func (*PhoneIDRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{326}
+	return file_store_proto_rawDescGZIP(), []int{327}
 }
 
 func (x *PhoneIDRequest) GetTxId() string {
@@ -25474,7 +25544,7 @@ type PhoneProviderRequest struct {
 
 func (x *PhoneProviderRequest) Reset() {
 	*x = PhoneProviderRequest{}
-	mi := &file_store_proto_msgTypes[327]
+	mi := &file_store_proto_msgTypes[328]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25486,7 +25556,7 @@ func (x *PhoneProviderRequest) String() string {
 func (*PhoneProviderRequest) ProtoMessage() {}
 
 func (x *PhoneProviderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[327]
+	mi := &file_store_proto_msgTypes[328]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25499,7 +25569,7 @@ func (x *PhoneProviderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneProviderRequest.ProtoReflect.Descriptor instead.
 func (*PhoneProviderRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{327}
+	return file_store_proto_rawDescGZIP(), []int{328}
 }
 
 func (x *PhoneProviderRequest) GetTxId() string {
@@ -25526,7 +25596,7 @@ type PhoneProviderResponse struct {
 
 func (x *PhoneProviderResponse) Reset() {
 	*x = PhoneProviderResponse{}
-	mi := &file_store_proto_msgTypes[328]
+	mi := &file_store_proto_msgTypes[329]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25538,7 +25608,7 @@ func (x *PhoneProviderResponse) String() string {
 func (*PhoneProviderResponse) ProtoMessage() {}
 
 func (x *PhoneProviderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[328]
+	mi := &file_store_proto_msgTypes[329]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25551,7 +25621,7 @@ func (x *PhoneProviderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneProviderResponse.ProtoReflect.Descriptor instead.
 func (*PhoneProviderResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{328}
+	return file_store_proto_rawDescGZIP(), []int{329}
 }
 
 func (x *PhoneProviderResponse) GetError() *Error {
@@ -25578,7 +25648,7 @@ type PhoneListProvidersResponse struct {
 
 func (x *PhoneListProvidersResponse) Reset() {
 	*x = PhoneListProvidersResponse{}
-	mi := &file_store_proto_msgTypes[329]
+	mi := &file_store_proto_msgTypes[330]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25590,7 +25660,7 @@ func (x *PhoneListProvidersResponse) String() string {
 func (*PhoneListProvidersResponse) ProtoMessage() {}
 
 func (x *PhoneListProvidersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[329]
+	mi := &file_store_proto_msgTypes[330]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25603,7 +25673,7 @@ func (x *PhoneListProvidersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneListProvidersResponse.ProtoReflect.Descriptor instead.
 func (*PhoneListProvidersResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{329}
+	return file_store_proto_rawDescGZIP(), []int{330}
 }
 
 func (x *PhoneListProvidersResponse) GetError() *Error {
@@ -25630,7 +25700,7 @@ type PhoneTemplateRequest struct {
 
 func (x *PhoneTemplateRequest) Reset() {
 	*x = PhoneTemplateRequest{}
-	mi := &file_store_proto_msgTypes[330]
+	mi := &file_store_proto_msgTypes[331]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25642,7 +25712,7 @@ func (x *PhoneTemplateRequest) String() string {
 func (*PhoneTemplateRequest) ProtoMessage() {}
 
 func (x *PhoneTemplateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[330]
+	mi := &file_store_proto_msgTypes[331]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25655,7 +25725,7 @@ func (x *PhoneTemplateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneTemplateRequest.ProtoReflect.Descriptor instead.
 func (*PhoneTemplateRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{330}
+	return file_store_proto_rawDescGZIP(), []int{331}
 }
 
 func (x *PhoneTemplateRequest) GetTxId() string {
@@ -25682,7 +25752,7 @@ type PhoneTemplateResponse struct {
 
 func (x *PhoneTemplateResponse) Reset() {
 	*x = PhoneTemplateResponse{}
-	mi := &file_store_proto_msgTypes[331]
+	mi := &file_store_proto_msgTypes[332]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25694,7 +25764,7 @@ func (x *PhoneTemplateResponse) String() string {
 func (*PhoneTemplateResponse) ProtoMessage() {}
 
 func (x *PhoneTemplateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[331]
+	mi := &file_store_proto_msgTypes[332]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25707,7 +25777,7 @@ func (x *PhoneTemplateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneTemplateResponse.ProtoReflect.Descriptor instead.
 func (*PhoneTemplateResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{331}
+	return file_store_proto_rawDescGZIP(), []int{332}
 }
 
 func (x *PhoneTemplateResponse) GetError() *Error {
@@ -25734,7 +25804,7 @@ type PhoneListTemplatesResponse struct {
 
 func (x *PhoneListTemplatesResponse) Reset() {
 	*x = PhoneListTemplatesResponse{}
-	mi := &file_store_proto_msgTypes[332]
+	mi := &file_store_proto_msgTypes[333]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25746,7 +25816,7 @@ func (x *PhoneListTemplatesResponse) String() string {
 func (*PhoneListTemplatesResponse) ProtoMessage() {}
 
 func (x *PhoneListTemplatesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[332]
+	mi := &file_store_proto_msgTypes[333]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25759,7 +25829,7 @@ func (x *PhoneListTemplatesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneListTemplatesResponse.ProtoReflect.Descriptor instead.
 func (*PhoneListTemplatesResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{332}
+	return file_store_proto_rawDescGZIP(), []int{333}
 }
 
 func (x *PhoneListTemplatesResponse) GetError() *Error {
@@ -25786,7 +25856,7 @@ type PhonePutCodeRequest struct {
 
 func (x *PhonePutCodeRequest) Reset() {
 	*x = PhonePutCodeRequest{}
-	mi := &file_store_proto_msgTypes[333]
+	mi := &file_store_proto_msgTypes[334]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25798,7 +25868,7 @@ func (x *PhonePutCodeRequest) String() string {
 func (*PhonePutCodeRequest) ProtoMessage() {}
 
 func (x *PhonePutCodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[333]
+	mi := &file_store_proto_msgTypes[334]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25811,7 +25881,7 @@ func (x *PhonePutCodeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhonePutCodeRequest.ProtoReflect.Descriptor instead.
 func (*PhonePutCodeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{333}
+	return file_store_proto_rawDescGZIP(), []int{334}
 }
 
 func (x *PhonePutCodeRequest) GetTxId() string {
@@ -25842,7 +25912,7 @@ type PhoneCodeKeyRequest struct {
 
 func (x *PhoneCodeKeyRequest) Reset() {
 	*x = PhoneCodeKeyRequest{}
-	mi := &file_store_proto_msgTypes[334]
+	mi := &file_store_proto_msgTypes[335]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25854,7 +25924,7 @@ func (x *PhoneCodeKeyRequest) String() string {
 func (*PhoneCodeKeyRequest) ProtoMessage() {}
 
 func (x *PhoneCodeKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[334]
+	mi := &file_store_proto_msgTypes[335]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25867,7 +25937,7 @@ func (x *PhoneCodeKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneCodeKeyRequest.ProtoReflect.Descriptor instead.
 func (*PhoneCodeKeyRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{334}
+	return file_store_proto_rawDescGZIP(), []int{335}
 }
 
 func (x *PhoneCodeKeyRequest) GetTxId() string {
@@ -25922,7 +25992,7 @@ type PhoneFailCodeResponse struct {
 
 func (x *PhoneFailCodeResponse) Reset() {
 	*x = PhoneFailCodeResponse{}
-	mi := &file_store_proto_msgTypes[335]
+	mi := &file_store_proto_msgTypes[336]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25934,7 +26004,7 @@ func (x *PhoneFailCodeResponse) String() string {
 func (*PhoneFailCodeResponse) ProtoMessage() {}
 
 func (x *PhoneFailCodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[335]
+	mi := &file_store_proto_msgTypes[336]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25947,7 +26017,7 @@ func (x *PhoneFailCodeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneFailCodeResponse.ProtoReflect.Descriptor instead.
 func (*PhoneFailCodeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{335}
+	return file_store_proto_rawDescGZIP(), []int{336}
 }
 
 func (x *PhoneFailCodeResponse) GetError() *Error {
@@ -25980,7 +26050,7 @@ type PhoneConsumeCodeRequest struct {
 
 func (x *PhoneConsumeCodeRequest) Reset() {
 	*x = PhoneConsumeCodeRequest{}
-	mi := &file_store_proto_msgTypes[336]
+	mi := &file_store_proto_msgTypes[337]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25992,7 +26062,7 @@ func (x *PhoneConsumeCodeRequest) String() string {
 func (*PhoneConsumeCodeRequest) ProtoMessage() {}
 
 func (x *PhoneConsumeCodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[336]
+	mi := &file_store_proto_msgTypes[337]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26005,7 +26075,7 @@ func (x *PhoneConsumeCodeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneConsumeCodeRequest.ProtoReflect.Descriptor instead.
 func (*PhoneConsumeCodeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{336}
+	return file_store_proto_rawDescGZIP(), []int{337}
 }
 
 func (x *PhoneConsumeCodeRequest) GetTxId() string {
@@ -26074,7 +26144,7 @@ type PhoneCodeResponse struct {
 
 func (x *PhoneCodeResponse) Reset() {
 	*x = PhoneCodeResponse{}
-	mi := &file_store_proto_msgTypes[337]
+	mi := &file_store_proto_msgTypes[338]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26086,7 +26156,7 @@ func (x *PhoneCodeResponse) String() string {
 func (*PhoneCodeResponse) ProtoMessage() {}
 
 func (x *PhoneCodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[337]
+	mi := &file_store_proto_msgTypes[338]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26099,7 +26169,7 @@ func (x *PhoneCodeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneCodeResponse.ProtoReflect.Descriptor instead.
 func (*PhoneCodeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{337}
+	return file_store_proto_rawDescGZIP(), []int{338}
 }
 
 func (x *PhoneCodeResponse) GetError() *Error {
@@ -26128,7 +26198,7 @@ type PhonePeekLinkRequest struct {
 
 func (x *PhonePeekLinkRequest) Reset() {
 	*x = PhonePeekLinkRequest{}
-	mi := &file_store_proto_msgTypes[338]
+	mi := &file_store_proto_msgTypes[339]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26140,7 +26210,7 @@ func (x *PhonePeekLinkRequest) String() string {
 func (*PhonePeekLinkRequest) ProtoMessage() {}
 
 func (x *PhonePeekLinkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[338]
+	mi := &file_store_proto_msgTypes[339]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26153,7 +26223,7 @@ func (x *PhonePeekLinkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhonePeekLinkRequest.ProtoReflect.Descriptor instead.
 func (*PhonePeekLinkRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{338}
+	return file_store_proto_rawDescGZIP(), []int{339}
 }
 
 func (x *PhonePeekLinkRequest) GetTxId() string {
@@ -26196,7 +26266,7 @@ type PhoneFindUsersRequest struct {
 
 func (x *PhoneFindUsersRequest) Reset() {
 	*x = PhoneFindUsersRequest{}
-	mi := &file_store_proto_msgTypes[339]
+	mi := &file_store_proto_msgTypes[340]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26208,7 +26278,7 @@ func (x *PhoneFindUsersRequest) String() string {
 func (*PhoneFindUsersRequest) ProtoMessage() {}
 
 func (x *PhoneFindUsersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[339]
+	mi := &file_store_proto_msgTypes[340]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26221,7 +26291,7 @@ func (x *PhoneFindUsersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneFindUsersRequest.ProtoReflect.Descriptor instead.
 func (*PhoneFindUsersRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{339}
+	return file_store_proto_rawDescGZIP(), []int{340}
 }
 
 func (x *PhoneFindUsersRequest) GetTxId() string {
@@ -26262,7 +26332,7 @@ type PhoneFindUsersResponse struct {
 
 func (x *PhoneFindUsersResponse) Reset() {
 	*x = PhoneFindUsersResponse{}
-	mi := &file_store_proto_msgTypes[340]
+	mi := &file_store_proto_msgTypes[341]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26274,7 +26344,7 @@ func (x *PhoneFindUsersResponse) String() string {
 func (*PhoneFindUsersResponse) ProtoMessage() {}
 
 func (x *PhoneFindUsersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[340]
+	mi := &file_store_proto_msgTypes[341]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26287,7 +26357,7 @@ func (x *PhoneFindUsersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneFindUsersResponse.ProtoReflect.Descriptor instead.
 func (*PhoneFindUsersResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{340}
+	return file_store_proto_rawDescGZIP(), []int{341}
 }
 
 func (x *PhoneFindUsersResponse) GetError() *Error {
@@ -26315,7 +26385,7 @@ type PhonePurgeRequest struct {
 
 func (x *PhonePurgeRequest) Reset() {
 	*x = PhonePurgeRequest{}
-	mi := &file_store_proto_msgTypes[341]
+	mi := &file_store_proto_msgTypes[342]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26327,7 +26397,7 @@ func (x *PhonePurgeRequest) String() string {
 func (*PhonePurgeRequest) ProtoMessage() {}
 
 func (x *PhonePurgeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[341]
+	mi := &file_store_proto_msgTypes[342]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26340,7 +26410,7 @@ func (x *PhonePurgeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhonePurgeRequest.ProtoReflect.Descriptor instead.
 func (*PhonePurgeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{341}
+	return file_store_proto_rawDescGZIP(), []int{342}
 }
 
 func (x *PhonePurgeRequest) GetTxId() string {
@@ -26374,7 +26444,7 @@ type PhoneCountResponse struct {
 
 func (x *PhoneCountResponse) Reset() {
 	*x = PhoneCountResponse{}
-	mi := &file_store_proto_msgTypes[342]
+	mi := &file_store_proto_msgTypes[343]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26386,7 +26456,7 @@ func (x *PhoneCountResponse) String() string {
 func (*PhoneCountResponse) ProtoMessage() {}
 
 func (x *PhoneCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[342]
+	mi := &file_store_proto_msgTypes[343]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26399,7 +26469,7 @@ func (x *PhoneCountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhoneCountResponse.ProtoReflect.Descriptor instead.
 func (*PhoneCountResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{342}
+	return file_store_proto_rawDescGZIP(), []int{343}
 }
 
 func (x *PhoneCountResponse) GetError() *Error {
@@ -26437,7 +26507,7 @@ type WebAuthnSnooze struct {
 
 func (x *WebAuthnSnooze) Reset() {
 	*x = WebAuthnSnooze{}
-	mi := &file_store_proto_msgTypes[343]
+	mi := &file_store_proto_msgTypes[344]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26449,7 +26519,7 @@ func (x *WebAuthnSnooze) String() string {
 func (*WebAuthnSnooze) ProtoMessage() {}
 
 func (x *WebAuthnSnooze) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[343]
+	mi := &file_store_proto_msgTypes[344]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26462,7 +26532,7 @@ func (x *WebAuthnSnooze) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnSnooze.ProtoReflect.Descriptor instead.
 func (*WebAuthnSnooze) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{343}
+	return file_store_proto_rawDescGZIP(), []int{344}
 }
 
 func (x *WebAuthnSnooze) GetTenantId() string {
@@ -26509,7 +26579,7 @@ type WebAuthnErrorResponse struct {
 
 func (x *WebAuthnErrorResponse) Reset() {
 	*x = WebAuthnErrorResponse{}
-	mi := &file_store_proto_msgTypes[344]
+	mi := &file_store_proto_msgTypes[345]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26521,7 +26591,7 @@ func (x *WebAuthnErrorResponse) String() string {
 func (*WebAuthnErrorResponse) ProtoMessage() {}
 
 func (x *WebAuthnErrorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[344]
+	mi := &file_store_proto_msgTypes[345]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26534,7 +26604,7 @@ func (x *WebAuthnErrorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnErrorResponse.ProtoReflect.Descriptor instead.
 func (*WebAuthnErrorResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{344}
+	return file_store_proto_rawDescGZIP(), []int{345}
 }
 
 func (x *WebAuthnErrorResponse) GetError() *Error {
@@ -26555,7 +26625,7 @@ type WebAuthnCredentialRequest struct {
 
 func (x *WebAuthnCredentialRequest) Reset() {
 	*x = WebAuthnCredentialRequest{}
-	mi := &file_store_proto_msgTypes[345]
+	mi := &file_store_proto_msgTypes[346]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26567,7 +26637,7 @@ func (x *WebAuthnCredentialRequest) String() string {
 func (*WebAuthnCredentialRequest) ProtoMessage() {}
 
 func (x *WebAuthnCredentialRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[345]
+	mi := &file_store_proto_msgTypes[346]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26580,7 +26650,7 @@ func (x *WebAuthnCredentialRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnCredentialRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnCredentialRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{345}
+	return file_store_proto_rawDescGZIP(), []int{346}
 }
 
 func (x *WebAuthnCredentialRequest) GetTxId() string {
@@ -26614,7 +26684,7 @@ type WebAuthnAuthenticatorResponse struct {
 
 func (x *WebAuthnAuthenticatorResponse) Reset() {
 	*x = WebAuthnAuthenticatorResponse{}
-	mi := &file_store_proto_msgTypes[346]
+	mi := &file_store_proto_msgTypes[347]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26626,7 +26696,7 @@ func (x *WebAuthnAuthenticatorResponse) String() string {
 func (*WebAuthnAuthenticatorResponse) ProtoMessage() {}
 
 func (x *WebAuthnAuthenticatorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[346]
+	mi := &file_store_proto_msgTypes[347]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26639,7 +26709,7 @@ func (x *WebAuthnAuthenticatorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnAuthenticatorResponse.ProtoReflect.Descriptor instead.
 func (*WebAuthnAuthenticatorResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{346}
+	return file_store_proto_rawDescGZIP(), []int{347}
 }
 
 func (x *WebAuthnAuthenticatorResponse) GetError() *Error {
@@ -26667,7 +26737,7 @@ type WebAuthnCreatePasskeyRequest struct {
 
 func (x *WebAuthnCreatePasskeyRequest) Reset() {
 	*x = WebAuthnCreatePasskeyRequest{}
-	mi := &file_store_proto_msgTypes[347]
+	mi := &file_store_proto_msgTypes[348]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26679,7 +26749,7 @@ func (x *WebAuthnCreatePasskeyRequest) String() string {
 func (*WebAuthnCreatePasskeyRequest) ProtoMessage() {}
 
 func (x *WebAuthnCreatePasskeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[347]
+	mi := &file_store_proto_msgTypes[348]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26692,7 +26762,7 @@ func (x *WebAuthnCreatePasskeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnCreatePasskeyRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnCreatePasskeyRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{347}
+	return file_store_proto_rawDescGZIP(), []int{348}
 }
 
 func (x *WebAuthnCreatePasskeyRequest) GetTxId() string {
@@ -26727,7 +26797,7 @@ type WebAuthnCreateUserRequest struct {
 
 func (x *WebAuthnCreateUserRequest) Reset() {
 	*x = WebAuthnCreateUserRequest{}
-	mi := &file_store_proto_msgTypes[348]
+	mi := &file_store_proto_msgTypes[349]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26739,7 +26809,7 @@ func (x *WebAuthnCreateUserRequest) String() string {
 func (*WebAuthnCreateUserRequest) ProtoMessage() {}
 
 func (x *WebAuthnCreateUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[348]
+	mi := &file_store_proto_msgTypes[349]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26752,7 +26822,7 @@ func (x *WebAuthnCreateUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnCreateUserRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnCreateUserRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{348}
+	return file_store_proto_rawDescGZIP(), []int{349}
 }
 
 func (x *WebAuthnCreateUserRequest) GetTxId() string {
@@ -26791,7 +26861,7 @@ type WebAuthnAcceptAssertionRequest struct {
 
 func (x *WebAuthnAcceptAssertionRequest) Reset() {
 	*x = WebAuthnAcceptAssertionRequest{}
-	mi := &file_store_proto_msgTypes[349]
+	mi := &file_store_proto_msgTypes[350]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26803,7 +26873,7 @@ func (x *WebAuthnAcceptAssertionRequest) String() string {
 func (*WebAuthnAcceptAssertionRequest) ProtoMessage() {}
 
 func (x *WebAuthnAcceptAssertionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[349]
+	mi := &file_store_proto_msgTypes[350]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26816,7 +26886,7 @@ func (x *WebAuthnAcceptAssertionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnAcceptAssertionRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnAcceptAssertionRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{349}
+	return file_store_proto_rawDescGZIP(), []int{350}
 }
 
 func (x *WebAuthnAcceptAssertionRequest) GetTxId() string {
@@ -26881,7 +26951,7 @@ type WebAuthnMovePasskeysRequest struct {
 
 func (x *WebAuthnMovePasskeysRequest) Reset() {
 	*x = WebAuthnMovePasskeysRequest{}
-	mi := &file_store_proto_msgTypes[350]
+	mi := &file_store_proto_msgTypes[351]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26893,7 +26963,7 @@ func (x *WebAuthnMovePasskeysRequest) String() string {
 func (*WebAuthnMovePasskeysRequest) ProtoMessage() {}
 
 func (x *WebAuthnMovePasskeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[350]
+	mi := &file_store_proto_msgTypes[351]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26906,7 +26976,7 @@ func (x *WebAuthnMovePasskeysRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnMovePasskeysRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnMovePasskeysRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{350}
+	return file_store_proto_rawDescGZIP(), []int{351}
 }
 
 func (x *WebAuthnMovePasskeysRequest) GetTxId() string {
@@ -26954,7 +27024,7 @@ type WebAuthnSnoozeRequest struct {
 
 func (x *WebAuthnSnoozeRequest) Reset() {
 	*x = WebAuthnSnoozeRequest{}
-	mi := &file_store_proto_msgTypes[351]
+	mi := &file_store_proto_msgTypes[352]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26966,7 +27036,7 @@ func (x *WebAuthnSnoozeRequest) String() string {
 func (*WebAuthnSnoozeRequest) ProtoMessage() {}
 
 func (x *WebAuthnSnoozeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[351]
+	mi := &file_store_proto_msgTypes[352]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26979,7 +27049,7 @@ func (x *WebAuthnSnoozeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnSnoozeRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnSnoozeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{351}
+	return file_store_proto_rawDescGZIP(), []int{352}
 }
 
 func (x *WebAuthnSnoozeRequest) GetTxId() string {
@@ -27010,7 +27080,7 @@ type WebAuthnGetSnoozeRequest struct {
 
 func (x *WebAuthnGetSnoozeRequest) Reset() {
 	*x = WebAuthnGetSnoozeRequest{}
-	mi := &file_store_proto_msgTypes[352]
+	mi := &file_store_proto_msgTypes[353]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -27022,7 +27092,7 @@ func (x *WebAuthnGetSnoozeRequest) String() string {
 func (*WebAuthnGetSnoozeRequest) ProtoMessage() {}
 
 func (x *WebAuthnGetSnoozeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[352]
+	mi := &file_store_proto_msgTypes[353]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -27035,7 +27105,7 @@ func (x *WebAuthnGetSnoozeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnGetSnoozeRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnGetSnoozeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{352}
+	return file_store_proto_rawDescGZIP(), []int{353}
 }
 
 func (x *WebAuthnGetSnoozeRequest) GetTxId() string {
@@ -27090,7 +27160,7 @@ type WebAuthnSnoozeResponse struct {
 
 func (x *WebAuthnSnoozeResponse) Reset() {
 	*x = WebAuthnSnoozeResponse{}
-	mi := &file_store_proto_msgTypes[353]
+	mi := &file_store_proto_msgTypes[354]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -27102,7 +27172,7 @@ func (x *WebAuthnSnoozeResponse) String() string {
 func (*WebAuthnSnoozeResponse) ProtoMessage() {}
 
 func (x *WebAuthnSnoozeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[353]
+	mi := &file_store_proto_msgTypes[354]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -27115,7 +27185,7 @@ func (x *WebAuthnSnoozeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnSnoozeResponse.ProtoReflect.Descriptor instead.
 func (*WebAuthnSnoozeResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{353}
+	return file_store_proto_rawDescGZIP(), []int{354}
 }
 
 func (x *WebAuthnSnoozeResponse) GetError() *Error {
@@ -27143,7 +27213,7 @@ type WebAuthnHostTenantsRequest struct {
 
 func (x *WebAuthnHostTenantsRequest) Reset() {
 	*x = WebAuthnHostTenantsRequest{}
-	mi := &file_store_proto_msgTypes[354]
+	mi := &file_store_proto_msgTypes[355]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -27155,7 +27225,7 @@ func (x *WebAuthnHostTenantsRequest) String() string {
 func (*WebAuthnHostTenantsRequest) ProtoMessage() {}
 
 func (x *WebAuthnHostTenantsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[354]
+	mi := &file_store_proto_msgTypes[355]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -27168,7 +27238,7 @@ func (x *WebAuthnHostTenantsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnHostTenantsRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnHostTenantsRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{354}
+	return file_store_proto_rawDescGZIP(), []int{355}
 }
 
 func (x *WebAuthnHostTenantsRequest) GetTxId() string {
@@ -27202,7 +27272,7 @@ type WebAuthnTenantIDsResponse struct {
 
 func (x *WebAuthnTenantIDsResponse) Reset() {
 	*x = WebAuthnTenantIDsResponse{}
-	mi := &file_store_proto_msgTypes[355]
+	mi := &file_store_proto_msgTypes[356]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -27214,7 +27284,7 @@ func (x *WebAuthnTenantIDsResponse) String() string {
 func (*WebAuthnTenantIDsResponse) ProtoMessage() {}
 
 func (x *WebAuthnTenantIDsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[355]
+	mi := &file_store_proto_msgTypes[356]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -27227,7 +27297,7 @@ func (x *WebAuthnTenantIDsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnTenantIDsResponse.ProtoReflect.Descriptor instead.
 func (*WebAuthnTenantIDsResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{355}
+	return file_store_proto_rawDescGZIP(), []int{356}
 }
 
 func (x *WebAuthnTenantIDsResponse) GetError() *Error {
@@ -27255,7 +27325,7 @@ type WebAuthnPurgeRequest struct {
 
 func (x *WebAuthnPurgeRequest) Reset() {
 	*x = WebAuthnPurgeRequest{}
-	mi := &file_store_proto_msgTypes[356]
+	mi := &file_store_proto_msgTypes[357]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -27267,7 +27337,7 @@ func (x *WebAuthnPurgeRequest) String() string {
 func (*WebAuthnPurgeRequest) ProtoMessage() {}
 
 func (x *WebAuthnPurgeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[356]
+	mi := &file_store_proto_msgTypes[357]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -27280,7 +27350,7 @@ func (x *WebAuthnPurgeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnPurgeRequest.ProtoReflect.Descriptor instead.
 func (*WebAuthnPurgeRequest) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{356}
+	return file_store_proto_rawDescGZIP(), []int{357}
 }
 
 func (x *WebAuthnPurgeRequest) GetTxId() string {
@@ -27314,7 +27384,7 @@ type WebAuthnCountResponse struct {
 
 func (x *WebAuthnCountResponse) Reset() {
 	*x = WebAuthnCountResponse{}
-	mi := &file_store_proto_msgTypes[357]
+	mi := &file_store_proto_msgTypes[358]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -27326,7 +27396,7 @@ func (x *WebAuthnCountResponse) String() string {
 func (*WebAuthnCountResponse) ProtoMessage() {}
 
 func (x *WebAuthnCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_proto_msgTypes[357]
+	mi := &file_store_proto_msgTypes[358]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -27339,7 +27409,7 @@ func (x *WebAuthnCountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebAuthnCountResponse.ProtoReflect.Descriptor instead.
 func (*WebAuthnCountResponse) Descriptor() ([]byte, []int) {
-	return file_store_proto_rawDescGZIP(), []int{357}
+	return file_store_proto_rawDescGZIP(), []int{358}
 }
 
 func (x *WebAuthnCountResponse) GetError() *Error {
@@ -27423,7 +27493,12 @@ const file_store_proto_rawDesc = "" +
 	"\x02at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x02at\x12\x0e\n" +
 	"\x02ip\x18\x06 \x01(\tR\x02ip\x12\x1d\n" +
 	"\n" +
-	"user_agent\x18\a \x01(\tR\tuserAgent\"\x8b\x01\n" +
+	"user_agent\x18\a \x01(\tR\tuserAgent\"\x9f\x01\n" +
+	"\x1dSessionsSetAuthMethodsRequest\x12\x13\n" +
+	"\x05tx_id\x18\x01 \x01(\tR\x04txId\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12\x0e\n" +
+	"\x02id\x18\x03 \x01(\tR\x02id\x12<\n" +
+	"\amethods\x18\x04 \x01(\v2\".zeroauthy.store.v1.AuthMethodListR\amethods\"\x8b\x01\n" +
 	"\x14DeleteExpiredRequest\x12\x13\n" +
 	"\x05tx_id\x18\x01 \x01(\tR\x04txId\x122\n" +
 	"\x06before\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x06before\x12*\n" +
@@ -29888,7 +29963,7 @@ const file_store_proto_rawDesc = "" +
 	"\x05limit\x18\x03 \x01(\x03R\x05limit\"^\n" +
 	"\x15WebAuthnCountResponse\x12/\n" +
 	"\x05error\x18\x01 \x01(\v2\x19.zeroauthy.store.v1.ErrorR\x05error\x12\x14\n" +
-	"\x05count\x18\x02 \x01(\x03R\x05count2\x8f\xa9\x02\n" +
+	"\x05count\x18\x02 \x01(\x03R\x05count2\xf8\xa9\x02\n" +
 	"\fStoreService\x12`\n" +
 	"\x0fMFACapabilities\x12\x1f.zeroauthy.store.v1.PingRequest\x1a,.zeroauthy.store.v1.EventsCapabilitiesResult\x12g\n" +
 	"\x0eMFAGetGuardian\x12).zeroauthy.store.v1.MFAGetGuardianRequest\x1a*.zeroauthy.store.v1.MFAGetGuardianResponse\x12g\n" +
@@ -29919,7 +29994,8 @@ const file_store_proto_rawDesc = "" +
 	"\vMFAPurgeMFA\x12&.zeroauthy.store.v1.MFAPurgeMFARequest\x1a'.zeroauthy.store.v1.MFAPurgeMFAResponse\x12m\n" +
 	"\x10MFADeleteUserMFA\x12+.zeroauthy.store.v1.MFADeleteUserMFARequest\x1a,.zeroauthy.store.v1.MFADeleteUserMFAResponse\x12s\n" +
 	"\x12MFADeleteTenantMFA\x12-.zeroauthy.store.v1.MFADeleteTenantMFARequest\x1a..zeroauthy.store.v1.MFADeleteTenantMFAResponse\x12O\n" +
-	"\x0fSessionsMarkMFA\x12 .zeroauthy.store.v1.TouchRequest\x1a\x1a.zeroauthy.store.v1.Result\x12b\n" +
+	"\x0fSessionsMarkMFA\x12 .zeroauthy.store.v1.TouchRequest\x1a\x1a.zeroauthy.store.v1.Result\x12g\n" +
+	"\x16SessionsSetAuthMethods\x121.zeroauthy.store.v1.SessionsSetAuthMethodsRequest\x1a\x1a.zeroauthy.store.v1.Result\x12b\n" +
 	"\x11PhoneCapabilities\x12\x1f.zeroauthy.store.v1.PingRequest\x1a,.zeroauthy.store.v1.EventsCapabilitiesResult\x12l\n" +
 	"\x12PhoneListProviders\x12&.zeroauthy.store.v1.PhoneTenantRequest\x1a..zeroauthy.store.v1.PhoneListProvidersResponse\x12a\n" +
 	"\x10PhoneGetProvider\x12\".zeroauthy.store.v1.PhoneIDRequest\x1a).zeroauthy.store.v1.PhoneProviderResponse\x12g\n" +
@@ -30297,7 +30373,7 @@ func file_store_proto_rawDescGZIP() []byte {
 }
 
 var file_store_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_store_proto_msgTypes = make([]protoimpl.MessageInfo, 362)
+var file_store_proto_msgTypes = make([]protoimpl.MessageInfo, 363)
 var file_store_proto_goTypes = []any{
 	(Error_Kind)(0),                                   // 0: zeroauthy.store.v1.Error.Kind
 	(UserQuery_Op)(0),                                 // 1: zeroauthy.store.v1.UserQuery.Op
@@ -30313,1687 +30389,1691 @@ var file_store_proto_goTypes = []any{
 	(*TenantScope)(nil),                               // 11: zeroauthy.store.v1.TenantScope
 	(*ScopedKey)(nil),                                 // 12: zeroauthy.store.v1.ScopedKey
 	(*TouchRequest)(nil),                              // 13: zeroauthy.store.v1.TouchRequest
-	(*DeleteExpiredRequest)(nil),                      // 14: zeroauthy.store.v1.DeleteExpiredRequest
-	(*ConsumeRequest)(nil),                            // 15: zeroauthy.store.v1.ConsumeRequest
-	(*RevokeRequest)(nil),                             // 16: zeroauthy.store.v1.RevokeRequest
-	(*StringList)(nil),                                // 17: zeroauthy.store.v1.StringList
-	(*StringMap)(nil),                                 // 18: zeroauthy.store.v1.StringMap
-	(*Tenant)(nil),                                    // 19: zeroauthy.store.v1.Tenant
-	(*Branding)(nil),                                  // 20: zeroauthy.store.v1.Branding
-	(*ClientSecret)(nil),                              // 21: zeroauthy.store.v1.ClientSecret
-	(*ClientSecretList)(nil),                          // 22: zeroauthy.store.v1.ClientSecretList
-	(*RefreshTokenPolicy)(nil),                        // 23: zeroauthy.store.v1.RefreshTokenPolicy
-	(*Client)(nil),                                    // 24: zeroauthy.store.v1.Client
-	(*ClientMobile)(nil),                              // 25: zeroauthy.store.v1.ClientMobile
-	(*ClientMobileIOS)(nil),                           // 26: zeroauthy.store.v1.ClientMobileIOS
-	(*ClientMobileAndroid)(nil),                       // 27: zeroauthy.store.v1.ClientMobileAndroid
-	(*Scope)(nil),                                     // 28: zeroauthy.store.v1.Scope
-	(*ScopeList)(nil),                                 // 29: zeroauthy.store.v1.ScopeList
-	(*ResourceServer)(nil),                            // 30: zeroauthy.store.v1.ResourceServer
-	(*ResourceServerRenameSystemRequest)(nil),         // 31: zeroauthy.store.v1.ResourceServerRenameSystemRequest
-	(*ClientGrant)(nil),                               // 32: zeroauthy.store.v1.ClientGrant
-	(*UserGrant)(nil),                                 // 33: zeroauthy.store.v1.UserGrant
-	(*SigningKey)(nil),                                // 34: zeroauthy.store.v1.SigningKey
-	(*SigningKeyResult)(nil),                          // 35: zeroauthy.store.v1.SigningKeyResult
-	(*SigningKeyRotation)(nil),                        // 36: zeroauthy.store.v1.SigningKeyRotation
-	(*SigningKeyRotationResult)(nil),                  // 37: zeroauthy.store.v1.SigningKeyRotationResult
-	(*SigningKeyRevokeRequest)(nil),                   // 38: zeroauthy.store.v1.SigningKeyRevokeRequest
-	(*SigningKeyCertificateRequest)(nil),              // 39: zeroauthy.store.v1.SigningKeyCertificateRequest
-	(*CustomSigningKeySet)(nil),                       // 40: zeroauthy.store.v1.CustomSigningKeySet
-	(*CustomSigningKeySetResult)(nil),                 // 41: zeroauthy.store.v1.CustomSigningKeySetResult
-	(*CustomSigningKeySetWrite)(nil),                  // 42: zeroauthy.store.v1.CustomSigningKeySetWrite
-	(*HostedLoginConfig)(nil),                         // 43: zeroauthy.store.v1.HostedLoginConfig
-	(*HostedLoginConfigResult)(nil),                   // 44: zeroauthy.store.v1.HostedLoginConfigResult
-	(*HostedLoginConfigWrite)(nil),                    // 45: zeroauthy.store.v1.HostedLoginConfigWrite
-	(*FederationEndpoints)(nil),                       // 46: zeroauthy.store.v1.FederationEndpoints
-	(*FederationAttempt)(nil),                         // 47: zeroauthy.store.v1.FederationAttempt
-	(*FederationAttemptWrite)(nil),                    // 48: zeroauthy.store.v1.FederationAttemptWrite
-	(*FederationAttemptKey)(nil),                      // 49: zeroauthy.store.v1.FederationAttemptKey
-	(*FederationClaimRequest)(nil),                    // 50: zeroauthy.store.v1.FederationClaimRequest
-	(*FederationAttemptResult)(nil),                   // 51: zeroauthy.store.v1.FederationAttemptResult
-	(*FederatedIdentityKey)(nil),                      // 52: zeroauthy.store.v1.FederatedIdentityKey
-	(*FederatedIdentityRequest)(nil),                  // 53: zeroauthy.store.v1.FederatedIdentityRequest
-	(*FederatedIdentityWrite)(nil),                    // 54: zeroauthy.store.v1.FederatedIdentityWrite
-	(*FederatedTokensWrite)(nil),                      // 55: zeroauthy.store.v1.FederatedTokensWrite
-	(*FederatedTokensResult)(nil),                     // 56: zeroauthy.store.v1.FederatedTokensResult
-	(*UsersFindByIdentityRequest)(nil),                // 57: zeroauthy.store.v1.UsersFindByIdentityRequest
-	(*HostedStateCASRequest)(nil),                     // 58: zeroauthy.store.v1.HostedStateCASRequest
-	(*EmailProvider)(nil),                             // 59: zeroauthy.store.v1.EmailProvider
-	(*EmailProviderResult)(nil),                       // 60: zeroauthy.store.v1.EmailProviderResult
-	(*EmailProviderWrite)(nil),                        // 61: zeroauthy.store.v1.EmailProviderWrite
-	(*EmailProviderDeleteRequest)(nil),                // 62: zeroauthy.store.v1.EmailProviderDeleteRequest
-	(*EmailTemplate)(nil),                             // 63: zeroauthy.store.v1.EmailTemplate
-	(*EmailTemplateKey)(nil),                          // 64: zeroauthy.store.v1.EmailTemplateKey
-	(*EmailTemplateResult)(nil),                       // 65: zeroauthy.store.v1.EmailTemplateResult
-	(*EmailTemplateWrite)(nil),                        // 66: zeroauthy.store.v1.EmailTemplateWrite
-	(*EmailNotificationClaimRequest)(nil),             // 67: zeroauthy.store.v1.EmailNotificationClaimRequest
-	(*EmailNotificationClaimResult)(nil),              // 68: zeroauthy.store.v1.EmailNotificationClaimResult
-	(*EmailNotificationSweepRequest)(nil),             // 69: zeroauthy.store.v1.EmailNotificationSweepRequest
-	(*PasswordPolicy)(nil),                            // 70: zeroauthy.store.v1.PasswordPolicy
-	(*PasswordComplexity)(nil),                        // 71: zeroauthy.store.v1.PasswordComplexity
-	(*PasswordHistorySettings)(nil),                   // 72: zeroauthy.store.v1.PasswordHistorySettings
-	(*PasswordDictionary)(nil),                        // 73: zeroauthy.store.v1.PasswordDictionary
-	(*PasswordProfileData)(nil),                       // 74: zeroauthy.store.v1.PasswordProfileData
-	(*PasswordOptions)(nil),                           // 75: zeroauthy.store.v1.PasswordOptions
-	(*Connection)(nil),                                // 76: zeroauthy.store.v1.Connection
-	(*Identity)(nil),                                  // 77: zeroauthy.store.v1.Identity
-	(*IdentityList)(nil),                              // 78: zeroauthy.store.v1.IdentityList
-	(*User)(nil),                                      // 79: zeroauthy.store.v1.User
-	(*LoginSession)(nil),                              // 80: zeroauthy.store.v1.LoginSession
-	(*AuthMethod)(nil),                                // 81: zeroauthy.store.v1.AuthMethod
-	(*AuthMethodList)(nil),                            // 82: zeroauthy.store.v1.AuthMethodList
-	(*AuthTransaction)(nil),                           // 83: zeroauthy.store.v1.AuthTransaction
-	(*AuthCode)(nil),                                  // 84: zeroauthy.store.v1.AuthCode
-	(*PushedAuthRequest)(nil),                         // 85: zeroauthy.store.v1.PushedAuthRequest
-	(*DeviceCode)(nil),                                // 86: zeroauthy.store.v1.DeviceCode
-	(*RefreshToken)(nil),                              // 87: zeroauthy.store.v1.RefreshToken
-	(*PasswordResetTicket)(nil),                       // 88: zeroauthy.store.v1.PasswordResetTicket
-	(*EmailVerificationTicket)(nil),                   // 89: zeroauthy.store.v1.EmailVerificationTicket
-	(*JobSummary)(nil),                                // 90: zeroauthy.store.v1.JobSummary
-	(*Job)(nil),                                       // 91: zeroauthy.store.v1.Job
-	(*JobErrorItem)(nil),                              // 92: zeroauthy.store.v1.JobErrorItem
-	(*JobErrorItems)(nil),                             // 93: zeroauthy.store.v1.JobErrorItems
-	(*JobError)(nil),                                  // 94: zeroauthy.store.v1.JobError
-	(*Operator)(nil),                                  // 95: zeroauthy.store.v1.Operator
-	(*TenantWrite)(nil),                               // 96: zeroauthy.store.v1.TenantWrite
-	(*TenantsGetRequest)(nil),                         // 97: zeroauthy.store.v1.TenantsGetRequest
-	(*TenantsListRequest)(nil),                        // 98: zeroauthy.store.v1.TenantsListRequest
-	(*TenantResult)(nil),                              // 99: zeroauthy.store.v1.TenantResult
-	(*TenantList)(nil),                                // 100: zeroauthy.store.v1.TenantList
-	(*ClientWrite)(nil),                               // 101: zeroauthy.store.v1.ClientWrite
-	(*ClientResult)(nil),                              // 102: zeroauthy.store.v1.ClientResult
-	(*ClientList)(nil),                                // 103: zeroauthy.store.v1.ClientList
-	(*ClientsListPageRequest)(nil),                    // 104: zeroauthy.store.v1.ClientsListPageRequest
-	(*ClientPage)(nil),                                // 105: zeroauthy.store.v1.ClientPage
-	(*ResourceServerWrite)(nil),                       // 106: zeroauthy.store.v1.ResourceServerWrite
-	(*ResourceServerResult)(nil),                      // 107: zeroauthy.store.v1.ResourceServerResult
-	(*ResourceServerList)(nil),                        // 108: zeroauthy.store.v1.ResourceServerList
-	(*ClientGrantWrite)(nil),                          // 109: zeroauthy.store.v1.ClientGrantWrite
-	(*ClientGrantsFindRequest)(nil),                   // 110: zeroauthy.store.v1.ClientGrantsFindRequest
-	(*ClientGrantResult)(nil),                         // 111: zeroauthy.store.v1.ClientGrantResult
-	(*ClientGrantsListRequest)(nil),                   // 112: zeroauthy.store.v1.ClientGrantsListRequest
-	(*ClientGrantList)(nil),                           // 113: zeroauthy.store.v1.ClientGrantList
-	(*UserGrantWrite)(nil),                            // 114: zeroauthy.store.v1.UserGrantWrite
-	(*UserGrantsFindRequest)(nil),                     // 115: zeroauthy.store.v1.UserGrantsFindRequest
-	(*UserGrantResult)(nil),                           // 116: zeroauthy.store.v1.UserGrantResult
-	(*UserGrantList)(nil),                             // 117: zeroauthy.store.v1.UserGrantList
-	(*UserGrantsListRequest)(nil),                     // 118: zeroauthy.store.v1.UserGrantsListRequest
-	(*SigningKeyWrite)(nil),                           // 119: zeroauthy.store.v1.SigningKeyWrite
-	(*SigningKeyList)(nil),                            // 120: zeroauthy.store.v1.SigningKeyList
-	(*SigningKeysRotateRequest)(nil),                  // 121: zeroauthy.store.v1.SigningKeysRotateRequest
-	(*ConnectionWrite)(nil),                           // 122: zeroauthy.store.v1.ConnectionWrite
-	(*ConnectionResult)(nil),                          // 123: zeroauthy.store.v1.ConnectionResult
-	(*ConnectionList)(nil),                            // 124: zeroauthy.store.v1.ConnectionList
-	(*ConnectionsListPageRequest)(nil),                // 125: zeroauthy.store.v1.ConnectionsListPageRequest
-	(*ConnectionPage)(nil),                            // 126: zeroauthy.store.v1.ConnectionPage
-	(*PasswordHistoryAdd)(nil),                        // 127: zeroauthy.store.v1.PasswordHistoryAdd
-	(*PasswordHistoryList)(nil),                       // 128: zeroauthy.store.v1.PasswordHistoryList
-	(*UserWrite)(nil),                                 // 129: zeroauthy.store.v1.UserWrite
-	(*UserResult)(nil),                                // 130: zeroauthy.store.v1.UserResult
-	(*UsersFindByLoginRequest)(nil),                   // 131: zeroauthy.store.v1.UsersFindByLoginRequest
-	(*UsersRecordLoginRequest)(nil),                   // 132: zeroauthy.store.v1.UsersRecordLoginRequest
-	(*UsersFindByEmailRequest)(nil),                   // 133: zeroauthy.store.v1.UsersFindByEmailRequest
-	(*UserListResult)(nil),                            // 134: zeroauthy.store.v1.UserListResult
-	(*UserQuery)(nil),                                 // 135: zeroauthy.store.v1.UserQuery
-	(*UsersListRequest)(nil),                          // 136: zeroauthy.store.v1.UsersListRequest
-	(*VersionResult)(nil),                             // 137: zeroauthy.store.v1.VersionResult
-	(*UsersSetPasswordHashRequest)(nil),               // 138: zeroauthy.store.v1.UsersSetPasswordHashRequest
-	(*SessionWrite)(nil),                              // 139: zeroauthy.store.v1.SessionWrite
-	(*SessionResult)(nil),                             // 140: zeroauthy.store.v1.SessionResult
-	(*SessionList)(nil),                               // 141: zeroauthy.store.v1.SessionList
-	(*SessionsAddClientRequest)(nil),                  // 142: zeroauthy.store.v1.SessionsAddClientRequest
-	(*AuthTransactionWrite)(nil),                      // 143: zeroauthy.store.v1.AuthTransactionWrite
-	(*AuthTransactionResult)(nil),                     // 144: zeroauthy.store.v1.AuthTransactionResult
-	(*AuthCodeWrite)(nil),                             // 145: zeroauthy.store.v1.AuthCodeWrite
-	(*AuthCodeResult)(nil),                            // 146: zeroauthy.store.v1.AuthCodeResult
-	(*PushedAuthRequestWrite)(nil),                    // 147: zeroauthy.store.v1.PushedAuthRequestWrite
-	(*PushedAuthRequestResult)(nil),                   // 148: zeroauthy.store.v1.PushedAuthRequestResult
-	(*DeviceCodeWrite)(nil),                           // 149: zeroauthy.store.v1.DeviceCodeWrite
-	(*DeviceCodeResult)(nil),                          // 150: zeroauthy.store.v1.DeviceCodeResult
-	(*DeviceDecisionRequest)(nil),                     // 151: zeroauthy.store.v1.DeviceDecisionRequest
-	(*DevicePollRequest)(nil),                         // 152: zeroauthy.store.v1.DevicePollRequest
-	(*DevicePollResult)(nil),                          // 153: zeroauthy.store.v1.DevicePollResult
-	(*RefreshTokenWrite)(nil),                         // 154: zeroauthy.store.v1.RefreshTokenWrite
-	(*RefreshTokenResult)(nil),                        // 155: zeroauthy.store.v1.RefreshTokenResult
-	(*RefreshTokenList)(nil),                          // 156: zeroauthy.store.v1.RefreshTokenList
-	(*RefreshTokensRotateRequest)(nil),                // 157: zeroauthy.store.v1.RefreshTokensRotateRequest
-	(*PasswordResetTicketChallengeRequest)(nil),       // 158: zeroauthy.store.v1.PasswordResetTicketChallengeRequest
-	(*PasswordResetTicketWrite)(nil),                  // 159: zeroauthy.store.v1.PasswordResetTicketWrite
-	(*PasswordResetTicketResult)(nil),                 // 160: zeroauthy.store.v1.PasswordResetTicketResult
-	(*EmailVerificationTicketWrite)(nil),              // 161: zeroauthy.store.v1.EmailVerificationTicketWrite
-	(*EmailVerificationTicketResult)(nil),             // 162: zeroauthy.store.v1.EmailVerificationTicketResult
-	(*OperatorWrite)(nil),                             // 163: zeroauthy.store.v1.OperatorWrite
-	(*OperatorResult)(nil),                            // 164: zeroauthy.store.v1.OperatorResult
-	(*OperatorList)(nil),                              // 165: zeroauthy.store.v1.OperatorList
-	(*UsersUpgradeImportedHashRequest)(nil),           // 166: zeroauthy.store.v1.UsersUpgradeImportedHashRequest
-	(*JobWrite)(nil),                                  // 167: zeroauthy.store.v1.JobWrite
-	(*JobResult)(nil),                                 // 168: zeroauthy.store.v1.JobResult
-	(*JobPage)(nil),                                   // 169: zeroauthy.store.v1.JobPage
-	(*JobsListRequest)(nil),                           // 170: zeroauthy.store.v1.JobsListRequest
-	(*JobsCountActiveRequest)(nil),                    // 171: zeroauthy.store.v1.JobsCountActiveRequest
-	(*JobsClaimRequest)(nil),                          // 172: zeroauthy.store.v1.JobsClaimRequest
-	(*JobsRenewRequest)(nil),                          // 173: zeroauthy.store.v1.JobsRenewRequest
-	(*JobsCheckpointRequest)(nil),                     // 174: zeroauthy.store.v1.JobsCheckpointRequest
-	(*JobsFinishRequest)(nil),                         // 175: zeroauthy.store.v1.JobsFinishRequest
-	(*JobErrorList)(nil),                              // 176: zeroauthy.store.v1.JobErrorList
-	(*JobsAppendFileRequest)(nil),                     // 177: zeroauthy.store.v1.JobsAppendFileRequest
-	(*JobFileChunk)(nil),                              // 178: zeroauthy.store.v1.JobFileChunk
-	(*ProtectionKey)(nil),                             // 179: zeroauthy.store.v1.ProtectionKey
-	(*ProtectionLimit)(nil),                           // 180: zeroauthy.store.v1.ProtectionLimit
-	(*ProtectionBlock)(nil),                           // 181: zeroauthy.store.v1.ProtectionBlock
-	(*ProtectionRequest)(nil),                         // 182: zeroauthy.store.v1.ProtectionRequest
-	(*ProtectionResult)(nil),                          // 183: zeroauthy.store.v1.ProtectionResult
-	(*CustomDomain)(nil),                              // 184: zeroauthy.store.v1.CustomDomain
-	(*HostBinding)(nil),                               // 185: zeroauthy.store.v1.HostBinding
-	(*TLSPublicData)(nil),                             // 186: zeroauthy.store.v1.TLSPublicData
-	(*TLSAsset)(nil),                                  // 187: zeroauthy.store.v1.TLSAsset
-	(*TLSLease)(nil),                                  // 188: zeroauthy.store.v1.TLSLease
-	(*CustomDomainCapabilitiesRequest)(nil),           // 189: zeroauthy.store.v1.CustomDomainCapabilitiesRequest
-	(*CustomDomainRequest)(nil),                       // 190: zeroauthy.store.v1.CustomDomainRequest
-	(*CustomDomainResult)(nil),                        // 191: zeroauthy.store.v1.CustomDomainResult
-	(*TLSAssetRequest)(nil),                           // 192: zeroauthy.store.v1.TLSAssetRequest
-	(*TLSAssetResult)(nil),                            // 193: zeroauthy.store.v1.TLSAssetResult
-	(*MicrosoftFederationCapabilitiesRequest)(nil),    // 194: zeroauthy.store.v1.MicrosoftFederationCapabilitiesRequest
-	(*RBACRole)(nil),                                  // 195: zeroauthy.store.v1.RBACRole
-	(*RBACPermissionKey)(nil),                         // 196: zeroauthy.store.v1.RBACPermissionKey
-	(*RBACSource)(nil),                                // 197: zeroauthy.store.v1.RBACSource
-	(*RBACPermissionGrant)(nil),                       // 198: zeroauthy.store.v1.RBACPermissionGrant
-	(*RBACPage)(nil),                                  // 199: zeroauthy.store.v1.RBACPage
-	(*RBACRequest)(nil),                               // 200: zeroauthy.store.v1.RBACRequest
-	(*RBACSnapshot)(nil),                              // 201: zeroauthy.store.v1.RBACSnapshot
-	(*RBACResponse)(nil),                              // 202: zeroauthy.store.v1.RBACResponse
-	(*RBACCapabilitiesResult)(nil),                    // 203: zeroauthy.store.v1.RBACCapabilitiesResult
-	(*OrganizationColorsMsg)(nil),                     // 204: zeroauthy.store.v1.OrganizationColorsMsg
-	(*OrganizationBrandingMsg)(nil),                   // 205: zeroauthy.store.v1.OrganizationBrandingMsg
-	(*OrganizationMsg)(nil),                           // 206: zeroauthy.store.v1.OrganizationMsg
-	(*OrganizationConnectionMsg)(nil),                 // 207: zeroauthy.store.v1.OrganizationConnectionMsg
-	(*OrganizationPageMsg)(nil),                       // 208: zeroauthy.store.v1.OrganizationPageMsg
-	(*OrganizationsRequest)(nil),                      // 209: zeroauthy.store.v1.OrganizationsRequest
-	(*OrganizationsResponse)(nil),                     // 210: zeroauthy.store.v1.OrganizationsResponse
-	(*OrganizationsCapabilitiesResult)(nil),           // 211: zeroauthy.store.v1.OrganizationsCapabilitiesResult
-	(*ActionDependency)(nil),                          // 212: zeroauthy.store.v1.ActionDependency
-	(*ActionSecretMsg)(nil),                           // 213: zeroauthy.store.v1.ActionSecretMsg
-	(*ActionMsg)(nil),                                 // 214: zeroauthy.store.v1.ActionMsg
-	(*ActionVersionMsg)(nil),                          // 215: zeroauthy.store.v1.ActionVersionMsg
-	(*ActionBuildMsg)(nil),                            // 216: zeroauthy.store.v1.ActionBuildMsg
-	(*ActionBindingMsg)(nil),                          // 217: zeroauthy.store.v1.ActionBindingMsg
-	(*ActionBoundMsg)(nil),                            // 218: zeroauthy.store.v1.ActionBoundMsg
-	(*ActionExecutionResultMsg)(nil),                  // 219: zeroauthy.store.v1.ActionExecutionResultMsg
-	(*ActionExecutionMsg)(nil),                        // 220: zeroauthy.store.v1.ActionExecutionMsg
-	(*ActionContinueMsg)(nil),                         // 221: zeroauthy.store.v1.ActionContinueMsg
-	(*ActionsRequest)(nil),                            // 222: zeroauthy.store.v1.ActionsRequest
-	(*ActionsResponse)(nil),                           // 223: zeroauthy.store.v1.ActionsResponse
-	(*ActionsArtifactChunk)(nil),                      // 224: zeroauthy.store.v1.ActionsArtifactChunk
-	(*ActionsCapabilitiesResult)(nil),                 // 225: zeroauthy.store.v1.ActionsCapabilitiesResult
-	(*ActionModuleRefMsg)(nil),                        // 226: zeroauthy.store.v1.ActionModuleRefMsg
-	(*ActionModuleMsg)(nil),                           // 227: zeroauthy.store.v1.ActionModuleMsg
-	(*ActionModuleVersionMsg)(nil),                    // 228: zeroauthy.store.v1.ActionModuleVersionMsg
-	(*ActionModuleUserMsg)(nil),                       // 229: zeroauthy.store.v1.ActionModuleUserMsg
-	(*ActionJobMsg)(nil),                              // 230: zeroauthy.store.v1.ActionJobMsg
-	(*OrganizationInvitationMsg)(nil),                 // 231: zeroauthy.store.v1.OrganizationInvitationMsg
-	(*InvitationReceiptMsg)(nil),                      // 232: zeroauthy.store.v1.InvitationReceiptMsg
-	(*OrganizationClientMsg)(nil),                     // 233: zeroauthy.store.v1.OrganizationClientMsg
-	(*OrganizationDiscoveryDomainMsg)(nil),            // 234: zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
-	(*OrganizationsIIRequest)(nil),                    // 235: zeroauthy.store.v1.OrganizationsIIRequest
-	(*OrganizationsIIResponse)(nil),                   // 236: zeroauthy.store.v1.OrganizationsIIResponse
-	(*OrganizationQueryMsg)(nil),                      // 237: zeroauthy.store.v1.OrganizationQueryMsg
-	(*OrganizationSearchPageMsg)(nil),                 // 238: zeroauthy.store.v1.OrganizationSearchPageMsg
-	(*LogsCapabilitiesResult)(nil),                    // 239: zeroauthy.store.v1.LogsCapabilitiesResult
-	(*LogEventMsg)(nil),                               // 240: zeroauthy.store.v1.LogEventMsg
-	(*LogQueryMsg)(nil),                               // 241: zeroauthy.store.v1.LogQueryMsg
-	(*LogPageMsg)(nil),                                // 242: zeroauthy.store.v1.LogPageMsg
-	(*LogStreamFilterMsg)(nil),                        // 243: zeroauthy.store.v1.LogStreamFilterMsg
-	(*LogStreamFiltersMsg)(nil),                       // 244: zeroauthy.store.v1.LogStreamFiltersMsg
-	(*LogStreamPIIMsg)(nil),                           // 245: zeroauthy.store.v1.LogStreamPIIMsg
-	(*LogStreamMsg)(nil),                              // 246: zeroauthy.store.v1.LogStreamMsg
-	(*LogStreamDeliveryMsg)(nil),                      // 247: zeroauthy.store.v1.LogStreamDeliveryMsg
-	(*DailyStatDeltaMsg)(nil),                         // 248: zeroauthy.store.v1.DailyStatDeltaMsg
-	(*DailyStatMsg)(nil),                              // 249: zeroauthy.store.v1.DailyStatMsg
-	(*LogsRequest)(nil),                               // 250: zeroauthy.store.v1.LogsRequest
-	(*LogsResponse)(nil),                              // 251: zeroauthy.store.v1.LogsResponse
-	(*EventsCapabilitiesResult)(nil),                  // 252: zeroauthy.store.v1.EventsCapabilitiesResult
-	(*TenantEventMsg)(nil),                            // 253: zeroauthy.store.v1.TenantEventMsg
-	(*EventStreamMsg)(nil),                            // 254: zeroauthy.store.v1.EventStreamMsg
-	(*DeliveryAttemptMsg)(nil),                        // 255: zeroauthy.store.v1.DeliveryAttemptMsg
-	(*DeliveryAttemptsMsg)(nil),                       // 256: zeroauthy.store.v1.DeliveryAttemptsMsg
-	(*EventDeliveryMsg)(nil),                          // 257: zeroauthy.store.v1.EventDeliveryMsg
-	(*DeliveryFilterMsg)(nil),                         // 258: zeroauthy.store.v1.DeliveryFilterMsg
-	(*DeliveryOutcomeMsg)(nil),                        // 259: zeroauthy.store.v1.DeliveryOutcomeMsg
-	(*EventsRequest)(nil),                             // 260: zeroauthy.store.v1.EventsRequest
-	(*EventsResponse)(nil),                            // 261: zeroauthy.store.v1.EventsResponse
-	(*MFAGuardian)(nil),                               // 262: zeroauthy.store.v1.MFAGuardian
-	(*MFAAuthenticator)(nil),                          // 263: zeroauthy.store.v1.MFAAuthenticator
-	(*MFATokenMsg)(nil),                               // 264: zeroauthy.store.v1.MFATokenMsg
-	(*MFAChallengeMsg)(nil),                           // 265: zeroauthy.store.v1.MFAChallengeMsg
-	(*MFAEnrollmentTicket)(nil),                       // 266: zeroauthy.store.v1.MFAEnrollmentTicket
-	(*MFABrowserMsg)(nil),                             // 267: zeroauthy.store.v1.MFABrowserMsg
-	(*MFAGetGuardianRequest)(nil),                     // 268: zeroauthy.store.v1.MFAGetGuardianRequest
-	(*MFAGetGuardianResponse)(nil),                    // 269: zeroauthy.store.v1.MFAGetGuardianResponse
-	(*MFAPutGuardianRequest)(nil),                     // 270: zeroauthy.store.v1.MFAPutGuardianRequest
-	(*MFAPutGuardianResponse)(nil),                    // 271: zeroauthy.store.v1.MFAPutGuardianResponse
-	(*MFACreateAuthenticatorRequest)(nil),             // 272: zeroauthy.store.v1.MFACreateAuthenticatorRequest
-	(*MFACreateAuthenticatorResponse)(nil),            // 273: zeroauthy.store.v1.MFACreateAuthenticatorResponse
-	(*MFAGetAuthenticatorRequest)(nil),                // 274: zeroauthy.store.v1.MFAGetAuthenticatorRequest
-	(*MFAGetAuthenticatorResponse)(nil),               // 275: zeroauthy.store.v1.MFAGetAuthenticatorResponse
-	(*MFAGetAuthenticatorByEnrollmentIDRequest)(nil),  // 276: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDRequest
-	(*MFAGetAuthenticatorByEnrollmentIDResponse)(nil), // 277: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse
-	(*MFAListAuthenticatorsRequest)(nil),              // 278: zeroauthy.store.v1.MFAListAuthenticatorsRequest
-	(*MFAListAuthenticatorsResponse)(nil),             // 279: zeroauthy.store.v1.MFAListAuthenticatorsResponse
-	(*MFAUpdateAuthenticatorRequest)(nil),             // 280: zeroauthy.store.v1.MFAUpdateAuthenticatorRequest
-	(*MFAUpdateAuthenticatorResponse)(nil),            // 281: zeroauthy.store.v1.MFAUpdateAuthenticatorResponse
-	(*MFADeleteAuthenticatorRequest)(nil),             // 282: zeroauthy.store.v1.MFADeleteAuthenticatorRequest
-	(*MFADeleteAuthenticatorResponse)(nil),            // 283: zeroauthy.store.v1.MFADeleteAuthenticatorResponse
-	(*MFADeleteUserAuthenticatorsRequest)(nil),        // 284: zeroauthy.store.v1.MFADeleteUserAuthenticatorsRequest
-	(*MFADeleteUserAuthenticatorsResponse)(nil),       // 285: zeroauthy.store.v1.MFADeleteUserAuthenticatorsResponse
-	(*MFAAcceptTOTPStepRequest)(nil),                  // 286: zeroauthy.store.v1.MFAAcceptTOTPStepRequest
-	(*MFAAcceptTOTPStepResponse)(nil),                 // 287: zeroauthy.store.v1.MFAAcceptTOTPStepResponse
-	(*MFAReplaceRecoveryCodeRequest)(nil),             // 288: zeroauthy.store.v1.MFAReplaceRecoveryCodeRequest
-	(*MFAReplaceRecoveryCodeResponse)(nil),            // 289: zeroauthy.store.v1.MFAReplaceRecoveryCodeResponse
-	(*MFAAcceptSignCountRequest)(nil),                 // 290: zeroauthy.store.v1.MFAAcceptSignCountRequest
-	(*MFAAcceptSignCountResponse)(nil),                // 291: zeroauthy.store.v1.MFAAcceptSignCountResponse
-	(*MFACreateMFATokenRequest)(nil),                  // 292: zeroauthy.store.v1.MFACreateMFATokenRequest
-	(*MFACreateMFATokenResponse)(nil),                 // 293: zeroauthy.store.v1.MFACreateMFATokenResponse
-	(*MFAConsumeMFATokenRequest)(nil),                 // 294: zeroauthy.store.v1.MFAConsumeMFATokenRequest
-	(*MFAConsumeMFATokenResponse)(nil),                // 295: zeroauthy.store.v1.MFAConsumeMFATokenResponse
-	(*MFAPeekMFATokenRequest)(nil),                    // 296: zeroauthy.store.v1.MFAPeekMFATokenRequest
-	(*MFAPeekMFATokenResponse)(nil),                   // 297: zeroauthy.store.v1.MFAPeekMFATokenResponse
-	(*MFACreateChallengeRequest)(nil),                 // 298: zeroauthy.store.v1.MFACreateChallengeRequest
-	(*MFACreateChallengeResponse)(nil),                // 299: zeroauthy.store.v1.MFACreateChallengeResponse
-	(*MFAGetChallengeRequest)(nil),                    // 300: zeroauthy.store.v1.MFAGetChallengeRequest
-	(*MFAGetChallengeResponse)(nil),                   // 301: zeroauthy.store.v1.MFAGetChallengeResponse
-	(*MFAFailChallengeRequest)(nil),                   // 302: zeroauthy.store.v1.MFAFailChallengeRequest
-	(*MFAFailChallengeResponse)(nil),                  // 303: zeroauthy.store.v1.MFAFailChallengeResponse
-	(*MFAConsumeChallengeRequest)(nil),                // 304: zeroauthy.store.v1.MFAConsumeChallengeRequest
-	(*MFAConsumeChallengeResponse)(nil),               // 305: zeroauthy.store.v1.MFAConsumeChallengeResponse
-	(*MFACreateTicketRequest)(nil),                    // 306: zeroauthy.store.v1.MFACreateTicketRequest
-	(*MFACreateTicketResponse)(nil),                   // 307: zeroauthy.store.v1.MFACreateTicketResponse
-	(*MFAConsumeTicketRequest)(nil),                   // 308: zeroauthy.store.v1.MFAConsumeTicketRequest
-	(*MFAConsumeTicketResponse)(nil),                  // 309: zeroauthy.store.v1.MFAConsumeTicketResponse
-	(*MFAPeekTicketRequest)(nil),                      // 310: zeroauthy.store.v1.MFAPeekTicketRequest
-	(*MFAPeekTicketResponse)(nil),                     // 311: zeroauthy.store.v1.MFAPeekTicketResponse
-	(*MFAPutBrowserRequest)(nil),                      // 312: zeroauthy.store.v1.MFAPutBrowserRequest
-	(*MFAPutBrowserResponse)(nil),                     // 313: zeroauthy.store.v1.MFAPutBrowserResponse
-	(*MFAGetBrowserRequest)(nil),                      // 314: zeroauthy.store.v1.MFAGetBrowserRequest
-	(*MFAGetBrowserResponse)(nil),                     // 315: zeroauthy.store.v1.MFAGetBrowserResponse
-	(*MFABumpRememberEpochRequest)(nil),               // 316: zeroauthy.store.v1.MFABumpRememberEpochRequest
-	(*MFABumpRememberEpochResponse)(nil),              // 317: zeroauthy.store.v1.MFABumpRememberEpochResponse
-	(*MFAPurgeMFARequest)(nil),                        // 318: zeroauthy.store.v1.MFAPurgeMFARequest
-	(*MFAPurgeMFAResponse)(nil),                       // 319: zeroauthy.store.v1.MFAPurgeMFAResponse
-	(*MFADeleteUserMFARequest)(nil),                   // 320: zeroauthy.store.v1.MFADeleteUserMFARequest
-	(*MFADeleteUserMFAResponse)(nil),                  // 321: zeroauthy.store.v1.MFADeleteUserMFAResponse
-	(*MFADeleteTenantMFARequest)(nil),                 // 322: zeroauthy.store.v1.MFADeleteTenantMFARequest
-	(*MFADeleteTenantMFAResponse)(nil),                // 323: zeroauthy.store.v1.MFADeleteTenantMFAResponse
-	(*PhoneProvider)(nil),                             // 324: zeroauthy.store.v1.PhoneProvider
-	(*PhoneTemplate)(nil),                             // 325: zeroauthy.store.v1.PhoneTemplate
-	(*PasswordlessCode)(nil),                          // 326: zeroauthy.store.v1.PasswordlessCode
-	(*PhoneErrorResponse)(nil),                        // 327: zeroauthy.store.v1.PhoneErrorResponse
-	(*PhoneTenantRequest)(nil),                        // 328: zeroauthy.store.v1.PhoneTenantRequest
-	(*PhoneIDRequest)(nil),                            // 329: zeroauthy.store.v1.PhoneIDRequest
-	(*PhoneProviderRequest)(nil),                      // 330: zeroauthy.store.v1.PhoneProviderRequest
-	(*PhoneProviderResponse)(nil),                     // 331: zeroauthy.store.v1.PhoneProviderResponse
-	(*PhoneListProvidersResponse)(nil),                // 332: zeroauthy.store.v1.PhoneListProvidersResponse
-	(*PhoneTemplateRequest)(nil),                      // 333: zeroauthy.store.v1.PhoneTemplateRequest
-	(*PhoneTemplateResponse)(nil),                     // 334: zeroauthy.store.v1.PhoneTemplateResponse
-	(*PhoneListTemplatesResponse)(nil),                // 335: zeroauthy.store.v1.PhoneListTemplatesResponse
-	(*PhonePutCodeRequest)(nil),                       // 336: zeroauthy.store.v1.PhonePutCodeRequest
-	(*PhoneCodeKeyRequest)(nil),                       // 337: zeroauthy.store.v1.PhoneCodeKeyRequest
-	(*PhoneFailCodeResponse)(nil),                     // 338: zeroauthy.store.v1.PhoneFailCodeResponse
-	(*PhoneConsumeCodeRequest)(nil),                   // 339: zeroauthy.store.v1.PhoneConsumeCodeRequest
-	(*PhoneCodeResponse)(nil),                         // 340: zeroauthy.store.v1.PhoneCodeResponse
-	(*PhonePeekLinkRequest)(nil),                      // 341: zeroauthy.store.v1.PhonePeekLinkRequest
-	(*PhoneFindUsersRequest)(nil),                     // 342: zeroauthy.store.v1.PhoneFindUsersRequest
-	(*PhoneFindUsersResponse)(nil),                    // 343: zeroauthy.store.v1.PhoneFindUsersResponse
-	(*PhonePurgeRequest)(nil),                         // 344: zeroauthy.store.v1.PhonePurgeRequest
-	(*PhoneCountResponse)(nil),                        // 345: zeroauthy.store.v1.PhoneCountResponse
-	(*WebAuthnSnooze)(nil),                            // 346: zeroauthy.store.v1.WebAuthnSnooze
-	(*WebAuthnErrorResponse)(nil),                     // 347: zeroauthy.store.v1.WebAuthnErrorResponse
-	(*WebAuthnCredentialRequest)(nil),                 // 348: zeroauthy.store.v1.WebAuthnCredentialRequest
-	(*WebAuthnAuthenticatorResponse)(nil),             // 349: zeroauthy.store.v1.WebAuthnAuthenticatorResponse
-	(*WebAuthnCreatePasskeyRequest)(nil),              // 350: zeroauthy.store.v1.WebAuthnCreatePasskeyRequest
-	(*WebAuthnCreateUserRequest)(nil),                 // 351: zeroauthy.store.v1.WebAuthnCreateUserRequest
-	(*WebAuthnAcceptAssertionRequest)(nil),            // 352: zeroauthy.store.v1.WebAuthnAcceptAssertionRequest
-	(*WebAuthnMovePasskeysRequest)(nil),               // 353: zeroauthy.store.v1.WebAuthnMovePasskeysRequest
-	(*WebAuthnSnoozeRequest)(nil),                     // 354: zeroauthy.store.v1.WebAuthnSnoozeRequest
-	(*WebAuthnGetSnoozeRequest)(nil),                  // 355: zeroauthy.store.v1.WebAuthnGetSnoozeRequest
-	(*WebAuthnSnoozeResponse)(nil),                    // 356: zeroauthy.store.v1.WebAuthnSnoozeResponse
-	(*WebAuthnHostTenantsRequest)(nil),                // 357: zeroauthy.store.v1.WebAuthnHostTenantsRequest
-	(*WebAuthnTenantIDsResponse)(nil),                 // 358: zeroauthy.store.v1.WebAuthnTenantIDsResponse
-	(*WebAuthnPurgeRequest)(nil),                      // 359: zeroauthy.store.v1.WebAuthnPurgeRequest
-	(*WebAuthnCountResponse)(nil),                     // 360: zeroauthy.store.v1.WebAuthnCountResponse
-	nil,                                               // 361: zeroauthy.store.v1.StringMap.ValuesEntry
-	nil,                                               // 362: zeroauthy.store.v1.MFAGuardian.FactorsEntry
-	nil,                                               // 363: zeroauthy.store.v1.MFAGuardian.StoredEntry
-	nil,                                               // 364: zeroauthy.store.v1.MFAGuardian.SealedSecretsEntry
-	(*timestamppb.Timestamp)(nil),                     // 365: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),                       // 366: google.protobuf.Duration
+	(*SessionsSetAuthMethodsRequest)(nil),             // 14: zeroauthy.store.v1.SessionsSetAuthMethodsRequest
+	(*DeleteExpiredRequest)(nil),                      // 15: zeroauthy.store.v1.DeleteExpiredRequest
+	(*ConsumeRequest)(nil),                            // 16: zeroauthy.store.v1.ConsumeRequest
+	(*RevokeRequest)(nil),                             // 17: zeroauthy.store.v1.RevokeRequest
+	(*StringList)(nil),                                // 18: zeroauthy.store.v1.StringList
+	(*StringMap)(nil),                                 // 19: zeroauthy.store.v1.StringMap
+	(*Tenant)(nil),                                    // 20: zeroauthy.store.v1.Tenant
+	(*Branding)(nil),                                  // 21: zeroauthy.store.v1.Branding
+	(*ClientSecret)(nil),                              // 22: zeroauthy.store.v1.ClientSecret
+	(*ClientSecretList)(nil),                          // 23: zeroauthy.store.v1.ClientSecretList
+	(*RefreshTokenPolicy)(nil),                        // 24: zeroauthy.store.v1.RefreshTokenPolicy
+	(*Client)(nil),                                    // 25: zeroauthy.store.v1.Client
+	(*ClientMobile)(nil),                              // 26: zeroauthy.store.v1.ClientMobile
+	(*ClientMobileIOS)(nil),                           // 27: zeroauthy.store.v1.ClientMobileIOS
+	(*ClientMobileAndroid)(nil),                       // 28: zeroauthy.store.v1.ClientMobileAndroid
+	(*Scope)(nil),                                     // 29: zeroauthy.store.v1.Scope
+	(*ScopeList)(nil),                                 // 30: zeroauthy.store.v1.ScopeList
+	(*ResourceServer)(nil),                            // 31: zeroauthy.store.v1.ResourceServer
+	(*ResourceServerRenameSystemRequest)(nil),         // 32: zeroauthy.store.v1.ResourceServerRenameSystemRequest
+	(*ClientGrant)(nil),                               // 33: zeroauthy.store.v1.ClientGrant
+	(*UserGrant)(nil),                                 // 34: zeroauthy.store.v1.UserGrant
+	(*SigningKey)(nil),                                // 35: zeroauthy.store.v1.SigningKey
+	(*SigningKeyResult)(nil),                          // 36: zeroauthy.store.v1.SigningKeyResult
+	(*SigningKeyRotation)(nil),                        // 37: zeroauthy.store.v1.SigningKeyRotation
+	(*SigningKeyRotationResult)(nil),                  // 38: zeroauthy.store.v1.SigningKeyRotationResult
+	(*SigningKeyRevokeRequest)(nil),                   // 39: zeroauthy.store.v1.SigningKeyRevokeRequest
+	(*SigningKeyCertificateRequest)(nil),              // 40: zeroauthy.store.v1.SigningKeyCertificateRequest
+	(*CustomSigningKeySet)(nil),                       // 41: zeroauthy.store.v1.CustomSigningKeySet
+	(*CustomSigningKeySetResult)(nil),                 // 42: zeroauthy.store.v1.CustomSigningKeySetResult
+	(*CustomSigningKeySetWrite)(nil),                  // 43: zeroauthy.store.v1.CustomSigningKeySetWrite
+	(*HostedLoginConfig)(nil),                         // 44: zeroauthy.store.v1.HostedLoginConfig
+	(*HostedLoginConfigResult)(nil),                   // 45: zeroauthy.store.v1.HostedLoginConfigResult
+	(*HostedLoginConfigWrite)(nil),                    // 46: zeroauthy.store.v1.HostedLoginConfigWrite
+	(*FederationEndpoints)(nil),                       // 47: zeroauthy.store.v1.FederationEndpoints
+	(*FederationAttempt)(nil),                         // 48: zeroauthy.store.v1.FederationAttempt
+	(*FederationAttemptWrite)(nil),                    // 49: zeroauthy.store.v1.FederationAttemptWrite
+	(*FederationAttemptKey)(nil),                      // 50: zeroauthy.store.v1.FederationAttemptKey
+	(*FederationClaimRequest)(nil),                    // 51: zeroauthy.store.v1.FederationClaimRequest
+	(*FederationAttemptResult)(nil),                   // 52: zeroauthy.store.v1.FederationAttemptResult
+	(*FederatedIdentityKey)(nil),                      // 53: zeroauthy.store.v1.FederatedIdentityKey
+	(*FederatedIdentityRequest)(nil),                  // 54: zeroauthy.store.v1.FederatedIdentityRequest
+	(*FederatedIdentityWrite)(nil),                    // 55: zeroauthy.store.v1.FederatedIdentityWrite
+	(*FederatedTokensWrite)(nil),                      // 56: zeroauthy.store.v1.FederatedTokensWrite
+	(*FederatedTokensResult)(nil),                     // 57: zeroauthy.store.v1.FederatedTokensResult
+	(*UsersFindByIdentityRequest)(nil),                // 58: zeroauthy.store.v1.UsersFindByIdentityRequest
+	(*HostedStateCASRequest)(nil),                     // 59: zeroauthy.store.v1.HostedStateCASRequest
+	(*EmailProvider)(nil),                             // 60: zeroauthy.store.v1.EmailProvider
+	(*EmailProviderResult)(nil),                       // 61: zeroauthy.store.v1.EmailProviderResult
+	(*EmailProviderWrite)(nil),                        // 62: zeroauthy.store.v1.EmailProviderWrite
+	(*EmailProviderDeleteRequest)(nil),                // 63: zeroauthy.store.v1.EmailProviderDeleteRequest
+	(*EmailTemplate)(nil),                             // 64: zeroauthy.store.v1.EmailTemplate
+	(*EmailTemplateKey)(nil),                          // 65: zeroauthy.store.v1.EmailTemplateKey
+	(*EmailTemplateResult)(nil),                       // 66: zeroauthy.store.v1.EmailTemplateResult
+	(*EmailTemplateWrite)(nil),                        // 67: zeroauthy.store.v1.EmailTemplateWrite
+	(*EmailNotificationClaimRequest)(nil),             // 68: zeroauthy.store.v1.EmailNotificationClaimRequest
+	(*EmailNotificationClaimResult)(nil),              // 69: zeroauthy.store.v1.EmailNotificationClaimResult
+	(*EmailNotificationSweepRequest)(nil),             // 70: zeroauthy.store.v1.EmailNotificationSweepRequest
+	(*PasswordPolicy)(nil),                            // 71: zeroauthy.store.v1.PasswordPolicy
+	(*PasswordComplexity)(nil),                        // 72: zeroauthy.store.v1.PasswordComplexity
+	(*PasswordHistorySettings)(nil),                   // 73: zeroauthy.store.v1.PasswordHistorySettings
+	(*PasswordDictionary)(nil),                        // 74: zeroauthy.store.v1.PasswordDictionary
+	(*PasswordProfileData)(nil),                       // 75: zeroauthy.store.v1.PasswordProfileData
+	(*PasswordOptions)(nil),                           // 76: zeroauthy.store.v1.PasswordOptions
+	(*Connection)(nil),                                // 77: zeroauthy.store.v1.Connection
+	(*Identity)(nil),                                  // 78: zeroauthy.store.v1.Identity
+	(*IdentityList)(nil),                              // 79: zeroauthy.store.v1.IdentityList
+	(*User)(nil),                                      // 80: zeroauthy.store.v1.User
+	(*LoginSession)(nil),                              // 81: zeroauthy.store.v1.LoginSession
+	(*AuthMethod)(nil),                                // 82: zeroauthy.store.v1.AuthMethod
+	(*AuthMethodList)(nil),                            // 83: zeroauthy.store.v1.AuthMethodList
+	(*AuthTransaction)(nil),                           // 84: zeroauthy.store.v1.AuthTransaction
+	(*AuthCode)(nil),                                  // 85: zeroauthy.store.v1.AuthCode
+	(*PushedAuthRequest)(nil),                         // 86: zeroauthy.store.v1.PushedAuthRequest
+	(*DeviceCode)(nil),                                // 87: zeroauthy.store.v1.DeviceCode
+	(*RefreshToken)(nil),                              // 88: zeroauthy.store.v1.RefreshToken
+	(*PasswordResetTicket)(nil),                       // 89: zeroauthy.store.v1.PasswordResetTicket
+	(*EmailVerificationTicket)(nil),                   // 90: zeroauthy.store.v1.EmailVerificationTicket
+	(*JobSummary)(nil),                                // 91: zeroauthy.store.v1.JobSummary
+	(*Job)(nil),                                       // 92: zeroauthy.store.v1.Job
+	(*JobErrorItem)(nil),                              // 93: zeroauthy.store.v1.JobErrorItem
+	(*JobErrorItems)(nil),                             // 94: zeroauthy.store.v1.JobErrorItems
+	(*JobError)(nil),                                  // 95: zeroauthy.store.v1.JobError
+	(*Operator)(nil),                                  // 96: zeroauthy.store.v1.Operator
+	(*TenantWrite)(nil),                               // 97: zeroauthy.store.v1.TenantWrite
+	(*TenantsGetRequest)(nil),                         // 98: zeroauthy.store.v1.TenantsGetRequest
+	(*TenantsListRequest)(nil),                        // 99: zeroauthy.store.v1.TenantsListRequest
+	(*TenantResult)(nil),                              // 100: zeroauthy.store.v1.TenantResult
+	(*TenantList)(nil),                                // 101: zeroauthy.store.v1.TenantList
+	(*ClientWrite)(nil),                               // 102: zeroauthy.store.v1.ClientWrite
+	(*ClientResult)(nil),                              // 103: zeroauthy.store.v1.ClientResult
+	(*ClientList)(nil),                                // 104: zeroauthy.store.v1.ClientList
+	(*ClientsListPageRequest)(nil),                    // 105: zeroauthy.store.v1.ClientsListPageRequest
+	(*ClientPage)(nil),                                // 106: zeroauthy.store.v1.ClientPage
+	(*ResourceServerWrite)(nil),                       // 107: zeroauthy.store.v1.ResourceServerWrite
+	(*ResourceServerResult)(nil),                      // 108: zeroauthy.store.v1.ResourceServerResult
+	(*ResourceServerList)(nil),                        // 109: zeroauthy.store.v1.ResourceServerList
+	(*ClientGrantWrite)(nil),                          // 110: zeroauthy.store.v1.ClientGrantWrite
+	(*ClientGrantsFindRequest)(nil),                   // 111: zeroauthy.store.v1.ClientGrantsFindRequest
+	(*ClientGrantResult)(nil),                         // 112: zeroauthy.store.v1.ClientGrantResult
+	(*ClientGrantsListRequest)(nil),                   // 113: zeroauthy.store.v1.ClientGrantsListRequest
+	(*ClientGrantList)(nil),                           // 114: zeroauthy.store.v1.ClientGrantList
+	(*UserGrantWrite)(nil),                            // 115: zeroauthy.store.v1.UserGrantWrite
+	(*UserGrantsFindRequest)(nil),                     // 116: zeroauthy.store.v1.UserGrantsFindRequest
+	(*UserGrantResult)(nil),                           // 117: zeroauthy.store.v1.UserGrantResult
+	(*UserGrantList)(nil),                             // 118: zeroauthy.store.v1.UserGrantList
+	(*UserGrantsListRequest)(nil),                     // 119: zeroauthy.store.v1.UserGrantsListRequest
+	(*SigningKeyWrite)(nil),                           // 120: zeroauthy.store.v1.SigningKeyWrite
+	(*SigningKeyList)(nil),                            // 121: zeroauthy.store.v1.SigningKeyList
+	(*SigningKeysRotateRequest)(nil),                  // 122: zeroauthy.store.v1.SigningKeysRotateRequest
+	(*ConnectionWrite)(nil),                           // 123: zeroauthy.store.v1.ConnectionWrite
+	(*ConnectionResult)(nil),                          // 124: zeroauthy.store.v1.ConnectionResult
+	(*ConnectionList)(nil),                            // 125: zeroauthy.store.v1.ConnectionList
+	(*ConnectionsListPageRequest)(nil),                // 126: zeroauthy.store.v1.ConnectionsListPageRequest
+	(*ConnectionPage)(nil),                            // 127: zeroauthy.store.v1.ConnectionPage
+	(*PasswordHistoryAdd)(nil),                        // 128: zeroauthy.store.v1.PasswordHistoryAdd
+	(*PasswordHistoryList)(nil),                       // 129: zeroauthy.store.v1.PasswordHistoryList
+	(*UserWrite)(nil),                                 // 130: zeroauthy.store.v1.UserWrite
+	(*UserResult)(nil),                                // 131: zeroauthy.store.v1.UserResult
+	(*UsersFindByLoginRequest)(nil),                   // 132: zeroauthy.store.v1.UsersFindByLoginRequest
+	(*UsersRecordLoginRequest)(nil),                   // 133: zeroauthy.store.v1.UsersRecordLoginRequest
+	(*UsersFindByEmailRequest)(nil),                   // 134: zeroauthy.store.v1.UsersFindByEmailRequest
+	(*UserListResult)(nil),                            // 135: zeroauthy.store.v1.UserListResult
+	(*UserQuery)(nil),                                 // 136: zeroauthy.store.v1.UserQuery
+	(*UsersListRequest)(nil),                          // 137: zeroauthy.store.v1.UsersListRequest
+	(*VersionResult)(nil),                             // 138: zeroauthy.store.v1.VersionResult
+	(*UsersSetPasswordHashRequest)(nil),               // 139: zeroauthy.store.v1.UsersSetPasswordHashRequest
+	(*SessionWrite)(nil),                              // 140: zeroauthy.store.v1.SessionWrite
+	(*SessionResult)(nil),                             // 141: zeroauthy.store.v1.SessionResult
+	(*SessionList)(nil),                               // 142: zeroauthy.store.v1.SessionList
+	(*SessionsAddClientRequest)(nil),                  // 143: zeroauthy.store.v1.SessionsAddClientRequest
+	(*AuthTransactionWrite)(nil),                      // 144: zeroauthy.store.v1.AuthTransactionWrite
+	(*AuthTransactionResult)(nil),                     // 145: zeroauthy.store.v1.AuthTransactionResult
+	(*AuthCodeWrite)(nil),                             // 146: zeroauthy.store.v1.AuthCodeWrite
+	(*AuthCodeResult)(nil),                            // 147: zeroauthy.store.v1.AuthCodeResult
+	(*PushedAuthRequestWrite)(nil),                    // 148: zeroauthy.store.v1.PushedAuthRequestWrite
+	(*PushedAuthRequestResult)(nil),                   // 149: zeroauthy.store.v1.PushedAuthRequestResult
+	(*DeviceCodeWrite)(nil),                           // 150: zeroauthy.store.v1.DeviceCodeWrite
+	(*DeviceCodeResult)(nil),                          // 151: zeroauthy.store.v1.DeviceCodeResult
+	(*DeviceDecisionRequest)(nil),                     // 152: zeroauthy.store.v1.DeviceDecisionRequest
+	(*DevicePollRequest)(nil),                         // 153: zeroauthy.store.v1.DevicePollRequest
+	(*DevicePollResult)(nil),                          // 154: zeroauthy.store.v1.DevicePollResult
+	(*RefreshTokenWrite)(nil),                         // 155: zeroauthy.store.v1.RefreshTokenWrite
+	(*RefreshTokenResult)(nil),                        // 156: zeroauthy.store.v1.RefreshTokenResult
+	(*RefreshTokenList)(nil),                          // 157: zeroauthy.store.v1.RefreshTokenList
+	(*RefreshTokensRotateRequest)(nil),                // 158: zeroauthy.store.v1.RefreshTokensRotateRequest
+	(*PasswordResetTicketChallengeRequest)(nil),       // 159: zeroauthy.store.v1.PasswordResetTicketChallengeRequest
+	(*PasswordResetTicketWrite)(nil),                  // 160: zeroauthy.store.v1.PasswordResetTicketWrite
+	(*PasswordResetTicketResult)(nil),                 // 161: zeroauthy.store.v1.PasswordResetTicketResult
+	(*EmailVerificationTicketWrite)(nil),              // 162: zeroauthy.store.v1.EmailVerificationTicketWrite
+	(*EmailVerificationTicketResult)(nil),             // 163: zeroauthy.store.v1.EmailVerificationTicketResult
+	(*OperatorWrite)(nil),                             // 164: zeroauthy.store.v1.OperatorWrite
+	(*OperatorResult)(nil),                            // 165: zeroauthy.store.v1.OperatorResult
+	(*OperatorList)(nil),                              // 166: zeroauthy.store.v1.OperatorList
+	(*UsersUpgradeImportedHashRequest)(nil),           // 167: zeroauthy.store.v1.UsersUpgradeImportedHashRequest
+	(*JobWrite)(nil),                                  // 168: zeroauthy.store.v1.JobWrite
+	(*JobResult)(nil),                                 // 169: zeroauthy.store.v1.JobResult
+	(*JobPage)(nil),                                   // 170: zeroauthy.store.v1.JobPage
+	(*JobsListRequest)(nil),                           // 171: zeroauthy.store.v1.JobsListRequest
+	(*JobsCountActiveRequest)(nil),                    // 172: zeroauthy.store.v1.JobsCountActiveRequest
+	(*JobsClaimRequest)(nil),                          // 173: zeroauthy.store.v1.JobsClaimRequest
+	(*JobsRenewRequest)(nil),                          // 174: zeroauthy.store.v1.JobsRenewRequest
+	(*JobsCheckpointRequest)(nil),                     // 175: zeroauthy.store.v1.JobsCheckpointRequest
+	(*JobsFinishRequest)(nil),                         // 176: zeroauthy.store.v1.JobsFinishRequest
+	(*JobErrorList)(nil),                              // 177: zeroauthy.store.v1.JobErrorList
+	(*JobsAppendFileRequest)(nil),                     // 178: zeroauthy.store.v1.JobsAppendFileRequest
+	(*JobFileChunk)(nil),                              // 179: zeroauthy.store.v1.JobFileChunk
+	(*ProtectionKey)(nil),                             // 180: zeroauthy.store.v1.ProtectionKey
+	(*ProtectionLimit)(nil),                           // 181: zeroauthy.store.v1.ProtectionLimit
+	(*ProtectionBlock)(nil),                           // 182: zeroauthy.store.v1.ProtectionBlock
+	(*ProtectionRequest)(nil),                         // 183: zeroauthy.store.v1.ProtectionRequest
+	(*ProtectionResult)(nil),                          // 184: zeroauthy.store.v1.ProtectionResult
+	(*CustomDomain)(nil),                              // 185: zeroauthy.store.v1.CustomDomain
+	(*HostBinding)(nil),                               // 186: zeroauthy.store.v1.HostBinding
+	(*TLSPublicData)(nil),                             // 187: zeroauthy.store.v1.TLSPublicData
+	(*TLSAsset)(nil),                                  // 188: zeroauthy.store.v1.TLSAsset
+	(*TLSLease)(nil),                                  // 189: zeroauthy.store.v1.TLSLease
+	(*CustomDomainCapabilitiesRequest)(nil),           // 190: zeroauthy.store.v1.CustomDomainCapabilitiesRequest
+	(*CustomDomainRequest)(nil),                       // 191: zeroauthy.store.v1.CustomDomainRequest
+	(*CustomDomainResult)(nil),                        // 192: zeroauthy.store.v1.CustomDomainResult
+	(*TLSAssetRequest)(nil),                           // 193: zeroauthy.store.v1.TLSAssetRequest
+	(*TLSAssetResult)(nil),                            // 194: zeroauthy.store.v1.TLSAssetResult
+	(*MicrosoftFederationCapabilitiesRequest)(nil),    // 195: zeroauthy.store.v1.MicrosoftFederationCapabilitiesRequest
+	(*RBACRole)(nil),                                  // 196: zeroauthy.store.v1.RBACRole
+	(*RBACPermissionKey)(nil),                         // 197: zeroauthy.store.v1.RBACPermissionKey
+	(*RBACSource)(nil),                                // 198: zeroauthy.store.v1.RBACSource
+	(*RBACPermissionGrant)(nil),                       // 199: zeroauthy.store.v1.RBACPermissionGrant
+	(*RBACPage)(nil),                                  // 200: zeroauthy.store.v1.RBACPage
+	(*RBACRequest)(nil),                               // 201: zeroauthy.store.v1.RBACRequest
+	(*RBACSnapshot)(nil),                              // 202: zeroauthy.store.v1.RBACSnapshot
+	(*RBACResponse)(nil),                              // 203: zeroauthy.store.v1.RBACResponse
+	(*RBACCapabilitiesResult)(nil),                    // 204: zeroauthy.store.v1.RBACCapabilitiesResult
+	(*OrganizationColorsMsg)(nil),                     // 205: zeroauthy.store.v1.OrganizationColorsMsg
+	(*OrganizationBrandingMsg)(nil),                   // 206: zeroauthy.store.v1.OrganizationBrandingMsg
+	(*OrganizationMsg)(nil),                           // 207: zeroauthy.store.v1.OrganizationMsg
+	(*OrganizationConnectionMsg)(nil),                 // 208: zeroauthy.store.v1.OrganizationConnectionMsg
+	(*OrganizationPageMsg)(nil),                       // 209: zeroauthy.store.v1.OrganizationPageMsg
+	(*OrganizationsRequest)(nil),                      // 210: zeroauthy.store.v1.OrganizationsRequest
+	(*OrganizationsResponse)(nil),                     // 211: zeroauthy.store.v1.OrganizationsResponse
+	(*OrganizationsCapabilitiesResult)(nil),           // 212: zeroauthy.store.v1.OrganizationsCapabilitiesResult
+	(*ActionDependency)(nil),                          // 213: zeroauthy.store.v1.ActionDependency
+	(*ActionSecretMsg)(nil),                           // 214: zeroauthy.store.v1.ActionSecretMsg
+	(*ActionMsg)(nil),                                 // 215: zeroauthy.store.v1.ActionMsg
+	(*ActionVersionMsg)(nil),                          // 216: zeroauthy.store.v1.ActionVersionMsg
+	(*ActionBuildMsg)(nil),                            // 217: zeroauthy.store.v1.ActionBuildMsg
+	(*ActionBindingMsg)(nil),                          // 218: zeroauthy.store.v1.ActionBindingMsg
+	(*ActionBoundMsg)(nil),                            // 219: zeroauthy.store.v1.ActionBoundMsg
+	(*ActionExecutionResultMsg)(nil),                  // 220: zeroauthy.store.v1.ActionExecutionResultMsg
+	(*ActionExecutionMsg)(nil),                        // 221: zeroauthy.store.v1.ActionExecutionMsg
+	(*ActionContinueMsg)(nil),                         // 222: zeroauthy.store.v1.ActionContinueMsg
+	(*ActionsRequest)(nil),                            // 223: zeroauthy.store.v1.ActionsRequest
+	(*ActionsResponse)(nil),                           // 224: zeroauthy.store.v1.ActionsResponse
+	(*ActionsArtifactChunk)(nil),                      // 225: zeroauthy.store.v1.ActionsArtifactChunk
+	(*ActionsCapabilitiesResult)(nil),                 // 226: zeroauthy.store.v1.ActionsCapabilitiesResult
+	(*ActionModuleRefMsg)(nil),                        // 227: zeroauthy.store.v1.ActionModuleRefMsg
+	(*ActionModuleMsg)(nil),                           // 228: zeroauthy.store.v1.ActionModuleMsg
+	(*ActionModuleVersionMsg)(nil),                    // 229: zeroauthy.store.v1.ActionModuleVersionMsg
+	(*ActionModuleUserMsg)(nil),                       // 230: zeroauthy.store.v1.ActionModuleUserMsg
+	(*ActionJobMsg)(nil),                              // 231: zeroauthy.store.v1.ActionJobMsg
+	(*OrganizationInvitationMsg)(nil),                 // 232: zeroauthy.store.v1.OrganizationInvitationMsg
+	(*InvitationReceiptMsg)(nil),                      // 233: zeroauthy.store.v1.InvitationReceiptMsg
+	(*OrganizationClientMsg)(nil),                     // 234: zeroauthy.store.v1.OrganizationClientMsg
+	(*OrganizationDiscoveryDomainMsg)(nil),            // 235: zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
+	(*OrganizationsIIRequest)(nil),                    // 236: zeroauthy.store.v1.OrganizationsIIRequest
+	(*OrganizationsIIResponse)(nil),                   // 237: zeroauthy.store.v1.OrganizationsIIResponse
+	(*OrganizationQueryMsg)(nil),                      // 238: zeroauthy.store.v1.OrganizationQueryMsg
+	(*OrganizationSearchPageMsg)(nil),                 // 239: zeroauthy.store.v1.OrganizationSearchPageMsg
+	(*LogsCapabilitiesResult)(nil),                    // 240: zeroauthy.store.v1.LogsCapabilitiesResult
+	(*LogEventMsg)(nil),                               // 241: zeroauthy.store.v1.LogEventMsg
+	(*LogQueryMsg)(nil),                               // 242: zeroauthy.store.v1.LogQueryMsg
+	(*LogPageMsg)(nil),                                // 243: zeroauthy.store.v1.LogPageMsg
+	(*LogStreamFilterMsg)(nil),                        // 244: zeroauthy.store.v1.LogStreamFilterMsg
+	(*LogStreamFiltersMsg)(nil),                       // 245: zeroauthy.store.v1.LogStreamFiltersMsg
+	(*LogStreamPIIMsg)(nil),                           // 246: zeroauthy.store.v1.LogStreamPIIMsg
+	(*LogStreamMsg)(nil),                              // 247: zeroauthy.store.v1.LogStreamMsg
+	(*LogStreamDeliveryMsg)(nil),                      // 248: zeroauthy.store.v1.LogStreamDeliveryMsg
+	(*DailyStatDeltaMsg)(nil),                         // 249: zeroauthy.store.v1.DailyStatDeltaMsg
+	(*DailyStatMsg)(nil),                              // 250: zeroauthy.store.v1.DailyStatMsg
+	(*LogsRequest)(nil),                               // 251: zeroauthy.store.v1.LogsRequest
+	(*LogsResponse)(nil),                              // 252: zeroauthy.store.v1.LogsResponse
+	(*EventsCapabilitiesResult)(nil),                  // 253: zeroauthy.store.v1.EventsCapabilitiesResult
+	(*TenantEventMsg)(nil),                            // 254: zeroauthy.store.v1.TenantEventMsg
+	(*EventStreamMsg)(nil),                            // 255: zeroauthy.store.v1.EventStreamMsg
+	(*DeliveryAttemptMsg)(nil),                        // 256: zeroauthy.store.v1.DeliveryAttemptMsg
+	(*DeliveryAttemptsMsg)(nil),                       // 257: zeroauthy.store.v1.DeliveryAttemptsMsg
+	(*EventDeliveryMsg)(nil),                          // 258: zeroauthy.store.v1.EventDeliveryMsg
+	(*DeliveryFilterMsg)(nil),                         // 259: zeroauthy.store.v1.DeliveryFilterMsg
+	(*DeliveryOutcomeMsg)(nil),                        // 260: zeroauthy.store.v1.DeliveryOutcomeMsg
+	(*EventsRequest)(nil),                             // 261: zeroauthy.store.v1.EventsRequest
+	(*EventsResponse)(nil),                            // 262: zeroauthy.store.v1.EventsResponse
+	(*MFAGuardian)(nil),                               // 263: zeroauthy.store.v1.MFAGuardian
+	(*MFAAuthenticator)(nil),                          // 264: zeroauthy.store.v1.MFAAuthenticator
+	(*MFATokenMsg)(nil),                               // 265: zeroauthy.store.v1.MFATokenMsg
+	(*MFAChallengeMsg)(nil),                           // 266: zeroauthy.store.v1.MFAChallengeMsg
+	(*MFAEnrollmentTicket)(nil),                       // 267: zeroauthy.store.v1.MFAEnrollmentTicket
+	(*MFABrowserMsg)(nil),                             // 268: zeroauthy.store.v1.MFABrowserMsg
+	(*MFAGetGuardianRequest)(nil),                     // 269: zeroauthy.store.v1.MFAGetGuardianRequest
+	(*MFAGetGuardianResponse)(nil),                    // 270: zeroauthy.store.v1.MFAGetGuardianResponse
+	(*MFAPutGuardianRequest)(nil),                     // 271: zeroauthy.store.v1.MFAPutGuardianRequest
+	(*MFAPutGuardianResponse)(nil),                    // 272: zeroauthy.store.v1.MFAPutGuardianResponse
+	(*MFACreateAuthenticatorRequest)(nil),             // 273: zeroauthy.store.v1.MFACreateAuthenticatorRequest
+	(*MFACreateAuthenticatorResponse)(nil),            // 274: zeroauthy.store.v1.MFACreateAuthenticatorResponse
+	(*MFAGetAuthenticatorRequest)(nil),                // 275: zeroauthy.store.v1.MFAGetAuthenticatorRequest
+	(*MFAGetAuthenticatorResponse)(nil),               // 276: zeroauthy.store.v1.MFAGetAuthenticatorResponse
+	(*MFAGetAuthenticatorByEnrollmentIDRequest)(nil),  // 277: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDRequest
+	(*MFAGetAuthenticatorByEnrollmentIDResponse)(nil), // 278: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse
+	(*MFAListAuthenticatorsRequest)(nil),              // 279: zeroauthy.store.v1.MFAListAuthenticatorsRequest
+	(*MFAListAuthenticatorsResponse)(nil),             // 280: zeroauthy.store.v1.MFAListAuthenticatorsResponse
+	(*MFAUpdateAuthenticatorRequest)(nil),             // 281: zeroauthy.store.v1.MFAUpdateAuthenticatorRequest
+	(*MFAUpdateAuthenticatorResponse)(nil),            // 282: zeroauthy.store.v1.MFAUpdateAuthenticatorResponse
+	(*MFADeleteAuthenticatorRequest)(nil),             // 283: zeroauthy.store.v1.MFADeleteAuthenticatorRequest
+	(*MFADeleteAuthenticatorResponse)(nil),            // 284: zeroauthy.store.v1.MFADeleteAuthenticatorResponse
+	(*MFADeleteUserAuthenticatorsRequest)(nil),        // 285: zeroauthy.store.v1.MFADeleteUserAuthenticatorsRequest
+	(*MFADeleteUserAuthenticatorsResponse)(nil),       // 286: zeroauthy.store.v1.MFADeleteUserAuthenticatorsResponse
+	(*MFAAcceptTOTPStepRequest)(nil),                  // 287: zeroauthy.store.v1.MFAAcceptTOTPStepRequest
+	(*MFAAcceptTOTPStepResponse)(nil),                 // 288: zeroauthy.store.v1.MFAAcceptTOTPStepResponse
+	(*MFAReplaceRecoveryCodeRequest)(nil),             // 289: zeroauthy.store.v1.MFAReplaceRecoveryCodeRequest
+	(*MFAReplaceRecoveryCodeResponse)(nil),            // 290: zeroauthy.store.v1.MFAReplaceRecoveryCodeResponse
+	(*MFAAcceptSignCountRequest)(nil),                 // 291: zeroauthy.store.v1.MFAAcceptSignCountRequest
+	(*MFAAcceptSignCountResponse)(nil),                // 292: zeroauthy.store.v1.MFAAcceptSignCountResponse
+	(*MFACreateMFATokenRequest)(nil),                  // 293: zeroauthy.store.v1.MFACreateMFATokenRequest
+	(*MFACreateMFATokenResponse)(nil),                 // 294: zeroauthy.store.v1.MFACreateMFATokenResponse
+	(*MFAConsumeMFATokenRequest)(nil),                 // 295: zeroauthy.store.v1.MFAConsumeMFATokenRequest
+	(*MFAConsumeMFATokenResponse)(nil),                // 296: zeroauthy.store.v1.MFAConsumeMFATokenResponse
+	(*MFAPeekMFATokenRequest)(nil),                    // 297: zeroauthy.store.v1.MFAPeekMFATokenRequest
+	(*MFAPeekMFATokenResponse)(nil),                   // 298: zeroauthy.store.v1.MFAPeekMFATokenResponse
+	(*MFACreateChallengeRequest)(nil),                 // 299: zeroauthy.store.v1.MFACreateChallengeRequest
+	(*MFACreateChallengeResponse)(nil),                // 300: zeroauthy.store.v1.MFACreateChallengeResponse
+	(*MFAGetChallengeRequest)(nil),                    // 301: zeroauthy.store.v1.MFAGetChallengeRequest
+	(*MFAGetChallengeResponse)(nil),                   // 302: zeroauthy.store.v1.MFAGetChallengeResponse
+	(*MFAFailChallengeRequest)(nil),                   // 303: zeroauthy.store.v1.MFAFailChallengeRequest
+	(*MFAFailChallengeResponse)(nil),                  // 304: zeroauthy.store.v1.MFAFailChallengeResponse
+	(*MFAConsumeChallengeRequest)(nil),                // 305: zeroauthy.store.v1.MFAConsumeChallengeRequest
+	(*MFAConsumeChallengeResponse)(nil),               // 306: zeroauthy.store.v1.MFAConsumeChallengeResponse
+	(*MFACreateTicketRequest)(nil),                    // 307: zeroauthy.store.v1.MFACreateTicketRequest
+	(*MFACreateTicketResponse)(nil),                   // 308: zeroauthy.store.v1.MFACreateTicketResponse
+	(*MFAConsumeTicketRequest)(nil),                   // 309: zeroauthy.store.v1.MFAConsumeTicketRequest
+	(*MFAConsumeTicketResponse)(nil),                  // 310: zeroauthy.store.v1.MFAConsumeTicketResponse
+	(*MFAPeekTicketRequest)(nil),                      // 311: zeroauthy.store.v1.MFAPeekTicketRequest
+	(*MFAPeekTicketResponse)(nil),                     // 312: zeroauthy.store.v1.MFAPeekTicketResponse
+	(*MFAPutBrowserRequest)(nil),                      // 313: zeroauthy.store.v1.MFAPutBrowserRequest
+	(*MFAPutBrowserResponse)(nil),                     // 314: zeroauthy.store.v1.MFAPutBrowserResponse
+	(*MFAGetBrowserRequest)(nil),                      // 315: zeroauthy.store.v1.MFAGetBrowserRequest
+	(*MFAGetBrowserResponse)(nil),                     // 316: zeroauthy.store.v1.MFAGetBrowserResponse
+	(*MFABumpRememberEpochRequest)(nil),               // 317: zeroauthy.store.v1.MFABumpRememberEpochRequest
+	(*MFABumpRememberEpochResponse)(nil),              // 318: zeroauthy.store.v1.MFABumpRememberEpochResponse
+	(*MFAPurgeMFARequest)(nil),                        // 319: zeroauthy.store.v1.MFAPurgeMFARequest
+	(*MFAPurgeMFAResponse)(nil),                       // 320: zeroauthy.store.v1.MFAPurgeMFAResponse
+	(*MFADeleteUserMFARequest)(nil),                   // 321: zeroauthy.store.v1.MFADeleteUserMFARequest
+	(*MFADeleteUserMFAResponse)(nil),                  // 322: zeroauthy.store.v1.MFADeleteUserMFAResponse
+	(*MFADeleteTenantMFARequest)(nil),                 // 323: zeroauthy.store.v1.MFADeleteTenantMFARequest
+	(*MFADeleteTenantMFAResponse)(nil),                // 324: zeroauthy.store.v1.MFADeleteTenantMFAResponse
+	(*PhoneProvider)(nil),                             // 325: zeroauthy.store.v1.PhoneProvider
+	(*PhoneTemplate)(nil),                             // 326: zeroauthy.store.v1.PhoneTemplate
+	(*PasswordlessCode)(nil),                          // 327: zeroauthy.store.v1.PasswordlessCode
+	(*PhoneErrorResponse)(nil),                        // 328: zeroauthy.store.v1.PhoneErrorResponse
+	(*PhoneTenantRequest)(nil),                        // 329: zeroauthy.store.v1.PhoneTenantRequest
+	(*PhoneIDRequest)(nil),                            // 330: zeroauthy.store.v1.PhoneIDRequest
+	(*PhoneProviderRequest)(nil),                      // 331: zeroauthy.store.v1.PhoneProviderRequest
+	(*PhoneProviderResponse)(nil),                     // 332: zeroauthy.store.v1.PhoneProviderResponse
+	(*PhoneListProvidersResponse)(nil),                // 333: zeroauthy.store.v1.PhoneListProvidersResponse
+	(*PhoneTemplateRequest)(nil),                      // 334: zeroauthy.store.v1.PhoneTemplateRequest
+	(*PhoneTemplateResponse)(nil),                     // 335: zeroauthy.store.v1.PhoneTemplateResponse
+	(*PhoneListTemplatesResponse)(nil),                // 336: zeroauthy.store.v1.PhoneListTemplatesResponse
+	(*PhonePutCodeRequest)(nil),                       // 337: zeroauthy.store.v1.PhonePutCodeRequest
+	(*PhoneCodeKeyRequest)(nil),                       // 338: zeroauthy.store.v1.PhoneCodeKeyRequest
+	(*PhoneFailCodeResponse)(nil),                     // 339: zeroauthy.store.v1.PhoneFailCodeResponse
+	(*PhoneConsumeCodeRequest)(nil),                   // 340: zeroauthy.store.v1.PhoneConsumeCodeRequest
+	(*PhoneCodeResponse)(nil),                         // 341: zeroauthy.store.v1.PhoneCodeResponse
+	(*PhonePeekLinkRequest)(nil),                      // 342: zeroauthy.store.v1.PhonePeekLinkRequest
+	(*PhoneFindUsersRequest)(nil),                     // 343: zeroauthy.store.v1.PhoneFindUsersRequest
+	(*PhoneFindUsersResponse)(nil),                    // 344: zeroauthy.store.v1.PhoneFindUsersResponse
+	(*PhonePurgeRequest)(nil),                         // 345: zeroauthy.store.v1.PhonePurgeRequest
+	(*PhoneCountResponse)(nil),                        // 346: zeroauthy.store.v1.PhoneCountResponse
+	(*WebAuthnSnooze)(nil),                            // 347: zeroauthy.store.v1.WebAuthnSnooze
+	(*WebAuthnErrorResponse)(nil),                     // 348: zeroauthy.store.v1.WebAuthnErrorResponse
+	(*WebAuthnCredentialRequest)(nil),                 // 349: zeroauthy.store.v1.WebAuthnCredentialRequest
+	(*WebAuthnAuthenticatorResponse)(nil),             // 350: zeroauthy.store.v1.WebAuthnAuthenticatorResponse
+	(*WebAuthnCreatePasskeyRequest)(nil),              // 351: zeroauthy.store.v1.WebAuthnCreatePasskeyRequest
+	(*WebAuthnCreateUserRequest)(nil),                 // 352: zeroauthy.store.v1.WebAuthnCreateUserRequest
+	(*WebAuthnAcceptAssertionRequest)(nil),            // 353: zeroauthy.store.v1.WebAuthnAcceptAssertionRequest
+	(*WebAuthnMovePasskeysRequest)(nil),               // 354: zeroauthy.store.v1.WebAuthnMovePasskeysRequest
+	(*WebAuthnSnoozeRequest)(nil),                     // 355: zeroauthy.store.v1.WebAuthnSnoozeRequest
+	(*WebAuthnGetSnoozeRequest)(nil),                  // 356: zeroauthy.store.v1.WebAuthnGetSnoozeRequest
+	(*WebAuthnSnoozeResponse)(nil),                    // 357: zeroauthy.store.v1.WebAuthnSnoozeResponse
+	(*WebAuthnHostTenantsRequest)(nil),                // 358: zeroauthy.store.v1.WebAuthnHostTenantsRequest
+	(*WebAuthnTenantIDsResponse)(nil),                 // 359: zeroauthy.store.v1.WebAuthnTenantIDsResponse
+	(*WebAuthnPurgeRequest)(nil),                      // 360: zeroauthy.store.v1.WebAuthnPurgeRequest
+	(*WebAuthnCountResponse)(nil),                     // 361: zeroauthy.store.v1.WebAuthnCountResponse
+	nil,                                               // 362: zeroauthy.store.v1.StringMap.ValuesEntry
+	nil,                                               // 363: zeroauthy.store.v1.MFAGuardian.FactorsEntry
+	nil,                                               // 364: zeroauthy.store.v1.MFAGuardian.StoredEntry
+	nil,                                               // 365: zeroauthy.store.v1.MFAGuardian.SealedSecretsEntry
+	(*timestamppb.Timestamp)(nil),                     // 366: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),                       // 367: google.protobuf.Duration
 }
 var file_store_proto_depIdxs = []int32{
 	0,   // 0: zeroauthy.store.v1.Error.kind:type_name -> zeroauthy.store.v1.Error.Kind
 	3,   // 1: zeroauthy.store.v1.Result.error:type_name -> zeroauthy.store.v1.Error
 	3,   // 2: zeroauthy.store.v1.CountResult.error:type_name -> zeroauthy.store.v1.Error
 	6,   // 3: zeroauthy.store.v1.CountResult.job_outcomes:type_name -> zeroauthy.store.v1.JobOutcome
-	365, // 4: zeroauthy.store.v1.JobOutcome.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 4: zeroauthy.store.v1.JobOutcome.updated_at:type_name -> google.protobuf.Timestamp
 	3,   // 5: zeroauthy.store.v1.BeginTxResponse.error:type_name -> zeroauthy.store.v1.Error
-	365, // 6: zeroauthy.store.v1.TouchRequest.idle_expires_at:type_name -> google.protobuf.Timestamp
-	365, // 7: zeroauthy.store.v1.TouchRequest.at:type_name -> google.protobuf.Timestamp
-	365, // 8: zeroauthy.store.v1.DeleteExpiredRequest.before:type_name -> google.protobuf.Timestamp
-	365, // 9: zeroauthy.store.v1.ConsumeRequest.at:type_name -> google.protobuf.Timestamp
-	365, // 10: zeroauthy.store.v1.RevokeRequest.at:type_name -> google.protobuf.Timestamp
-	361, // 11: zeroauthy.store.v1.StringMap.values:type_name -> zeroauthy.store.v1.StringMap.ValuesEntry
-	17,  // 12: zeroauthy.store.v1.Tenant.domains:type_name -> zeroauthy.store.v1.StringList
-	17,  // 13: zeroauthy.store.v1.Tenant.allowed_logout_urls:type_name -> zeroauthy.store.v1.StringList
-	17,  // 14: zeroauthy.store.v1.Tenant.enabled_locales:type_name -> zeroauthy.store.v1.StringList
-	20,  // 15: zeroauthy.store.v1.Tenant.branding:type_name -> zeroauthy.store.v1.Branding
-	365, // 16: zeroauthy.store.v1.Tenant.created_at:type_name -> google.protobuf.Timestamp
-	18,  // 17: zeroauthy.store.v1.Tenant.domain_rp_ids:type_name -> zeroauthy.store.v1.StringMap
-	365, // 18: zeroauthy.store.v1.ClientSecret.created_at:type_name -> google.protobuf.Timestamp
-	365, // 19: zeroauthy.store.v1.ClientSecret.expires_at:type_name -> google.protobuf.Timestamp
-	21,  // 20: zeroauthy.store.v1.ClientSecretList.values:type_name -> zeroauthy.store.v1.ClientSecret
-	22,  // 21: zeroauthy.store.v1.Client.secrets:type_name -> zeroauthy.store.v1.ClientSecretList
-	17,  // 22: zeroauthy.store.v1.Client.grant_types:type_name -> zeroauthy.store.v1.StringList
-	17,  // 23: zeroauthy.store.v1.Client.callbacks:type_name -> zeroauthy.store.v1.StringList
-	17,  // 24: zeroauthy.store.v1.Client.allowed_logout_urls:type_name -> zeroauthy.store.v1.StringList
-	17,  // 25: zeroauthy.store.v1.Client.web_origins:type_name -> zeroauthy.store.v1.StringList
-	17,  // 26: zeroauthy.store.v1.Client.allowed_origins:type_name -> zeroauthy.store.v1.StringList
-	23,  // 27: zeroauthy.store.v1.Client.refresh_token:type_name -> zeroauthy.store.v1.RefreshTokenPolicy
-	365, // 28: zeroauthy.store.v1.Client.created_at:type_name -> google.protobuf.Timestamp
-	17,  // 29: zeroauthy.store.v1.Client.organization_discovery_methods:type_name -> zeroauthy.store.v1.StringList
-	25,  // 30: zeroauthy.store.v1.Client.mobile:type_name -> zeroauthy.store.v1.ClientMobile
-	26,  // 31: zeroauthy.store.v1.ClientMobile.ios:type_name -> zeroauthy.store.v1.ClientMobileIOS
-	27,  // 32: zeroauthy.store.v1.ClientMobile.android:type_name -> zeroauthy.store.v1.ClientMobileAndroid
-	17,  // 33: zeroauthy.store.v1.ClientMobileAndroid.sha256_cert_fingerprints:type_name -> zeroauthy.store.v1.StringList
-	28,  // 34: zeroauthy.store.v1.ScopeList.values:type_name -> zeroauthy.store.v1.Scope
-	29,  // 35: zeroauthy.store.v1.ResourceServer.scopes:type_name -> zeroauthy.store.v1.ScopeList
-	365, // 36: zeroauthy.store.v1.ResourceServer.created_at:type_name -> google.protobuf.Timestamp
-	17,  // 37: zeroauthy.store.v1.ClientGrant.scopes:type_name -> zeroauthy.store.v1.StringList
-	365, // 38: zeroauthy.store.v1.ClientGrant.created_at:type_name -> google.protobuf.Timestamp
-	17,  // 39: zeroauthy.store.v1.UserGrant.scopes:type_name -> zeroauthy.store.v1.StringList
-	365, // 40: zeroauthy.store.v1.UserGrant.created_at:type_name -> google.protobuf.Timestamp
-	365, // 41: zeroauthy.store.v1.UserGrant.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 42: zeroauthy.store.v1.SigningKey.created_at:type_name -> google.protobuf.Timestamp
-	365, // 43: zeroauthy.store.v1.SigningKey.current_since:type_name -> google.protobuf.Timestamp
-	365, // 44: zeroauthy.store.v1.SigningKey.current_until:type_name -> google.protobuf.Timestamp
-	365, // 45: zeroauthy.store.v1.SigningKey.revoked_at:type_name -> google.protobuf.Timestamp
-	3,   // 46: zeroauthy.store.v1.SigningKeyResult.error:type_name -> zeroauthy.store.v1.Error
-	34,  // 47: zeroauthy.store.v1.SigningKeyResult.value:type_name -> zeroauthy.store.v1.SigningKey
-	34,  // 48: zeroauthy.store.v1.SigningKeyRotation.current:type_name -> zeroauthy.store.v1.SigningKey
-	34,  // 49: zeroauthy.store.v1.SigningKeyRotation.next:type_name -> zeroauthy.store.v1.SigningKey
-	3,   // 50: zeroauthy.store.v1.SigningKeyRotationResult.error:type_name -> zeroauthy.store.v1.Error
-	36,  // 51: zeroauthy.store.v1.SigningKeyRotationResult.value:type_name -> zeroauthy.store.v1.SigningKeyRotation
-	365, // 52: zeroauthy.store.v1.SigningKeyRevokeRequest.at:type_name -> google.protobuf.Timestamp
-	3,   // 53: zeroauthy.store.v1.CustomSigningKeySetResult.error:type_name -> zeroauthy.store.v1.Error
-	40,  // 54: zeroauthy.store.v1.CustomSigningKeySetResult.value:type_name -> zeroauthy.store.v1.CustomSigningKeySet
-	40,  // 55: zeroauthy.store.v1.CustomSigningKeySetWrite.value:type_name -> zeroauthy.store.v1.CustomSigningKeySet
-	3,   // 56: zeroauthy.store.v1.HostedLoginConfigResult.error:type_name -> zeroauthy.store.v1.Error
-	43,  // 57: zeroauthy.store.v1.HostedLoginConfigResult.value:type_name -> zeroauthy.store.v1.HostedLoginConfig
-	43,  // 58: zeroauthy.store.v1.HostedLoginConfigWrite.value:type_name -> zeroauthy.store.v1.HostedLoginConfig
-	46,  // 59: zeroauthy.store.v1.FederationAttempt.endpoints:type_name -> zeroauthy.store.v1.FederationEndpoints
-	365, // 60: zeroauthy.store.v1.FederationAttempt.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 61: zeroauthy.store.v1.FederationAttempt.created_at:type_name -> google.protobuf.Timestamp
-	47,  // 62: zeroauthy.store.v1.FederationAttemptWrite.value:type_name -> zeroauthy.store.v1.FederationAttempt
-	365, // 63: zeroauthy.store.v1.FederationClaimRequest.now:type_name -> google.protobuf.Timestamp
-	3,   // 64: zeroauthy.store.v1.FederationAttemptResult.error:type_name -> zeroauthy.store.v1.Error
-	47,  // 65: zeroauthy.store.v1.FederationAttemptResult.value:type_name -> zeroauthy.store.v1.FederationAttempt
-	52,  // 66: zeroauthy.store.v1.FederatedIdentityRequest.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
-	52,  // 67: zeroauthy.store.v1.FederatedIdentityWrite.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
-	52,  // 68: zeroauthy.store.v1.FederatedTokensWrite.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
-	3,   // 69: zeroauthy.store.v1.FederatedTokensResult.error:type_name -> zeroauthy.store.v1.Error
-	52,  // 70: zeroauthy.store.v1.UsersFindByIdentityRequest.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
-	365, // 71: zeroauthy.store.v1.HostedStateCASRequest.now:type_name -> google.protobuf.Timestamp
-	3,   // 72: zeroauthy.store.v1.EmailProviderResult.error:type_name -> zeroauthy.store.v1.Error
-	59,  // 73: zeroauthy.store.v1.EmailProviderResult.value:type_name -> zeroauthy.store.v1.EmailProvider
-	59,  // 74: zeroauthy.store.v1.EmailProviderWrite.value:type_name -> zeroauthy.store.v1.EmailProvider
-	3,   // 75: zeroauthy.store.v1.EmailTemplateResult.error:type_name -> zeroauthy.store.v1.Error
-	63,  // 76: zeroauthy.store.v1.EmailTemplateResult.value:type_name -> zeroauthy.store.v1.EmailTemplate
-	63,  // 77: zeroauthy.store.v1.EmailTemplateWrite.value:type_name -> zeroauthy.store.v1.EmailTemplate
-	365, // 78: zeroauthy.store.v1.EmailNotificationClaimRequest.now:type_name -> google.protobuf.Timestamp
-	365, // 79: zeroauthy.store.v1.EmailNotificationClaimRequest.expires_at:type_name -> google.protobuf.Timestamp
-	3,   // 80: zeroauthy.store.v1.EmailNotificationClaimResult.error:type_name -> zeroauthy.store.v1.Error
-	365, // 81: zeroauthy.store.v1.EmailNotificationSweepRequest.before:type_name -> google.protobuf.Timestamp
-	17,  // 82: zeroauthy.store.v1.PasswordComplexity.character_types:type_name -> zeroauthy.store.v1.StringList
-	17,  // 83: zeroauthy.store.v1.PasswordDictionary.custom:type_name -> zeroauthy.store.v1.StringList
-	17,  // 84: zeroauthy.store.v1.PasswordProfileData.blocked_fields:type_name -> zeroauthy.store.v1.StringList
-	71,  // 85: zeroauthy.store.v1.PasswordOptions.complexity:type_name -> zeroauthy.store.v1.PasswordComplexity
-	72,  // 86: zeroauthy.store.v1.PasswordOptions.history:type_name -> zeroauthy.store.v1.PasswordHistorySettings
-	73,  // 87: zeroauthy.store.v1.PasswordOptions.dictionary:type_name -> zeroauthy.store.v1.PasswordDictionary
-	74,  // 88: zeroauthy.store.v1.PasswordOptions.profile_data:type_name -> zeroauthy.store.v1.PasswordProfileData
-	17,  // 89: zeroauthy.store.v1.Connection.enabled_clients:type_name -> zeroauthy.store.v1.StringList
-	70,  // 90: zeroauthy.store.v1.Connection.password_policy:type_name -> zeroauthy.store.v1.PasswordPolicy
-	365, // 91: zeroauthy.store.v1.Connection.created_at:type_name -> google.protobuf.Timestamp
-	18,  // 92: zeroauthy.store.v1.Connection.custom_scripts:type_name -> zeroauthy.store.v1.StringMap
-	75,  // 93: zeroauthy.store.v1.Connection.password_options:type_name -> zeroauthy.store.v1.PasswordOptions
-	77,  // 94: zeroauthy.store.v1.IdentityList.values:type_name -> zeroauthy.store.v1.Identity
-	78,  // 95: zeroauthy.store.v1.User.identities:type_name -> zeroauthy.store.v1.IdentityList
-	365, // 96: zeroauthy.store.v1.User.last_login:type_name -> google.protobuf.Timestamp
-	365, // 97: zeroauthy.store.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	365, // 98: zeroauthy.store.v1.User.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 99: zeroauthy.store.v1.User.last_password_reset:type_name -> google.protobuf.Timestamp
-	365, // 100: zeroauthy.store.v1.LoginSession.authenticated_at:type_name -> google.protobuf.Timestamp
-	17,  // 101: zeroauthy.store.v1.LoginSession.client_ids:type_name -> zeroauthy.store.v1.StringList
-	365, // 102: zeroauthy.store.v1.LoginSession.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 103: zeroauthy.store.v1.LoginSession.idle_expires_at:type_name -> google.protobuf.Timestamp
-	365, // 104: zeroauthy.store.v1.LoginSession.created_at:type_name -> google.protobuf.Timestamp
-	365, // 105: zeroauthy.store.v1.LoginSession.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 106: zeroauthy.store.v1.LoginSession.last_interacted_at:type_name -> google.protobuf.Timestamp
-	365, // 107: zeroauthy.store.v1.LoginSession.mfa_at:type_name -> google.protobuf.Timestamp
-	82,  // 108: zeroauthy.store.v1.LoginSession.auth_methods:type_name -> zeroauthy.store.v1.AuthMethodList
-	365, // 109: zeroauthy.store.v1.AuthMethod.at:type_name -> google.protobuf.Timestamp
-	81,  // 110: zeroauthy.store.v1.AuthMethodList.values:type_name -> zeroauthy.store.v1.AuthMethod
-	18,  // 111: zeroauthy.store.v1.AuthTransaction.params:type_name -> zeroauthy.store.v1.StringMap
-	365, // 112: zeroauthy.store.v1.AuthTransaction.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 113: zeroauthy.store.v1.AuthTransaction.created_at:type_name -> google.protobuf.Timestamp
-	17,  // 114: zeroauthy.store.v1.AuthCode.scopes:type_name -> zeroauthy.store.v1.StringList
-	365, // 115: zeroauthy.store.v1.AuthCode.auth_time:type_name -> google.protobuf.Timestamp
-	365, // 116: zeroauthy.store.v1.AuthCode.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 117: zeroauthy.store.v1.AuthCode.created_at:type_name -> google.protobuf.Timestamp
-	365, // 118: zeroauthy.store.v1.AuthCode.used_at:type_name -> google.protobuf.Timestamp
-	365, // 119: zeroauthy.store.v1.AuthCode.replayed_at:type_name -> google.protobuf.Timestamp
-	18,  // 120: zeroauthy.store.v1.PushedAuthRequest.params:type_name -> zeroauthy.store.v1.StringMap
-	365, // 121: zeroauthy.store.v1.PushedAuthRequest.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 122: zeroauthy.store.v1.PushedAuthRequest.created_at:type_name -> google.protobuf.Timestamp
-	365, // 123: zeroauthy.store.v1.PushedAuthRequest.used_at:type_name -> google.protobuf.Timestamp
-	17,  // 124: zeroauthy.store.v1.DeviceCode.scopes:type_name -> zeroauthy.store.v1.StringList
-	17,  // 125: zeroauthy.store.v1.DeviceCode.granted_scopes:type_name -> zeroauthy.store.v1.StringList
-	365, // 126: zeroauthy.store.v1.DeviceCode.last_polled_at:type_name -> google.protobuf.Timestamp
-	365, // 127: zeroauthy.store.v1.DeviceCode.expired_reported_at:type_name -> google.protobuf.Timestamp
-	365, // 128: zeroauthy.store.v1.DeviceCode.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 129: zeroauthy.store.v1.DeviceCode.created_at:type_name -> google.protobuf.Timestamp
-	17,  // 130: zeroauthy.store.v1.RefreshToken.scopes:type_name -> zeroauthy.store.v1.StringList
-	365, // 131: zeroauthy.store.v1.RefreshToken.auth_time:type_name -> google.protobuf.Timestamp
-	365, // 132: zeroauthy.store.v1.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 133: zeroauthy.store.v1.RefreshToken.idle_expires_at:type_name -> google.protobuf.Timestamp
-	365, // 134: zeroauthy.store.v1.RefreshToken.rotated_at:type_name -> google.protobuf.Timestamp
-	365, // 135: zeroauthy.store.v1.RefreshToken.revoked_at:type_name -> google.protobuf.Timestamp
-	365, // 136: zeroauthy.store.v1.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
-	365, // 137: zeroauthy.store.v1.PasswordResetTicket.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 138: zeroauthy.store.v1.PasswordResetTicket.used_at:type_name -> google.protobuf.Timestamp
-	365, // 139: zeroauthy.store.v1.PasswordResetTicket.created_at:type_name -> google.protobuf.Timestamp
-	365, // 140: zeroauthy.store.v1.PasswordResetTicket.challenge_passed_at:type_name -> google.protobuf.Timestamp
-	365, // 141: zeroauthy.store.v1.EmailVerificationTicket.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 142: zeroauthy.store.v1.EmailVerificationTicket.used_at:type_name -> google.protobuf.Timestamp
-	365, // 143: zeroauthy.store.v1.EmailVerificationTicket.created_at:type_name -> google.protobuf.Timestamp
-	90,  // 144: zeroauthy.store.v1.Job.summary:type_name -> zeroauthy.store.v1.JobSummary
-	365, // 145: zeroauthy.store.v1.Job.lease_until:type_name -> google.protobuf.Timestamp
-	365, // 146: zeroauthy.store.v1.Job.first_claimed_at:type_name -> google.protobuf.Timestamp
-	365, // 147: zeroauthy.store.v1.Job.created_at:type_name -> google.protobuf.Timestamp
-	365, // 148: zeroauthy.store.v1.Job.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 149: zeroauthy.store.v1.Job.expires_at:type_name -> google.protobuf.Timestamp
-	92,  // 150: zeroauthy.store.v1.JobErrorItems.values:type_name -> zeroauthy.store.v1.JobErrorItem
-	93,  // 151: zeroauthy.store.v1.JobError.errors:type_name -> zeroauthy.store.v1.JobErrorItems
-	17,  // 152: zeroauthy.store.v1.Operator.tenants:type_name -> zeroauthy.store.v1.StringList
-	365, // 153: zeroauthy.store.v1.Operator.created_at:type_name -> google.protobuf.Timestamp
-	365, // 154: zeroauthy.store.v1.Operator.updated_at:type_name -> google.protobuf.Timestamp
-	19,  // 155: zeroauthy.store.v1.TenantWrite.value:type_name -> zeroauthy.store.v1.Tenant
-	3,   // 156: zeroauthy.store.v1.TenantResult.error:type_name -> zeroauthy.store.v1.Error
-	19,  // 157: zeroauthy.store.v1.TenantResult.value:type_name -> zeroauthy.store.v1.Tenant
-	3,   // 158: zeroauthy.store.v1.TenantList.error:type_name -> zeroauthy.store.v1.Error
-	19,  // 159: zeroauthy.store.v1.TenantList.values:type_name -> zeroauthy.store.v1.Tenant
-	24,  // 160: zeroauthy.store.v1.ClientWrite.value:type_name -> zeroauthy.store.v1.Client
-	3,   // 161: zeroauthy.store.v1.ClientResult.error:type_name -> zeroauthy.store.v1.Error
-	24,  // 162: zeroauthy.store.v1.ClientResult.value:type_name -> zeroauthy.store.v1.Client
-	3,   // 163: zeroauthy.store.v1.ClientList.error:type_name -> zeroauthy.store.v1.Error
-	24,  // 164: zeroauthy.store.v1.ClientList.values:type_name -> zeroauthy.store.v1.Client
-	3,   // 165: zeroauthy.store.v1.ClientPage.error:type_name -> zeroauthy.store.v1.Error
-	24,  // 166: zeroauthy.store.v1.ClientPage.values:type_name -> zeroauthy.store.v1.Client
-	30,  // 167: zeroauthy.store.v1.ResourceServerWrite.value:type_name -> zeroauthy.store.v1.ResourceServer
-	3,   // 168: zeroauthy.store.v1.ResourceServerResult.error:type_name -> zeroauthy.store.v1.Error
-	30,  // 169: zeroauthy.store.v1.ResourceServerResult.value:type_name -> zeroauthy.store.v1.ResourceServer
-	3,   // 170: zeroauthy.store.v1.ResourceServerList.error:type_name -> zeroauthy.store.v1.Error
-	30,  // 171: zeroauthy.store.v1.ResourceServerList.values:type_name -> zeroauthy.store.v1.ResourceServer
-	32,  // 172: zeroauthy.store.v1.ClientGrantWrite.value:type_name -> zeroauthy.store.v1.ClientGrant
-	3,   // 173: zeroauthy.store.v1.ClientGrantResult.error:type_name -> zeroauthy.store.v1.Error
-	32,  // 174: zeroauthy.store.v1.ClientGrantResult.value:type_name -> zeroauthy.store.v1.ClientGrant
-	3,   // 175: zeroauthy.store.v1.ClientGrantList.error:type_name -> zeroauthy.store.v1.Error
-	32,  // 176: zeroauthy.store.v1.ClientGrantList.values:type_name -> zeroauthy.store.v1.ClientGrant
-	33,  // 177: zeroauthy.store.v1.UserGrantWrite.value:type_name -> zeroauthy.store.v1.UserGrant
-	3,   // 178: zeroauthy.store.v1.UserGrantResult.error:type_name -> zeroauthy.store.v1.Error
-	33,  // 179: zeroauthy.store.v1.UserGrantResult.value:type_name -> zeroauthy.store.v1.UserGrant
-	3,   // 180: zeroauthy.store.v1.UserGrantList.error:type_name -> zeroauthy.store.v1.Error
-	33,  // 181: zeroauthy.store.v1.UserGrantList.values:type_name -> zeroauthy.store.v1.UserGrant
-	34,  // 182: zeroauthy.store.v1.SigningKeyWrite.value:type_name -> zeroauthy.store.v1.SigningKey
-	3,   // 183: zeroauthy.store.v1.SigningKeyList.error:type_name -> zeroauthy.store.v1.Error
-	34,  // 184: zeroauthy.store.v1.SigningKeyList.values:type_name -> zeroauthy.store.v1.SigningKey
-	34,  // 185: zeroauthy.store.v1.SigningKeysRotateRequest.next:type_name -> zeroauthy.store.v1.SigningKey
-	365, // 186: zeroauthy.store.v1.SigningKeysRotateRequest.at:type_name -> google.protobuf.Timestamp
-	76,  // 187: zeroauthy.store.v1.ConnectionWrite.value:type_name -> zeroauthy.store.v1.Connection
-	3,   // 188: zeroauthy.store.v1.ConnectionResult.error:type_name -> zeroauthy.store.v1.Error
-	76,  // 189: zeroauthy.store.v1.ConnectionResult.value:type_name -> zeroauthy.store.v1.Connection
-	3,   // 190: zeroauthy.store.v1.ConnectionList.error:type_name -> zeroauthy.store.v1.Error
-	76,  // 191: zeroauthy.store.v1.ConnectionList.values:type_name -> zeroauthy.store.v1.Connection
-	3,   // 192: zeroauthy.store.v1.ConnectionPage.error:type_name -> zeroauthy.store.v1.Error
-	76,  // 193: zeroauthy.store.v1.ConnectionPage.values:type_name -> zeroauthy.store.v1.Connection
-	3,   // 194: zeroauthy.store.v1.PasswordHistoryList.error:type_name -> zeroauthy.store.v1.Error
-	79,  // 195: zeroauthy.store.v1.UserWrite.value:type_name -> zeroauthy.store.v1.User
-	3,   // 196: zeroauthy.store.v1.UserResult.error:type_name -> zeroauthy.store.v1.Error
-	79,  // 197: zeroauthy.store.v1.UserResult.value:type_name -> zeroauthy.store.v1.User
-	365, // 198: zeroauthy.store.v1.UsersRecordLoginRequest.at:type_name -> google.protobuf.Timestamp
-	3,   // 199: zeroauthy.store.v1.UserListResult.error:type_name -> zeroauthy.store.v1.Error
-	79,  // 200: zeroauthy.store.v1.UserListResult.values:type_name -> zeroauthy.store.v1.User
-	1,   // 201: zeroauthy.store.v1.UserQuery.op:type_name -> zeroauthy.store.v1.UserQuery.Op
-	135, // 202: zeroauthy.store.v1.UserQuery.kids:type_name -> zeroauthy.store.v1.UserQuery
-	2,   // 203: zeroauthy.store.v1.UserQuery.kind:type_name -> zeroauthy.store.v1.UserQuery.Kind
-	135, // 204: zeroauthy.store.v1.UsersListRequest.query:type_name -> zeroauthy.store.v1.UserQuery
-	3,   // 205: zeroauthy.store.v1.VersionResult.error:type_name -> zeroauthy.store.v1.Error
-	365, // 206: zeroauthy.store.v1.UsersSetPasswordHashRequest.at:type_name -> google.protobuf.Timestamp
-	80,  // 207: zeroauthy.store.v1.SessionWrite.value:type_name -> zeroauthy.store.v1.LoginSession
-	3,   // 208: zeroauthy.store.v1.SessionResult.error:type_name -> zeroauthy.store.v1.Error
-	80,  // 209: zeroauthy.store.v1.SessionResult.value:type_name -> zeroauthy.store.v1.LoginSession
-	3,   // 210: zeroauthy.store.v1.SessionList.error:type_name -> zeroauthy.store.v1.Error
-	80,  // 211: zeroauthy.store.v1.SessionList.values:type_name -> zeroauthy.store.v1.LoginSession
-	83,  // 212: zeroauthy.store.v1.AuthTransactionWrite.value:type_name -> zeroauthy.store.v1.AuthTransaction
-	3,   // 213: zeroauthy.store.v1.AuthTransactionResult.error:type_name -> zeroauthy.store.v1.Error
-	83,  // 214: zeroauthy.store.v1.AuthTransactionResult.value:type_name -> zeroauthy.store.v1.AuthTransaction
-	84,  // 215: zeroauthy.store.v1.AuthCodeWrite.value:type_name -> zeroauthy.store.v1.AuthCode
-	3,   // 216: zeroauthy.store.v1.AuthCodeResult.error:type_name -> zeroauthy.store.v1.Error
-	84,  // 217: zeroauthy.store.v1.AuthCodeResult.value:type_name -> zeroauthy.store.v1.AuthCode
-	85,  // 218: zeroauthy.store.v1.PushedAuthRequestWrite.value:type_name -> zeroauthy.store.v1.PushedAuthRequest
-	3,   // 219: zeroauthy.store.v1.PushedAuthRequestResult.error:type_name -> zeroauthy.store.v1.Error
-	85,  // 220: zeroauthy.store.v1.PushedAuthRequestResult.value:type_name -> zeroauthy.store.v1.PushedAuthRequest
-	86,  // 221: zeroauthy.store.v1.DeviceCodeWrite.value:type_name -> zeroauthy.store.v1.DeviceCode
-	3,   // 222: zeroauthy.store.v1.DeviceCodeResult.error:type_name -> zeroauthy.store.v1.Error
-	86,  // 223: zeroauthy.store.v1.DeviceCodeResult.value:type_name -> zeroauthy.store.v1.DeviceCode
-	17,  // 224: zeroauthy.store.v1.DeviceDecisionRequest.granted_scopes:type_name -> zeroauthy.store.v1.StringList
-	365, // 225: zeroauthy.store.v1.DevicePollRequest.at:type_name -> google.protobuf.Timestamp
-	3,   // 226: zeroauthy.store.v1.DevicePollResult.error:type_name -> zeroauthy.store.v1.Error
-	86,  // 227: zeroauthy.store.v1.DevicePollResult.code:type_name -> zeroauthy.store.v1.DeviceCode
-	87,  // 228: zeroauthy.store.v1.RefreshTokenWrite.value:type_name -> zeroauthy.store.v1.RefreshToken
-	3,   // 229: zeroauthy.store.v1.RefreshTokenResult.error:type_name -> zeroauthy.store.v1.Error
-	87,  // 230: zeroauthy.store.v1.RefreshTokenResult.value:type_name -> zeroauthy.store.v1.RefreshToken
-	3,   // 231: zeroauthy.store.v1.RefreshTokenList.error:type_name -> zeroauthy.store.v1.Error
-	87,  // 232: zeroauthy.store.v1.RefreshTokenList.values:type_name -> zeroauthy.store.v1.RefreshToken
-	87,  // 233: zeroauthy.store.v1.RefreshTokensRotateRequest.next:type_name -> zeroauthy.store.v1.RefreshToken
-	365, // 234: zeroauthy.store.v1.RefreshTokensRotateRequest.at:type_name -> google.protobuf.Timestamp
-	366, // 235: zeroauthy.store.v1.RefreshTokensRotateRequest.leeway:type_name -> google.protobuf.Duration
-	365, // 236: zeroauthy.store.v1.PasswordResetTicketChallengeRequest.passed_at:type_name -> google.protobuf.Timestamp
-	88,  // 237: zeroauthy.store.v1.PasswordResetTicketWrite.value:type_name -> zeroauthy.store.v1.PasswordResetTicket
-	3,   // 238: zeroauthy.store.v1.PasswordResetTicketResult.error:type_name -> zeroauthy.store.v1.Error
-	88,  // 239: zeroauthy.store.v1.PasswordResetTicketResult.value:type_name -> zeroauthy.store.v1.PasswordResetTicket
-	89,  // 240: zeroauthy.store.v1.EmailVerificationTicketWrite.value:type_name -> zeroauthy.store.v1.EmailVerificationTicket
-	3,   // 241: zeroauthy.store.v1.EmailVerificationTicketResult.error:type_name -> zeroauthy.store.v1.Error
-	89,  // 242: zeroauthy.store.v1.EmailVerificationTicketResult.value:type_name -> zeroauthy.store.v1.EmailVerificationTicket
-	95,  // 243: zeroauthy.store.v1.OperatorWrite.value:type_name -> zeroauthy.store.v1.Operator
-	3,   // 244: zeroauthy.store.v1.OperatorResult.error:type_name -> zeroauthy.store.v1.Error
-	95,  // 245: zeroauthy.store.v1.OperatorResult.value:type_name -> zeroauthy.store.v1.Operator
-	3,   // 246: zeroauthy.store.v1.OperatorList.error:type_name -> zeroauthy.store.v1.Error
-	95,  // 247: zeroauthy.store.v1.OperatorList.values:type_name -> zeroauthy.store.v1.Operator
-	365, // 248: zeroauthy.store.v1.UsersUpgradeImportedHashRequest.at:type_name -> google.protobuf.Timestamp
-	91,  // 249: zeroauthy.store.v1.JobWrite.value:type_name -> zeroauthy.store.v1.Job
-	3,   // 250: zeroauthy.store.v1.JobResult.error:type_name -> zeroauthy.store.v1.Error
-	91,  // 251: zeroauthy.store.v1.JobResult.value:type_name -> zeroauthy.store.v1.Job
-	3,   // 252: zeroauthy.store.v1.JobPage.error:type_name -> zeroauthy.store.v1.Error
-	91,  // 253: zeroauthy.store.v1.JobPage.values:type_name -> zeroauthy.store.v1.Job
-	365, // 254: zeroauthy.store.v1.JobsClaimRequest.now:type_name -> google.protobuf.Timestamp
-	366, // 255: zeroauthy.store.v1.JobsClaimRequest.lease:type_name -> google.protobuf.Duration
-	365, // 256: zeroauthy.store.v1.JobsRenewRequest.until:type_name -> google.protobuf.Timestamp
-	90,  // 257: zeroauthy.store.v1.JobsCheckpointRequest.summary:type_name -> zeroauthy.store.v1.JobSummary
-	94,  // 258: zeroauthy.store.v1.JobsCheckpointRequest.errors:type_name -> zeroauthy.store.v1.JobError
-	365, // 259: zeroauthy.store.v1.JobsFinishRequest.at:type_name -> google.protobuf.Timestamp
-	3,   // 260: zeroauthy.store.v1.JobErrorList.error:type_name -> zeroauthy.store.v1.Error
-	94,  // 261: zeroauthy.store.v1.JobErrorList.values:type_name -> zeroauthy.store.v1.JobError
-	3,   // 262: zeroauthy.store.v1.JobFileChunk.error:type_name -> zeroauthy.store.v1.Error
-	179, // 263: zeroauthy.store.v1.ProtectionLimit.key:type_name -> zeroauthy.store.v1.ProtectionKey
-	366, // 264: zeroauthy.store.v1.ProtectionLimit.window:type_name -> google.protobuf.Duration
-	366, // 265: zeroauthy.store.v1.ProtectionLimit.refill:type_name -> google.protobuf.Duration
-	366, // 266: zeroauthy.store.v1.ProtectionLimit.lockout:type_name -> google.protobuf.Duration
-	179, // 267: zeroauthy.store.v1.ProtectionBlock.key:type_name -> zeroauthy.store.v1.ProtectionKey
-	365, // 268: zeroauthy.store.v1.ProtectionBlock.blocked_until:type_name -> google.protobuf.Timestamp
-	180, // 269: zeroauthy.store.v1.ProtectionRequest.limits:type_name -> zeroauthy.store.v1.ProtectionLimit
-	365, // 270: zeroauthy.store.v1.ProtectionRequest.now:type_name -> google.protobuf.Timestamp
-	365, // 271: zeroauthy.store.v1.ProtectionRequest.expires_at:type_name -> google.protobuf.Timestamp
-	179, // 272: zeroauthy.store.v1.ProtectionRequest.filter:type_name -> zeroauthy.store.v1.ProtectionKey
-	3,   // 273: zeroauthy.store.v1.ProtectionResult.error:type_name -> zeroauthy.store.v1.Error
-	365, // 274: zeroauthy.store.v1.ProtectionResult.retry_at:type_name -> google.protobuf.Timestamp
-	181, // 275: zeroauthy.store.v1.ProtectionResult.blocks:type_name -> zeroauthy.store.v1.ProtectionBlock
-	18,  // 276: zeroauthy.store.v1.CustomDomain.domain_metadata:type_name -> zeroauthy.store.v1.StringMap
-	365, // 277: zeroauthy.store.v1.CustomDomain.proof_created_at:type_name -> google.protobuf.Timestamp
-	365, // 278: zeroauthy.store.v1.CustomDomain.proof_verified_at:type_name -> google.protobuf.Timestamp
-	365, // 279: zeroauthy.store.v1.CustomDomain.last_proof_check_at:type_name -> google.protobuf.Timestamp
-	365, // 280: zeroauthy.store.v1.CustomDomain.proof_failure_since:type_name -> google.protobuf.Timestamp
-	365, // 281: zeroauthy.store.v1.CustomDomain.next_attempt_at:type_name -> google.protobuf.Timestamp
-	365, // 282: zeroauthy.store.v1.CustomDomain.created_at:type_name -> google.protobuf.Timestamp
-	365, // 283: zeroauthy.store.v1.CustomDomain.updated_at:type_name -> google.protobuf.Timestamp
-	17,  // 284: zeroauthy.store.v1.TLSPublicData.sans:type_name -> zeroauthy.store.v1.StringList
-	365, // 285: zeroauthy.store.v1.TLSPublicData.not_before:type_name -> google.protobuf.Timestamp
-	365, // 286: zeroauthy.store.v1.TLSPublicData.not_after:type_name -> google.protobuf.Timestamp
-	186, // 287: zeroauthy.store.v1.TLSAsset.public_data:type_name -> zeroauthy.store.v1.TLSPublicData
-	365, // 288: zeroauthy.store.v1.TLSAsset.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 289: zeroauthy.store.v1.TLSLease.until:type_name -> google.protobuf.Timestamp
-	184, // 290: zeroauthy.store.v1.CustomDomainRequest.value:type_name -> zeroauthy.store.v1.CustomDomain
-	185, // 291: zeroauthy.store.v1.CustomDomainRequest.binding:type_name -> zeroauthy.store.v1.HostBinding
-	3,   // 292: zeroauthy.store.v1.CustomDomainResult.error:type_name -> zeroauthy.store.v1.Error
-	184, // 293: zeroauthy.store.v1.CustomDomainResult.value:type_name -> zeroauthy.store.v1.CustomDomain
-	184, // 294: zeroauthy.store.v1.CustomDomainResult.values:type_name -> zeroauthy.store.v1.CustomDomain
-	185, // 295: zeroauthy.store.v1.CustomDomainResult.binding:type_name -> zeroauthy.store.v1.HostBinding
-	366, // 296: zeroauthy.store.v1.CustomDomainResult.retry_after:type_name -> google.protobuf.Duration
-	187, // 297: zeroauthy.store.v1.TLSAssetRequest.value:type_name -> zeroauthy.store.v1.TLSAsset
-	188, // 298: zeroauthy.store.v1.TLSAssetRequest.lease:type_name -> zeroauthy.store.v1.TLSLease
-	366, // 299: zeroauthy.store.v1.TLSAssetRequest.duration:type_name -> google.protobuf.Duration
-	3,   // 300: zeroauthy.store.v1.TLSAssetResult.error:type_name -> zeroauthy.store.v1.Error
-	187, // 301: zeroauthy.store.v1.TLSAssetResult.value:type_name -> zeroauthy.store.v1.TLSAsset
-	187, // 302: zeroauthy.store.v1.TLSAssetResult.values:type_name -> zeroauthy.store.v1.TLSAsset
-	188, // 303: zeroauthy.store.v1.TLSAssetResult.lease:type_name -> zeroauthy.store.v1.TLSLease
-	196, // 304: zeroauthy.store.v1.RBACPermissionGrant.key:type_name -> zeroauthy.store.v1.RBACPermissionKey
-	197, // 305: zeroauthy.store.v1.RBACPermissionGrant.sources:type_name -> zeroauthy.store.v1.RBACSource
-	195, // 306: zeroauthy.store.v1.RBACRequest.role:type_name -> zeroauthy.store.v1.RBACRole
-	196, // 307: zeroauthy.store.v1.RBACRequest.keys:type_name -> zeroauthy.store.v1.RBACPermissionKey
-	199, // 308: zeroauthy.store.v1.RBACRequest.page:type_name -> zeroauthy.store.v1.RBACPage
-	30,  // 309: zeroauthy.store.v1.RBACSnapshot.api:type_name -> zeroauthy.store.v1.ResourceServer
-	3,   // 310: zeroauthy.store.v1.RBACResponse.error:type_name -> zeroauthy.store.v1.Error
-	195, // 311: zeroauthy.store.v1.RBACResponse.role:type_name -> zeroauthy.store.v1.RBACRole
-	195, // 312: zeroauthy.store.v1.RBACResponse.roles:type_name -> zeroauthy.store.v1.RBACRole
-	198, // 313: zeroauthy.store.v1.RBACResponse.grants:type_name -> zeroauthy.store.v1.RBACPermissionGrant
-	79,  // 314: zeroauthy.store.v1.RBACResponse.users:type_name -> zeroauthy.store.v1.User
-	201, // 315: zeroauthy.store.v1.RBACResponse.snapshot:type_name -> zeroauthy.store.v1.RBACSnapshot
-	3,   // 316: zeroauthy.store.v1.RBACCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
-	204, // 317: zeroauthy.store.v1.OrganizationBrandingMsg.colors:type_name -> zeroauthy.store.v1.OrganizationColorsMsg
-	205, // 318: zeroauthy.store.v1.OrganizationMsg.branding:type_name -> zeroauthy.store.v1.OrganizationBrandingMsg
-	18,  // 319: zeroauthy.store.v1.OrganizationMsg.metadata:type_name -> zeroauthy.store.v1.StringMap
-	365, // 320: zeroauthy.store.v1.OrganizationMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 321: zeroauthy.store.v1.OrganizationMsg.updated_at:type_name -> google.protobuf.Timestamp
-	233, // 322: zeroauthy.store.v1.OrganizationMsg.client_association:type_name -> zeroauthy.store.v1.OrganizationClientMsg
-	206, // 323: zeroauthy.store.v1.OrganizationsRequest.organization:type_name -> zeroauthy.store.v1.OrganizationMsg
-	207, // 324: zeroauthy.store.v1.OrganizationsRequest.connections:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
-	207, // 325: zeroauthy.store.v1.OrganizationsRequest.connection:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
-	208, // 326: zeroauthy.store.v1.OrganizationsRequest.page:type_name -> zeroauthy.store.v1.OrganizationPageMsg
-	3,   // 327: zeroauthy.store.v1.OrganizationsResponse.error:type_name -> zeroauthy.store.v1.Error
-	206, // 328: zeroauthy.store.v1.OrganizationsResponse.organization:type_name -> zeroauthy.store.v1.OrganizationMsg
-	206, // 329: zeroauthy.store.v1.OrganizationsResponse.organizations:type_name -> zeroauthy.store.v1.OrganizationMsg
-	207, // 330: zeroauthy.store.v1.OrganizationsResponse.connection:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
-	207, // 331: zeroauthy.store.v1.OrganizationsResponse.connections:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
-	3,   // 332: zeroauthy.store.v1.OrganizationsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
-	365, // 333: zeroauthy.store.v1.ActionSecretMsg.updated_at:type_name -> google.protobuf.Timestamp
-	212, // 334: zeroauthy.store.v1.ActionMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
-	213, // 335: zeroauthy.store.v1.ActionMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
-	365, // 336: zeroauthy.store.v1.ActionMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 337: zeroauthy.store.v1.ActionMsg.updated_at:type_name -> google.protobuf.Timestamp
-	226, // 338: zeroauthy.store.v1.ActionMsg.modules:type_name -> zeroauthy.store.v1.ActionModuleRefMsg
-	212, // 339: zeroauthy.store.v1.ActionVersionMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
-	213, // 340: zeroauthy.store.v1.ActionVersionMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
-	365, // 341: zeroauthy.store.v1.ActionVersionMsg.created_at:type_name -> google.protobuf.Timestamp
-	226, // 342: zeroauthy.store.v1.ActionVersionMsg.modules:type_name -> zeroauthy.store.v1.ActionModuleRefMsg
-	212, // 343: zeroauthy.store.v1.ActionBuildMsg.requested:type_name -> zeroauthy.store.v1.ActionDependency
-	212, // 344: zeroauthy.store.v1.ActionBuildMsg.resolved:type_name -> zeroauthy.store.v1.ActionDependency
-	365, // 345: zeroauthy.store.v1.ActionBuildMsg.built_at:type_name -> google.protobuf.Timestamp
-	365, // 346: zeroauthy.store.v1.ActionBindingMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 347: zeroauthy.store.v1.ActionBindingMsg.updated_at:type_name -> google.protobuf.Timestamp
-	217, // 348: zeroauthy.store.v1.ActionBoundMsg.binding:type_name -> zeroauthy.store.v1.ActionBindingMsg
-	214, // 349: zeroauthy.store.v1.ActionBoundMsg.action:type_name -> zeroauthy.store.v1.ActionMsg
-	215, // 350: zeroauthy.store.v1.ActionBoundMsg.version:type_name -> zeroauthy.store.v1.ActionVersionMsg
-	365, // 351: zeroauthy.store.v1.ActionExecutionResultMsg.started_at:type_name -> google.protobuf.Timestamp
-	365, // 352: zeroauthy.store.v1.ActionExecutionResultMsg.ended_at:type_name -> google.protobuf.Timestamp
-	219, // 353: zeroauthy.store.v1.ActionExecutionMsg.results:type_name -> zeroauthy.store.v1.ActionExecutionResultMsg
-	365, // 354: zeroauthy.store.v1.ActionExecutionMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 355: zeroauthy.store.v1.ActionExecutionMsg.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 356: zeroauthy.store.v1.ActionContinueMsg.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 357: zeroauthy.store.v1.ActionContinueMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 358: zeroauthy.store.v1.ActionsRequest.time:type_name -> google.protobuf.Timestamp
-	214, // 359: zeroauthy.store.v1.ActionsRequest.action:type_name -> zeroauthy.store.v1.ActionMsg
-	216, // 360: zeroauthy.store.v1.ActionsRequest.build:type_name -> zeroauthy.store.v1.ActionBuildMsg
-	220, // 361: zeroauthy.store.v1.ActionsRequest.execution:type_name -> zeroauthy.store.v1.ActionExecutionMsg
-	221, // 362: zeroauthy.store.v1.ActionsRequest.continue_state:type_name -> zeroauthy.store.v1.ActionContinueMsg
-	217, // 363: zeroauthy.store.v1.ActionsRequest.bindings:type_name -> zeroauthy.store.v1.ActionBindingMsg
-	227, // 364: zeroauthy.store.v1.ActionsRequest.module:type_name -> zeroauthy.store.v1.ActionModuleMsg
-	230, // 365: zeroauthy.store.v1.ActionsRequest.job:type_name -> zeroauthy.store.v1.ActionJobMsg
-	366, // 366: zeroauthy.store.v1.ActionsRequest.lease:type_name -> google.protobuf.Duration
-	365, // 367: zeroauthy.store.v1.ActionsRequest.lease_until:type_name -> google.protobuf.Timestamp
-	3,   // 368: zeroauthy.store.v1.ActionsResponse.error:type_name -> zeroauthy.store.v1.Error
-	214, // 369: zeroauthy.store.v1.ActionsResponse.action:type_name -> zeroauthy.store.v1.ActionMsg
-	214, // 370: zeroauthy.store.v1.ActionsResponse.actions:type_name -> zeroauthy.store.v1.ActionMsg
-	215, // 371: zeroauthy.store.v1.ActionsResponse.version:type_name -> zeroauthy.store.v1.ActionVersionMsg
-	215, // 372: zeroauthy.store.v1.ActionsResponse.versions:type_name -> zeroauthy.store.v1.ActionVersionMsg
-	216, // 373: zeroauthy.store.v1.ActionsResponse.build:type_name -> zeroauthy.store.v1.ActionBuildMsg
-	218, // 374: zeroauthy.store.v1.ActionsResponse.bound:type_name -> zeroauthy.store.v1.ActionBoundMsg
-	220, // 375: zeroauthy.store.v1.ActionsResponse.execution:type_name -> zeroauthy.store.v1.ActionExecutionMsg
-	221, // 376: zeroauthy.store.v1.ActionsResponse.continue_state:type_name -> zeroauthy.store.v1.ActionContinueMsg
-	227, // 377: zeroauthy.store.v1.ActionsResponse.module:type_name -> zeroauthy.store.v1.ActionModuleMsg
-	227, // 378: zeroauthy.store.v1.ActionsResponse.modules:type_name -> zeroauthy.store.v1.ActionModuleMsg
-	228, // 379: zeroauthy.store.v1.ActionsResponse.module_version:type_name -> zeroauthy.store.v1.ActionModuleVersionMsg
-	228, // 380: zeroauthy.store.v1.ActionsResponse.module_versions:type_name -> zeroauthy.store.v1.ActionModuleVersionMsg
-	220, // 381: zeroauthy.store.v1.ActionsResponse.executions:type_name -> zeroauthy.store.v1.ActionExecutionMsg
-	229, // 382: zeroauthy.store.v1.ActionsResponse.module_users:type_name -> zeroauthy.store.v1.ActionModuleUserMsg
-	230, // 383: zeroauthy.store.v1.ActionsResponse.jobs:type_name -> zeroauthy.store.v1.ActionJobMsg
-	230, // 384: zeroauthy.store.v1.ActionsResponse.job:type_name -> zeroauthy.store.v1.ActionJobMsg
-	3,   // 385: zeroauthy.store.v1.ActionsArtifactChunk.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 386: zeroauthy.store.v1.ActionsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
-	212, // 387: zeroauthy.store.v1.ActionModuleMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
-	213, // 388: zeroauthy.store.v1.ActionModuleMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
-	365, // 389: zeroauthy.store.v1.ActionModuleMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 390: zeroauthy.store.v1.ActionModuleMsg.updated_at:type_name -> google.protobuf.Timestamp
-	212, // 391: zeroauthy.store.v1.ActionModuleVersionMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
-	213, // 392: zeroauthy.store.v1.ActionModuleVersionMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
-	365, // 393: zeroauthy.store.v1.ActionModuleVersionMsg.created_at:type_name -> google.protobuf.Timestamp
-	214, // 394: zeroauthy.store.v1.ActionModuleUserMsg.action:type_name -> zeroauthy.store.v1.ActionMsg
-	365, // 395: zeroauthy.store.v1.ActionJobMsg.next_at:type_name -> google.protobuf.Timestamp
-	365, // 396: zeroauthy.store.v1.ActionJobMsg.lease_until:type_name -> google.protobuf.Timestamp
-	365, // 397: zeroauthy.store.v1.ActionJobMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 398: zeroauthy.store.v1.ActionJobMsg.updated_at:type_name -> google.protobuf.Timestamp
-	17,  // 399: zeroauthy.store.v1.OrganizationInvitationMsg.roles:type_name -> zeroauthy.store.v1.StringList
-	365, // 400: zeroauthy.store.v1.OrganizationInvitationMsg.created_at:type_name -> google.protobuf.Timestamp
-	365, // 401: zeroauthy.store.v1.OrganizationInvitationMsg.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 402: zeroauthy.store.v1.OrganizationInvitationMsg.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 403: zeroauthy.store.v1.InvitationReceiptMsg.accepted_at:type_name -> google.protobuf.Timestamp
-	208, // 404: zeroauthy.store.v1.OrganizationsIIRequest.page:type_name -> zeroauthy.store.v1.OrganizationPageMsg
-	365, // 405: zeroauthy.store.v1.OrganizationsIIRequest.now:type_name -> google.protobuf.Timestamp
-	231, // 406: zeroauthy.store.v1.OrganizationsIIRequest.invitation:type_name -> zeroauthy.store.v1.OrganizationInvitationMsg
-	233, // 407: zeroauthy.store.v1.OrganizationsIIRequest.clients:type_name -> zeroauthy.store.v1.OrganizationClientMsg
-	234, // 408: zeroauthy.store.v1.OrganizationsIIRequest.discovery_domain:type_name -> zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
-	237, // 409: zeroauthy.store.v1.OrganizationsIIRequest.search_query:type_name -> zeroauthy.store.v1.OrganizationQueryMsg
-	238, // 410: zeroauthy.store.v1.OrganizationsIIRequest.search_page:type_name -> zeroauthy.store.v1.OrganizationSearchPageMsg
-	3,   // 411: zeroauthy.store.v1.OrganizationsIIResponse.error:type_name -> zeroauthy.store.v1.Error
-	231, // 412: zeroauthy.store.v1.OrganizationsIIResponse.invitation:type_name -> zeroauthy.store.v1.OrganizationInvitationMsg
-	231, // 413: zeroauthy.store.v1.OrganizationsIIResponse.invitations:type_name -> zeroauthy.store.v1.OrganizationInvitationMsg
-	232, // 414: zeroauthy.store.v1.OrganizationsIIResponse.receipt:type_name -> zeroauthy.store.v1.InvitationReceiptMsg
-	233, // 415: zeroauthy.store.v1.OrganizationsIIResponse.client:type_name -> zeroauthy.store.v1.OrganizationClientMsg
-	233, // 416: zeroauthy.store.v1.OrganizationsIIResponse.clients:type_name -> zeroauthy.store.v1.OrganizationClientMsg
-	32,  // 417: zeroauthy.store.v1.OrganizationsIIResponse.grants:type_name -> zeroauthy.store.v1.ClientGrant
-	206, // 418: zeroauthy.store.v1.OrganizationsIIResponse.organizations:type_name -> zeroauthy.store.v1.OrganizationMsg
-	234, // 419: zeroauthy.store.v1.OrganizationsIIResponse.discovery_domain:type_name -> zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
-	234, // 420: zeroauthy.store.v1.OrganizationsIIResponse.discovery_domains:type_name -> zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
-	237, // 421: zeroauthy.store.v1.OrganizationQueryMsg.left:type_name -> zeroauthy.store.v1.OrganizationQueryMsg
-	237, // 422: zeroauthy.store.v1.OrganizationQueryMsg.right:type_name -> zeroauthy.store.v1.OrganizationQueryMsg
-	3,   // 423: zeroauthy.store.v1.LogsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
-	241, // 424: zeroauthy.store.v1.LogQueryMsg.left:type_name -> zeroauthy.store.v1.LogQueryMsg
-	241, // 425: zeroauthy.store.v1.LogQueryMsg.right:type_name -> zeroauthy.store.v1.LogQueryMsg
-	243, // 426: zeroauthy.store.v1.LogStreamFiltersMsg.values:type_name -> zeroauthy.store.v1.LogStreamFilterMsg
-	17,  // 427: zeroauthy.store.v1.LogStreamPIIMsg.log_fields:type_name -> zeroauthy.store.v1.StringList
-	244, // 428: zeroauthy.store.v1.LogStreamMsg.filters:type_name -> zeroauthy.store.v1.LogStreamFiltersMsg
-	245, // 429: zeroauthy.store.v1.LogStreamMsg.pii:type_name -> zeroauthy.store.v1.LogStreamPIIMsg
-	240, // 430: zeroauthy.store.v1.LogsRequest.events:type_name -> zeroauthy.store.v1.LogEventMsg
-	248, // 431: zeroauthy.store.v1.LogsRequest.deltas:type_name -> zeroauthy.store.v1.DailyStatDeltaMsg
-	241, // 432: zeroauthy.store.v1.LogsRequest.query:type_name -> zeroauthy.store.v1.LogQueryMsg
-	242, // 433: zeroauthy.store.v1.LogsRequest.page:type_name -> zeroauthy.store.v1.LogPageMsg
-	246, // 434: zeroauthy.store.v1.LogsRequest.stream:type_name -> zeroauthy.store.v1.LogStreamMsg
-	247, // 435: zeroauthy.store.v1.LogsRequest.delivery:type_name -> zeroauthy.store.v1.LogStreamDeliveryMsg
-	3,   // 436: zeroauthy.store.v1.LogsResponse.error:type_name -> zeroauthy.store.v1.Error
-	240, // 437: zeroauthy.store.v1.LogsResponse.event:type_name -> zeroauthy.store.v1.LogEventMsg
-	240, // 438: zeroauthy.store.v1.LogsResponse.events:type_name -> zeroauthy.store.v1.LogEventMsg
-	246, // 439: zeroauthy.store.v1.LogsResponse.stream:type_name -> zeroauthy.store.v1.LogStreamMsg
-	246, // 440: zeroauthy.store.v1.LogsResponse.streams:type_name -> zeroauthy.store.v1.LogStreamMsg
-	249, // 441: zeroauthy.store.v1.LogsResponse.stats:type_name -> zeroauthy.store.v1.DailyStatMsg
-	3,   // 442: zeroauthy.store.v1.EventsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
-	17,  // 443: zeroauthy.store.v1.EventStreamMsg.subscriptions:type_name -> zeroauthy.store.v1.StringList
-	255, // 444: zeroauthy.store.v1.DeliveryAttemptsMsg.values:type_name -> zeroauthy.store.v1.DeliveryAttemptMsg
-	256, // 445: zeroauthy.store.v1.EventDeliveryMsg.attempts:type_name -> zeroauthy.store.v1.DeliveryAttemptsMsg
-	17,  // 446: zeroauthy.store.v1.DeliveryFilterMsg.statuses:type_name -> zeroauthy.store.v1.StringList
-	17,  // 447: zeroauthy.store.v1.DeliveryFilterMsg.event_types:type_name -> zeroauthy.store.v1.StringList
-	257, // 448: zeroauthy.store.v1.DeliveryOutcomeMsg.failed:type_name -> zeroauthy.store.v1.EventDeliveryMsg
-	17,  // 449: zeroauthy.store.v1.DeliveryOutcomeMsg.succeeded:type_name -> zeroauthy.store.v1.StringList
-	253, // 450: zeroauthy.store.v1.EventsRequest.events:type_name -> zeroauthy.store.v1.TenantEventMsg
-	17,  // 451: zeroauthy.store.v1.EventsRequest.types:type_name -> zeroauthy.store.v1.StringList
-	254, // 452: zeroauthy.store.v1.EventsRequest.stream:type_name -> zeroauthy.store.v1.EventStreamMsg
-	259, // 453: zeroauthy.store.v1.EventsRequest.outcome:type_name -> zeroauthy.store.v1.DeliveryOutcomeMsg
-	258, // 454: zeroauthy.store.v1.EventsRequest.filter:type_name -> zeroauthy.store.v1.DeliveryFilterMsg
-	17,  // 455: zeroauthy.store.v1.EventsRequest.event_ids:type_name -> zeroauthy.store.v1.StringList
-	3,   // 456: zeroauthy.store.v1.EventsResponse.error:type_name -> zeroauthy.store.v1.Error
-	253, // 457: zeroauthy.store.v1.EventsResponse.event:type_name -> zeroauthy.store.v1.TenantEventMsg
-	253, // 458: zeroauthy.store.v1.EventsResponse.events:type_name -> zeroauthy.store.v1.TenantEventMsg
-	254, // 459: zeroauthy.store.v1.EventsResponse.stream:type_name -> zeroauthy.store.v1.EventStreamMsg
-	254, // 460: zeroauthy.store.v1.EventsResponse.streams:type_name -> zeroauthy.store.v1.EventStreamMsg
-	257, // 461: zeroauthy.store.v1.EventsResponse.delivery:type_name -> zeroauthy.store.v1.EventDeliveryMsg
-	257, // 462: zeroauthy.store.v1.EventsResponse.deliveries:type_name -> zeroauthy.store.v1.EventDeliveryMsg
-	362, // 463: zeroauthy.store.v1.MFAGuardian.factors:type_name -> zeroauthy.store.v1.MFAGuardian.FactorsEntry
-	363, // 464: zeroauthy.store.v1.MFAGuardian.stored:type_name -> zeroauthy.store.v1.MFAGuardian.StoredEntry
-	364, // 465: zeroauthy.store.v1.MFAGuardian.sealed_secrets:type_name -> zeroauthy.store.v1.MFAGuardian.SealedSecretsEntry
-	3,   // 466: zeroauthy.store.v1.MFAGetGuardianResponse.error:type_name -> zeroauthy.store.v1.Error
-	262, // 467: zeroauthy.store.v1.MFAGetGuardianResponse.value:type_name -> zeroauthy.store.v1.MFAGuardian
-	262, // 468: zeroauthy.store.v1.MFAPutGuardianRequest.v:type_name -> zeroauthy.store.v1.MFAGuardian
-	3,   // 469: zeroauthy.store.v1.MFAPutGuardianResponse.error:type_name -> zeroauthy.store.v1.Error
-	263, // 470: zeroauthy.store.v1.MFACreateAuthenticatorRequest.v:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	3,   // 471: zeroauthy.store.v1.MFACreateAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 472: zeroauthy.store.v1.MFAGetAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
-	263, // 473: zeroauthy.store.v1.MFAGetAuthenticatorResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	3,   // 474: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse.error:type_name -> zeroauthy.store.v1.Error
-	263, // 475: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	3,   // 476: zeroauthy.store.v1.MFAListAuthenticatorsResponse.error:type_name -> zeroauthy.store.v1.Error
-	263, // 477: zeroauthy.store.v1.MFAListAuthenticatorsResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	263, // 478: zeroauthy.store.v1.MFAUpdateAuthenticatorRequest.v:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	3,   // 479: zeroauthy.store.v1.MFAUpdateAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 480: zeroauthy.store.v1.MFADeleteAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
-	17,  // 481: zeroauthy.store.v1.MFADeleteUserAuthenticatorsRequest.types:type_name -> zeroauthy.store.v1.StringList
-	3,   // 482: zeroauthy.store.v1.MFADeleteUserAuthenticatorsResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 483: zeroauthy.store.v1.MFAAcceptTOTPStepResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 484: zeroauthy.store.v1.MFAReplaceRecoveryCodeResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 485: zeroauthy.store.v1.MFAAcceptSignCountResponse.error:type_name -> zeroauthy.store.v1.Error
-	264, // 486: zeroauthy.store.v1.MFACreateMFATokenRequest.v:type_name -> zeroauthy.store.v1.MFATokenMsg
-	3,   // 487: zeroauthy.store.v1.MFACreateMFATokenResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 488: zeroauthy.store.v1.MFAConsumeMFATokenResponse.error:type_name -> zeroauthy.store.v1.Error
-	264, // 489: zeroauthy.store.v1.MFAConsumeMFATokenResponse.value:type_name -> zeroauthy.store.v1.MFATokenMsg
-	3,   // 490: zeroauthy.store.v1.MFAPeekMFATokenResponse.error:type_name -> zeroauthy.store.v1.Error
-	264, // 491: zeroauthy.store.v1.MFAPeekMFATokenResponse.value:type_name -> zeroauthy.store.v1.MFATokenMsg
-	265, // 492: zeroauthy.store.v1.MFACreateChallengeRequest.v:type_name -> zeroauthy.store.v1.MFAChallengeMsg
-	3,   // 493: zeroauthy.store.v1.MFACreateChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 494: zeroauthy.store.v1.MFAGetChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
-	265, // 495: zeroauthy.store.v1.MFAGetChallengeResponse.value:type_name -> zeroauthy.store.v1.MFAChallengeMsg
-	3,   // 496: zeroauthy.store.v1.MFAFailChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 497: zeroauthy.store.v1.MFAConsumeChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
-	266, // 498: zeroauthy.store.v1.MFACreateTicketRequest.v:type_name -> zeroauthy.store.v1.MFAEnrollmentTicket
-	3,   // 499: zeroauthy.store.v1.MFACreateTicketResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 500: zeroauthy.store.v1.MFAConsumeTicketResponse.error:type_name -> zeroauthy.store.v1.Error
-	266, // 501: zeroauthy.store.v1.MFAConsumeTicketResponse.value:type_name -> zeroauthy.store.v1.MFAEnrollmentTicket
-	3,   // 502: zeroauthy.store.v1.MFAPeekTicketResponse.error:type_name -> zeroauthy.store.v1.Error
-	266, // 503: zeroauthy.store.v1.MFAPeekTicketResponse.value:type_name -> zeroauthy.store.v1.MFAEnrollmentTicket
-	267, // 504: zeroauthy.store.v1.MFAPutBrowserRequest.v:type_name -> zeroauthy.store.v1.MFABrowserMsg
-	3,   // 505: zeroauthy.store.v1.MFAPutBrowserResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 506: zeroauthy.store.v1.MFAGetBrowserResponse.error:type_name -> zeroauthy.store.v1.Error
-	267, // 507: zeroauthy.store.v1.MFAGetBrowserResponse.value:type_name -> zeroauthy.store.v1.MFABrowserMsg
-	3,   // 508: zeroauthy.store.v1.MFABumpRememberEpochResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 509: zeroauthy.store.v1.MFAPurgeMFAResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 510: zeroauthy.store.v1.MFADeleteUserMFAResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 511: zeroauthy.store.v1.MFADeleteTenantMFAResponse.error:type_name -> zeroauthy.store.v1.Error
-	365, // 512: zeroauthy.store.v1.PhoneProvider.created_at:type_name -> google.protobuf.Timestamp
-	365, // 513: zeroauthy.store.v1.PhoneProvider.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 514: zeroauthy.store.v1.PhoneTemplate.created_at:type_name -> google.protobuf.Timestamp
-	365, // 515: zeroauthy.store.v1.PhoneTemplate.updated_at:type_name -> google.protobuf.Timestamp
-	365, // 516: zeroauthy.store.v1.PasswordlessCode.expires_at:type_name -> google.protobuf.Timestamp
-	365, // 517: zeroauthy.store.v1.PasswordlessCode.created_at:type_name -> google.protobuf.Timestamp
-	3,   // 518: zeroauthy.store.v1.PhoneErrorResponse.error:type_name -> zeroauthy.store.v1.Error
-	324, // 519: zeroauthy.store.v1.PhoneProviderRequest.v:type_name -> zeroauthy.store.v1.PhoneProvider
-	3,   // 520: zeroauthy.store.v1.PhoneProviderResponse.error:type_name -> zeroauthy.store.v1.Error
-	324, // 521: zeroauthy.store.v1.PhoneProviderResponse.value:type_name -> zeroauthy.store.v1.PhoneProvider
-	3,   // 522: zeroauthy.store.v1.PhoneListProvidersResponse.error:type_name -> zeroauthy.store.v1.Error
-	324, // 523: zeroauthy.store.v1.PhoneListProvidersResponse.values:type_name -> zeroauthy.store.v1.PhoneProvider
-	325, // 524: zeroauthy.store.v1.PhoneTemplateRequest.v:type_name -> zeroauthy.store.v1.PhoneTemplate
-	3,   // 525: zeroauthy.store.v1.PhoneTemplateResponse.error:type_name -> zeroauthy.store.v1.Error
-	325, // 526: zeroauthy.store.v1.PhoneTemplateResponse.value:type_name -> zeroauthy.store.v1.PhoneTemplate
-	3,   // 527: zeroauthy.store.v1.PhoneListTemplatesResponse.error:type_name -> zeroauthy.store.v1.Error
-	325, // 528: zeroauthy.store.v1.PhoneListTemplatesResponse.values:type_name -> zeroauthy.store.v1.PhoneTemplate
-	326, // 529: zeroauthy.store.v1.PhonePutCodeRequest.v:type_name -> zeroauthy.store.v1.PasswordlessCode
-	365, // 530: zeroauthy.store.v1.PhoneCodeKeyRequest.now:type_name -> google.protobuf.Timestamp
-	3,   // 531: zeroauthy.store.v1.PhoneFailCodeResponse.error:type_name -> zeroauthy.store.v1.Error
-	365, // 532: zeroauthy.store.v1.PhoneConsumeCodeRequest.now:type_name -> google.protobuf.Timestamp
-	3,   // 533: zeroauthy.store.v1.PhoneCodeResponse.error:type_name -> zeroauthy.store.v1.Error
-	326, // 534: zeroauthy.store.v1.PhoneCodeResponse.value:type_name -> zeroauthy.store.v1.PasswordlessCode
-	365, // 535: zeroauthy.store.v1.PhonePeekLinkRequest.now:type_name -> google.protobuf.Timestamp
-	3,   // 536: zeroauthy.store.v1.PhoneFindUsersResponse.error:type_name -> zeroauthy.store.v1.Error
-	79,  // 537: zeroauthy.store.v1.PhoneFindUsersResponse.values:type_name -> zeroauthy.store.v1.User
-	365, // 538: zeroauthy.store.v1.PhonePurgeRequest.before:type_name -> google.protobuf.Timestamp
-	3,   // 539: zeroauthy.store.v1.PhoneCountResponse.error:type_name -> zeroauthy.store.v1.Error
-	365, // 540: zeroauthy.store.v1.WebAuthnSnooze.until:type_name -> google.protobuf.Timestamp
-	3,   // 541: zeroauthy.store.v1.WebAuthnErrorResponse.error:type_name -> zeroauthy.store.v1.Error
-	3,   // 542: zeroauthy.store.v1.WebAuthnAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
-	263, // 543: zeroauthy.store.v1.WebAuthnAuthenticatorResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	263, // 544: zeroauthy.store.v1.WebAuthnCreatePasskeyRequest.v:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	79,  // 545: zeroauthy.store.v1.WebAuthnCreateUserRequest.user:type_name -> zeroauthy.store.v1.User
-	263, // 546: zeroauthy.store.v1.WebAuthnCreateUserRequest.authenticator:type_name -> zeroauthy.store.v1.MFAAuthenticator
-	365, // 547: zeroauthy.store.v1.WebAuthnAcceptAssertionRequest.at:type_name -> google.protobuf.Timestamp
-	346, // 548: zeroauthy.store.v1.WebAuthnSnoozeRequest.v:type_name -> zeroauthy.store.v1.WebAuthnSnooze
-	365, // 549: zeroauthy.store.v1.WebAuthnGetSnoozeRequest.now:type_name -> google.protobuf.Timestamp
-	3,   // 550: zeroauthy.store.v1.WebAuthnSnoozeResponse.error:type_name -> zeroauthy.store.v1.Error
-	346, // 551: zeroauthy.store.v1.WebAuthnSnoozeResponse.value:type_name -> zeroauthy.store.v1.WebAuthnSnooze
-	3,   // 552: zeroauthy.store.v1.WebAuthnTenantIDsResponse.error:type_name -> zeroauthy.store.v1.Error
-	365, // 553: zeroauthy.store.v1.WebAuthnPurgeRequest.before:type_name -> google.protobuf.Timestamp
-	3,   // 554: zeroauthy.store.v1.WebAuthnCountResponse.error:type_name -> zeroauthy.store.v1.Error
-	7,   // 555: zeroauthy.store.v1.StoreService.MFACapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	268, // 556: zeroauthy.store.v1.StoreService.MFAGetGuardian:input_type -> zeroauthy.store.v1.MFAGetGuardianRequest
-	270, // 557: zeroauthy.store.v1.StoreService.MFAPutGuardian:input_type -> zeroauthy.store.v1.MFAPutGuardianRequest
-	272, // 558: zeroauthy.store.v1.StoreService.MFACreateAuthenticator:input_type -> zeroauthy.store.v1.MFACreateAuthenticatorRequest
-	274, // 559: zeroauthy.store.v1.StoreService.MFAGetAuthenticator:input_type -> zeroauthy.store.v1.MFAGetAuthenticatorRequest
-	276, // 560: zeroauthy.store.v1.StoreService.MFAGetAuthenticatorByEnrollmentID:input_type -> zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDRequest
-	278, // 561: zeroauthy.store.v1.StoreService.MFAListAuthenticators:input_type -> zeroauthy.store.v1.MFAListAuthenticatorsRequest
-	280, // 562: zeroauthy.store.v1.StoreService.MFAUpdateAuthenticator:input_type -> zeroauthy.store.v1.MFAUpdateAuthenticatorRequest
-	282, // 563: zeroauthy.store.v1.StoreService.MFADeleteAuthenticator:input_type -> zeroauthy.store.v1.MFADeleteAuthenticatorRequest
-	284, // 564: zeroauthy.store.v1.StoreService.MFADeleteUserAuthenticators:input_type -> zeroauthy.store.v1.MFADeleteUserAuthenticatorsRequest
-	286, // 565: zeroauthy.store.v1.StoreService.MFAAcceptTOTPStep:input_type -> zeroauthy.store.v1.MFAAcceptTOTPStepRequest
-	288, // 566: zeroauthy.store.v1.StoreService.MFAReplaceRecoveryCode:input_type -> zeroauthy.store.v1.MFAReplaceRecoveryCodeRequest
-	290, // 567: zeroauthy.store.v1.StoreService.MFAAcceptSignCount:input_type -> zeroauthy.store.v1.MFAAcceptSignCountRequest
-	292, // 568: zeroauthy.store.v1.StoreService.MFACreateMFAToken:input_type -> zeroauthy.store.v1.MFACreateMFATokenRequest
-	294, // 569: zeroauthy.store.v1.StoreService.MFAConsumeMFAToken:input_type -> zeroauthy.store.v1.MFAConsumeMFATokenRequest
-	296, // 570: zeroauthy.store.v1.StoreService.MFAPeekMFAToken:input_type -> zeroauthy.store.v1.MFAPeekMFATokenRequest
-	298, // 571: zeroauthy.store.v1.StoreService.MFACreateChallenge:input_type -> zeroauthy.store.v1.MFACreateChallengeRequest
-	300, // 572: zeroauthy.store.v1.StoreService.MFAGetChallenge:input_type -> zeroauthy.store.v1.MFAGetChallengeRequest
-	302, // 573: zeroauthy.store.v1.StoreService.MFAFailChallenge:input_type -> zeroauthy.store.v1.MFAFailChallengeRequest
-	304, // 574: zeroauthy.store.v1.StoreService.MFAConsumeChallenge:input_type -> zeroauthy.store.v1.MFAConsumeChallengeRequest
-	306, // 575: zeroauthy.store.v1.StoreService.MFACreateTicket:input_type -> zeroauthy.store.v1.MFACreateTicketRequest
-	308, // 576: zeroauthy.store.v1.StoreService.MFAConsumeTicket:input_type -> zeroauthy.store.v1.MFAConsumeTicketRequest
-	310, // 577: zeroauthy.store.v1.StoreService.MFAPeekTicket:input_type -> zeroauthy.store.v1.MFAPeekTicketRequest
-	312, // 578: zeroauthy.store.v1.StoreService.MFAPutBrowser:input_type -> zeroauthy.store.v1.MFAPutBrowserRequest
-	314, // 579: zeroauthy.store.v1.StoreService.MFAGetBrowser:input_type -> zeroauthy.store.v1.MFAGetBrowserRequest
-	316, // 580: zeroauthy.store.v1.StoreService.MFABumpRememberEpoch:input_type -> zeroauthy.store.v1.MFABumpRememberEpochRequest
-	318, // 581: zeroauthy.store.v1.StoreService.MFAPurgeMFA:input_type -> zeroauthy.store.v1.MFAPurgeMFARequest
-	320, // 582: zeroauthy.store.v1.StoreService.MFADeleteUserMFA:input_type -> zeroauthy.store.v1.MFADeleteUserMFARequest
-	322, // 583: zeroauthy.store.v1.StoreService.MFADeleteTenantMFA:input_type -> zeroauthy.store.v1.MFADeleteTenantMFARequest
-	13,  // 584: zeroauthy.store.v1.StoreService.SessionsMarkMFA:input_type -> zeroauthy.store.v1.TouchRequest
-	7,   // 585: zeroauthy.store.v1.StoreService.PhoneCapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	328, // 586: zeroauthy.store.v1.StoreService.PhoneListProviders:input_type -> zeroauthy.store.v1.PhoneTenantRequest
-	329, // 587: zeroauthy.store.v1.StoreService.PhoneGetProvider:input_type -> zeroauthy.store.v1.PhoneIDRequest
-	330, // 588: zeroauthy.store.v1.StoreService.PhoneCreateProvider:input_type -> zeroauthy.store.v1.PhoneProviderRequest
-	330, // 589: zeroauthy.store.v1.StoreService.PhoneUpdateProvider:input_type -> zeroauthy.store.v1.PhoneProviderRequest
-	329, // 590: zeroauthy.store.v1.StoreService.PhoneDeleteProvider:input_type -> zeroauthy.store.v1.PhoneIDRequest
-	328, // 591: zeroauthy.store.v1.StoreService.PhoneListTemplates:input_type -> zeroauthy.store.v1.PhoneTenantRequest
-	329, // 592: zeroauthy.store.v1.StoreService.PhoneGetTemplate:input_type -> zeroauthy.store.v1.PhoneIDRequest
-	333, // 593: zeroauthy.store.v1.StoreService.PhonePutTemplate:input_type -> zeroauthy.store.v1.PhoneTemplateRequest
-	329, // 594: zeroauthy.store.v1.StoreService.PhoneDeleteTemplate:input_type -> zeroauthy.store.v1.PhoneIDRequest
-	336, // 595: zeroauthy.store.v1.StoreService.PhonePutPasswordlessCode:input_type -> zeroauthy.store.v1.PhonePutCodeRequest
-	337, // 596: zeroauthy.store.v1.StoreService.PhoneFailPasswordlessCode:input_type -> zeroauthy.store.v1.PhoneCodeKeyRequest
-	339, // 597: zeroauthy.store.v1.StoreService.PhoneConsumePasswordlessCode:input_type -> zeroauthy.store.v1.PhoneConsumeCodeRequest
-	341, // 598: zeroauthy.store.v1.StoreService.PhonePeekPasswordlessLink:input_type -> zeroauthy.store.v1.PhonePeekLinkRequest
-	342, // 599: zeroauthy.store.v1.StoreService.PhoneFindUsersByPhone:input_type -> zeroauthy.store.v1.PhoneFindUsersRequest
-	344, // 600: zeroauthy.store.v1.StoreService.PhonePurge:input_type -> zeroauthy.store.v1.PhonePurgeRequest
-	328, // 601: zeroauthy.store.v1.StoreService.PhoneDeleteTenant:input_type -> zeroauthy.store.v1.PhoneTenantRequest
-	7,   // 602: zeroauthy.store.v1.StoreService.WebAuthnCapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	348, // 603: zeroauthy.store.v1.StoreService.WebAuthnGetAuthenticatorByCredentialID:input_type -> zeroauthy.store.v1.WebAuthnCredentialRequest
-	350, // 604: zeroauthy.store.v1.StoreService.WebAuthnCreatePasskey:input_type -> zeroauthy.store.v1.WebAuthnCreatePasskeyRequest
-	351, // 605: zeroauthy.store.v1.StoreService.WebAuthnCreateUserWithPasskey:input_type -> zeroauthy.store.v1.WebAuthnCreateUserRequest
-	352, // 606: zeroauthy.store.v1.StoreService.WebAuthnAcceptAssertion:input_type -> zeroauthy.store.v1.WebAuthnAcceptAssertionRequest
-	353, // 607: zeroauthy.store.v1.StoreService.WebAuthnMovePasskeys:input_type -> zeroauthy.store.v1.WebAuthnMovePasskeysRequest
-	354, // 608: zeroauthy.store.v1.StoreService.WebAuthnPutSnooze:input_type -> zeroauthy.store.v1.WebAuthnSnoozeRequest
-	355, // 609: zeroauthy.store.v1.StoreService.WebAuthnGetSnooze:input_type -> zeroauthy.store.v1.WebAuthnGetSnoozeRequest
-	357, // 610: zeroauthy.store.v1.StoreService.WebAuthnHostTenantsUnder:input_type -> zeroauthy.store.v1.WebAuthnHostTenantsRequest
-	359, // 611: zeroauthy.store.v1.StoreService.WebAuthnPurge:input_type -> zeroauthy.store.v1.WebAuthnPurgeRequest
-	7,   // 612: zeroauthy.store.v1.StoreService.EventsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	260, // 613: zeroauthy.store.v1.StoreService.AppendEvents:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 614: zeroauthy.store.v1.StoreService.GetEvent:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 615: zeroauthy.store.v1.StoreService.EventsAfter:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 616: zeroauthy.store.v1.StoreService.EventsFromTime:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 617: zeroauthy.store.v1.StoreService.LatestEventSeq:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 618: zeroauthy.store.v1.StoreService.PurgedEventSeq:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 619: zeroauthy.store.v1.StoreService.OldestEventSeq:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 620: zeroauthy.store.v1.StoreService.PurgeEvents:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 621: zeroauthy.store.v1.StoreService.DeleteTenantEvents:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 622: zeroauthy.store.v1.StoreService.CreateEventStream:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 623: zeroauthy.store.v1.StoreService.GetEventStream:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 624: zeroauthy.store.v1.StoreService.ListEventStreams:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 625: zeroauthy.store.v1.StoreService.CountEventStreams:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 626: zeroauthy.store.v1.StoreService.UpdateEventStream:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 627: zeroauthy.store.v1.StoreService.DeleteEventStream:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 628: zeroauthy.store.v1.StoreService.LeaseEventStream:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 629: zeroauthy.store.v1.StoreService.RecordEventDelivery:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 630: zeroauthy.store.v1.StoreService.ListDeliveries:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 631: zeroauthy.store.v1.StoreService.GetDelivery:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 632: zeroauthy.store.v1.StoreService.QueueRedelivery:input_type -> zeroauthy.store.v1.EventsRequest
-	260, // 633: zeroauthy.store.v1.StoreService.QueuedDeliveries:input_type -> zeroauthy.store.v1.EventsRequest
-	7,   // 634: zeroauthy.store.v1.StoreService.LogsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	250, // 635: zeroauthy.store.v1.StoreService.AppendLogs:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 636: zeroauthy.store.v1.StoreService.GetLog:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 637: zeroauthy.store.v1.StoreService.SearchLogs:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 638: zeroauthy.store.v1.StoreService.LogsAfter:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 639: zeroauthy.store.v1.StoreService.LatestLogs:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 640: zeroauthy.store.v1.StoreService.PurgeLogs:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 641: zeroauthy.store.v1.StoreService.DeleteTenantLogs:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 642: zeroauthy.store.v1.StoreService.CreateLogStream:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 643: zeroauthy.store.v1.StoreService.GetLogStream:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 644: zeroauthy.store.v1.StoreService.ListLogStreams:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 645: zeroauthy.store.v1.StoreService.UpdateLogStream:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 646: zeroauthy.store.v1.StoreService.DeleteLogStream:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 647: zeroauthy.store.v1.StoreService.LeaseLogStream:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 648: zeroauthy.store.v1.StoreService.RecordDelivery:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 649: zeroauthy.store.v1.StoreService.DailyStats:input_type -> zeroauthy.store.v1.LogsRequest
-	250, // 650: zeroauthy.store.v1.StoreService.ActiveUsers:input_type -> zeroauthy.store.v1.LogsRequest
-	7,   // 651: zeroauthy.store.v1.StoreService.RBACCapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	200, // 652: zeroauthy.store.v1.StoreService.RBACCreateRole:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 653: zeroauthy.store.v1.StoreService.RBACGetRole:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 654: zeroauthy.store.v1.StoreService.RBACUpdateRole:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 655: zeroauthy.store.v1.StoreService.RBACDeleteRole:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 656: zeroauthy.store.v1.StoreService.RBACListRoles:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 657: zeroauthy.store.v1.StoreService.RBACRolePermissions:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 658: zeroauthy.store.v1.StoreService.RBACChangeRolePermissions:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 659: zeroauthy.store.v1.StoreService.RBACRoleUsers:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 660: zeroauthy.store.v1.StoreService.RBACAssignRoleUsers:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 661: zeroauthy.store.v1.StoreService.RBACUserRoles:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 662: zeroauthy.store.v1.StoreService.RBACChangeUserRoles:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 663: zeroauthy.store.v1.StoreService.RBACUserPermissions:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 664: zeroauthy.store.v1.StoreService.RBACChangeUserPermissions:input_type -> zeroauthy.store.v1.RBACRequest
-	200, // 665: zeroauthy.store.v1.StoreService.RBACSnapshot:input_type -> zeroauthy.store.v1.RBACRequest
-	7,   // 666: zeroauthy.store.v1.StoreService.OrganizationsIICapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	235, // 667: zeroauthy.store.v1.StoreService.OrganizationsIICreateInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 668: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 669: zeroauthy.store.v1.StoreService.OrganizationsIIFindInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 670: zeroauthy.store.v1.StoreService.OrganizationsIIListInvitations:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 671: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 672: zeroauthy.store.v1.StoreService.OrganizationsIIConsumeInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 673: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitationReceipt:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 674: zeroauthy.store.v1.StoreService.OrganizationsIIPutClients:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 675: zeroauthy.store.v1.StoreService.OrganizationsIIGetClient:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 676: zeroauthy.store.v1.StoreService.OrganizationsIIListClients:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 677: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClients:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 678: zeroauthy.store.v1.StoreService.OrganizationsIIPutClientGrant:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 679: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClientGrant:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 680: zeroauthy.store.v1.StoreService.OrganizationsIIListClientGrants:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 681: zeroauthy.store.v1.StoreService.OrganizationsIIGrantOrganizations:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 682: zeroauthy.store.v1.StoreService.OrganizationsIIHasClientGrant:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 683: zeroauthy.store.v1.StoreService.OrganizationsIIPutDiscoveryDomain:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 684: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomain:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 685: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomainByName:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 686: zeroauthy.store.v1.StoreService.OrganizationsIIListDiscoveryDomains:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 687: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteDiscoveryDomain:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 688: zeroauthy.store.v1.StoreService.OrganizationsIIDiscoverOrganizations:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	235, // 689: zeroauthy.store.v1.StoreService.OrganizationsIISearch:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
-	7,   // 690: zeroauthy.store.v1.StoreService.OrganizationsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	209, // 691: zeroauthy.store.v1.StoreService.OrganizationsCreate:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 692: zeroauthy.store.v1.StoreService.OrganizationsGet:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 693: zeroauthy.store.v1.StoreService.OrganizationsGetByName:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 694: zeroauthy.store.v1.StoreService.OrganizationsList:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 695: zeroauthy.store.v1.StoreService.OrganizationsUpdate:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 696: zeroauthy.store.v1.StoreService.OrganizationsDelete:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 697: zeroauthy.store.v1.StoreService.OrganizationsConnections:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 698: zeroauthy.store.v1.StoreService.OrganizationsGetConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 699: zeroauthy.store.v1.StoreService.OrganizationsPutConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 700: zeroauthy.store.v1.StoreService.OrganizationsDeleteConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 701: zeroauthy.store.v1.StoreService.OrganizationsConnectionsByConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 702: zeroauthy.store.v1.StoreService.OrganizationsMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 703: zeroauthy.store.v1.StoreService.OrganizationsAddMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 704: zeroauthy.store.v1.StoreService.OrganizationsRemoveMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 705: zeroauthy.store.v1.StoreService.OrganizationsIsMember:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 706: zeroauthy.store.v1.StoreService.OrganizationsUserOrganizations:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 707: zeroauthy.store.v1.StoreService.OrganizationsMemberRoles:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 708: zeroauthy.store.v1.StoreService.OrganizationsChangeMemberRoles:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	209, // 709: zeroauthy.store.v1.StoreService.OrganizationsRoleMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
-	7,   // 710: zeroauthy.store.v1.StoreService.ActionsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
-	222, // 711: zeroauthy.store.v1.StoreService.ActionsCreateAction:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 712: zeroauthy.store.v1.StoreService.ActionsGetAction:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 713: zeroauthy.store.v1.StoreService.ActionsGetActionByName:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 714: zeroauthy.store.v1.StoreService.ActionsUpdateAction:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 715: zeroauthy.store.v1.StoreService.ActionsDeleteAction:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 716: zeroauthy.store.v1.StoreService.ActionsListActions:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 717: zeroauthy.store.v1.StoreService.ActionsDeploy:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 718: zeroauthy.store.v1.StoreService.ActionsGetVersion:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 719: zeroauthy.store.v1.StoreService.ActionsListVersions:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 720: zeroauthy.store.v1.StoreService.ActionsPutBuild:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 721: zeroauthy.store.v1.StoreService.ActionsGetBuild:input_type -> zeroauthy.store.v1.ActionsRequest
-	224, // 722: zeroauthy.store.v1.StoreService.ActionsPutArtifact:input_type -> zeroauthy.store.v1.ActionsArtifactChunk
-	222, // 723: zeroauthy.store.v1.StoreService.ActionsGetArtifact:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 724: zeroauthy.store.v1.StoreService.ActionsBindings:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 725: zeroauthy.store.v1.StoreService.ActionsBindingsInitialized:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 726: zeroauthy.store.v1.StoreService.ActionsInitializeBindings:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 727: zeroauthy.store.v1.StoreService.ActionsReplaceBindings:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 728: zeroauthy.store.v1.StoreService.ActionsCreateExecution:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 729: zeroauthy.store.v1.StoreService.ActionsListExecutions:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 730: zeroauthy.store.v1.StoreService.ActionsGetExecution:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 731: zeroauthy.store.v1.StoreService.ActionsPurgeExecutions:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 732: zeroauthy.store.v1.StoreService.ActionsCreateContinue:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 733: zeroauthy.store.v1.StoreService.ActionsConsumeContinue:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 734: zeroauthy.store.v1.StoreService.ActionsPurgeContinue:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 735: zeroauthy.store.v1.StoreService.ActionsCreateModule:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 736: zeroauthy.store.v1.StoreService.ActionsGetModule:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 737: zeroauthy.store.v1.StoreService.ActionsGetModuleByName:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 738: zeroauthy.store.v1.StoreService.ActionsUpdateModule:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 739: zeroauthy.store.v1.StoreService.ActionsDeleteModule:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 740: zeroauthy.store.v1.StoreService.ActionsListModules:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 741: zeroauthy.store.v1.StoreService.ActionsPublishModule:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 742: zeroauthy.store.v1.StoreService.ActionsRollbackModule:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 743: zeroauthy.store.v1.StoreService.ActionsListModuleVersions:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 744: zeroauthy.store.v1.StoreService.ActionsGetModuleVersion:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 745: zeroauthy.store.v1.StoreService.ActionsModuleUsers:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 746: zeroauthy.store.v1.StoreService.ActionsEnqueueJob:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 747: zeroauthy.store.v1.StoreService.ActionsGetJob:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 748: zeroauthy.store.v1.StoreService.ActionsCancelJob:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 749: zeroauthy.store.v1.StoreService.ActionsClaimJobs:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 750: zeroauthy.store.v1.StoreService.ActionsFinishJob:input_type -> zeroauthy.store.v1.ActionsRequest
-	222, // 751: zeroauthy.store.v1.StoreService.ActionsPurgeJobs:input_type -> zeroauthy.store.v1.ActionsRequest
-	7,   // 752: zeroauthy.store.v1.StoreService.Ping:input_type -> zeroauthy.store.v1.PingRequest
-	194, // 753: zeroauthy.store.v1.StoreService.MicrosoftFederationSupported:input_type -> zeroauthy.store.v1.MicrosoftFederationCapabilitiesRequest
-	189, // 754: zeroauthy.store.v1.StoreService.CustomDomainsSupported:input_type -> zeroauthy.store.v1.CustomDomainCapabilitiesRequest
-	190, // 755: zeroauthy.store.v1.StoreService.CustomDomainsGet:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 756: zeroauthy.store.v1.StoreService.CustomDomainsList:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 757: zeroauthy.store.v1.StoreService.CustomDomainsListDue:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 758: zeroauthy.store.v1.StoreService.CustomDomainsCreate:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 759: zeroauthy.store.v1.StoreService.CustomDomainsUpdate:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 760: zeroauthy.store.v1.StoreService.CustomDomainsDelete:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 761: zeroauthy.store.v1.StoreService.CustomDomainsGetHost:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 762: zeroauthy.store.v1.StoreService.CustomDomainsPutHost:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 763: zeroauthy.store.v1.StoreService.CustomDomainsDeleteHost:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 764: zeroauthy.store.v1.StoreService.CustomDomainsGetDefault:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 765: zeroauthy.store.v1.StoreService.CustomDomainsSetDefault:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	190, // 766: zeroauthy.store.v1.StoreService.CustomDomainsAdmitAttempt:input_type -> zeroauthy.store.v1.CustomDomainRequest
-	192, // 767: zeroauthy.store.v1.StoreService.TLSAssetsGet:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	192, // 768: zeroauthy.store.v1.StoreService.TLSAssetsPut:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	192, // 769: zeroauthy.store.v1.StoreService.TLSAssetsDelete:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	192, // 770: zeroauthy.store.v1.StoreService.TLSAssetsListExpired:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	192, // 771: zeroauthy.store.v1.StoreService.TLSAssetsClaimLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	192, // 772: zeroauthy.store.v1.StoreService.TLSAssetsRenewLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	192, // 773: zeroauthy.store.v1.StoreService.TLSAssetsCheckLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	192, // 774: zeroauthy.store.v1.StoreService.TLSAssetsReleaseLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
-	182, // 775: zeroauthy.store.v1.StoreService.ProtectionReserve:input_type -> zeroauthy.store.v1.ProtectionRequest
-	182, // 776: zeroauthy.store.v1.StoreService.ProtectionComplete:input_type -> zeroauthy.store.v1.ProtectionRequest
-	182, // 777: zeroauthy.store.v1.StoreService.ProtectionBlocks:input_type -> zeroauthy.store.v1.ProtectionRequest
-	182, // 778: zeroauthy.store.v1.StoreService.ProtectionClear:input_type -> zeroauthy.store.v1.ProtectionRequest
-	182, // 779: zeroauthy.store.v1.StoreService.ProtectionUseProof:input_type -> zeroauthy.store.v1.ProtectionRequest
-	182, // 780: zeroauthy.store.v1.StoreService.ProtectionRecordRisk:input_type -> zeroauthy.store.v1.ProtectionRequest
-	182, // 781: zeroauthy.store.v1.StoreService.ProtectionRiskCount:input_type -> zeroauthy.store.v1.ProtectionRequest
-	182, // 782: zeroauthy.store.v1.StoreService.ProtectionSweep:input_type -> zeroauthy.store.v1.ProtectionRequest
-	7,   // 783: zeroauthy.store.v1.StoreService.TenantSettingsSupported:input_type -> zeroauthy.store.v1.PingRequest
-	8,   // 784: zeroauthy.store.v1.StoreService.BeginTx:input_type -> zeroauthy.store.v1.BeginTxRequest
-	10,  // 785: zeroauthy.store.v1.StoreService.Commit:input_type -> zeroauthy.store.v1.EndTxRequest
-	10,  // 786: zeroauthy.store.v1.StoreService.Rollback:input_type -> zeroauthy.store.v1.EndTxRequest
-	96,  // 787: zeroauthy.store.v1.StoreService.TenantsCreate:input_type -> zeroauthy.store.v1.TenantWrite
-	97,  // 788: zeroauthy.store.v1.StoreService.TenantsGet:input_type -> zeroauthy.store.v1.TenantsGetRequest
-	97,  // 789: zeroauthy.store.v1.StoreService.TenantsGetByName:input_type -> zeroauthy.store.v1.TenantsGetRequest
-	97,  // 790: zeroauthy.store.v1.StoreService.TenantsGetByDomain:input_type -> zeroauthy.store.v1.TenantsGetRequest
-	96,  // 791: zeroauthy.store.v1.StoreService.TenantsUpdate:input_type -> zeroauthy.store.v1.TenantWrite
-	98,  // 792: zeroauthy.store.v1.StoreService.TenantsList:input_type -> zeroauthy.store.v1.TenantsListRequest
-	97,  // 793: zeroauthy.store.v1.StoreService.TenantsDelete:input_type -> zeroauthy.store.v1.TenantsGetRequest
-	101, // 794: zeroauthy.store.v1.StoreService.ClientsCreate:input_type -> zeroauthy.store.v1.ClientWrite
-	12,  // 795: zeroauthy.store.v1.StoreService.ClientsGet:input_type -> zeroauthy.store.v1.ScopedKey
-	101, // 796: zeroauthy.store.v1.StoreService.ClientsUpdate:input_type -> zeroauthy.store.v1.ClientWrite
-	12,  // 797: zeroauthy.store.v1.StoreService.ClientsDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	11,  // 798: zeroauthy.store.v1.StoreService.ClientsList:input_type -> zeroauthy.store.v1.TenantScope
-	104, // 799: zeroauthy.store.v1.StoreService.ClientsListPage:input_type -> zeroauthy.store.v1.ClientsListPageRequest
-	106, // 800: zeroauthy.store.v1.StoreService.ResourceServersCreate:input_type -> zeroauthy.store.v1.ResourceServerWrite
-	12,  // 801: zeroauthy.store.v1.StoreService.ResourceServersGet:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 802: zeroauthy.store.v1.StoreService.ResourceServersGetByIdentifier:input_type -> zeroauthy.store.v1.ScopedKey
-	106, // 803: zeroauthy.store.v1.StoreService.ResourceServersUpdate:input_type -> zeroauthy.store.v1.ResourceServerWrite
-	12,  // 804: zeroauthy.store.v1.StoreService.ResourceServersDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	11,  // 805: zeroauthy.store.v1.StoreService.ResourceServersList:input_type -> zeroauthy.store.v1.TenantScope
-	31,  // 806: zeroauthy.store.v1.StoreService.ResourceServersRenameSystem:input_type -> zeroauthy.store.v1.ResourceServerRenameSystemRequest
-	109, // 807: zeroauthy.store.v1.StoreService.ClientGrantsCreate:input_type -> zeroauthy.store.v1.ClientGrantWrite
-	110, // 808: zeroauthy.store.v1.StoreService.ClientGrantsFind:input_type -> zeroauthy.store.v1.ClientGrantsFindRequest
-	109, // 809: zeroauthy.store.v1.StoreService.ClientGrantsUpdate:input_type -> zeroauthy.store.v1.ClientGrantWrite
-	12,  // 810: zeroauthy.store.v1.StoreService.ClientGrantsDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	112, // 811: zeroauthy.store.v1.StoreService.ClientGrantsList:input_type -> zeroauthy.store.v1.ClientGrantsListRequest
-	115, // 812: zeroauthy.store.v1.StoreService.UserGrantsFind:input_type -> zeroauthy.store.v1.UserGrantsFindRequest
-	114, // 813: zeroauthy.store.v1.StoreService.UserGrantsUpsert:input_type -> zeroauthy.store.v1.UserGrantWrite
-	118, // 814: zeroauthy.store.v1.StoreService.UserGrantsList:input_type -> zeroauthy.store.v1.UserGrantsListRequest
-	12,  // 815: zeroauthy.store.v1.StoreService.UserGrantsListByUser:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 816: zeroauthy.store.v1.StoreService.UserGrantsListByAudience:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 817: zeroauthy.store.v1.StoreService.UserGrantsDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 818: zeroauthy.store.v1.StoreService.UserGrantsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
-	119, // 819: zeroauthy.store.v1.StoreService.SigningKeysCreate:input_type -> zeroauthy.store.v1.SigningKeyWrite
-	11,  // 820: zeroauthy.store.v1.StoreService.SigningKeysList:input_type -> zeroauthy.store.v1.TenantScope
-	121, // 821: zeroauthy.store.v1.StoreService.SigningKeysRotate:input_type -> zeroauthy.store.v1.SigningKeysRotateRequest
-	12,  // 822: zeroauthy.store.v1.StoreService.SigningKeysGet:input_type -> zeroauthy.store.v1.ScopedKey
-	121, // 823: zeroauthy.store.v1.StoreService.SigningKeysRotateWithResult:input_type -> zeroauthy.store.v1.SigningKeysRotateRequest
-	38,  // 824: zeroauthy.store.v1.StoreService.SigningKeysRevoke:input_type -> zeroauthy.store.v1.SigningKeyRevokeRequest
-	39,  // 825: zeroauthy.store.v1.StoreService.SigningKeysSetCertificate:input_type -> zeroauthy.store.v1.SigningKeyCertificateRequest
-	11,  // 826: zeroauthy.store.v1.StoreService.CustomSigningKeysGet:input_type -> zeroauthy.store.v1.TenantScope
-	42,  // 827: zeroauthy.store.v1.StoreService.CustomSigningKeysReplace:input_type -> zeroauthy.store.v1.CustomSigningKeySetWrite
-	11,  // 828: zeroauthy.store.v1.StoreService.CustomSigningKeysDelete:input_type -> zeroauthy.store.v1.TenantScope
-	11,  // 829: zeroauthy.store.v1.StoreService.HostedLoginsGet:input_type -> zeroauthy.store.v1.TenantScope
-	45,  // 830: zeroauthy.store.v1.StoreService.HostedLoginsPut:input_type -> zeroauthy.store.v1.HostedLoginConfigWrite
-	11,  // 831: zeroauthy.store.v1.StoreService.FederationIdentityEpoch:input_type -> zeroauthy.store.v1.TenantScope
-	11,  // 832: zeroauthy.store.v1.StoreService.FederationBumpIdentityEpoch:input_type -> zeroauthy.store.v1.TenantScope
-	48,  // 833: zeroauthy.store.v1.StoreService.FederationCreateAttempt:input_type -> zeroauthy.store.v1.FederationAttemptWrite
-	49,  // 834: zeroauthy.store.v1.StoreService.FederationGetAttempt:input_type -> zeroauthy.store.v1.FederationAttemptKey
-	50,  // 835: zeroauthy.store.v1.StoreService.FederationClaimAttempt:input_type -> zeroauthy.store.v1.FederationClaimRequest
-	49,  // 836: zeroauthy.store.v1.StoreService.FederationFinishAttempt:input_type -> zeroauthy.store.v1.FederationAttemptKey
-	54,  // 837: zeroauthy.store.v1.StoreService.FederationPutIdentity:input_type -> zeroauthy.store.v1.FederatedIdentityWrite
-	54,  // 838: zeroauthy.store.v1.StoreService.FederationDeleteIdentity:input_type -> zeroauthy.store.v1.FederatedIdentityWrite
-	53,  // 839: zeroauthy.store.v1.StoreService.FederationGetTokens:input_type -> zeroauthy.store.v1.FederatedIdentityRequest
-	55,  // 840: zeroauthy.store.v1.StoreService.FederationPutTokens:input_type -> zeroauthy.store.v1.FederatedTokensWrite
-	53,  // 841: zeroauthy.store.v1.StoreService.FederationDeleteTokens:input_type -> zeroauthy.store.v1.FederatedIdentityRequest
-	14,  // 842: zeroauthy.store.v1.StoreService.FederationDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	57,  // 843: zeroauthy.store.v1.StoreService.UsersFindByIdentity:input_type -> zeroauthy.store.v1.UsersFindByIdentityRequest
-	11,  // 844: zeroauthy.store.v1.StoreService.EmailProvidersGet:input_type -> zeroauthy.store.v1.TenantScope
-	61,  // 845: zeroauthy.store.v1.StoreService.EmailProvidersPut:input_type -> zeroauthy.store.v1.EmailProviderWrite
-	62,  // 846: zeroauthy.store.v1.StoreService.EmailProvidersDelete:input_type -> zeroauthy.store.v1.EmailProviderDeleteRequest
-	64,  // 847: zeroauthy.store.v1.StoreService.EmailTemplatesGet:input_type -> zeroauthy.store.v1.EmailTemplateKey
-	66,  // 848: zeroauthy.store.v1.StoreService.EmailTemplatesPut:input_type -> zeroauthy.store.v1.EmailTemplateWrite
-	67,  // 849: zeroauthy.store.v1.StoreService.EmailNotificationsClaim:input_type -> zeroauthy.store.v1.EmailNotificationClaimRequest
-	69,  // 850: zeroauthy.store.v1.StoreService.EmailNotificationsSweep:input_type -> zeroauthy.store.v1.EmailNotificationSweepRequest
-	122, // 851: zeroauthy.store.v1.StoreService.ConnectionsCreate:input_type -> zeroauthy.store.v1.ConnectionWrite
-	12,  // 852: zeroauthy.store.v1.StoreService.ConnectionsGet:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 853: zeroauthy.store.v1.StoreService.ConnectionsGetByName:input_type -> zeroauthy.store.v1.ScopedKey
-	122, // 854: zeroauthy.store.v1.StoreService.ConnectionsUpdate:input_type -> zeroauthy.store.v1.ConnectionWrite
-	11,  // 855: zeroauthy.store.v1.StoreService.ConnectionsList:input_type -> zeroauthy.store.v1.TenantScope
-	125, // 856: zeroauthy.store.v1.StoreService.ConnectionsListPage:input_type -> zeroauthy.store.v1.ConnectionsListPageRequest
-	12,  // 857: zeroauthy.store.v1.StoreService.ConnectionsDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	127, // 858: zeroauthy.store.v1.StoreService.PasswordHistoriesAdd:input_type -> zeroauthy.store.v1.PasswordHistoryAdd
-	12,  // 859: zeroauthy.store.v1.StoreService.PasswordHistoriesList:input_type -> zeroauthy.store.v1.ScopedKey
-	129, // 860: zeroauthy.store.v1.StoreService.UsersCreate:input_type -> zeroauthy.store.v1.UserWrite
-	12,  // 861: zeroauthy.store.v1.StoreService.UsersGet:input_type -> zeroauthy.store.v1.ScopedKey
-	131, // 862: zeroauthy.store.v1.StoreService.UsersFindByLogin:input_type -> zeroauthy.store.v1.UsersFindByLoginRequest
-	129, // 863: zeroauthy.store.v1.StoreService.UsersUpdate:input_type -> zeroauthy.store.v1.UserWrite
-	132, // 864: zeroauthy.store.v1.StoreService.UsersRecordLogin:input_type -> zeroauthy.store.v1.UsersRecordLoginRequest
-	138, // 865: zeroauthy.store.v1.StoreService.UsersSetPasswordHash:input_type -> zeroauthy.store.v1.UsersSetPasswordHashRequest
-	133, // 866: zeroauthy.store.v1.StoreService.UsersFindByEmail:input_type -> zeroauthy.store.v1.UsersFindByEmailRequest
-	138, // 867: zeroauthy.store.v1.StoreService.UsersSetPasswordHashIfEmpty:input_type -> zeroauthy.store.v1.UsersSetPasswordHashRequest
-	166, // 868: zeroauthy.store.v1.StoreService.UsersUpgradeImportedHash:input_type -> zeroauthy.store.v1.UsersUpgradeImportedHashRequest
-	12,  // 869: zeroauthy.store.v1.StoreService.UsersBumpVersion:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 870: zeroauthy.store.v1.StoreService.UsersGetForUpdate:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 871: zeroauthy.store.v1.StoreService.UsersDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	136, // 872: zeroauthy.store.v1.StoreService.UsersList:input_type -> zeroauthy.store.v1.UsersListRequest
-	139, // 873: zeroauthy.store.v1.StoreService.SessionsCreate:input_type -> zeroauthy.store.v1.SessionWrite
-	12,  // 874: zeroauthy.store.v1.StoreService.SessionsGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 875: zeroauthy.store.v1.StoreService.SessionsGet:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 876: zeroauthy.store.v1.StoreService.SessionsListByUser:input_type -> zeroauthy.store.v1.ScopedKey
-	13,  // 877: zeroauthy.store.v1.StoreService.SessionsTouch:input_type -> zeroauthy.store.v1.TouchRequest
-	142, // 878: zeroauthy.store.v1.StoreService.SessionsAddClient:input_type -> zeroauthy.store.v1.SessionsAddClientRequest
-	12,  // 879: zeroauthy.store.v1.StoreService.SessionsDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 880: zeroauthy.store.v1.StoreService.SessionsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
-	14,  // 881: zeroauthy.store.v1.StoreService.SessionsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	143, // 882: zeroauthy.store.v1.StoreService.AuthTransactionsCreate:input_type -> zeroauthy.store.v1.AuthTransactionWrite
-	12,  // 883: zeroauthy.store.v1.StoreService.AuthTransactionsGet:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 884: zeroauthy.store.v1.StoreService.AuthTransactionsDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	14,  // 885: zeroauthy.store.v1.StoreService.AuthTransactionsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	58,  // 886: zeroauthy.store.v1.StoreService.AuthTransactionsCompareAndSwapHosted:input_type -> zeroauthy.store.v1.HostedStateCASRequest
-	145, // 887: zeroauthy.store.v1.StoreService.AuthCodesCreate:input_type -> zeroauthy.store.v1.AuthCodeWrite
-	15,  // 888: zeroauthy.store.v1.StoreService.AuthCodesConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
-	12,  // 889: zeroauthy.store.v1.StoreService.AuthCodesGet:input_type -> zeroauthy.store.v1.ScopedKey
-	14,  // 890: zeroauthy.store.v1.StoreService.AuthCodesDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	147, // 891: zeroauthy.store.v1.StoreService.PushedAuthRequestsCreate:input_type -> zeroauthy.store.v1.PushedAuthRequestWrite
-	15,  // 892: zeroauthy.store.v1.StoreService.PushedAuthRequestsConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
-	12,  // 893: zeroauthy.store.v1.StoreService.PushedAuthRequestsGet:input_type -> zeroauthy.store.v1.ScopedKey
-	14,  // 894: zeroauthy.store.v1.StoreService.PushedAuthRequestsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	149, // 895: zeroauthy.store.v1.StoreService.DeviceCodesCreate:input_type -> zeroauthy.store.v1.DeviceCodeWrite
-	12,  // 896: zeroauthy.store.v1.StoreService.DeviceCodesGet:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 897: zeroauthy.store.v1.StoreService.DeviceCodesGetByUserCode:input_type -> zeroauthy.store.v1.ScopedKey
-	151, // 898: zeroauthy.store.v1.StoreService.DeviceCodesDecide:input_type -> zeroauthy.store.v1.DeviceDecisionRequest
-	152, // 899: zeroauthy.store.v1.StoreService.DeviceCodesPoll:input_type -> zeroauthy.store.v1.DevicePollRequest
-	14,  // 900: zeroauthy.store.v1.StoreService.DeviceCodesDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	154, // 901: zeroauthy.store.v1.StoreService.RefreshTokensCreate:input_type -> zeroauthy.store.v1.RefreshTokenWrite
-	12,  // 902: zeroauthy.store.v1.StoreService.RefreshTokensGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 903: zeroauthy.store.v1.StoreService.RefreshTokensGet:input_type -> zeroauthy.store.v1.ScopedKey
-	12,  // 904: zeroauthy.store.v1.StoreService.RefreshTokensListByUser:input_type -> zeroauthy.store.v1.ScopedKey
-	16,  // 905: zeroauthy.store.v1.StoreService.RefreshTokensRevoke:input_type -> zeroauthy.store.v1.RevokeRequest
-	157, // 906: zeroauthy.store.v1.StoreService.RefreshTokensRotate:input_type -> zeroauthy.store.v1.RefreshTokensRotateRequest
-	13,  // 907: zeroauthy.store.v1.StoreService.RefreshTokensTouch:input_type -> zeroauthy.store.v1.TouchRequest
-	16,  // 908: zeroauthy.store.v1.StoreService.RefreshTokensRevokeFamily:input_type -> zeroauthy.store.v1.RevokeRequest
-	16,  // 909: zeroauthy.store.v1.StoreService.RefreshTokensRevokeByUser:input_type -> zeroauthy.store.v1.RevokeRequest
-	14,  // 910: zeroauthy.store.v1.StoreService.RefreshTokensDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	158, // 911: zeroauthy.store.v1.StoreService.PasswordResetTicketsMarkChallengePassed:input_type -> zeroauthy.store.v1.PasswordResetTicketChallengeRequest
-	159, // 912: zeroauthy.store.v1.StoreService.PasswordResetTicketsCreate:input_type -> zeroauthy.store.v1.PasswordResetTicketWrite
-	12,  // 913: zeroauthy.store.v1.StoreService.PasswordResetTicketsGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
-	15,  // 914: zeroauthy.store.v1.StoreService.PasswordResetTicketsConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
-	12,  // 915: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
-	14,  // 916: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	161, // 917: zeroauthy.store.v1.StoreService.EmailVerificationTicketsCreate:input_type -> zeroauthy.store.v1.EmailVerificationTicketWrite
-	12,  // 918: zeroauthy.store.v1.StoreService.EmailVerificationTicketsGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
-	15,  // 919: zeroauthy.store.v1.StoreService.EmailVerificationTicketsConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
-	12,  // 920: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
-	14,  // 921: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	12,  // 922: zeroauthy.store.v1.StoreService.OperatorsGet:input_type -> zeroauthy.store.v1.ScopedKey
-	163, // 923: zeroauthy.store.v1.StoreService.OperatorsUpsert:input_type -> zeroauthy.store.v1.OperatorWrite
-	11,  // 924: zeroauthy.store.v1.StoreService.OperatorsList:input_type -> zeroauthy.store.v1.TenantScope
-	12,  // 925: zeroauthy.store.v1.StoreService.OperatorsDelete:input_type -> zeroauthy.store.v1.ScopedKey
-	167, // 926: zeroauthy.store.v1.StoreService.JobsCreate:input_type -> zeroauthy.store.v1.JobWrite
-	12,  // 927: zeroauthy.store.v1.StoreService.JobsGet:input_type -> zeroauthy.store.v1.ScopedKey
-	170, // 928: zeroauthy.store.v1.StoreService.JobsList:input_type -> zeroauthy.store.v1.JobsListRequest
-	171, // 929: zeroauthy.store.v1.StoreService.JobsCountActive:input_type -> zeroauthy.store.v1.JobsCountActiveRequest
-	172, // 930: zeroauthy.store.v1.StoreService.JobsClaim:input_type -> zeroauthy.store.v1.JobsClaimRequest
-	173, // 931: zeroauthy.store.v1.StoreService.JobsRenew:input_type -> zeroauthy.store.v1.JobsRenewRequest
-	174, // 932: zeroauthy.store.v1.StoreService.JobsCheckpoint:input_type -> zeroauthy.store.v1.JobsCheckpointRequest
-	175, // 933: zeroauthy.store.v1.StoreService.JobsFinish:input_type -> zeroauthy.store.v1.JobsFinishRequest
-	12,  // 934: zeroauthy.store.v1.StoreService.JobsErrors:input_type -> zeroauthy.store.v1.ScopedKey
-	177, // 935: zeroauthy.store.v1.StoreService.JobsAppendFile:input_type -> zeroauthy.store.v1.JobsAppendFileRequest
-	12,  // 936: zeroauthy.store.v1.StoreService.JobsReadFile:input_type -> zeroauthy.store.v1.ScopedKey
-	14,  // 937: zeroauthy.store.v1.StoreService.JobsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
-	252, // 938: zeroauthy.store.v1.StoreService.MFACapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
-	269, // 939: zeroauthy.store.v1.StoreService.MFAGetGuardian:output_type -> zeroauthy.store.v1.MFAGetGuardianResponse
-	271, // 940: zeroauthy.store.v1.StoreService.MFAPutGuardian:output_type -> zeroauthy.store.v1.MFAPutGuardianResponse
-	273, // 941: zeroauthy.store.v1.StoreService.MFACreateAuthenticator:output_type -> zeroauthy.store.v1.MFACreateAuthenticatorResponse
-	275, // 942: zeroauthy.store.v1.StoreService.MFAGetAuthenticator:output_type -> zeroauthy.store.v1.MFAGetAuthenticatorResponse
-	277, // 943: zeroauthy.store.v1.StoreService.MFAGetAuthenticatorByEnrollmentID:output_type -> zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse
-	279, // 944: zeroauthy.store.v1.StoreService.MFAListAuthenticators:output_type -> zeroauthy.store.v1.MFAListAuthenticatorsResponse
-	281, // 945: zeroauthy.store.v1.StoreService.MFAUpdateAuthenticator:output_type -> zeroauthy.store.v1.MFAUpdateAuthenticatorResponse
-	283, // 946: zeroauthy.store.v1.StoreService.MFADeleteAuthenticator:output_type -> zeroauthy.store.v1.MFADeleteAuthenticatorResponse
-	285, // 947: zeroauthy.store.v1.StoreService.MFADeleteUserAuthenticators:output_type -> zeroauthy.store.v1.MFADeleteUserAuthenticatorsResponse
-	287, // 948: zeroauthy.store.v1.StoreService.MFAAcceptTOTPStep:output_type -> zeroauthy.store.v1.MFAAcceptTOTPStepResponse
-	289, // 949: zeroauthy.store.v1.StoreService.MFAReplaceRecoveryCode:output_type -> zeroauthy.store.v1.MFAReplaceRecoveryCodeResponse
-	291, // 950: zeroauthy.store.v1.StoreService.MFAAcceptSignCount:output_type -> zeroauthy.store.v1.MFAAcceptSignCountResponse
-	293, // 951: zeroauthy.store.v1.StoreService.MFACreateMFAToken:output_type -> zeroauthy.store.v1.MFACreateMFATokenResponse
-	295, // 952: zeroauthy.store.v1.StoreService.MFAConsumeMFAToken:output_type -> zeroauthy.store.v1.MFAConsumeMFATokenResponse
-	297, // 953: zeroauthy.store.v1.StoreService.MFAPeekMFAToken:output_type -> zeroauthy.store.v1.MFAPeekMFATokenResponse
-	299, // 954: zeroauthy.store.v1.StoreService.MFACreateChallenge:output_type -> zeroauthy.store.v1.MFACreateChallengeResponse
-	301, // 955: zeroauthy.store.v1.StoreService.MFAGetChallenge:output_type -> zeroauthy.store.v1.MFAGetChallengeResponse
-	303, // 956: zeroauthy.store.v1.StoreService.MFAFailChallenge:output_type -> zeroauthy.store.v1.MFAFailChallengeResponse
-	305, // 957: zeroauthy.store.v1.StoreService.MFAConsumeChallenge:output_type -> zeroauthy.store.v1.MFAConsumeChallengeResponse
-	307, // 958: zeroauthy.store.v1.StoreService.MFACreateTicket:output_type -> zeroauthy.store.v1.MFACreateTicketResponse
-	309, // 959: zeroauthy.store.v1.StoreService.MFAConsumeTicket:output_type -> zeroauthy.store.v1.MFAConsumeTicketResponse
-	311, // 960: zeroauthy.store.v1.StoreService.MFAPeekTicket:output_type -> zeroauthy.store.v1.MFAPeekTicketResponse
-	313, // 961: zeroauthy.store.v1.StoreService.MFAPutBrowser:output_type -> zeroauthy.store.v1.MFAPutBrowserResponse
-	315, // 962: zeroauthy.store.v1.StoreService.MFAGetBrowser:output_type -> zeroauthy.store.v1.MFAGetBrowserResponse
-	317, // 963: zeroauthy.store.v1.StoreService.MFABumpRememberEpoch:output_type -> zeroauthy.store.v1.MFABumpRememberEpochResponse
-	319, // 964: zeroauthy.store.v1.StoreService.MFAPurgeMFA:output_type -> zeroauthy.store.v1.MFAPurgeMFAResponse
-	321, // 965: zeroauthy.store.v1.StoreService.MFADeleteUserMFA:output_type -> zeroauthy.store.v1.MFADeleteUserMFAResponse
-	323, // 966: zeroauthy.store.v1.StoreService.MFADeleteTenantMFA:output_type -> zeroauthy.store.v1.MFADeleteTenantMFAResponse
-	4,   // 967: zeroauthy.store.v1.StoreService.SessionsMarkMFA:output_type -> zeroauthy.store.v1.Result
-	252, // 968: zeroauthy.store.v1.StoreService.PhoneCapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
-	332, // 969: zeroauthy.store.v1.StoreService.PhoneListProviders:output_type -> zeroauthy.store.v1.PhoneListProvidersResponse
-	331, // 970: zeroauthy.store.v1.StoreService.PhoneGetProvider:output_type -> zeroauthy.store.v1.PhoneProviderResponse
-	327, // 971: zeroauthy.store.v1.StoreService.PhoneCreateProvider:output_type -> zeroauthy.store.v1.PhoneErrorResponse
-	327, // 972: zeroauthy.store.v1.StoreService.PhoneUpdateProvider:output_type -> zeroauthy.store.v1.PhoneErrorResponse
-	327, // 973: zeroauthy.store.v1.StoreService.PhoneDeleteProvider:output_type -> zeroauthy.store.v1.PhoneErrorResponse
-	335, // 974: zeroauthy.store.v1.StoreService.PhoneListTemplates:output_type -> zeroauthy.store.v1.PhoneListTemplatesResponse
-	334, // 975: zeroauthy.store.v1.StoreService.PhoneGetTemplate:output_type -> zeroauthy.store.v1.PhoneTemplateResponse
-	327, // 976: zeroauthy.store.v1.StoreService.PhonePutTemplate:output_type -> zeroauthy.store.v1.PhoneErrorResponse
-	327, // 977: zeroauthy.store.v1.StoreService.PhoneDeleteTemplate:output_type -> zeroauthy.store.v1.PhoneErrorResponse
-	327, // 978: zeroauthy.store.v1.StoreService.PhonePutPasswordlessCode:output_type -> zeroauthy.store.v1.PhoneErrorResponse
-	338, // 979: zeroauthy.store.v1.StoreService.PhoneFailPasswordlessCode:output_type -> zeroauthy.store.v1.PhoneFailCodeResponse
-	340, // 980: zeroauthy.store.v1.StoreService.PhoneConsumePasswordlessCode:output_type -> zeroauthy.store.v1.PhoneCodeResponse
-	340, // 981: zeroauthy.store.v1.StoreService.PhonePeekPasswordlessLink:output_type -> zeroauthy.store.v1.PhoneCodeResponse
-	343, // 982: zeroauthy.store.v1.StoreService.PhoneFindUsersByPhone:output_type -> zeroauthy.store.v1.PhoneFindUsersResponse
-	345, // 983: zeroauthy.store.v1.StoreService.PhonePurge:output_type -> zeroauthy.store.v1.PhoneCountResponse
-	327, // 984: zeroauthy.store.v1.StoreService.PhoneDeleteTenant:output_type -> zeroauthy.store.v1.PhoneErrorResponse
-	252, // 985: zeroauthy.store.v1.StoreService.WebAuthnCapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
-	349, // 986: zeroauthy.store.v1.StoreService.WebAuthnGetAuthenticatorByCredentialID:output_type -> zeroauthy.store.v1.WebAuthnAuthenticatorResponse
-	347, // 987: zeroauthy.store.v1.StoreService.WebAuthnCreatePasskey:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
-	347, // 988: zeroauthy.store.v1.StoreService.WebAuthnCreateUserWithPasskey:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
-	347, // 989: zeroauthy.store.v1.StoreService.WebAuthnAcceptAssertion:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
-	347, // 990: zeroauthy.store.v1.StoreService.WebAuthnMovePasskeys:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
-	347, // 991: zeroauthy.store.v1.StoreService.WebAuthnPutSnooze:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
-	356, // 992: zeroauthy.store.v1.StoreService.WebAuthnGetSnooze:output_type -> zeroauthy.store.v1.WebAuthnSnoozeResponse
-	358, // 993: zeroauthy.store.v1.StoreService.WebAuthnHostTenantsUnder:output_type -> zeroauthy.store.v1.WebAuthnTenantIDsResponse
-	360, // 994: zeroauthy.store.v1.StoreService.WebAuthnPurge:output_type -> zeroauthy.store.v1.WebAuthnCountResponse
-	252, // 995: zeroauthy.store.v1.StoreService.EventsCapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
-	261, // 996: zeroauthy.store.v1.StoreService.AppendEvents:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 997: zeroauthy.store.v1.StoreService.GetEvent:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 998: zeroauthy.store.v1.StoreService.EventsAfter:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 999: zeroauthy.store.v1.StoreService.EventsFromTime:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1000: zeroauthy.store.v1.StoreService.LatestEventSeq:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1001: zeroauthy.store.v1.StoreService.PurgedEventSeq:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1002: zeroauthy.store.v1.StoreService.OldestEventSeq:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1003: zeroauthy.store.v1.StoreService.PurgeEvents:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1004: zeroauthy.store.v1.StoreService.DeleteTenantEvents:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1005: zeroauthy.store.v1.StoreService.CreateEventStream:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1006: zeroauthy.store.v1.StoreService.GetEventStream:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1007: zeroauthy.store.v1.StoreService.ListEventStreams:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1008: zeroauthy.store.v1.StoreService.CountEventStreams:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1009: zeroauthy.store.v1.StoreService.UpdateEventStream:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1010: zeroauthy.store.v1.StoreService.DeleteEventStream:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1011: zeroauthy.store.v1.StoreService.LeaseEventStream:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1012: zeroauthy.store.v1.StoreService.RecordEventDelivery:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1013: zeroauthy.store.v1.StoreService.ListDeliveries:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1014: zeroauthy.store.v1.StoreService.GetDelivery:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1015: zeroauthy.store.v1.StoreService.QueueRedelivery:output_type -> zeroauthy.store.v1.EventsResponse
-	261, // 1016: zeroauthy.store.v1.StoreService.QueuedDeliveries:output_type -> zeroauthy.store.v1.EventsResponse
-	239, // 1017: zeroauthy.store.v1.StoreService.LogsCapabilities:output_type -> zeroauthy.store.v1.LogsCapabilitiesResult
-	251, // 1018: zeroauthy.store.v1.StoreService.AppendLogs:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1019: zeroauthy.store.v1.StoreService.GetLog:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1020: zeroauthy.store.v1.StoreService.SearchLogs:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1021: zeroauthy.store.v1.StoreService.LogsAfter:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1022: zeroauthy.store.v1.StoreService.LatestLogs:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1023: zeroauthy.store.v1.StoreService.PurgeLogs:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1024: zeroauthy.store.v1.StoreService.DeleteTenantLogs:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1025: zeroauthy.store.v1.StoreService.CreateLogStream:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1026: zeroauthy.store.v1.StoreService.GetLogStream:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1027: zeroauthy.store.v1.StoreService.ListLogStreams:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1028: zeroauthy.store.v1.StoreService.UpdateLogStream:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1029: zeroauthy.store.v1.StoreService.DeleteLogStream:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1030: zeroauthy.store.v1.StoreService.LeaseLogStream:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1031: zeroauthy.store.v1.StoreService.RecordDelivery:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1032: zeroauthy.store.v1.StoreService.DailyStats:output_type -> zeroauthy.store.v1.LogsResponse
-	251, // 1033: zeroauthy.store.v1.StoreService.ActiveUsers:output_type -> zeroauthy.store.v1.LogsResponse
-	203, // 1034: zeroauthy.store.v1.StoreService.RBACCapabilities:output_type -> zeroauthy.store.v1.RBACCapabilitiesResult
-	202, // 1035: zeroauthy.store.v1.StoreService.RBACCreateRole:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1036: zeroauthy.store.v1.StoreService.RBACGetRole:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1037: zeroauthy.store.v1.StoreService.RBACUpdateRole:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1038: zeroauthy.store.v1.StoreService.RBACDeleteRole:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1039: zeroauthy.store.v1.StoreService.RBACListRoles:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1040: zeroauthy.store.v1.StoreService.RBACRolePermissions:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1041: zeroauthy.store.v1.StoreService.RBACChangeRolePermissions:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1042: zeroauthy.store.v1.StoreService.RBACRoleUsers:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1043: zeroauthy.store.v1.StoreService.RBACAssignRoleUsers:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1044: zeroauthy.store.v1.StoreService.RBACUserRoles:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1045: zeroauthy.store.v1.StoreService.RBACChangeUserRoles:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1046: zeroauthy.store.v1.StoreService.RBACUserPermissions:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1047: zeroauthy.store.v1.StoreService.RBACChangeUserPermissions:output_type -> zeroauthy.store.v1.RBACResponse
-	202, // 1048: zeroauthy.store.v1.StoreService.RBACSnapshot:output_type -> zeroauthy.store.v1.RBACResponse
-	211, // 1049: zeroauthy.store.v1.StoreService.OrganizationsIICapabilities:output_type -> zeroauthy.store.v1.OrganizationsCapabilitiesResult
-	236, // 1050: zeroauthy.store.v1.StoreService.OrganizationsIICreateInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1051: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1052: zeroauthy.store.v1.StoreService.OrganizationsIIFindInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1053: zeroauthy.store.v1.StoreService.OrganizationsIIListInvitations:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1054: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1055: zeroauthy.store.v1.StoreService.OrganizationsIIConsumeInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1056: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitationReceipt:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1057: zeroauthy.store.v1.StoreService.OrganizationsIIPutClients:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1058: zeroauthy.store.v1.StoreService.OrganizationsIIGetClient:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1059: zeroauthy.store.v1.StoreService.OrganizationsIIListClients:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1060: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClients:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1061: zeroauthy.store.v1.StoreService.OrganizationsIIPutClientGrant:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1062: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClientGrant:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1063: zeroauthy.store.v1.StoreService.OrganizationsIIListClientGrants:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1064: zeroauthy.store.v1.StoreService.OrganizationsIIGrantOrganizations:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1065: zeroauthy.store.v1.StoreService.OrganizationsIIHasClientGrant:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1066: zeroauthy.store.v1.StoreService.OrganizationsIIPutDiscoveryDomain:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1067: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomain:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1068: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomainByName:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1069: zeroauthy.store.v1.StoreService.OrganizationsIIListDiscoveryDomains:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1070: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteDiscoveryDomain:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1071: zeroauthy.store.v1.StoreService.OrganizationsIIDiscoverOrganizations:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	236, // 1072: zeroauthy.store.v1.StoreService.OrganizationsIISearch:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
-	211, // 1073: zeroauthy.store.v1.StoreService.OrganizationsCapabilities:output_type -> zeroauthy.store.v1.OrganizationsCapabilitiesResult
-	210, // 1074: zeroauthy.store.v1.StoreService.OrganizationsCreate:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1075: zeroauthy.store.v1.StoreService.OrganizationsGet:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1076: zeroauthy.store.v1.StoreService.OrganizationsGetByName:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1077: zeroauthy.store.v1.StoreService.OrganizationsList:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1078: zeroauthy.store.v1.StoreService.OrganizationsUpdate:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1079: zeroauthy.store.v1.StoreService.OrganizationsDelete:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1080: zeroauthy.store.v1.StoreService.OrganizationsConnections:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1081: zeroauthy.store.v1.StoreService.OrganizationsGetConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1082: zeroauthy.store.v1.StoreService.OrganizationsPutConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1083: zeroauthy.store.v1.StoreService.OrganizationsDeleteConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1084: zeroauthy.store.v1.StoreService.OrganizationsConnectionsByConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1085: zeroauthy.store.v1.StoreService.OrganizationsMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1086: zeroauthy.store.v1.StoreService.OrganizationsAddMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1087: zeroauthy.store.v1.StoreService.OrganizationsRemoveMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1088: zeroauthy.store.v1.StoreService.OrganizationsIsMember:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1089: zeroauthy.store.v1.StoreService.OrganizationsUserOrganizations:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1090: zeroauthy.store.v1.StoreService.OrganizationsMemberRoles:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1091: zeroauthy.store.v1.StoreService.OrganizationsChangeMemberRoles:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	210, // 1092: zeroauthy.store.v1.StoreService.OrganizationsRoleMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
-	225, // 1093: zeroauthy.store.v1.StoreService.ActionsCapabilities:output_type -> zeroauthy.store.v1.ActionsCapabilitiesResult
-	223, // 1094: zeroauthy.store.v1.StoreService.ActionsCreateAction:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1095: zeroauthy.store.v1.StoreService.ActionsGetAction:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1096: zeroauthy.store.v1.StoreService.ActionsGetActionByName:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1097: zeroauthy.store.v1.StoreService.ActionsUpdateAction:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1098: zeroauthy.store.v1.StoreService.ActionsDeleteAction:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1099: zeroauthy.store.v1.StoreService.ActionsListActions:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1100: zeroauthy.store.v1.StoreService.ActionsDeploy:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1101: zeroauthy.store.v1.StoreService.ActionsGetVersion:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1102: zeroauthy.store.v1.StoreService.ActionsListVersions:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1103: zeroauthy.store.v1.StoreService.ActionsPutBuild:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1104: zeroauthy.store.v1.StoreService.ActionsGetBuild:output_type -> zeroauthy.store.v1.ActionsResponse
-	4,   // 1105: zeroauthy.store.v1.StoreService.ActionsPutArtifact:output_type -> zeroauthy.store.v1.Result
-	224, // 1106: zeroauthy.store.v1.StoreService.ActionsGetArtifact:output_type -> zeroauthy.store.v1.ActionsArtifactChunk
-	223, // 1107: zeroauthy.store.v1.StoreService.ActionsBindings:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1108: zeroauthy.store.v1.StoreService.ActionsBindingsInitialized:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1109: zeroauthy.store.v1.StoreService.ActionsInitializeBindings:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1110: zeroauthy.store.v1.StoreService.ActionsReplaceBindings:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1111: zeroauthy.store.v1.StoreService.ActionsCreateExecution:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1112: zeroauthy.store.v1.StoreService.ActionsListExecutions:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1113: zeroauthy.store.v1.StoreService.ActionsGetExecution:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1114: zeroauthy.store.v1.StoreService.ActionsPurgeExecutions:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1115: zeroauthy.store.v1.StoreService.ActionsCreateContinue:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1116: zeroauthy.store.v1.StoreService.ActionsConsumeContinue:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1117: zeroauthy.store.v1.StoreService.ActionsPurgeContinue:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1118: zeroauthy.store.v1.StoreService.ActionsCreateModule:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1119: zeroauthy.store.v1.StoreService.ActionsGetModule:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1120: zeroauthy.store.v1.StoreService.ActionsGetModuleByName:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1121: zeroauthy.store.v1.StoreService.ActionsUpdateModule:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1122: zeroauthy.store.v1.StoreService.ActionsDeleteModule:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1123: zeroauthy.store.v1.StoreService.ActionsListModules:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1124: zeroauthy.store.v1.StoreService.ActionsPublishModule:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1125: zeroauthy.store.v1.StoreService.ActionsRollbackModule:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1126: zeroauthy.store.v1.StoreService.ActionsListModuleVersions:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1127: zeroauthy.store.v1.StoreService.ActionsGetModuleVersion:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1128: zeroauthy.store.v1.StoreService.ActionsModuleUsers:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1129: zeroauthy.store.v1.StoreService.ActionsEnqueueJob:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1130: zeroauthy.store.v1.StoreService.ActionsGetJob:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1131: zeroauthy.store.v1.StoreService.ActionsCancelJob:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1132: zeroauthy.store.v1.StoreService.ActionsClaimJobs:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1133: zeroauthy.store.v1.StoreService.ActionsFinishJob:output_type -> zeroauthy.store.v1.ActionsResponse
-	223, // 1134: zeroauthy.store.v1.StoreService.ActionsPurgeJobs:output_type -> zeroauthy.store.v1.ActionsResponse
-	4,   // 1135: zeroauthy.store.v1.StoreService.Ping:output_type -> zeroauthy.store.v1.Result
-	4,   // 1136: zeroauthy.store.v1.StoreService.MicrosoftFederationSupported:output_type -> zeroauthy.store.v1.Result
-	4,   // 1137: zeroauthy.store.v1.StoreService.CustomDomainsSupported:output_type -> zeroauthy.store.v1.Result
-	191, // 1138: zeroauthy.store.v1.StoreService.CustomDomainsGet:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1139: zeroauthy.store.v1.StoreService.CustomDomainsList:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1140: zeroauthy.store.v1.StoreService.CustomDomainsListDue:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1141: zeroauthy.store.v1.StoreService.CustomDomainsCreate:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1142: zeroauthy.store.v1.StoreService.CustomDomainsUpdate:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1143: zeroauthy.store.v1.StoreService.CustomDomainsDelete:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1144: zeroauthy.store.v1.StoreService.CustomDomainsGetHost:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1145: zeroauthy.store.v1.StoreService.CustomDomainsPutHost:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1146: zeroauthy.store.v1.StoreService.CustomDomainsDeleteHost:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1147: zeroauthy.store.v1.StoreService.CustomDomainsGetDefault:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1148: zeroauthy.store.v1.StoreService.CustomDomainsSetDefault:output_type -> zeroauthy.store.v1.CustomDomainResult
-	191, // 1149: zeroauthy.store.v1.StoreService.CustomDomainsAdmitAttempt:output_type -> zeroauthy.store.v1.CustomDomainResult
-	193, // 1150: zeroauthy.store.v1.StoreService.TLSAssetsGet:output_type -> zeroauthy.store.v1.TLSAssetResult
-	193, // 1151: zeroauthy.store.v1.StoreService.TLSAssetsPut:output_type -> zeroauthy.store.v1.TLSAssetResult
-	193, // 1152: zeroauthy.store.v1.StoreService.TLSAssetsDelete:output_type -> zeroauthy.store.v1.TLSAssetResult
-	193, // 1153: zeroauthy.store.v1.StoreService.TLSAssetsListExpired:output_type -> zeroauthy.store.v1.TLSAssetResult
-	193, // 1154: zeroauthy.store.v1.StoreService.TLSAssetsClaimLease:output_type -> zeroauthy.store.v1.TLSAssetResult
-	193, // 1155: zeroauthy.store.v1.StoreService.TLSAssetsRenewLease:output_type -> zeroauthy.store.v1.TLSAssetResult
-	193, // 1156: zeroauthy.store.v1.StoreService.TLSAssetsCheckLease:output_type -> zeroauthy.store.v1.TLSAssetResult
-	193, // 1157: zeroauthy.store.v1.StoreService.TLSAssetsReleaseLease:output_type -> zeroauthy.store.v1.TLSAssetResult
-	183, // 1158: zeroauthy.store.v1.StoreService.ProtectionReserve:output_type -> zeroauthy.store.v1.ProtectionResult
-	183, // 1159: zeroauthy.store.v1.StoreService.ProtectionComplete:output_type -> zeroauthy.store.v1.ProtectionResult
-	183, // 1160: zeroauthy.store.v1.StoreService.ProtectionBlocks:output_type -> zeroauthy.store.v1.ProtectionResult
-	183, // 1161: zeroauthy.store.v1.StoreService.ProtectionClear:output_type -> zeroauthy.store.v1.ProtectionResult
-	183, // 1162: zeroauthy.store.v1.StoreService.ProtectionUseProof:output_type -> zeroauthy.store.v1.ProtectionResult
-	183, // 1163: zeroauthy.store.v1.StoreService.ProtectionRecordRisk:output_type -> zeroauthy.store.v1.ProtectionResult
-	183, // 1164: zeroauthy.store.v1.StoreService.ProtectionRiskCount:output_type -> zeroauthy.store.v1.ProtectionResult
-	183, // 1165: zeroauthy.store.v1.StoreService.ProtectionSweep:output_type -> zeroauthy.store.v1.ProtectionResult
-	4,   // 1166: zeroauthy.store.v1.StoreService.TenantSettingsSupported:output_type -> zeroauthy.store.v1.Result
-	9,   // 1167: zeroauthy.store.v1.StoreService.BeginTx:output_type -> zeroauthy.store.v1.BeginTxResponse
-	4,   // 1168: zeroauthy.store.v1.StoreService.Commit:output_type -> zeroauthy.store.v1.Result
-	4,   // 1169: zeroauthy.store.v1.StoreService.Rollback:output_type -> zeroauthy.store.v1.Result
-	4,   // 1170: zeroauthy.store.v1.StoreService.TenantsCreate:output_type -> zeroauthy.store.v1.Result
-	99,  // 1171: zeroauthy.store.v1.StoreService.TenantsGet:output_type -> zeroauthy.store.v1.TenantResult
-	99,  // 1172: zeroauthy.store.v1.StoreService.TenantsGetByName:output_type -> zeroauthy.store.v1.TenantResult
-	99,  // 1173: zeroauthy.store.v1.StoreService.TenantsGetByDomain:output_type -> zeroauthy.store.v1.TenantResult
-	4,   // 1174: zeroauthy.store.v1.StoreService.TenantsUpdate:output_type -> zeroauthy.store.v1.Result
-	100, // 1175: zeroauthy.store.v1.StoreService.TenantsList:output_type -> zeroauthy.store.v1.TenantList
-	4,   // 1176: zeroauthy.store.v1.StoreService.TenantsDelete:output_type -> zeroauthy.store.v1.Result
-	4,   // 1177: zeroauthy.store.v1.StoreService.ClientsCreate:output_type -> zeroauthy.store.v1.Result
-	102, // 1178: zeroauthy.store.v1.StoreService.ClientsGet:output_type -> zeroauthy.store.v1.ClientResult
-	4,   // 1179: zeroauthy.store.v1.StoreService.ClientsUpdate:output_type -> zeroauthy.store.v1.Result
-	4,   // 1180: zeroauthy.store.v1.StoreService.ClientsDelete:output_type -> zeroauthy.store.v1.Result
-	103, // 1181: zeroauthy.store.v1.StoreService.ClientsList:output_type -> zeroauthy.store.v1.ClientList
-	105, // 1182: zeroauthy.store.v1.StoreService.ClientsListPage:output_type -> zeroauthy.store.v1.ClientPage
-	4,   // 1183: zeroauthy.store.v1.StoreService.ResourceServersCreate:output_type -> zeroauthy.store.v1.Result
-	107, // 1184: zeroauthy.store.v1.StoreService.ResourceServersGet:output_type -> zeroauthy.store.v1.ResourceServerResult
-	107, // 1185: zeroauthy.store.v1.StoreService.ResourceServersGetByIdentifier:output_type -> zeroauthy.store.v1.ResourceServerResult
-	4,   // 1186: zeroauthy.store.v1.StoreService.ResourceServersUpdate:output_type -> zeroauthy.store.v1.Result
-	4,   // 1187: zeroauthy.store.v1.StoreService.ResourceServersDelete:output_type -> zeroauthy.store.v1.Result
-	108, // 1188: zeroauthy.store.v1.StoreService.ResourceServersList:output_type -> zeroauthy.store.v1.ResourceServerList
-	4,   // 1189: zeroauthy.store.v1.StoreService.ResourceServersRenameSystem:output_type -> zeroauthy.store.v1.Result
-	4,   // 1190: zeroauthy.store.v1.StoreService.ClientGrantsCreate:output_type -> zeroauthy.store.v1.Result
-	111, // 1191: zeroauthy.store.v1.StoreService.ClientGrantsFind:output_type -> zeroauthy.store.v1.ClientGrantResult
-	4,   // 1192: zeroauthy.store.v1.StoreService.ClientGrantsUpdate:output_type -> zeroauthy.store.v1.Result
-	4,   // 1193: zeroauthy.store.v1.StoreService.ClientGrantsDelete:output_type -> zeroauthy.store.v1.Result
-	113, // 1194: zeroauthy.store.v1.StoreService.ClientGrantsList:output_type -> zeroauthy.store.v1.ClientGrantList
-	116, // 1195: zeroauthy.store.v1.StoreService.UserGrantsFind:output_type -> zeroauthy.store.v1.UserGrantResult
-	116, // 1196: zeroauthy.store.v1.StoreService.UserGrantsUpsert:output_type -> zeroauthy.store.v1.UserGrantResult
-	117, // 1197: zeroauthy.store.v1.StoreService.UserGrantsList:output_type -> zeroauthy.store.v1.UserGrantList
-	117, // 1198: zeroauthy.store.v1.StoreService.UserGrantsListByUser:output_type -> zeroauthy.store.v1.UserGrantList
-	117, // 1199: zeroauthy.store.v1.StoreService.UserGrantsListByAudience:output_type -> zeroauthy.store.v1.UserGrantList
-	4,   // 1200: zeroauthy.store.v1.StoreService.UserGrantsDelete:output_type -> zeroauthy.store.v1.Result
-	5,   // 1201: zeroauthy.store.v1.StoreService.UserGrantsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1202: zeroauthy.store.v1.StoreService.SigningKeysCreate:output_type -> zeroauthy.store.v1.Result
-	120, // 1203: zeroauthy.store.v1.StoreService.SigningKeysList:output_type -> zeroauthy.store.v1.SigningKeyList
-	4,   // 1204: zeroauthy.store.v1.StoreService.SigningKeysRotate:output_type -> zeroauthy.store.v1.Result
-	35,  // 1205: zeroauthy.store.v1.StoreService.SigningKeysGet:output_type -> zeroauthy.store.v1.SigningKeyResult
-	37,  // 1206: zeroauthy.store.v1.StoreService.SigningKeysRotateWithResult:output_type -> zeroauthy.store.v1.SigningKeyRotationResult
-	35,  // 1207: zeroauthy.store.v1.StoreService.SigningKeysRevoke:output_type -> zeroauthy.store.v1.SigningKeyResult
-	35,  // 1208: zeroauthy.store.v1.StoreService.SigningKeysSetCertificate:output_type -> zeroauthy.store.v1.SigningKeyResult
-	41,  // 1209: zeroauthy.store.v1.StoreService.CustomSigningKeysGet:output_type -> zeroauthy.store.v1.CustomSigningKeySetResult
-	4,   // 1210: zeroauthy.store.v1.StoreService.CustomSigningKeysReplace:output_type -> zeroauthy.store.v1.Result
-	4,   // 1211: zeroauthy.store.v1.StoreService.CustomSigningKeysDelete:output_type -> zeroauthy.store.v1.Result
-	44,  // 1212: zeroauthy.store.v1.StoreService.HostedLoginsGet:output_type -> zeroauthy.store.v1.HostedLoginConfigResult
-	4,   // 1213: zeroauthy.store.v1.StoreService.HostedLoginsPut:output_type -> zeroauthy.store.v1.Result
-	137, // 1214: zeroauthy.store.v1.StoreService.FederationIdentityEpoch:output_type -> zeroauthy.store.v1.VersionResult
-	4,   // 1215: zeroauthy.store.v1.StoreService.FederationBumpIdentityEpoch:output_type -> zeroauthy.store.v1.Result
-	4,   // 1216: zeroauthy.store.v1.StoreService.FederationCreateAttempt:output_type -> zeroauthy.store.v1.Result
-	51,  // 1217: zeroauthy.store.v1.StoreService.FederationGetAttempt:output_type -> zeroauthy.store.v1.FederationAttemptResult
-	51,  // 1218: zeroauthy.store.v1.StoreService.FederationClaimAttempt:output_type -> zeroauthy.store.v1.FederationAttemptResult
-	4,   // 1219: zeroauthy.store.v1.StoreService.FederationFinishAttempt:output_type -> zeroauthy.store.v1.Result
-	4,   // 1220: zeroauthy.store.v1.StoreService.FederationPutIdentity:output_type -> zeroauthy.store.v1.Result
-	4,   // 1221: zeroauthy.store.v1.StoreService.FederationDeleteIdentity:output_type -> zeroauthy.store.v1.Result
-	56,  // 1222: zeroauthy.store.v1.StoreService.FederationGetTokens:output_type -> zeroauthy.store.v1.FederatedTokensResult
-	4,   // 1223: zeroauthy.store.v1.StoreService.FederationPutTokens:output_type -> zeroauthy.store.v1.Result
-	4,   // 1224: zeroauthy.store.v1.StoreService.FederationDeleteTokens:output_type -> zeroauthy.store.v1.Result
-	5,   // 1225: zeroauthy.store.v1.StoreService.FederationDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	130, // 1226: zeroauthy.store.v1.StoreService.UsersFindByIdentity:output_type -> zeroauthy.store.v1.UserResult
-	60,  // 1227: zeroauthy.store.v1.StoreService.EmailProvidersGet:output_type -> zeroauthy.store.v1.EmailProviderResult
-	4,   // 1228: zeroauthy.store.v1.StoreService.EmailProvidersPut:output_type -> zeroauthy.store.v1.Result
-	4,   // 1229: zeroauthy.store.v1.StoreService.EmailProvidersDelete:output_type -> zeroauthy.store.v1.Result
-	65,  // 1230: zeroauthy.store.v1.StoreService.EmailTemplatesGet:output_type -> zeroauthy.store.v1.EmailTemplateResult
-	4,   // 1231: zeroauthy.store.v1.StoreService.EmailTemplatesPut:output_type -> zeroauthy.store.v1.Result
-	68,  // 1232: zeroauthy.store.v1.StoreService.EmailNotificationsClaim:output_type -> zeroauthy.store.v1.EmailNotificationClaimResult
-	5,   // 1233: zeroauthy.store.v1.StoreService.EmailNotificationsSweep:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1234: zeroauthy.store.v1.StoreService.ConnectionsCreate:output_type -> zeroauthy.store.v1.Result
-	123, // 1235: zeroauthy.store.v1.StoreService.ConnectionsGet:output_type -> zeroauthy.store.v1.ConnectionResult
-	123, // 1236: zeroauthy.store.v1.StoreService.ConnectionsGetByName:output_type -> zeroauthy.store.v1.ConnectionResult
-	4,   // 1237: zeroauthy.store.v1.StoreService.ConnectionsUpdate:output_type -> zeroauthy.store.v1.Result
-	124, // 1238: zeroauthy.store.v1.StoreService.ConnectionsList:output_type -> zeroauthy.store.v1.ConnectionList
-	126, // 1239: zeroauthy.store.v1.StoreService.ConnectionsListPage:output_type -> zeroauthy.store.v1.ConnectionPage
-	4,   // 1240: zeroauthy.store.v1.StoreService.ConnectionsDelete:output_type -> zeroauthy.store.v1.Result
-	4,   // 1241: zeroauthy.store.v1.StoreService.PasswordHistoriesAdd:output_type -> zeroauthy.store.v1.Result
-	128, // 1242: zeroauthy.store.v1.StoreService.PasswordHistoriesList:output_type -> zeroauthy.store.v1.PasswordHistoryList
-	4,   // 1243: zeroauthy.store.v1.StoreService.UsersCreate:output_type -> zeroauthy.store.v1.Result
-	130, // 1244: zeroauthy.store.v1.StoreService.UsersGet:output_type -> zeroauthy.store.v1.UserResult
-	130, // 1245: zeroauthy.store.v1.StoreService.UsersFindByLogin:output_type -> zeroauthy.store.v1.UserResult
-	4,   // 1246: zeroauthy.store.v1.StoreService.UsersUpdate:output_type -> zeroauthy.store.v1.Result
-	4,   // 1247: zeroauthy.store.v1.StoreService.UsersRecordLogin:output_type -> zeroauthy.store.v1.Result
-	4,   // 1248: zeroauthy.store.v1.StoreService.UsersSetPasswordHash:output_type -> zeroauthy.store.v1.Result
-	134, // 1249: zeroauthy.store.v1.StoreService.UsersFindByEmail:output_type -> zeroauthy.store.v1.UserListResult
-	4,   // 1250: zeroauthy.store.v1.StoreService.UsersSetPasswordHashIfEmpty:output_type -> zeroauthy.store.v1.Result
-	4,   // 1251: zeroauthy.store.v1.StoreService.UsersUpgradeImportedHash:output_type -> zeroauthy.store.v1.Result
-	137, // 1252: zeroauthy.store.v1.StoreService.UsersBumpVersion:output_type -> zeroauthy.store.v1.VersionResult
-	130, // 1253: zeroauthy.store.v1.StoreService.UsersGetForUpdate:output_type -> zeroauthy.store.v1.UserResult
-	4,   // 1254: zeroauthy.store.v1.StoreService.UsersDelete:output_type -> zeroauthy.store.v1.Result
-	134, // 1255: zeroauthy.store.v1.StoreService.UsersList:output_type -> zeroauthy.store.v1.UserListResult
-	4,   // 1256: zeroauthy.store.v1.StoreService.SessionsCreate:output_type -> zeroauthy.store.v1.Result
-	140, // 1257: zeroauthy.store.v1.StoreService.SessionsGetByTokenHash:output_type -> zeroauthy.store.v1.SessionResult
-	140, // 1258: zeroauthy.store.v1.StoreService.SessionsGet:output_type -> zeroauthy.store.v1.SessionResult
-	141, // 1259: zeroauthy.store.v1.StoreService.SessionsListByUser:output_type -> zeroauthy.store.v1.SessionList
-	4,   // 1260: zeroauthy.store.v1.StoreService.SessionsTouch:output_type -> zeroauthy.store.v1.Result
-	4,   // 1261: zeroauthy.store.v1.StoreService.SessionsAddClient:output_type -> zeroauthy.store.v1.Result
-	4,   // 1262: zeroauthy.store.v1.StoreService.SessionsDelete:output_type -> zeroauthy.store.v1.Result
-	5,   // 1263: zeroauthy.store.v1.StoreService.SessionsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
-	5,   // 1264: zeroauthy.store.v1.StoreService.SessionsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1265: zeroauthy.store.v1.StoreService.AuthTransactionsCreate:output_type -> zeroauthy.store.v1.Result
-	144, // 1266: zeroauthy.store.v1.StoreService.AuthTransactionsGet:output_type -> zeroauthy.store.v1.AuthTransactionResult
-	4,   // 1267: zeroauthy.store.v1.StoreService.AuthTransactionsDelete:output_type -> zeroauthy.store.v1.Result
-	5,   // 1268: zeroauthy.store.v1.StoreService.AuthTransactionsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1269: zeroauthy.store.v1.StoreService.AuthTransactionsCompareAndSwapHosted:output_type -> zeroauthy.store.v1.Result
-	4,   // 1270: zeroauthy.store.v1.StoreService.AuthCodesCreate:output_type -> zeroauthy.store.v1.Result
-	146, // 1271: zeroauthy.store.v1.StoreService.AuthCodesConsume:output_type -> zeroauthy.store.v1.AuthCodeResult
-	146, // 1272: zeroauthy.store.v1.StoreService.AuthCodesGet:output_type -> zeroauthy.store.v1.AuthCodeResult
-	5,   // 1273: zeroauthy.store.v1.StoreService.AuthCodesDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1274: zeroauthy.store.v1.StoreService.PushedAuthRequestsCreate:output_type -> zeroauthy.store.v1.Result
-	148, // 1275: zeroauthy.store.v1.StoreService.PushedAuthRequestsConsume:output_type -> zeroauthy.store.v1.PushedAuthRequestResult
-	148, // 1276: zeroauthy.store.v1.StoreService.PushedAuthRequestsGet:output_type -> zeroauthy.store.v1.PushedAuthRequestResult
-	5,   // 1277: zeroauthy.store.v1.StoreService.PushedAuthRequestsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1278: zeroauthy.store.v1.StoreService.DeviceCodesCreate:output_type -> zeroauthy.store.v1.Result
-	150, // 1279: zeroauthy.store.v1.StoreService.DeviceCodesGet:output_type -> zeroauthy.store.v1.DeviceCodeResult
-	150, // 1280: zeroauthy.store.v1.StoreService.DeviceCodesGetByUserCode:output_type -> zeroauthy.store.v1.DeviceCodeResult
-	150, // 1281: zeroauthy.store.v1.StoreService.DeviceCodesDecide:output_type -> zeroauthy.store.v1.DeviceCodeResult
-	153, // 1282: zeroauthy.store.v1.StoreService.DeviceCodesPoll:output_type -> zeroauthy.store.v1.DevicePollResult
-	5,   // 1283: zeroauthy.store.v1.StoreService.DeviceCodesDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1284: zeroauthy.store.v1.StoreService.RefreshTokensCreate:output_type -> zeroauthy.store.v1.Result
-	155, // 1285: zeroauthy.store.v1.StoreService.RefreshTokensGetByTokenHash:output_type -> zeroauthy.store.v1.RefreshTokenResult
-	155, // 1286: zeroauthy.store.v1.StoreService.RefreshTokensGet:output_type -> zeroauthy.store.v1.RefreshTokenResult
-	156, // 1287: zeroauthy.store.v1.StoreService.RefreshTokensListByUser:output_type -> zeroauthy.store.v1.RefreshTokenList
-	4,   // 1288: zeroauthy.store.v1.StoreService.RefreshTokensRevoke:output_type -> zeroauthy.store.v1.Result
-	4,   // 1289: zeroauthy.store.v1.StoreService.RefreshTokensRotate:output_type -> zeroauthy.store.v1.Result
-	4,   // 1290: zeroauthy.store.v1.StoreService.RefreshTokensTouch:output_type -> zeroauthy.store.v1.Result
-	4,   // 1291: zeroauthy.store.v1.StoreService.RefreshTokensRevokeFamily:output_type -> zeroauthy.store.v1.Result
-	5,   // 1292: zeroauthy.store.v1.StoreService.RefreshTokensRevokeByUser:output_type -> zeroauthy.store.v1.CountResult
-	5,   // 1293: zeroauthy.store.v1.StoreService.RefreshTokensDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1294: zeroauthy.store.v1.StoreService.PasswordResetTicketsMarkChallengePassed:output_type -> zeroauthy.store.v1.Result
-	4,   // 1295: zeroauthy.store.v1.StoreService.PasswordResetTicketsCreate:output_type -> zeroauthy.store.v1.Result
-	160, // 1296: zeroauthy.store.v1.StoreService.PasswordResetTicketsGetByTokenHash:output_type -> zeroauthy.store.v1.PasswordResetTicketResult
-	160, // 1297: zeroauthy.store.v1.StoreService.PasswordResetTicketsConsume:output_type -> zeroauthy.store.v1.PasswordResetTicketResult
-	5,   // 1298: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
-	5,   // 1299: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	4,   // 1300: zeroauthy.store.v1.StoreService.EmailVerificationTicketsCreate:output_type -> zeroauthy.store.v1.Result
-	162, // 1301: zeroauthy.store.v1.StoreService.EmailVerificationTicketsGetByTokenHash:output_type -> zeroauthy.store.v1.EmailVerificationTicketResult
-	162, // 1302: zeroauthy.store.v1.StoreService.EmailVerificationTicketsConsume:output_type -> zeroauthy.store.v1.EmailVerificationTicketResult
-	5,   // 1303: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
-	5,   // 1304: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	164, // 1305: zeroauthy.store.v1.StoreService.OperatorsGet:output_type -> zeroauthy.store.v1.OperatorResult
-	4,   // 1306: zeroauthy.store.v1.StoreService.OperatorsUpsert:output_type -> zeroauthy.store.v1.Result
-	165, // 1307: zeroauthy.store.v1.StoreService.OperatorsList:output_type -> zeroauthy.store.v1.OperatorList
-	4,   // 1308: zeroauthy.store.v1.StoreService.OperatorsDelete:output_type -> zeroauthy.store.v1.Result
-	4,   // 1309: zeroauthy.store.v1.StoreService.JobsCreate:output_type -> zeroauthy.store.v1.Result
-	168, // 1310: zeroauthy.store.v1.StoreService.JobsGet:output_type -> zeroauthy.store.v1.JobResult
-	169, // 1311: zeroauthy.store.v1.StoreService.JobsList:output_type -> zeroauthy.store.v1.JobPage
-	5,   // 1312: zeroauthy.store.v1.StoreService.JobsCountActive:output_type -> zeroauthy.store.v1.CountResult
-	168, // 1313: zeroauthy.store.v1.StoreService.JobsClaim:output_type -> zeroauthy.store.v1.JobResult
-	4,   // 1314: zeroauthy.store.v1.StoreService.JobsRenew:output_type -> zeroauthy.store.v1.Result
-	4,   // 1315: zeroauthy.store.v1.StoreService.JobsCheckpoint:output_type -> zeroauthy.store.v1.Result
-	4,   // 1316: zeroauthy.store.v1.StoreService.JobsFinish:output_type -> zeroauthy.store.v1.Result
-	176, // 1317: zeroauthy.store.v1.StoreService.JobsErrors:output_type -> zeroauthy.store.v1.JobErrorList
-	4,   // 1318: zeroauthy.store.v1.StoreService.JobsAppendFile:output_type -> zeroauthy.store.v1.Result
-	178, // 1319: zeroauthy.store.v1.StoreService.JobsReadFile:output_type -> zeroauthy.store.v1.JobFileChunk
-	5,   // 1320: zeroauthy.store.v1.StoreService.JobsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
-	938, // [938:1321] is the sub-list for method output_type
-	555, // [555:938] is the sub-list for method input_type
-	555, // [555:555] is the sub-list for extension type_name
-	555, // [555:555] is the sub-list for extension extendee
-	0,   // [0:555] is the sub-list for field type_name
+	366, // 6: zeroauthy.store.v1.TouchRequest.idle_expires_at:type_name -> google.protobuf.Timestamp
+	366, // 7: zeroauthy.store.v1.TouchRequest.at:type_name -> google.protobuf.Timestamp
+	83,  // 8: zeroauthy.store.v1.SessionsSetAuthMethodsRequest.methods:type_name -> zeroauthy.store.v1.AuthMethodList
+	366, // 9: zeroauthy.store.v1.DeleteExpiredRequest.before:type_name -> google.protobuf.Timestamp
+	366, // 10: zeroauthy.store.v1.ConsumeRequest.at:type_name -> google.protobuf.Timestamp
+	366, // 11: zeroauthy.store.v1.RevokeRequest.at:type_name -> google.protobuf.Timestamp
+	362, // 12: zeroauthy.store.v1.StringMap.values:type_name -> zeroauthy.store.v1.StringMap.ValuesEntry
+	18,  // 13: zeroauthy.store.v1.Tenant.domains:type_name -> zeroauthy.store.v1.StringList
+	18,  // 14: zeroauthy.store.v1.Tenant.allowed_logout_urls:type_name -> zeroauthy.store.v1.StringList
+	18,  // 15: zeroauthy.store.v1.Tenant.enabled_locales:type_name -> zeroauthy.store.v1.StringList
+	21,  // 16: zeroauthy.store.v1.Tenant.branding:type_name -> zeroauthy.store.v1.Branding
+	366, // 17: zeroauthy.store.v1.Tenant.created_at:type_name -> google.protobuf.Timestamp
+	19,  // 18: zeroauthy.store.v1.Tenant.domain_rp_ids:type_name -> zeroauthy.store.v1.StringMap
+	366, // 19: zeroauthy.store.v1.ClientSecret.created_at:type_name -> google.protobuf.Timestamp
+	366, // 20: zeroauthy.store.v1.ClientSecret.expires_at:type_name -> google.protobuf.Timestamp
+	22,  // 21: zeroauthy.store.v1.ClientSecretList.values:type_name -> zeroauthy.store.v1.ClientSecret
+	23,  // 22: zeroauthy.store.v1.Client.secrets:type_name -> zeroauthy.store.v1.ClientSecretList
+	18,  // 23: zeroauthy.store.v1.Client.grant_types:type_name -> zeroauthy.store.v1.StringList
+	18,  // 24: zeroauthy.store.v1.Client.callbacks:type_name -> zeroauthy.store.v1.StringList
+	18,  // 25: zeroauthy.store.v1.Client.allowed_logout_urls:type_name -> zeroauthy.store.v1.StringList
+	18,  // 26: zeroauthy.store.v1.Client.web_origins:type_name -> zeroauthy.store.v1.StringList
+	18,  // 27: zeroauthy.store.v1.Client.allowed_origins:type_name -> zeroauthy.store.v1.StringList
+	24,  // 28: zeroauthy.store.v1.Client.refresh_token:type_name -> zeroauthy.store.v1.RefreshTokenPolicy
+	366, // 29: zeroauthy.store.v1.Client.created_at:type_name -> google.protobuf.Timestamp
+	18,  // 30: zeroauthy.store.v1.Client.organization_discovery_methods:type_name -> zeroauthy.store.v1.StringList
+	26,  // 31: zeroauthy.store.v1.Client.mobile:type_name -> zeroauthy.store.v1.ClientMobile
+	27,  // 32: zeroauthy.store.v1.ClientMobile.ios:type_name -> zeroauthy.store.v1.ClientMobileIOS
+	28,  // 33: zeroauthy.store.v1.ClientMobile.android:type_name -> zeroauthy.store.v1.ClientMobileAndroid
+	18,  // 34: zeroauthy.store.v1.ClientMobileAndroid.sha256_cert_fingerprints:type_name -> zeroauthy.store.v1.StringList
+	29,  // 35: zeroauthy.store.v1.ScopeList.values:type_name -> zeroauthy.store.v1.Scope
+	30,  // 36: zeroauthy.store.v1.ResourceServer.scopes:type_name -> zeroauthy.store.v1.ScopeList
+	366, // 37: zeroauthy.store.v1.ResourceServer.created_at:type_name -> google.protobuf.Timestamp
+	18,  // 38: zeroauthy.store.v1.ClientGrant.scopes:type_name -> zeroauthy.store.v1.StringList
+	366, // 39: zeroauthy.store.v1.ClientGrant.created_at:type_name -> google.protobuf.Timestamp
+	18,  // 40: zeroauthy.store.v1.UserGrant.scopes:type_name -> zeroauthy.store.v1.StringList
+	366, // 41: zeroauthy.store.v1.UserGrant.created_at:type_name -> google.protobuf.Timestamp
+	366, // 42: zeroauthy.store.v1.UserGrant.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 43: zeroauthy.store.v1.SigningKey.created_at:type_name -> google.protobuf.Timestamp
+	366, // 44: zeroauthy.store.v1.SigningKey.current_since:type_name -> google.protobuf.Timestamp
+	366, // 45: zeroauthy.store.v1.SigningKey.current_until:type_name -> google.protobuf.Timestamp
+	366, // 46: zeroauthy.store.v1.SigningKey.revoked_at:type_name -> google.protobuf.Timestamp
+	3,   // 47: zeroauthy.store.v1.SigningKeyResult.error:type_name -> zeroauthy.store.v1.Error
+	35,  // 48: zeroauthy.store.v1.SigningKeyResult.value:type_name -> zeroauthy.store.v1.SigningKey
+	35,  // 49: zeroauthy.store.v1.SigningKeyRotation.current:type_name -> zeroauthy.store.v1.SigningKey
+	35,  // 50: zeroauthy.store.v1.SigningKeyRotation.next:type_name -> zeroauthy.store.v1.SigningKey
+	3,   // 51: zeroauthy.store.v1.SigningKeyRotationResult.error:type_name -> zeroauthy.store.v1.Error
+	37,  // 52: zeroauthy.store.v1.SigningKeyRotationResult.value:type_name -> zeroauthy.store.v1.SigningKeyRotation
+	366, // 53: zeroauthy.store.v1.SigningKeyRevokeRequest.at:type_name -> google.protobuf.Timestamp
+	3,   // 54: zeroauthy.store.v1.CustomSigningKeySetResult.error:type_name -> zeroauthy.store.v1.Error
+	41,  // 55: zeroauthy.store.v1.CustomSigningKeySetResult.value:type_name -> zeroauthy.store.v1.CustomSigningKeySet
+	41,  // 56: zeroauthy.store.v1.CustomSigningKeySetWrite.value:type_name -> zeroauthy.store.v1.CustomSigningKeySet
+	3,   // 57: zeroauthy.store.v1.HostedLoginConfigResult.error:type_name -> zeroauthy.store.v1.Error
+	44,  // 58: zeroauthy.store.v1.HostedLoginConfigResult.value:type_name -> zeroauthy.store.v1.HostedLoginConfig
+	44,  // 59: zeroauthy.store.v1.HostedLoginConfigWrite.value:type_name -> zeroauthy.store.v1.HostedLoginConfig
+	47,  // 60: zeroauthy.store.v1.FederationAttempt.endpoints:type_name -> zeroauthy.store.v1.FederationEndpoints
+	366, // 61: zeroauthy.store.v1.FederationAttempt.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 62: zeroauthy.store.v1.FederationAttempt.created_at:type_name -> google.protobuf.Timestamp
+	48,  // 63: zeroauthy.store.v1.FederationAttemptWrite.value:type_name -> zeroauthy.store.v1.FederationAttempt
+	366, // 64: zeroauthy.store.v1.FederationClaimRequest.now:type_name -> google.protobuf.Timestamp
+	3,   // 65: zeroauthy.store.v1.FederationAttemptResult.error:type_name -> zeroauthy.store.v1.Error
+	48,  // 66: zeroauthy.store.v1.FederationAttemptResult.value:type_name -> zeroauthy.store.v1.FederationAttempt
+	53,  // 67: zeroauthy.store.v1.FederatedIdentityRequest.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
+	53,  // 68: zeroauthy.store.v1.FederatedIdentityWrite.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
+	53,  // 69: zeroauthy.store.v1.FederatedTokensWrite.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
+	3,   // 70: zeroauthy.store.v1.FederatedTokensResult.error:type_name -> zeroauthy.store.v1.Error
+	53,  // 71: zeroauthy.store.v1.UsersFindByIdentityRequest.key:type_name -> zeroauthy.store.v1.FederatedIdentityKey
+	366, // 72: zeroauthy.store.v1.HostedStateCASRequest.now:type_name -> google.protobuf.Timestamp
+	3,   // 73: zeroauthy.store.v1.EmailProviderResult.error:type_name -> zeroauthy.store.v1.Error
+	60,  // 74: zeroauthy.store.v1.EmailProviderResult.value:type_name -> zeroauthy.store.v1.EmailProvider
+	60,  // 75: zeroauthy.store.v1.EmailProviderWrite.value:type_name -> zeroauthy.store.v1.EmailProvider
+	3,   // 76: zeroauthy.store.v1.EmailTemplateResult.error:type_name -> zeroauthy.store.v1.Error
+	64,  // 77: zeroauthy.store.v1.EmailTemplateResult.value:type_name -> zeroauthy.store.v1.EmailTemplate
+	64,  // 78: zeroauthy.store.v1.EmailTemplateWrite.value:type_name -> zeroauthy.store.v1.EmailTemplate
+	366, // 79: zeroauthy.store.v1.EmailNotificationClaimRequest.now:type_name -> google.protobuf.Timestamp
+	366, // 80: zeroauthy.store.v1.EmailNotificationClaimRequest.expires_at:type_name -> google.protobuf.Timestamp
+	3,   // 81: zeroauthy.store.v1.EmailNotificationClaimResult.error:type_name -> zeroauthy.store.v1.Error
+	366, // 82: zeroauthy.store.v1.EmailNotificationSweepRequest.before:type_name -> google.protobuf.Timestamp
+	18,  // 83: zeroauthy.store.v1.PasswordComplexity.character_types:type_name -> zeroauthy.store.v1.StringList
+	18,  // 84: zeroauthy.store.v1.PasswordDictionary.custom:type_name -> zeroauthy.store.v1.StringList
+	18,  // 85: zeroauthy.store.v1.PasswordProfileData.blocked_fields:type_name -> zeroauthy.store.v1.StringList
+	72,  // 86: zeroauthy.store.v1.PasswordOptions.complexity:type_name -> zeroauthy.store.v1.PasswordComplexity
+	73,  // 87: zeroauthy.store.v1.PasswordOptions.history:type_name -> zeroauthy.store.v1.PasswordHistorySettings
+	74,  // 88: zeroauthy.store.v1.PasswordOptions.dictionary:type_name -> zeroauthy.store.v1.PasswordDictionary
+	75,  // 89: zeroauthy.store.v1.PasswordOptions.profile_data:type_name -> zeroauthy.store.v1.PasswordProfileData
+	18,  // 90: zeroauthy.store.v1.Connection.enabled_clients:type_name -> zeroauthy.store.v1.StringList
+	71,  // 91: zeroauthy.store.v1.Connection.password_policy:type_name -> zeroauthy.store.v1.PasswordPolicy
+	366, // 92: zeroauthy.store.v1.Connection.created_at:type_name -> google.protobuf.Timestamp
+	19,  // 93: zeroauthy.store.v1.Connection.custom_scripts:type_name -> zeroauthy.store.v1.StringMap
+	76,  // 94: zeroauthy.store.v1.Connection.password_options:type_name -> zeroauthy.store.v1.PasswordOptions
+	78,  // 95: zeroauthy.store.v1.IdentityList.values:type_name -> zeroauthy.store.v1.Identity
+	79,  // 96: zeroauthy.store.v1.User.identities:type_name -> zeroauthy.store.v1.IdentityList
+	366, // 97: zeroauthy.store.v1.User.last_login:type_name -> google.protobuf.Timestamp
+	366, // 98: zeroauthy.store.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	366, // 99: zeroauthy.store.v1.User.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 100: zeroauthy.store.v1.User.last_password_reset:type_name -> google.protobuf.Timestamp
+	366, // 101: zeroauthy.store.v1.LoginSession.authenticated_at:type_name -> google.protobuf.Timestamp
+	18,  // 102: zeroauthy.store.v1.LoginSession.client_ids:type_name -> zeroauthy.store.v1.StringList
+	366, // 103: zeroauthy.store.v1.LoginSession.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 104: zeroauthy.store.v1.LoginSession.idle_expires_at:type_name -> google.protobuf.Timestamp
+	366, // 105: zeroauthy.store.v1.LoginSession.created_at:type_name -> google.protobuf.Timestamp
+	366, // 106: zeroauthy.store.v1.LoginSession.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 107: zeroauthy.store.v1.LoginSession.last_interacted_at:type_name -> google.protobuf.Timestamp
+	366, // 108: zeroauthy.store.v1.LoginSession.mfa_at:type_name -> google.protobuf.Timestamp
+	83,  // 109: zeroauthy.store.v1.LoginSession.auth_methods:type_name -> zeroauthy.store.v1.AuthMethodList
+	366, // 110: zeroauthy.store.v1.AuthMethod.at:type_name -> google.protobuf.Timestamp
+	82,  // 111: zeroauthy.store.v1.AuthMethodList.values:type_name -> zeroauthy.store.v1.AuthMethod
+	19,  // 112: zeroauthy.store.v1.AuthTransaction.params:type_name -> zeroauthy.store.v1.StringMap
+	366, // 113: zeroauthy.store.v1.AuthTransaction.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 114: zeroauthy.store.v1.AuthTransaction.created_at:type_name -> google.protobuf.Timestamp
+	18,  // 115: zeroauthy.store.v1.AuthCode.scopes:type_name -> zeroauthy.store.v1.StringList
+	366, // 116: zeroauthy.store.v1.AuthCode.auth_time:type_name -> google.protobuf.Timestamp
+	366, // 117: zeroauthy.store.v1.AuthCode.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 118: zeroauthy.store.v1.AuthCode.created_at:type_name -> google.protobuf.Timestamp
+	366, // 119: zeroauthy.store.v1.AuthCode.used_at:type_name -> google.protobuf.Timestamp
+	366, // 120: zeroauthy.store.v1.AuthCode.replayed_at:type_name -> google.protobuf.Timestamp
+	19,  // 121: zeroauthy.store.v1.PushedAuthRequest.params:type_name -> zeroauthy.store.v1.StringMap
+	366, // 122: zeroauthy.store.v1.PushedAuthRequest.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 123: zeroauthy.store.v1.PushedAuthRequest.created_at:type_name -> google.protobuf.Timestamp
+	366, // 124: zeroauthy.store.v1.PushedAuthRequest.used_at:type_name -> google.protobuf.Timestamp
+	18,  // 125: zeroauthy.store.v1.DeviceCode.scopes:type_name -> zeroauthy.store.v1.StringList
+	18,  // 126: zeroauthy.store.v1.DeviceCode.granted_scopes:type_name -> zeroauthy.store.v1.StringList
+	366, // 127: zeroauthy.store.v1.DeviceCode.last_polled_at:type_name -> google.protobuf.Timestamp
+	366, // 128: zeroauthy.store.v1.DeviceCode.expired_reported_at:type_name -> google.protobuf.Timestamp
+	366, // 129: zeroauthy.store.v1.DeviceCode.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 130: zeroauthy.store.v1.DeviceCode.created_at:type_name -> google.protobuf.Timestamp
+	18,  // 131: zeroauthy.store.v1.RefreshToken.scopes:type_name -> zeroauthy.store.v1.StringList
+	366, // 132: zeroauthy.store.v1.RefreshToken.auth_time:type_name -> google.protobuf.Timestamp
+	366, // 133: zeroauthy.store.v1.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 134: zeroauthy.store.v1.RefreshToken.idle_expires_at:type_name -> google.protobuf.Timestamp
+	366, // 135: zeroauthy.store.v1.RefreshToken.rotated_at:type_name -> google.protobuf.Timestamp
+	366, // 136: zeroauthy.store.v1.RefreshToken.revoked_at:type_name -> google.protobuf.Timestamp
+	366, // 137: zeroauthy.store.v1.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
+	366, // 138: zeroauthy.store.v1.PasswordResetTicket.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 139: zeroauthy.store.v1.PasswordResetTicket.used_at:type_name -> google.protobuf.Timestamp
+	366, // 140: zeroauthy.store.v1.PasswordResetTicket.created_at:type_name -> google.protobuf.Timestamp
+	366, // 141: zeroauthy.store.v1.PasswordResetTicket.challenge_passed_at:type_name -> google.protobuf.Timestamp
+	366, // 142: zeroauthy.store.v1.EmailVerificationTicket.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 143: zeroauthy.store.v1.EmailVerificationTicket.used_at:type_name -> google.protobuf.Timestamp
+	366, // 144: zeroauthy.store.v1.EmailVerificationTicket.created_at:type_name -> google.protobuf.Timestamp
+	91,  // 145: zeroauthy.store.v1.Job.summary:type_name -> zeroauthy.store.v1.JobSummary
+	366, // 146: zeroauthy.store.v1.Job.lease_until:type_name -> google.protobuf.Timestamp
+	366, // 147: zeroauthy.store.v1.Job.first_claimed_at:type_name -> google.protobuf.Timestamp
+	366, // 148: zeroauthy.store.v1.Job.created_at:type_name -> google.protobuf.Timestamp
+	366, // 149: zeroauthy.store.v1.Job.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 150: zeroauthy.store.v1.Job.expires_at:type_name -> google.protobuf.Timestamp
+	93,  // 151: zeroauthy.store.v1.JobErrorItems.values:type_name -> zeroauthy.store.v1.JobErrorItem
+	94,  // 152: zeroauthy.store.v1.JobError.errors:type_name -> zeroauthy.store.v1.JobErrorItems
+	18,  // 153: zeroauthy.store.v1.Operator.tenants:type_name -> zeroauthy.store.v1.StringList
+	366, // 154: zeroauthy.store.v1.Operator.created_at:type_name -> google.protobuf.Timestamp
+	366, // 155: zeroauthy.store.v1.Operator.updated_at:type_name -> google.protobuf.Timestamp
+	20,  // 156: zeroauthy.store.v1.TenantWrite.value:type_name -> zeroauthy.store.v1.Tenant
+	3,   // 157: zeroauthy.store.v1.TenantResult.error:type_name -> zeroauthy.store.v1.Error
+	20,  // 158: zeroauthy.store.v1.TenantResult.value:type_name -> zeroauthy.store.v1.Tenant
+	3,   // 159: zeroauthy.store.v1.TenantList.error:type_name -> zeroauthy.store.v1.Error
+	20,  // 160: zeroauthy.store.v1.TenantList.values:type_name -> zeroauthy.store.v1.Tenant
+	25,  // 161: zeroauthy.store.v1.ClientWrite.value:type_name -> zeroauthy.store.v1.Client
+	3,   // 162: zeroauthy.store.v1.ClientResult.error:type_name -> zeroauthy.store.v1.Error
+	25,  // 163: zeroauthy.store.v1.ClientResult.value:type_name -> zeroauthy.store.v1.Client
+	3,   // 164: zeroauthy.store.v1.ClientList.error:type_name -> zeroauthy.store.v1.Error
+	25,  // 165: zeroauthy.store.v1.ClientList.values:type_name -> zeroauthy.store.v1.Client
+	3,   // 166: zeroauthy.store.v1.ClientPage.error:type_name -> zeroauthy.store.v1.Error
+	25,  // 167: zeroauthy.store.v1.ClientPage.values:type_name -> zeroauthy.store.v1.Client
+	31,  // 168: zeroauthy.store.v1.ResourceServerWrite.value:type_name -> zeroauthy.store.v1.ResourceServer
+	3,   // 169: zeroauthy.store.v1.ResourceServerResult.error:type_name -> zeroauthy.store.v1.Error
+	31,  // 170: zeroauthy.store.v1.ResourceServerResult.value:type_name -> zeroauthy.store.v1.ResourceServer
+	3,   // 171: zeroauthy.store.v1.ResourceServerList.error:type_name -> zeroauthy.store.v1.Error
+	31,  // 172: zeroauthy.store.v1.ResourceServerList.values:type_name -> zeroauthy.store.v1.ResourceServer
+	33,  // 173: zeroauthy.store.v1.ClientGrantWrite.value:type_name -> zeroauthy.store.v1.ClientGrant
+	3,   // 174: zeroauthy.store.v1.ClientGrantResult.error:type_name -> zeroauthy.store.v1.Error
+	33,  // 175: zeroauthy.store.v1.ClientGrantResult.value:type_name -> zeroauthy.store.v1.ClientGrant
+	3,   // 176: zeroauthy.store.v1.ClientGrantList.error:type_name -> zeroauthy.store.v1.Error
+	33,  // 177: zeroauthy.store.v1.ClientGrantList.values:type_name -> zeroauthy.store.v1.ClientGrant
+	34,  // 178: zeroauthy.store.v1.UserGrantWrite.value:type_name -> zeroauthy.store.v1.UserGrant
+	3,   // 179: zeroauthy.store.v1.UserGrantResult.error:type_name -> zeroauthy.store.v1.Error
+	34,  // 180: zeroauthy.store.v1.UserGrantResult.value:type_name -> zeroauthy.store.v1.UserGrant
+	3,   // 181: zeroauthy.store.v1.UserGrantList.error:type_name -> zeroauthy.store.v1.Error
+	34,  // 182: zeroauthy.store.v1.UserGrantList.values:type_name -> zeroauthy.store.v1.UserGrant
+	35,  // 183: zeroauthy.store.v1.SigningKeyWrite.value:type_name -> zeroauthy.store.v1.SigningKey
+	3,   // 184: zeroauthy.store.v1.SigningKeyList.error:type_name -> zeroauthy.store.v1.Error
+	35,  // 185: zeroauthy.store.v1.SigningKeyList.values:type_name -> zeroauthy.store.v1.SigningKey
+	35,  // 186: zeroauthy.store.v1.SigningKeysRotateRequest.next:type_name -> zeroauthy.store.v1.SigningKey
+	366, // 187: zeroauthy.store.v1.SigningKeysRotateRequest.at:type_name -> google.protobuf.Timestamp
+	77,  // 188: zeroauthy.store.v1.ConnectionWrite.value:type_name -> zeroauthy.store.v1.Connection
+	3,   // 189: zeroauthy.store.v1.ConnectionResult.error:type_name -> zeroauthy.store.v1.Error
+	77,  // 190: zeroauthy.store.v1.ConnectionResult.value:type_name -> zeroauthy.store.v1.Connection
+	3,   // 191: zeroauthy.store.v1.ConnectionList.error:type_name -> zeroauthy.store.v1.Error
+	77,  // 192: zeroauthy.store.v1.ConnectionList.values:type_name -> zeroauthy.store.v1.Connection
+	3,   // 193: zeroauthy.store.v1.ConnectionPage.error:type_name -> zeroauthy.store.v1.Error
+	77,  // 194: zeroauthy.store.v1.ConnectionPage.values:type_name -> zeroauthy.store.v1.Connection
+	3,   // 195: zeroauthy.store.v1.PasswordHistoryList.error:type_name -> zeroauthy.store.v1.Error
+	80,  // 196: zeroauthy.store.v1.UserWrite.value:type_name -> zeroauthy.store.v1.User
+	3,   // 197: zeroauthy.store.v1.UserResult.error:type_name -> zeroauthy.store.v1.Error
+	80,  // 198: zeroauthy.store.v1.UserResult.value:type_name -> zeroauthy.store.v1.User
+	366, // 199: zeroauthy.store.v1.UsersRecordLoginRequest.at:type_name -> google.protobuf.Timestamp
+	3,   // 200: zeroauthy.store.v1.UserListResult.error:type_name -> zeroauthy.store.v1.Error
+	80,  // 201: zeroauthy.store.v1.UserListResult.values:type_name -> zeroauthy.store.v1.User
+	1,   // 202: zeroauthy.store.v1.UserQuery.op:type_name -> zeroauthy.store.v1.UserQuery.Op
+	136, // 203: zeroauthy.store.v1.UserQuery.kids:type_name -> zeroauthy.store.v1.UserQuery
+	2,   // 204: zeroauthy.store.v1.UserQuery.kind:type_name -> zeroauthy.store.v1.UserQuery.Kind
+	136, // 205: zeroauthy.store.v1.UsersListRequest.query:type_name -> zeroauthy.store.v1.UserQuery
+	3,   // 206: zeroauthy.store.v1.VersionResult.error:type_name -> zeroauthy.store.v1.Error
+	366, // 207: zeroauthy.store.v1.UsersSetPasswordHashRequest.at:type_name -> google.protobuf.Timestamp
+	81,  // 208: zeroauthy.store.v1.SessionWrite.value:type_name -> zeroauthy.store.v1.LoginSession
+	3,   // 209: zeroauthy.store.v1.SessionResult.error:type_name -> zeroauthy.store.v1.Error
+	81,  // 210: zeroauthy.store.v1.SessionResult.value:type_name -> zeroauthy.store.v1.LoginSession
+	3,   // 211: zeroauthy.store.v1.SessionList.error:type_name -> zeroauthy.store.v1.Error
+	81,  // 212: zeroauthy.store.v1.SessionList.values:type_name -> zeroauthy.store.v1.LoginSession
+	84,  // 213: zeroauthy.store.v1.AuthTransactionWrite.value:type_name -> zeroauthy.store.v1.AuthTransaction
+	3,   // 214: zeroauthy.store.v1.AuthTransactionResult.error:type_name -> zeroauthy.store.v1.Error
+	84,  // 215: zeroauthy.store.v1.AuthTransactionResult.value:type_name -> zeroauthy.store.v1.AuthTransaction
+	85,  // 216: zeroauthy.store.v1.AuthCodeWrite.value:type_name -> zeroauthy.store.v1.AuthCode
+	3,   // 217: zeroauthy.store.v1.AuthCodeResult.error:type_name -> zeroauthy.store.v1.Error
+	85,  // 218: zeroauthy.store.v1.AuthCodeResult.value:type_name -> zeroauthy.store.v1.AuthCode
+	86,  // 219: zeroauthy.store.v1.PushedAuthRequestWrite.value:type_name -> zeroauthy.store.v1.PushedAuthRequest
+	3,   // 220: zeroauthy.store.v1.PushedAuthRequestResult.error:type_name -> zeroauthy.store.v1.Error
+	86,  // 221: zeroauthy.store.v1.PushedAuthRequestResult.value:type_name -> zeroauthy.store.v1.PushedAuthRequest
+	87,  // 222: zeroauthy.store.v1.DeviceCodeWrite.value:type_name -> zeroauthy.store.v1.DeviceCode
+	3,   // 223: zeroauthy.store.v1.DeviceCodeResult.error:type_name -> zeroauthy.store.v1.Error
+	87,  // 224: zeroauthy.store.v1.DeviceCodeResult.value:type_name -> zeroauthy.store.v1.DeviceCode
+	18,  // 225: zeroauthy.store.v1.DeviceDecisionRequest.granted_scopes:type_name -> zeroauthy.store.v1.StringList
+	366, // 226: zeroauthy.store.v1.DevicePollRequest.at:type_name -> google.protobuf.Timestamp
+	3,   // 227: zeroauthy.store.v1.DevicePollResult.error:type_name -> zeroauthy.store.v1.Error
+	87,  // 228: zeroauthy.store.v1.DevicePollResult.code:type_name -> zeroauthy.store.v1.DeviceCode
+	88,  // 229: zeroauthy.store.v1.RefreshTokenWrite.value:type_name -> zeroauthy.store.v1.RefreshToken
+	3,   // 230: zeroauthy.store.v1.RefreshTokenResult.error:type_name -> zeroauthy.store.v1.Error
+	88,  // 231: zeroauthy.store.v1.RefreshTokenResult.value:type_name -> zeroauthy.store.v1.RefreshToken
+	3,   // 232: zeroauthy.store.v1.RefreshTokenList.error:type_name -> zeroauthy.store.v1.Error
+	88,  // 233: zeroauthy.store.v1.RefreshTokenList.values:type_name -> zeroauthy.store.v1.RefreshToken
+	88,  // 234: zeroauthy.store.v1.RefreshTokensRotateRequest.next:type_name -> zeroauthy.store.v1.RefreshToken
+	366, // 235: zeroauthy.store.v1.RefreshTokensRotateRequest.at:type_name -> google.protobuf.Timestamp
+	367, // 236: zeroauthy.store.v1.RefreshTokensRotateRequest.leeway:type_name -> google.protobuf.Duration
+	366, // 237: zeroauthy.store.v1.PasswordResetTicketChallengeRequest.passed_at:type_name -> google.protobuf.Timestamp
+	89,  // 238: zeroauthy.store.v1.PasswordResetTicketWrite.value:type_name -> zeroauthy.store.v1.PasswordResetTicket
+	3,   // 239: zeroauthy.store.v1.PasswordResetTicketResult.error:type_name -> zeroauthy.store.v1.Error
+	89,  // 240: zeroauthy.store.v1.PasswordResetTicketResult.value:type_name -> zeroauthy.store.v1.PasswordResetTicket
+	90,  // 241: zeroauthy.store.v1.EmailVerificationTicketWrite.value:type_name -> zeroauthy.store.v1.EmailVerificationTicket
+	3,   // 242: zeroauthy.store.v1.EmailVerificationTicketResult.error:type_name -> zeroauthy.store.v1.Error
+	90,  // 243: zeroauthy.store.v1.EmailVerificationTicketResult.value:type_name -> zeroauthy.store.v1.EmailVerificationTicket
+	96,  // 244: zeroauthy.store.v1.OperatorWrite.value:type_name -> zeroauthy.store.v1.Operator
+	3,   // 245: zeroauthy.store.v1.OperatorResult.error:type_name -> zeroauthy.store.v1.Error
+	96,  // 246: zeroauthy.store.v1.OperatorResult.value:type_name -> zeroauthy.store.v1.Operator
+	3,   // 247: zeroauthy.store.v1.OperatorList.error:type_name -> zeroauthy.store.v1.Error
+	96,  // 248: zeroauthy.store.v1.OperatorList.values:type_name -> zeroauthy.store.v1.Operator
+	366, // 249: zeroauthy.store.v1.UsersUpgradeImportedHashRequest.at:type_name -> google.protobuf.Timestamp
+	92,  // 250: zeroauthy.store.v1.JobWrite.value:type_name -> zeroauthy.store.v1.Job
+	3,   // 251: zeroauthy.store.v1.JobResult.error:type_name -> zeroauthy.store.v1.Error
+	92,  // 252: zeroauthy.store.v1.JobResult.value:type_name -> zeroauthy.store.v1.Job
+	3,   // 253: zeroauthy.store.v1.JobPage.error:type_name -> zeroauthy.store.v1.Error
+	92,  // 254: zeroauthy.store.v1.JobPage.values:type_name -> zeroauthy.store.v1.Job
+	366, // 255: zeroauthy.store.v1.JobsClaimRequest.now:type_name -> google.protobuf.Timestamp
+	367, // 256: zeroauthy.store.v1.JobsClaimRequest.lease:type_name -> google.protobuf.Duration
+	366, // 257: zeroauthy.store.v1.JobsRenewRequest.until:type_name -> google.protobuf.Timestamp
+	91,  // 258: zeroauthy.store.v1.JobsCheckpointRequest.summary:type_name -> zeroauthy.store.v1.JobSummary
+	95,  // 259: zeroauthy.store.v1.JobsCheckpointRequest.errors:type_name -> zeroauthy.store.v1.JobError
+	366, // 260: zeroauthy.store.v1.JobsFinishRequest.at:type_name -> google.protobuf.Timestamp
+	3,   // 261: zeroauthy.store.v1.JobErrorList.error:type_name -> zeroauthy.store.v1.Error
+	95,  // 262: zeroauthy.store.v1.JobErrorList.values:type_name -> zeroauthy.store.v1.JobError
+	3,   // 263: zeroauthy.store.v1.JobFileChunk.error:type_name -> zeroauthy.store.v1.Error
+	180, // 264: zeroauthy.store.v1.ProtectionLimit.key:type_name -> zeroauthy.store.v1.ProtectionKey
+	367, // 265: zeroauthy.store.v1.ProtectionLimit.window:type_name -> google.protobuf.Duration
+	367, // 266: zeroauthy.store.v1.ProtectionLimit.refill:type_name -> google.protobuf.Duration
+	367, // 267: zeroauthy.store.v1.ProtectionLimit.lockout:type_name -> google.protobuf.Duration
+	180, // 268: zeroauthy.store.v1.ProtectionBlock.key:type_name -> zeroauthy.store.v1.ProtectionKey
+	366, // 269: zeroauthy.store.v1.ProtectionBlock.blocked_until:type_name -> google.protobuf.Timestamp
+	181, // 270: zeroauthy.store.v1.ProtectionRequest.limits:type_name -> zeroauthy.store.v1.ProtectionLimit
+	366, // 271: zeroauthy.store.v1.ProtectionRequest.now:type_name -> google.protobuf.Timestamp
+	366, // 272: zeroauthy.store.v1.ProtectionRequest.expires_at:type_name -> google.protobuf.Timestamp
+	180, // 273: zeroauthy.store.v1.ProtectionRequest.filter:type_name -> zeroauthy.store.v1.ProtectionKey
+	3,   // 274: zeroauthy.store.v1.ProtectionResult.error:type_name -> zeroauthy.store.v1.Error
+	366, // 275: zeroauthy.store.v1.ProtectionResult.retry_at:type_name -> google.protobuf.Timestamp
+	182, // 276: zeroauthy.store.v1.ProtectionResult.blocks:type_name -> zeroauthy.store.v1.ProtectionBlock
+	19,  // 277: zeroauthy.store.v1.CustomDomain.domain_metadata:type_name -> zeroauthy.store.v1.StringMap
+	366, // 278: zeroauthy.store.v1.CustomDomain.proof_created_at:type_name -> google.protobuf.Timestamp
+	366, // 279: zeroauthy.store.v1.CustomDomain.proof_verified_at:type_name -> google.protobuf.Timestamp
+	366, // 280: zeroauthy.store.v1.CustomDomain.last_proof_check_at:type_name -> google.protobuf.Timestamp
+	366, // 281: zeroauthy.store.v1.CustomDomain.proof_failure_since:type_name -> google.protobuf.Timestamp
+	366, // 282: zeroauthy.store.v1.CustomDomain.next_attempt_at:type_name -> google.protobuf.Timestamp
+	366, // 283: zeroauthy.store.v1.CustomDomain.created_at:type_name -> google.protobuf.Timestamp
+	366, // 284: zeroauthy.store.v1.CustomDomain.updated_at:type_name -> google.protobuf.Timestamp
+	18,  // 285: zeroauthy.store.v1.TLSPublicData.sans:type_name -> zeroauthy.store.v1.StringList
+	366, // 286: zeroauthy.store.v1.TLSPublicData.not_before:type_name -> google.protobuf.Timestamp
+	366, // 287: zeroauthy.store.v1.TLSPublicData.not_after:type_name -> google.protobuf.Timestamp
+	187, // 288: zeroauthy.store.v1.TLSAsset.public_data:type_name -> zeroauthy.store.v1.TLSPublicData
+	366, // 289: zeroauthy.store.v1.TLSAsset.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 290: zeroauthy.store.v1.TLSLease.until:type_name -> google.protobuf.Timestamp
+	185, // 291: zeroauthy.store.v1.CustomDomainRequest.value:type_name -> zeroauthy.store.v1.CustomDomain
+	186, // 292: zeroauthy.store.v1.CustomDomainRequest.binding:type_name -> zeroauthy.store.v1.HostBinding
+	3,   // 293: zeroauthy.store.v1.CustomDomainResult.error:type_name -> zeroauthy.store.v1.Error
+	185, // 294: zeroauthy.store.v1.CustomDomainResult.value:type_name -> zeroauthy.store.v1.CustomDomain
+	185, // 295: zeroauthy.store.v1.CustomDomainResult.values:type_name -> zeroauthy.store.v1.CustomDomain
+	186, // 296: zeroauthy.store.v1.CustomDomainResult.binding:type_name -> zeroauthy.store.v1.HostBinding
+	367, // 297: zeroauthy.store.v1.CustomDomainResult.retry_after:type_name -> google.protobuf.Duration
+	188, // 298: zeroauthy.store.v1.TLSAssetRequest.value:type_name -> zeroauthy.store.v1.TLSAsset
+	189, // 299: zeroauthy.store.v1.TLSAssetRequest.lease:type_name -> zeroauthy.store.v1.TLSLease
+	367, // 300: zeroauthy.store.v1.TLSAssetRequest.duration:type_name -> google.protobuf.Duration
+	3,   // 301: zeroauthy.store.v1.TLSAssetResult.error:type_name -> zeroauthy.store.v1.Error
+	188, // 302: zeroauthy.store.v1.TLSAssetResult.value:type_name -> zeroauthy.store.v1.TLSAsset
+	188, // 303: zeroauthy.store.v1.TLSAssetResult.values:type_name -> zeroauthy.store.v1.TLSAsset
+	189, // 304: zeroauthy.store.v1.TLSAssetResult.lease:type_name -> zeroauthy.store.v1.TLSLease
+	197, // 305: zeroauthy.store.v1.RBACPermissionGrant.key:type_name -> zeroauthy.store.v1.RBACPermissionKey
+	198, // 306: zeroauthy.store.v1.RBACPermissionGrant.sources:type_name -> zeroauthy.store.v1.RBACSource
+	196, // 307: zeroauthy.store.v1.RBACRequest.role:type_name -> zeroauthy.store.v1.RBACRole
+	197, // 308: zeroauthy.store.v1.RBACRequest.keys:type_name -> zeroauthy.store.v1.RBACPermissionKey
+	200, // 309: zeroauthy.store.v1.RBACRequest.page:type_name -> zeroauthy.store.v1.RBACPage
+	31,  // 310: zeroauthy.store.v1.RBACSnapshot.api:type_name -> zeroauthy.store.v1.ResourceServer
+	3,   // 311: zeroauthy.store.v1.RBACResponse.error:type_name -> zeroauthy.store.v1.Error
+	196, // 312: zeroauthy.store.v1.RBACResponse.role:type_name -> zeroauthy.store.v1.RBACRole
+	196, // 313: zeroauthy.store.v1.RBACResponse.roles:type_name -> zeroauthy.store.v1.RBACRole
+	199, // 314: zeroauthy.store.v1.RBACResponse.grants:type_name -> zeroauthy.store.v1.RBACPermissionGrant
+	80,  // 315: zeroauthy.store.v1.RBACResponse.users:type_name -> zeroauthy.store.v1.User
+	202, // 316: zeroauthy.store.v1.RBACResponse.snapshot:type_name -> zeroauthy.store.v1.RBACSnapshot
+	3,   // 317: zeroauthy.store.v1.RBACCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
+	205, // 318: zeroauthy.store.v1.OrganizationBrandingMsg.colors:type_name -> zeroauthy.store.v1.OrganizationColorsMsg
+	206, // 319: zeroauthy.store.v1.OrganizationMsg.branding:type_name -> zeroauthy.store.v1.OrganizationBrandingMsg
+	19,  // 320: zeroauthy.store.v1.OrganizationMsg.metadata:type_name -> zeroauthy.store.v1.StringMap
+	366, // 321: zeroauthy.store.v1.OrganizationMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 322: zeroauthy.store.v1.OrganizationMsg.updated_at:type_name -> google.protobuf.Timestamp
+	234, // 323: zeroauthy.store.v1.OrganizationMsg.client_association:type_name -> zeroauthy.store.v1.OrganizationClientMsg
+	207, // 324: zeroauthy.store.v1.OrganizationsRequest.organization:type_name -> zeroauthy.store.v1.OrganizationMsg
+	208, // 325: zeroauthy.store.v1.OrganizationsRequest.connections:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
+	208, // 326: zeroauthy.store.v1.OrganizationsRequest.connection:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
+	209, // 327: zeroauthy.store.v1.OrganizationsRequest.page:type_name -> zeroauthy.store.v1.OrganizationPageMsg
+	3,   // 328: zeroauthy.store.v1.OrganizationsResponse.error:type_name -> zeroauthy.store.v1.Error
+	207, // 329: zeroauthy.store.v1.OrganizationsResponse.organization:type_name -> zeroauthy.store.v1.OrganizationMsg
+	207, // 330: zeroauthy.store.v1.OrganizationsResponse.organizations:type_name -> zeroauthy.store.v1.OrganizationMsg
+	208, // 331: zeroauthy.store.v1.OrganizationsResponse.connection:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
+	208, // 332: zeroauthy.store.v1.OrganizationsResponse.connections:type_name -> zeroauthy.store.v1.OrganizationConnectionMsg
+	3,   // 333: zeroauthy.store.v1.OrganizationsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
+	366, // 334: zeroauthy.store.v1.ActionSecretMsg.updated_at:type_name -> google.protobuf.Timestamp
+	213, // 335: zeroauthy.store.v1.ActionMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
+	214, // 336: zeroauthy.store.v1.ActionMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
+	366, // 337: zeroauthy.store.v1.ActionMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 338: zeroauthy.store.v1.ActionMsg.updated_at:type_name -> google.protobuf.Timestamp
+	227, // 339: zeroauthy.store.v1.ActionMsg.modules:type_name -> zeroauthy.store.v1.ActionModuleRefMsg
+	213, // 340: zeroauthy.store.v1.ActionVersionMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
+	214, // 341: zeroauthy.store.v1.ActionVersionMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
+	366, // 342: zeroauthy.store.v1.ActionVersionMsg.created_at:type_name -> google.protobuf.Timestamp
+	227, // 343: zeroauthy.store.v1.ActionVersionMsg.modules:type_name -> zeroauthy.store.v1.ActionModuleRefMsg
+	213, // 344: zeroauthy.store.v1.ActionBuildMsg.requested:type_name -> zeroauthy.store.v1.ActionDependency
+	213, // 345: zeroauthy.store.v1.ActionBuildMsg.resolved:type_name -> zeroauthy.store.v1.ActionDependency
+	366, // 346: zeroauthy.store.v1.ActionBuildMsg.built_at:type_name -> google.protobuf.Timestamp
+	366, // 347: zeroauthy.store.v1.ActionBindingMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 348: zeroauthy.store.v1.ActionBindingMsg.updated_at:type_name -> google.protobuf.Timestamp
+	218, // 349: zeroauthy.store.v1.ActionBoundMsg.binding:type_name -> zeroauthy.store.v1.ActionBindingMsg
+	215, // 350: zeroauthy.store.v1.ActionBoundMsg.action:type_name -> zeroauthy.store.v1.ActionMsg
+	216, // 351: zeroauthy.store.v1.ActionBoundMsg.version:type_name -> zeroauthy.store.v1.ActionVersionMsg
+	366, // 352: zeroauthy.store.v1.ActionExecutionResultMsg.started_at:type_name -> google.protobuf.Timestamp
+	366, // 353: zeroauthy.store.v1.ActionExecutionResultMsg.ended_at:type_name -> google.protobuf.Timestamp
+	220, // 354: zeroauthy.store.v1.ActionExecutionMsg.results:type_name -> zeroauthy.store.v1.ActionExecutionResultMsg
+	366, // 355: zeroauthy.store.v1.ActionExecutionMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 356: zeroauthy.store.v1.ActionExecutionMsg.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 357: zeroauthy.store.v1.ActionContinueMsg.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 358: zeroauthy.store.v1.ActionContinueMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 359: zeroauthy.store.v1.ActionsRequest.time:type_name -> google.protobuf.Timestamp
+	215, // 360: zeroauthy.store.v1.ActionsRequest.action:type_name -> zeroauthy.store.v1.ActionMsg
+	217, // 361: zeroauthy.store.v1.ActionsRequest.build:type_name -> zeroauthy.store.v1.ActionBuildMsg
+	221, // 362: zeroauthy.store.v1.ActionsRequest.execution:type_name -> zeroauthy.store.v1.ActionExecutionMsg
+	222, // 363: zeroauthy.store.v1.ActionsRequest.continue_state:type_name -> zeroauthy.store.v1.ActionContinueMsg
+	218, // 364: zeroauthy.store.v1.ActionsRequest.bindings:type_name -> zeroauthy.store.v1.ActionBindingMsg
+	228, // 365: zeroauthy.store.v1.ActionsRequest.module:type_name -> zeroauthy.store.v1.ActionModuleMsg
+	231, // 366: zeroauthy.store.v1.ActionsRequest.job:type_name -> zeroauthy.store.v1.ActionJobMsg
+	367, // 367: zeroauthy.store.v1.ActionsRequest.lease:type_name -> google.protobuf.Duration
+	366, // 368: zeroauthy.store.v1.ActionsRequest.lease_until:type_name -> google.protobuf.Timestamp
+	3,   // 369: zeroauthy.store.v1.ActionsResponse.error:type_name -> zeroauthy.store.v1.Error
+	215, // 370: zeroauthy.store.v1.ActionsResponse.action:type_name -> zeroauthy.store.v1.ActionMsg
+	215, // 371: zeroauthy.store.v1.ActionsResponse.actions:type_name -> zeroauthy.store.v1.ActionMsg
+	216, // 372: zeroauthy.store.v1.ActionsResponse.version:type_name -> zeroauthy.store.v1.ActionVersionMsg
+	216, // 373: zeroauthy.store.v1.ActionsResponse.versions:type_name -> zeroauthy.store.v1.ActionVersionMsg
+	217, // 374: zeroauthy.store.v1.ActionsResponse.build:type_name -> zeroauthy.store.v1.ActionBuildMsg
+	219, // 375: zeroauthy.store.v1.ActionsResponse.bound:type_name -> zeroauthy.store.v1.ActionBoundMsg
+	221, // 376: zeroauthy.store.v1.ActionsResponse.execution:type_name -> zeroauthy.store.v1.ActionExecutionMsg
+	222, // 377: zeroauthy.store.v1.ActionsResponse.continue_state:type_name -> zeroauthy.store.v1.ActionContinueMsg
+	228, // 378: zeroauthy.store.v1.ActionsResponse.module:type_name -> zeroauthy.store.v1.ActionModuleMsg
+	228, // 379: zeroauthy.store.v1.ActionsResponse.modules:type_name -> zeroauthy.store.v1.ActionModuleMsg
+	229, // 380: zeroauthy.store.v1.ActionsResponse.module_version:type_name -> zeroauthy.store.v1.ActionModuleVersionMsg
+	229, // 381: zeroauthy.store.v1.ActionsResponse.module_versions:type_name -> zeroauthy.store.v1.ActionModuleVersionMsg
+	221, // 382: zeroauthy.store.v1.ActionsResponse.executions:type_name -> zeroauthy.store.v1.ActionExecutionMsg
+	230, // 383: zeroauthy.store.v1.ActionsResponse.module_users:type_name -> zeroauthy.store.v1.ActionModuleUserMsg
+	231, // 384: zeroauthy.store.v1.ActionsResponse.jobs:type_name -> zeroauthy.store.v1.ActionJobMsg
+	231, // 385: zeroauthy.store.v1.ActionsResponse.job:type_name -> zeroauthy.store.v1.ActionJobMsg
+	3,   // 386: zeroauthy.store.v1.ActionsArtifactChunk.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 387: zeroauthy.store.v1.ActionsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
+	213, // 388: zeroauthy.store.v1.ActionModuleMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
+	214, // 389: zeroauthy.store.v1.ActionModuleMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
+	366, // 390: zeroauthy.store.v1.ActionModuleMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 391: zeroauthy.store.v1.ActionModuleMsg.updated_at:type_name -> google.protobuf.Timestamp
+	213, // 392: zeroauthy.store.v1.ActionModuleVersionMsg.dependencies:type_name -> zeroauthy.store.v1.ActionDependency
+	214, // 393: zeroauthy.store.v1.ActionModuleVersionMsg.secrets:type_name -> zeroauthy.store.v1.ActionSecretMsg
+	366, // 394: zeroauthy.store.v1.ActionModuleVersionMsg.created_at:type_name -> google.protobuf.Timestamp
+	215, // 395: zeroauthy.store.v1.ActionModuleUserMsg.action:type_name -> zeroauthy.store.v1.ActionMsg
+	366, // 396: zeroauthy.store.v1.ActionJobMsg.next_at:type_name -> google.protobuf.Timestamp
+	366, // 397: zeroauthy.store.v1.ActionJobMsg.lease_until:type_name -> google.protobuf.Timestamp
+	366, // 398: zeroauthy.store.v1.ActionJobMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 399: zeroauthy.store.v1.ActionJobMsg.updated_at:type_name -> google.protobuf.Timestamp
+	18,  // 400: zeroauthy.store.v1.OrganizationInvitationMsg.roles:type_name -> zeroauthy.store.v1.StringList
+	366, // 401: zeroauthy.store.v1.OrganizationInvitationMsg.created_at:type_name -> google.protobuf.Timestamp
+	366, // 402: zeroauthy.store.v1.OrganizationInvitationMsg.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 403: zeroauthy.store.v1.OrganizationInvitationMsg.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 404: zeroauthy.store.v1.InvitationReceiptMsg.accepted_at:type_name -> google.protobuf.Timestamp
+	209, // 405: zeroauthy.store.v1.OrganizationsIIRequest.page:type_name -> zeroauthy.store.v1.OrganizationPageMsg
+	366, // 406: zeroauthy.store.v1.OrganizationsIIRequest.now:type_name -> google.protobuf.Timestamp
+	232, // 407: zeroauthy.store.v1.OrganizationsIIRequest.invitation:type_name -> zeroauthy.store.v1.OrganizationInvitationMsg
+	234, // 408: zeroauthy.store.v1.OrganizationsIIRequest.clients:type_name -> zeroauthy.store.v1.OrganizationClientMsg
+	235, // 409: zeroauthy.store.v1.OrganizationsIIRequest.discovery_domain:type_name -> zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
+	238, // 410: zeroauthy.store.v1.OrganizationsIIRequest.search_query:type_name -> zeroauthy.store.v1.OrganizationQueryMsg
+	239, // 411: zeroauthy.store.v1.OrganizationsIIRequest.search_page:type_name -> zeroauthy.store.v1.OrganizationSearchPageMsg
+	3,   // 412: zeroauthy.store.v1.OrganizationsIIResponse.error:type_name -> zeroauthy.store.v1.Error
+	232, // 413: zeroauthy.store.v1.OrganizationsIIResponse.invitation:type_name -> zeroauthy.store.v1.OrganizationInvitationMsg
+	232, // 414: zeroauthy.store.v1.OrganizationsIIResponse.invitations:type_name -> zeroauthy.store.v1.OrganizationInvitationMsg
+	233, // 415: zeroauthy.store.v1.OrganizationsIIResponse.receipt:type_name -> zeroauthy.store.v1.InvitationReceiptMsg
+	234, // 416: zeroauthy.store.v1.OrganizationsIIResponse.client:type_name -> zeroauthy.store.v1.OrganizationClientMsg
+	234, // 417: zeroauthy.store.v1.OrganizationsIIResponse.clients:type_name -> zeroauthy.store.v1.OrganizationClientMsg
+	33,  // 418: zeroauthy.store.v1.OrganizationsIIResponse.grants:type_name -> zeroauthy.store.v1.ClientGrant
+	207, // 419: zeroauthy.store.v1.OrganizationsIIResponse.organizations:type_name -> zeroauthy.store.v1.OrganizationMsg
+	235, // 420: zeroauthy.store.v1.OrganizationsIIResponse.discovery_domain:type_name -> zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
+	235, // 421: zeroauthy.store.v1.OrganizationsIIResponse.discovery_domains:type_name -> zeroauthy.store.v1.OrganizationDiscoveryDomainMsg
+	238, // 422: zeroauthy.store.v1.OrganizationQueryMsg.left:type_name -> zeroauthy.store.v1.OrganizationQueryMsg
+	238, // 423: zeroauthy.store.v1.OrganizationQueryMsg.right:type_name -> zeroauthy.store.v1.OrganizationQueryMsg
+	3,   // 424: zeroauthy.store.v1.LogsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
+	242, // 425: zeroauthy.store.v1.LogQueryMsg.left:type_name -> zeroauthy.store.v1.LogQueryMsg
+	242, // 426: zeroauthy.store.v1.LogQueryMsg.right:type_name -> zeroauthy.store.v1.LogQueryMsg
+	244, // 427: zeroauthy.store.v1.LogStreamFiltersMsg.values:type_name -> zeroauthy.store.v1.LogStreamFilterMsg
+	18,  // 428: zeroauthy.store.v1.LogStreamPIIMsg.log_fields:type_name -> zeroauthy.store.v1.StringList
+	245, // 429: zeroauthy.store.v1.LogStreamMsg.filters:type_name -> zeroauthy.store.v1.LogStreamFiltersMsg
+	246, // 430: zeroauthy.store.v1.LogStreamMsg.pii:type_name -> zeroauthy.store.v1.LogStreamPIIMsg
+	241, // 431: zeroauthy.store.v1.LogsRequest.events:type_name -> zeroauthy.store.v1.LogEventMsg
+	249, // 432: zeroauthy.store.v1.LogsRequest.deltas:type_name -> zeroauthy.store.v1.DailyStatDeltaMsg
+	242, // 433: zeroauthy.store.v1.LogsRequest.query:type_name -> zeroauthy.store.v1.LogQueryMsg
+	243, // 434: zeroauthy.store.v1.LogsRequest.page:type_name -> zeroauthy.store.v1.LogPageMsg
+	247, // 435: zeroauthy.store.v1.LogsRequest.stream:type_name -> zeroauthy.store.v1.LogStreamMsg
+	248, // 436: zeroauthy.store.v1.LogsRequest.delivery:type_name -> zeroauthy.store.v1.LogStreamDeliveryMsg
+	3,   // 437: zeroauthy.store.v1.LogsResponse.error:type_name -> zeroauthy.store.v1.Error
+	241, // 438: zeroauthy.store.v1.LogsResponse.event:type_name -> zeroauthy.store.v1.LogEventMsg
+	241, // 439: zeroauthy.store.v1.LogsResponse.events:type_name -> zeroauthy.store.v1.LogEventMsg
+	247, // 440: zeroauthy.store.v1.LogsResponse.stream:type_name -> zeroauthy.store.v1.LogStreamMsg
+	247, // 441: zeroauthy.store.v1.LogsResponse.streams:type_name -> zeroauthy.store.v1.LogStreamMsg
+	250, // 442: zeroauthy.store.v1.LogsResponse.stats:type_name -> zeroauthy.store.v1.DailyStatMsg
+	3,   // 443: zeroauthy.store.v1.EventsCapabilitiesResult.error:type_name -> zeroauthy.store.v1.Error
+	18,  // 444: zeroauthy.store.v1.EventStreamMsg.subscriptions:type_name -> zeroauthy.store.v1.StringList
+	256, // 445: zeroauthy.store.v1.DeliveryAttemptsMsg.values:type_name -> zeroauthy.store.v1.DeliveryAttemptMsg
+	257, // 446: zeroauthy.store.v1.EventDeliveryMsg.attempts:type_name -> zeroauthy.store.v1.DeliveryAttemptsMsg
+	18,  // 447: zeroauthy.store.v1.DeliveryFilterMsg.statuses:type_name -> zeroauthy.store.v1.StringList
+	18,  // 448: zeroauthy.store.v1.DeliveryFilterMsg.event_types:type_name -> zeroauthy.store.v1.StringList
+	258, // 449: zeroauthy.store.v1.DeliveryOutcomeMsg.failed:type_name -> zeroauthy.store.v1.EventDeliveryMsg
+	18,  // 450: zeroauthy.store.v1.DeliveryOutcomeMsg.succeeded:type_name -> zeroauthy.store.v1.StringList
+	254, // 451: zeroauthy.store.v1.EventsRequest.events:type_name -> zeroauthy.store.v1.TenantEventMsg
+	18,  // 452: zeroauthy.store.v1.EventsRequest.types:type_name -> zeroauthy.store.v1.StringList
+	255, // 453: zeroauthy.store.v1.EventsRequest.stream:type_name -> zeroauthy.store.v1.EventStreamMsg
+	260, // 454: zeroauthy.store.v1.EventsRequest.outcome:type_name -> zeroauthy.store.v1.DeliveryOutcomeMsg
+	259, // 455: zeroauthy.store.v1.EventsRequest.filter:type_name -> zeroauthy.store.v1.DeliveryFilterMsg
+	18,  // 456: zeroauthy.store.v1.EventsRequest.event_ids:type_name -> zeroauthy.store.v1.StringList
+	3,   // 457: zeroauthy.store.v1.EventsResponse.error:type_name -> zeroauthy.store.v1.Error
+	254, // 458: zeroauthy.store.v1.EventsResponse.event:type_name -> zeroauthy.store.v1.TenantEventMsg
+	254, // 459: zeroauthy.store.v1.EventsResponse.events:type_name -> zeroauthy.store.v1.TenantEventMsg
+	255, // 460: zeroauthy.store.v1.EventsResponse.stream:type_name -> zeroauthy.store.v1.EventStreamMsg
+	255, // 461: zeroauthy.store.v1.EventsResponse.streams:type_name -> zeroauthy.store.v1.EventStreamMsg
+	258, // 462: zeroauthy.store.v1.EventsResponse.delivery:type_name -> zeroauthy.store.v1.EventDeliveryMsg
+	258, // 463: zeroauthy.store.v1.EventsResponse.deliveries:type_name -> zeroauthy.store.v1.EventDeliveryMsg
+	363, // 464: zeroauthy.store.v1.MFAGuardian.factors:type_name -> zeroauthy.store.v1.MFAGuardian.FactorsEntry
+	364, // 465: zeroauthy.store.v1.MFAGuardian.stored:type_name -> zeroauthy.store.v1.MFAGuardian.StoredEntry
+	365, // 466: zeroauthy.store.v1.MFAGuardian.sealed_secrets:type_name -> zeroauthy.store.v1.MFAGuardian.SealedSecretsEntry
+	3,   // 467: zeroauthy.store.v1.MFAGetGuardianResponse.error:type_name -> zeroauthy.store.v1.Error
+	263, // 468: zeroauthy.store.v1.MFAGetGuardianResponse.value:type_name -> zeroauthy.store.v1.MFAGuardian
+	263, // 469: zeroauthy.store.v1.MFAPutGuardianRequest.v:type_name -> zeroauthy.store.v1.MFAGuardian
+	3,   // 470: zeroauthy.store.v1.MFAPutGuardianResponse.error:type_name -> zeroauthy.store.v1.Error
+	264, // 471: zeroauthy.store.v1.MFACreateAuthenticatorRequest.v:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	3,   // 472: zeroauthy.store.v1.MFACreateAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 473: zeroauthy.store.v1.MFAGetAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
+	264, // 474: zeroauthy.store.v1.MFAGetAuthenticatorResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	3,   // 475: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse.error:type_name -> zeroauthy.store.v1.Error
+	264, // 476: zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	3,   // 477: zeroauthy.store.v1.MFAListAuthenticatorsResponse.error:type_name -> zeroauthy.store.v1.Error
+	264, // 478: zeroauthy.store.v1.MFAListAuthenticatorsResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	264, // 479: zeroauthy.store.v1.MFAUpdateAuthenticatorRequest.v:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	3,   // 480: zeroauthy.store.v1.MFAUpdateAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 481: zeroauthy.store.v1.MFADeleteAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
+	18,  // 482: zeroauthy.store.v1.MFADeleteUserAuthenticatorsRequest.types:type_name -> zeroauthy.store.v1.StringList
+	3,   // 483: zeroauthy.store.v1.MFADeleteUserAuthenticatorsResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 484: zeroauthy.store.v1.MFAAcceptTOTPStepResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 485: zeroauthy.store.v1.MFAReplaceRecoveryCodeResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 486: zeroauthy.store.v1.MFAAcceptSignCountResponse.error:type_name -> zeroauthy.store.v1.Error
+	265, // 487: zeroauthy.store.v1.MFACreateMFATokenRequest.v:type_name -> zeroauthy.store.v1.MFATokenMsg
+	3,   // 488: zeroauthy.store.v1.MFACreateMFATokenResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 489: zeroauthy.store.v1.MFAConsumeMFATokenResponse.error:type_name -> zeroauthy.store.v1.Error
+	265, // 490: zeroauthy.store.v1.MFAConsumeMFATokenResponse.value:type_name -> zeroauthy.store.v1.MFATokenMsg
+	3,   // 491: zeroauthy.store.v1.MFAPeekMFATokenResponse.error:type_name -> zeroauthy.store.v1.Error
+	265, // 492: zeroauthy.store.v1.MFAPeekMFATokenResponse.value:type_name -> zeroauthy.store.v1.MFATokenMsg
+	266, // 493: zeroauthy.store.v1.MFACreateChallengeRequest.v:type_name -> zeroauthy.store.v1.MFAChallengeMsg
+	3,   // 494: zeroauthy.store.v1.MFACreateChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 495: zeroauthy.store.v1.MFAGetChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
+	266, // 496: zeroauthy.store.v1.MFAGetChallengeResponse.value:type_name -> zeroauthy.store.v1.MFAChallengeMsg
+	3,   // 497: zeroauthy.store.v1.MFAFailChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 498: zeroauthy.store.v1.MFAConsumeChallengeResponse.error:type_name -> zeroauthy.store.v1.Error
+	267, // 499: zeroauthy.store.v1.MFACreateTicketRequest.v:type_name -> zeroauthy.store.v1.MFAEnrollmentTicket
+	3,   // 500: zeroauthy.store.v1.MFACreateTicketResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 501: zeroauthy.store.v1.MFAConsumeTicketResponse.error:type_name -> zeroauthy.store.v1.Error
+	267, // 502: zeroauthy.store.v1.MFAConsumeTicketResponse.value:type_name -> zeroauthy.store.v1.MFAEnrollmentTicket
+	3,   // 503: zeroauthy.store.v1.MFAPeekTicketResponse.error:type_name -> zeroauthy.store.v1.Error
+	267, // 504: zeroauthy.store.v1.MFAPeekTicketResponse.value:type_name -> zeroauthy.store.v1.MFAEnrollmentTicket
+	268, // 505: zeroauthy.store.v1.MFAPutBrowserRequest.v:type_name -> zeroauthy.store.v1.MFABrowserMsg
+	3,   // 506: zeroauthy.store.v1.MFAPutBrowserResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 507: zeroauthy.store.v1.MFAGetBrowserResponse.error:type_name -> zeroauthy.store.v1.Error
+	268, // 508: zeroauthy.store.v1.MFAGetBrowserResponse.value:type_name -> zeroauthy.store.v1.MFABrowserMsg
+	3,   // 509: zeroauthy.store.v1.MFABumpRememberEpochResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 510: zeroauthy.store.v1.MFAPurgeMFAResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 511: zeroauthy.store.v1.MFADeleteUserMFAResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 512: zeroauthy.store.v1.MFADeleteTenantMFAResponse.error:type_name -> zeroauthy.store.v1.Error
+	366, // 513: zeroauthy.store.v1.PhoneProvider.created_at:type_name -> google.protobuf.Timestamp
+	366, // 514: zeroauthy.store.v1.PhoneProvider.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 515: zeroauthy.store.v1.PhoneTemplate.created_at:type_name -> google.protobuf.Timestamp
+	366, // 516: zeroauthy.store.v1.PhoneTemplate.updated_at:type_name -> google.protobuf.Timestamp
+	366, // 517: zeroauthy.store.v1.PasswordlessCode.expires_at:type_name -> google.protobuf.Timestamp
+	366, // 518: zeroauthy.store.v1.PasswordlessCode.created_at:type_name -> google.protobuf.Timestamp
+	3,   // 519: zeroauthy.store.v1.PhoneErrorResponse.error:type_name -> zeroauthy.store.v1.Error
+	325, // 520: zeroauthy.store.v1.PhoneProviderRequest.v:type_name -> zeroauthy.store.v1.PhoneProvider
+	3,   // 521: zeroauthy.store.v1.PhoneProviderResponse.error:type_name -> zeroauthy.store.v1.Error
+	325, // 522: zeroauthy.store.v1.PhoneProviderResponse.value:type_name -> zeroauthy.store.v1.PhoneProvider
+	3,   // 523: zeroauthy.store.v1.PhoneListProvidersResponse.error:type_name -> zeroauthy.store.v1.Error
+	325, // 524: zeroauthy.store.v1.PhoneListProvidersResponse.values:type_name -> zeroauthy.store.v1.PhoneProvider
+	326, // 525: zeroauthy.store.v1.PhoneTemplateRequest.v:type_name -> zeroauthy.store.v1.PhoneTemplate
+	3,   // 526: zeroauthy.store.v1.PhoneTemplateResponse.error:type_name -> zeroauthy.store.v1.Error
+	326, // 527: zeroauthy.store.v1.PhoneTemplateResponse.value:type_name -> zeroauthy.store.v1.PhoneTemplate
+	3,   // 528: zeroauthy.store.v1.PhoneListTemplatesResponse.error:type_name -> zeroauthy.store.v1.Error
+	326, // 529: zeroauthy.store.v1.PhoneListTemplatesResponse.values:type_name -> zeroauthy.store.v1.PhoneTemplate
+	327, // 530: zeroauthy.store.v1.PhonePutCodeRequest.v:type_name -> zeroauthy.store.v1.PasswordlessCode
+	366, // 531: zeroauthy.store.v1.PhoneCodeKeyRequest.now:type_name -> google.protobuf.Timestamp
+	3,   // 532: zeroauthy.store.v1.PhoneFailCodeResponse.error:type_name -> zeroauthy.store.v1.Error
+	366, // 533: zeroauthy.store.v1.PhoneConsumeCodeRequest.now:type_name -> google.protobuf.Timestamp
+	3,   // 534: zeroauthy.store.v1.PhoneCodeResponse.error:type_name -> zeroauthy.store.v1.Error
+	327, // 535: zeroauthy.store.v1.PhoneCodeResponse.value:type_name -> zeroauthy.store.v1.PasswordlessCode
+	366, // 536: zeroauthy.store.v1.PhonePeekLinkRequest.now:type_name -> google.protobuf.Timestamp
+	3,   // 537: zeroauthy.store.v1.PhoneFindUsersResponse.error:type_name -> zeroauthy.store.v1.Error
+	80,  // 538: zeroauthy.store.v1.PhoneFindUsersResponse.values:type_name -> zeroauthy.store.v1.User
+	366, // 539: zeroauthy.store.v1.PhonePurgeRequest.before:type_name -> google.protobuf.Timestamp
+	3,   // 540: zeroauthy.store.v1.PhoneCountResponse.error:type_name -> zeroauthy.store.v1.Error
+	366, // 541: zeroauthy.store.v1.WebAuthnSnooze.until:type_name -> google.protobuf.Timestamp
+	3,   // 542: zeroauthy.store.v1.WebAuthnErrorResponse.error:type_name -> zeroauthy.store.v1.Error
+	3,   // 543: zeroauthy.store.v1.WebAuthnAuthenticatorResponse.error:type_name -> zeroauthy.store.v1.Error
+	264, // 544: zeroauthy.store.v1.WebAuthnAuthenticatorResponse.value:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	264, // 545: zeroauthy.store.v1.WebAuthnCreatePasskeyRequest.v:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	80,  // 546: zeroauthy.store.v1.WebAuthnCreateUserRequest.user:type_name -> zeroauthy.store.v1.User
+	264, // 547: zeroauthy.store.v1.WebAuthnCreateUserRequest.authenticator:type_name -> zeroauthy.store.v1.MFAAuthenticator
+	366, // 548: zeroauthy.store.v1.WebAuthnAcceptAssertionRequest.at:type_name -> google.protobuf.Timestamp
+	347, // 549: zeroauthy.store.v1.WebAuthnSnoozeRequest.v:type_name -> zeroauthy.store.v1.WebAuthnSnooze
+	366, // 550: zeroauthy.store.v1.WebAuthnGetSnoozeRequest.now:type_name -> google.protobuf.Timestamp
+	3,   // 551: zeroauthy.store.v1.WebAuthnSnoozeResponse.error:type_name -> zeroauthy.store.v1.Error
+	347, // 552: zeroauthy.store.v1.WebAuthnSnoozeResponse.value:type_name -> zeroauthy.store.v1.WebAuthnSnooze
+	3,   // 553: zeroauthy.store.v1.WebAuthnTenantIDsResponse.error:type_name -> zeroauthy.store.v1.Error
+	366, // 554: zeroauthy.store.v1.WebAuthnPurgeRequest.before:type_name -> google.protobuf.Timestamp
+	3,   // 555: zeroauthy.store.v1.WebAuthnCountResponse.error:type_name -> zeroauthy.store.v1.Error
+	7,   // 556: zeroauthy.store.v1.StoreService.MFACapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	269, // 557: zeroauthy.store.v1.StoreService.MFAGetGuardian:input_type -> zeroauthy.store.v1.MFAGetGuardianRequest
+	271, // 558: zeroauthy.store.v1.StoreService.MFAPutGuardian:input_type -> zeroauthy.store.v1.MFAPutGuardianRequest
+	273, // 559: zeroauthy.store.v1.StoreService.MFACreateAuthenticator:input_type -> zeroauthy.store.v1.MFACreateAuthenticatorRequest
+	275, // 560: zeroauthy.store.v1.StoreService.MFAGetAuthenticator:input_type -> zeroauthy.store.v1.MFAGetAuthenticatorRequest
+	277, // 561: zeroauthy.store.v1.StoreService.MFAGetAuthenticatorByEnrollmentID:input_type -> zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDRequest
+	279, // 562: zeroauthy.store.v1.StoreService.MFAListAuthenticators:input_type -> zeroauthy.store.v1.MFAListAuthenticatorsRequest
+	281, // 563: zeroauthy.store.v1.StoreService.MFAUpdateAuthenticator:input_type -> zeroauthy.store.v1.MFAUpdateAuthenticatorRequest
+	283, // 564: zeroauthy.store.v1.StoreService.MFADeleteAuthenticator:input_type -> zeroauthy.store.v1.MFADeleteAuthenticatorRequest
+	285, // 565: zeroauthy.store.v1.StoreService.MFADeleteUserAuthenticators:input_type -> zeroauthy.store.v1.MFADeleteUserAuthenticatorsRequest
+	287, // 566: zeroauthy.store.v1.StoreService.MFAAcceptTOTPStep:input_type -> zeroauthy.store.v1.MFAAcceptTOTPStepRequest
+	289, // 567: zeroauthy.store.v1.StoreService.MFAReplaceRecoveryCode:input_type -> zeroauthy.store.v1.MFAReplaceRecoveryCodeRequest
+	291, // 568: zeroauthy.store.v1.StoreService.MFAAcceptSignCount:input_type -> zeroauthy.store.v1.MFAAcceptSignCountRequest
+	293, // 569: zeroauthy.store.v1.StoreService.MFACreateMFAToken:input_type -> zeroauthy.store.v1.MFACreateMFATokenRequest
+	295, // 570: zeroauthy.store.v1.StoreService.MFAConsumeMFAToken:input_type -> zeroauthy.store.v1.MFAConsumeMFATokenRequest
+	297, // 571: zeroauthy.store.v1.StoreService.MFAPeekMFAToken:input_type -> zeroauthy.store.v1.MFAPeekMFATokenRequest
+	299, // 572: zeroauthy.store.v1.StoreService.MFACreateChallenge:input_type -> zeroauthy.store.v1.MFACreateChallengeRequest
+	301, // 573: zeroauthy.store.v1.StoreService.MFAGetChallenge:input_type -> zeroauthy.store.v1.MFAGetChallengeRequest
+	303, // 574: zeroauthy.store.v1.StoreService.MFAFailChallenge:input_type -> zeroauthy.store.v1.MFAFailChallengeRequest
+	305, // 575: zeroauthy.store.v1.StoreService.MFAConsumeChallenge:input_type -> zeroauthy.store.v1.MFAConsumeChallengeRequest
+	307, // 576: zeroauthy.store.v1.StoreService.MFACreateTicket:input_type -> zeroauthy.store.v1.MFACreateTicketRequest
+	309, // 577: zeroauthy.store.v1.StoreService.MFAConsumeTicket:input_type -> zeroauthy.store.v1.MFAConsumeTicketRequest
+	311, // 578: zeroauthy.store.v1.StoreService.MFAPeekTicket:input_type -> zeroauthy.store.v1.MFAPeekTicketRequest
+	313, // 579: zeroauthy.store.v1.StoreService.MFAPutBrowser:input_type -> zeroauthy.store.v1.MFAPutBrowserRequest
+	315, // 580: zeroauthy.store.v1.StoreService.MFAGetBrowser:input_type -> zeroauthy.store.v1.MFAGetBrowserRequest
+	317, // 581: zeroauthy.store.v1.StoreService.MFABumpRememberEpoch:input_type -> zeroauthy.store.v1.MFABumpRememberEpochRequest
+	319, // 582: zeroauthy.store.v1.StoreService.MFAPurgeMFA:input_type -> zeroauthy.store.v1.MFAPurgeMFARequest
+	321, // 583: zeroauthy.store.v1.StoreService.MFADeleteUserMFA:input_type -> zeroauthy.store.v1.MFADeleteUserMFARequest
+	323, // 584: zeroauthy.store.v1.StoreService.MFADeleteTenantMFA:input_type -> zeroauthy.store.v1.MFADeleteTenantMFARequest
+	13,  // 585: zeroauthy.store.v1.StoreService.SessionsMarkMFA:input_type -> zeroauthy.store.v1.TouchRequest
+	14,  // 586: zeroauthy.store.v1.StoreService.SessionsSetAuthMethods:input_type -> zeroauthy.store.v1.SessionsSetAuthMethodsRequest
+	7,   // 587: zeroauthy.store.v1.StoreService.PhoneCapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	329, // 588: zeroauthy.store.v1.StoreService.PhoneListProviders:input_type -> zeroauthy.store.v1.PhoneTenantRequest
+	330, // 589: zeroauthy.store.v1.StoreService.PhoneGetProvider:input_type -> zeroauthy.store.v1.PhoneIDRequest
+	331, // 590: zeroauthy.store.v1.StoreService.PhoneCreateProvider:input_type -> zeroauthy.store.v1.PhoneProviderRequest
+	331, // 591: zeroauthy.store.v1.StoreService.PhoneUpdateProvider:input_type -> zeroauthy.store.v1.PhoneProviderRequest
+	330, // 592: zeroauthy.store.v1.StoreService.PhoneDeleteProvider:input_type -> zeroauthy.store.v1.PhoneIDRequest
+	329, // 593: zeroauthy.store.v1.StoreService.PhoneListTemplates:input_type -> zeroauthy.store.v1.PhoneTenantRequest
+	330, // 594: zeroauthy.store.v1.StoreService.PhoneGetTemplate:input_type -> zeroauthy.store.v1.PhoneIDRequest
+	334, // 595: zeroauthy.store.v1.StoreService.PhonePutTemplate:input_type -> zeroauthy.store.v1.PhoneTemplateRequest
+	330, // 596: zeroauthy.store.v1.StoreService.PhoneDeleteTemplate:input_type -> zeroauthy.store.v1.PhoneIDRequest
+	337, // 597: zeroauthy.store.v1.StoreService.PhonePutPasswordlessCode:input_type -> zeroauthy.store.v1.PhonePutCodeRequest
+	338, // 598: zeroauthy.store.v1.StoreService.PhoneFailPasswordlessCode:input_type -> zeroauthy.store.v1.PhoneCodeKeyRequest
+	340, // 599: zeroauthy.store.v1.StoreService.PhoneConsumePasswordlessCode:input_type -> zeroauthy.store.v1.PhoneConsumeCodeRequest
+	342, // 600: zeroauthy.store.v1.StoreService.PhonePeekPasswordlessLink:input_type -> zeroauthy.store.v1.PhonePeekLinkRequest
+	343, // 601: zeroauthy.store.v1.StoreService.PhoneFindUsersByPhone:input_type -> zeroauthy.store.v1.PhoneFindUsersRequest
+	345, // 602: zeroauthy.store.v1.StoreService.PhonePurge:input_type -> zeroauthy.store.v1.PhonePurgeRequest
+	329, // 603: zeroauthy.store.v1.StoreService.PhoneDeleteTenant:input_type -> zeroauthy.store.v1.PhoneTenantRequest
+	7,   // 604: zeroauthy.store.v1.StoreService.WebAuthnCapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	349, // 605: zeroauthy.store.v1.StoreService.WebAuthnGetAuthenticatorByCredentialID:input_type -> zeroauthy.store.v1.WebAuthnCredentialRequest
+	351, // 606: zeroauthy.store.v1.StoreService.WebAuthnCreatePasskey:input_type -> zeroauthy.store.v1.WebAuthnCreatePasskeyRequest
+	352, // 607: zeroauthy.store.v1.StoreService.WebAuthnCreateUserWithPasskey:input_type -> zeroauthy.store.v1.WebAuthnCreateUserRequest
+	353, // 608: zeroauthy.store.v1.StoreService.WebAuthnAcceptAssertion:input_type -> zeroauthy.store.v1.WebAuthnAcceptAssertionRequest
+	354, // 609: zeroauthy.store.v1.StoreService.WebAuthnMovePasskeys:input_type -> zeroauthy.store.v1.WebAuthnMovePasskeysRequest
+	355, // 610: zeroauthy.store.v1.StoreService.WebAuthnPutSnooze:input_type -> zeroauthy.store.v1.WebAuthnSnoozeRequest
+	356, // 611: zeroauthy.store.v1.StoreService.WebAuthnGetSnooze:input_type -> zeroauthy.store.v1.WebAuthnGetSnoozeRequest
+	358, // 612: zeroauthy.store.v1.StoreService.WebAuthnHostTenantsUnder:input_type -> zeroauthy.store.v1.WebAuthnHostTenantsRequest
+	360, // 613: zeroauthy.store.v1.StoreService.WebAuthnPurge:input_type -> zeroauthy.store.v1.WebAuthnPurgeRequest
+	7,   // 614: zeroauthy.store.v1.StoreService.EventsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	261, // 615: zeroauthy.store.v1.StoreService.AppendEvents:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 616: zeroauthy.store.v1.StoreService.GetEvent:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 617: zeroauthy.store.v1.StoreService.EventsAfter:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 618: zeroauthy.store.v1.StoreService.EventsFromTime:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 619: zeroauthy.store.v1.StoreService.LatestEventSeq:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 620: zeroauthy.store.v1.StoreService.PurgedEventSeq:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 621: zeroauthy.store.v1.StoreService.OldestEventSeq:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 622: zeroauthy.store.v1.StoreService.PurgeEvents:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 623: zeroauthy.store.v1.StoreService.DeleteTenantEvents:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 624: zeroauthy.store.v1.StoreService.CreateEventStream:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 625: zeroauthy.store.v1.StoreService.GetEventStream:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 626: zeroauthy.store.v1.StoreService.ListEventStreams:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 627: zeroauthy.store.v1.StoreService.CountEventStreams:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 628: zeroauthy.store.v1.StoreService.UpdateEventStream:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 629: zeroauthy.store.v1.StoreService.DeleteEventStream:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 630: zeroauthy.store.v1.StoreService.LeaseEventStream:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 631: zeroauthy.store.v1.StoreService.RecordEventDelivery:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 632: zeroauthy.store.v1.StoreService.ListDeliveries:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 633: zeroauthy.store.v1.StoreService.GetDelivery:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 634: zeroauthy.store.v1.StoreService.QueueRedelivery:input_type -> zeroauthy.store.v1.EventsRequest
+	261, // 635: zeroauthy.store.v1.StoreService.QueuedDeliveries:input_type -> zeroauthy.store.v1.EventsRequest
+	7,   // 636: zeroauthy.store.v1.StoreService.LogsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	251, // 637: zeroauthy.store.v1.StoreService.AppendLogs:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 638: zeroauthy.store.v1.StoreService.GetLog:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 639: zeroauthy.store.v1.StoreService.SearchLogs:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 640: zeroauthy.store.v1.StoreService.LogsAfter:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 641: zeroauthy.store.v1.StoreService.LatestLogs:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 642: zeroauthy.store.v1.StoreService.PurgeLogs:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 643: zeroauthy.store.v1.StoreService.DeleteTenantLogs:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 644: zeroauthy.store.v1.StoreService.CreateLogStream:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 645: zeroauthy.store.v1.StoreService.GetLogStream:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 646: zeroauthy.store.v1.StoreService.ListLogStreams:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 647: zeroauthy.store.v1.StoreService.UpdateLogStream:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 648: zeroauthy.store.v1.StoreService.DeleteLogStream:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 649: zeroauthy.store.v1.StoreService.LeaseLogStream:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 650: zeroauthy.store.v1.StoreService.RecordDelivery:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 651: zeroauthy.store.v1.StoreService.DailyStats:input_type -> zeroauthy.store.v1.LogsRequest
+	251, // 652: zeroauthy.store.v1.StoreService.ActiveUsers:input_type -> zeroauthy.store.v1.LogsRequest
+	7,   // 653: zeroauthy.store.v1.StoreService.RBACCapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	201, // 654: zeroauthy.store.v1.StoreService.RBACCreateRole:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 655: zeroauthy.store.v1.StoreService.RBACGetRole:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 656: zeroauthy.store.v1.StoreService.RBACUpdateRole:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 657: zeroauthy.store.v1.StoreService.RBACDeleteRole:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 658: zeroauthy.store.v1.StoreService.RBACListRoles:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 659: zeroauthy.store.v1.StoreService.RBACRolePermissions:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 660: zeroauthy.store.v1.StoreService.RBACChangeRolePermissions:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 661: zeroauthy.store.v1.StoreService.RBACRoleUsers:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 662: zeroauthy.store.v1.StoreService.RBACAssignRoleUsers:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 663: zeroauthy.store.v1.StoreService.RBACUserRoles:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 664: zeroauthy.store.v1.StoreService.RBACChangeUserRoles:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 665: zeroauthy.store.v1.StoreService.RBACUserPermissions:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 666: zeroauthy.store.v1.StoreService.RBACChangeUserPermissions:input_type -> zeroauthy.store.v1.RBACRequest
+	201, // 667: zeroauthy.store.v1.StoreService.RBACSnapshot:input_type -> zeroauthy.store.v1.RBACRequest
+	7,   // 668: zeroauthy.store.v1.StoreService.OrganizationsIICapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	236, // 669: zeroauthy.store.v1.StoreService.OrganizationsIICreateInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 670: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 671: zeroauthy.store.v1.StoreService.OrganizationsIIFindInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 672: zeroauthy.store.v1.StoreService.OrganizationsIIListInvitations:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 673: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 674: zeroauthy.store.v1.StoreService.OrganizationsIIConsumeInvitation:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 675: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitationReceipt:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 676: zeroauthy.store.v1.StoreService.OrganizationsIIPutClients:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 677: zeroauthy.store.v1.StoreService.OrganizationsIIGetClient:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 678: zeroauthy.store.v1.StoreService.OrganizationsIIListClients:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 679: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClients:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 680: zeroauthy.store.v1.StoreService.OrganizationsIIPutClientGrant:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 681: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClientGrant:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 682: zeroauthy.store.v1.StoreService.OrganizationsIIListClientGrants:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 683: zeroauthy.store.v1.StoreService.OrganizationsIIGrantOrganizations:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 684: zeroauthy.store.v1.StoreService.OrganizationsIIHasClientGrant:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 685: zeroauthy.store.v1.StoreService.OrganizationsIIPutDiscoveryDomain:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 686: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomain:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 687: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomainByName:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 688: zeroauthy.store.v1.StoreService.OrganizationsIIListDiscoveryDomains:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 689: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteDiscoveryDomain:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 690: zeroauthy.store.v1.StoreService.OrganizationsIIDiscoverOrganizations:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	236, // 691: zeroauthy.store.v1.StoreService.OrganizationsIISearch:input_type -> zeroauthy.store.v1.OrganizationsIIRequest
+	7,   // 692: zeroauthy.store.v1.StoreService.OrganizationsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	210, // 693: zeroauthy.store.v1.StoreService.OrganizationsCreate:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 694: zeroauthy.store.v1.StoreService.OrganizationsGet:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 695: zeroauthy.store.v1.StoreService.OrganizationsGetByName:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 696: zeroauthy.store.v1.StoreService.OrganizationsList:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 697: zeroauthy.store.v1.StoreService.OrganizationsUpdate:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 698: zeroauthy.store.v1.StoreService.OrganizationsDelete:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 699: zeroauthy.store.v1.StoreService.OrganizationsConnections:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 700: zeroauthy.store.v1.StoreService.OrganizationsGetConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 701: zeroauthy.store.v1.StoreService.OrganizationsPutConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 702: zeroauthy.store.v1.StoreService.OrganizationsDeleteConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 703: zeroauthy.store.v1.StoreService.OrganizationsConnectionsByConnection:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 704: zeroauthy.store.v1.StoreService.OrganizationsMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 705: zeroauthy.store.v1.StoreService.OrganizationsAddMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 706: zeroauthy.store.v1.StoreService.OrganizationsRemoveMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 707: zeroauthy.store.v1.StoreService.OrganizationsIsMember:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 708: zeroauthy.store.v1.StoreService.OrganizationsUserOrganizations:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 709: zeroauthy.store.v1.StoreService.OrganizationsMemberRoles:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 710: zeroauthy.store.v1.StoreService.OrganizationsChangeMemberRoles:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	210, // 711: zeroauthy.store.v1.StoreService.OrganizationsRoleMembers:input_type -> zeroauthy.store.v1.OrganizationsRequest
+	7,   // 712: zeroauthy.store.v1.StoreService.ActionsCapabilities:input_type -> zeroauthy.store.v1.PingRequest
+	223, // 713: zeroauthy.store.v1.StoreService.ActionsCreateAction:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 714: zeroauthy.store.v1.StoreService.ActionsGetAction:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 715: zeroauthy.store.v1.StoreService.ActionsGetActionByName:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 716: zeroauthy.store.v1.StoreService.ActionsUpdateAction:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 717: zeroauthy.store.v1.StoreService.ActionsDeleteAction:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 718: zeroauthy.store.v1.StoreService.ActionsListActions:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 719: zeroauthy.store.v1.StoreService.ActionsDeploy:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 720: zeroauthy.store.v1.StoreService.ActionsGetVersion:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 721: zeroauthy.store.v1.StoreService.ActionsListVersions:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 722: zeroauthy.store.v1.StoreService.ActionsPutBuild:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 723: zeroauthy.store.v1.StoreService.ActionsGetBuild:input_type -> zeroauthy.store.v1.ActionsRequest
+	225, // 724: zeroauthy.store.v1.StoreService.ActionsPutArtifact:input_type -> zeroauthy.store.v1.ActionsArtifactChunk
+	223, // 725: zeroauthy.store.v1.StoreService.ActionsGetArtifact:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 726: zeroauthy.store.v1.StoreService.ActionsBindings:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 727: zeroauthy.store.v1.StoreService.ActionsBindingsInitialized:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 728: zeroauthy.store.v1.StoreService.ActionsInitializeBindings:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 729: zeroauthy.store.v1.StoreService.ActionsReplaceBindings:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 730: zeroauthy.store.v1.StoreService.ActionsCreateExecution:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 731: zeroauthy.store.v1.StoreService.ActionsListExecutions:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 732: zeroauthy.store.v1.StoreService.ActionsGetExecution:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 733: zeroauthy.store.v1.StoreService.ActionsPurgeExecutions:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 734: zeroauthy.store.v1.StoreService.ActionsCreateContinue:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 735: zeroauthy.store.v1.StoreService.ActionsConsumeContinue:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 736: zeroauthy.store.v1.StoreService.ActionsPurgeContinue:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 737: zeroauthy.store.v1.StoreService.ActionsCreateModule:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 738: zeroauthy.store.v1.StoreService.ActionsGetModule:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 739: zeroauthy.store.v1.StoreService.ActionsGetModuleByName:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 740: zeroauthy.store.v1.StoreService.ActionsUpdateModule:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 741: zeroauthy.store.v1.StoreService.ActionsDeleteModule:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 742: zeroauthy.store.v1.StoreService.ActionsListModules:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 743: zeroauthy.store.v1.StoreService.ActionsPublishModule:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 744: zeroauthy.store.v1.StoreService.ActionsRollbackModule:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 745: zeroauthy.store.v1.StoreService.ActionsListModuleVersions:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 746: zeroauthy.store.v1.StoreService.ActionsGetModuleVersion:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 747: zeroauthy.store.v1.StoreService.ActionsModuleUsers:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 748: zeroauthy.store.v1.StoreService.ActionsEnqueueJob:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 749: zeroauthy.store.v1.StoreService.ActionsGetJob:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 750: zeroauthy.store.v1.StoreService.ActionsCancelJob:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 751: zeroauthy.store.v1.StoreService.ActionsClaimJobs:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 752: zeroauthy.store.v1.StoreService.ActionsFinishJob:input_type -> zeroauthy.store.v1.ActionsRequest
+	223, // 753: zeroauthy.store.v1.StoreService.ActionsPurgeJobs:input_type -> zeroauthy.store.v1.ActionsRequest
+	7,   // 754: zeroauthy.store.v1.StoreService.Ping:input_type -> zeroauthy.store.v1.PingRequest
+	195, // 755: zeroauthy.store.v1.StoreService.MicrosoftFederationSupported:input_type -> zeroauthy.store.v1.MicrosoftFederationCapabilitiesRequest
+	190, // 756: zeroauthy.store.v1.StoreService.CustomDomainsSupported:input_type -> zeroauthy.store.v1.CustomDomainCapabilitiesRequest
+	191, // 757: zeroauthy.store.v1.StoreService.CustomDomainsGet:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 758: zeroauthy.store.v1.StoreService.CustomDomainsList:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 759: zeroauthy.store.v1.StoreService.CustomDomainsListDue:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 760: zeroauthy.store.v1.StoreService.CustomDomainsCreate:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 761: zeroauthy.store.v1.StoreService.CustomDomainsUpdate:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 762: zeroauthy.store.v1.StoreService.CustomDomainsDelete:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 763: zeroauthy.store.v1.StoreService.CustomDomainsGetHost:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 764: zeroauthy.store.v1.StoreService.CustomDomainsPutHost:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 765: zeroauthy.store.v1.StoreService.CustomDomainsDeleteHost:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 766: zeroauthy.store.v1.StoreService.CustomDomainsGetDefault:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 767: zeroauthy.store.v1.StoreService.CustomDomainsSetDefault:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	191, // 768: zeroauthy.store.v1.StoreService.CustomDomainsAdmitAttempt:input_type -> zeroauthy.store.v1.CustomDomainRequest
+	193, // 769: zeroauthy.store.v1.StoreService.TLSAssetsGet:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	193, // 770: zeroauthy.store.v1.StoreService.TLSAssetsPut:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	193, // 771: zeroauthy.store.v1.StoreService.TLSAssetsDelete:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	193, // 772: zeroauthy.store.v1.StoreService.TLSAssetsListExpired:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	193, // 773: zeroauthy.store.v1.StoreService.TLSAssetsClaimLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	193, // 774: zeroauthy.store.v1.StoreService.TLSAssetsRenewLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	193, // 775: zeroauthy.store.v1.StoreService.TLSAssetsCheckLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	193, // 776: zeroauthy.store.v1.StoreService.TLSAssetsReleaseLease:input_type -> zeroauthy.store.v1.TLSAssetRequest
+	183, // 777: zeroauthy.store.v1.StoreService.ProtectionReserve:input_type -> zeroauthy.store.v1.ProtectionRequest
+	183, // 778: zeroauthy.store.v1.StoreService.ProtectionComplete:input_type -> zeroauthy.store.v1.ProtectionRequest
+	183, // 779: zeroauthy.store.v1.StoreService.ProtectionBlocks:input_type -> zeroauthy.store.v1.ProtectionRequest
+	183, // 780: zeroauthy.store.v1.StoreService.ProtectionClear:input_type -> zeroauthy.store.v1.ProtectionRequest
+	183, // 781: zeroauthy.store.v1.StoreService.ProtectionUseProof:input_type -> zeroauthy.store.v1.ProtectionRequest
+	183, // 782: zeroauthy.store.v1.StoreService.ProtectionRecordRisk:input_type -> zeroauthy.store.v1.ProtectionRequest
+	183, // 783: zeroauthy.store.v1.StoreService.ProtectionRiskCount:input_type -> zeroauthy.store.v1.ProtectionRequest
+	183, // 784: zeroauthy.store.v1.StoreService.ProtectionSweep:input_type -> zeroauthy.store.v1.ProtectionRequest
+	7,   // 785: zeroauthy.store.v1.StoreService.TenantSettingsSupported:input_type -> zeroauthy.store.v1.PingRequest
+	8,   // 786: zeroauthy.store.v1.StoreService.BeginTx:input_type -> zeroauthy.store.v1.BeginTxRequest
+	10,  // 787: zeroauthy.store.v1.StoreService.Commit:input_type -> zeroauthy.store.v1.EndTxRequest
+	10,  // 788: zeroauthy.store.v1.StoreService.Rollback:input_type -> zeroauthy.store.v1.EndTxRequest
+	97,  // 789: zeroauthy.store.v1.StoreService.TenantsCreate:input_type -> zeroauthy.store.v1.TenantWrite
+	98,  // 790: zeroauthy.store.v1.StoreService.TenantsGet:input_type -> zeroauthy.store.v1.TenantsGetRequest
+	98,  // 791: zeroauthy.store.v1.StoreService.TenantsGetByName:input_type -> zeroauthy.store.v1.TenantsGetRequest
+	98,  // 792: zeroauthy.store.v1.StoreService.TenantsGetByDomain:input_type -> zeroauthy.store.v1.TenantsGetRequest
+	97,  // 793: zeroauthy.store.v1.StoreService.TenantsUpdate:input_type -> zeroauthy.store.v1.TenantWrite
+	99,  // 794: zeroauthy.store.v1.StoreService.TenantsList:input_type -> zeroauthy.store.v1.TenantsListRequest
+	98,  // 795: zeroauthy.store.v1.StoreService.TenantsDelete:input_type -> zeroauthy.store.v1.TenantsGetRequest
+	102, // 796: zeroauthy.store.v1.StoreService.ClientsCreate:input_type -> zeroauthy.store.v1.ClientWrite
+	12,  // 797: zeroauthy.store.v1.StoreService.ClientsGet:input_type -> zeroauthy.store.v1.ScopedKey
+	102, // 798: zeroauthy.store.v1.StoreService.ClientsUpdate:input_type -> zeroauthy.store.v1.ClientWrite
+	12,  // 799: zeroauthy.store.v1.StoreService.ClientsDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	11,  // 800: zeroauthy.store.v1.StoreService.ClientsList:input_type -> zeroauthy.store.v1.TenantScope
+	105, // 801: zeroauthy.store.v1.StoreService.ClientsListPage:input_type -> zeroauthy.store.v1.ClientsListPageRequest
+	107, // 802: zeroauthy.store.v1.StoreService.ResourceServersCreate:input_type -> zeroauthy.store.v1.ResourceServerWrite
+	12,  // 803: zeroauthy.store.v1.StoreService.ResourceServersGet:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 804: zeroauthy.store.v1.StoreService.ResourceServersGetByIdentifier:input_type -> zeroauthy.store.v1.ScopedKey
+	107, // 805: zeroauthy.store.v1.StoreService.ResourceServersUpdate:input_type -> zeroauthy.store.v1.ResourceServerWrite
+	12,  // 806: zeroauthy.store.v1.StoreService.ResourceServersDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	11,  // 807: zeroauthy.store.v1.StoreService.ResourceServersList:input_type -> zeroauthy.store.v1.TenantScope
+	32,  // 808: zeroauthy.store.v1.StoreService.ResourceServersRenameSystem:input_type -> zeroauthy.store.v1.ResourceServerRenameSystemRequest
+	110, // 809: zeroauthy.store.v1.StoreService.ClientGrantsCreate:input_type -> zeroauthy.store.v1.ClientGrantWrite
+	111, // 810: zeroauthy.store.v1.StoreService.ClientGrantsFind:input_type -> zeroauthy.store.v1.ClientGrantsFindRequest
+	110, // 811: zeroauthy.store.v1.StoreService.ClientGrantsUpdate:input_type -> zeroauthy.store.v1.ClientGrantWrite
+	12,  // 812: zeroauthy.store.v1.StoreService.ClientGrantsDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	113, // 813: zeroauthy.store.v1.StoreService.ClientGrantsList:input_type -> zeroauthy.store.v1.ClientGrantsListRequest
+	116, // 814: zeroauthy.store.v1.StoreService.UserGrantsFind:input_type -> zeroauthy.store.v1.UserGrantsFindRequest
+	115, // 815: zeroauthy.store.v1.StoreService.UserGrantsUpsert:input_type -> zeroauthy.store.v1.UserGrantWrite
+	119, // 816: zeroauthy.store.v1.StoreService.UserGrantsList:input_type -> zeroauthy.store.v1.UserGrantsListRequest
+	12,  // 817: zeroauthy.store.v1.StoreService.UserGrantsListByUser:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 818: zeroauthy.store.v1.StoreService.UserGrantsListByAudience:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 819: zeroauthy.store.v1.StoreService.UserGrantsDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 820: zeroauthy.store.v1.StoreService.UserGrantsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
+	120, // 821: zeroauthy.store.v1.StoreService.SigningKeysCreate:input_type -> zeroauthy.store.v1.SigningKeyWrite
+	11,  // 822: zeroauthy.store.v1.StoreService.SigningKeysList:input_type -> zeroauthy.store.v1.TenantScope
+	122, // 823: zeroauthy.store.v1.StoreService.SigningKeysRotate:input_type -> zeroauthy.store.v1.SigningKeysRotateRequest
+	12,  // 824: zeroauthy.store.v1.StoreService.SigningKeysGet:input_type -> zeroauthy.store.v1.ScopedKey
+	122, // 825: zeroauthy.store.v1.StoreService.SigningKeysRotateWithResult:input_type -> zeroauthy.store.v1.SigningKeysRotateRequest
+	39,  // 826: zeroauthy.store.v1.StoreService.SigningKeysRevoke:input_type -> zeroauthy.store.v1.SigningKeyRevokeRequest
+	40,  // 827: zeroauthy.store.v1.StoreService.SigningKeysSetCertificate:input_type -> zeroauthy.store.v1.SigningKeyCertificateRequest
+	11,  // 828: zeroauthy.store.v1.StoreService.CustomSigningKeysGet:input_type -> zeroauthy.store.v1.TenantScope
+	43,  // 829: zeroauthy.store.v1.StoreService.CustomSigningKeysReplace:input_type -> zeroauthy.store.v1.CustomSigningKeySetWrite
+	11,  // 830: zeroauthy.store.v1.StoreService.CustomSigningKeysDelete:input_type -> zeroauthy.store.v1.TenantScope
+	11,  // 831: zeroauthy.store.v1.StoreService.HostedLoginsGet:input_type -> zeroauthy.store.v1.TenantScope
+	46,  // 832: zeroauthy.store.v1.StoreService.HostedLoginsPut:input_type -> zeroauthy.store.v1.HostedLoginConfigWrite
+	11,  // 833: zeroauthy.store.v1.StoreService.FederationIdentityEpoch:input_type -> zeroauthy.store.v1.TenantScope
+	11,  // 834: zeroauthy.store.v1.StoreService.FederationBumpIdentityEpoch:input_type -> zeroauthy.store.v1.TenantScope
+	49,  // 835: zeroauthy.store.v1.StoreService.FederationCreateAttempt:input_type -> zeroauthy.store.v1.FederationAttemptWrite
+	50,  // 836: zeroauthy.store.v1.StoreService.FederationGetAttempt:input_type -> zeroauthy.store.v1.FederationAttemptKey
+	51,  // 837: zeroauthy.store.v1.StoreService.FederationClaimAttempt:input_type -> zeroauthy.store.v1.FederationClaimRequest
+	50,  // 838: zeroauthy.store.v1.StoreService.FederationFinishAttempt:input_type -> zeroauthy.store.v1.FederationAttemptKey
+	55,  // 839: zeroauthy.store.v1.StoreService.FederationPutIdentity:input_type -> zeroauthy.store.v1.FederatedIdentityWrite
+	55,  // 840: zeroauthy.store.v1.StoreService.FederationDeleteIdentity:input_type -> zeroauthy.store.v1.FederatedIdentityWrite
+	54,  // 841: zeroauthy.store.v1.StoreService.FederationGetTokens:input_type -> zeroauthy.store.v1.FederatedIdentityRequest
+	56,  // 842: zeroauthy.store.v1.StoreService.FederationPutTokens:input_type -> zeroauthy.store.v1.FederatedTokensWrite
+	54,  // 843: zeroauthy.store.v1.StoreService.FederationDeleteTokens:input_type -> zeroauthy.store.v1.FederatedIdentityRequest
+	15,  // 844: zeroauthy.store.v1.StoreService.FederationDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	58,  // 845: zeroauthy.store.v1.StoreService.UsersFindByIdentity:input_type -> zeroauthy.store.v1.UsersFindByIdentityRequest
+	11,  // 846: zeroauthy.store.v1.StoreService.EmailProvidersGet:input_type -> zeroauthy.store.v1.TenantScope
+	62,  // 847: zeroauthy.store.v1.StoreService.EmailProvidersPut:input_type -> zeroauthy.store.v1.EmailProviderWrite
+	63,  // 848: zeroauthy.store.v1.StoreService.EmailProvidersDelete:input_type -> zeroauthy.store.v1.EmailProviderDeleteRequest
+	65,  // 849: zeroauthy.store.v1.StoreService.EmailTemplatesGet:input_type -> zeroauthy.store.v1.EmailTemplateKey
+	67,  // 850: zeroauthy.store.v1.StoreService.EmailTemplatesPut:input_type -> zeroauthy.store.v1.EmailTemplateWrite
+	68,  // 851: zeroauthy.store.v1.StoreService.EmailNotificationsClaim:input_type -> zeroauthy.store.v1.EmailNotificationClaimRequest
+	70,  // 852: zeroauthy.store.v1.StoreService.EmailNotificationsSweep:input_type -> zeroauthy.store.v1.EmailNotificationSweepRequest
+	123, // 853: zeroauthy.store.v1.StoreService.ConnectionsCreate:input_type -> zeroauthy.store.v1.ConnectionWrite
+	12,  // 854: zeroauthy.store.v1.StoreService.ConnectionsGet:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 855: zeroauthy.store.v1.StoreService.ConnectionsGetByName:input_type -> zeroauthy.store.v1.ScopedKey
+	123, // 856: zeroauthy.store.v1.StoreService.ConnectionsUpdate:input_type -> zeroauthy.store.v1.ConnectionWrite
+	11,  // 857: zeroauthy.store.v1.StoreService.ConnectionsList:input_type -> zeroauthy.store.v1.TenantScope
+	126, // 858: zeroauthy.store.v1.StoreService.ConnectionsListPage:input_type -> zeroauthy.store.v1.ConnectionsListPageRequest
+	12,  // 859: zeroauthy.store.v1.StoreService.ConnectionsDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	128, // 860: zeroauthy.store.v1.StoreService.PasswordHistoriesAdd:input_type -> zeroauthy.store.v1.PasswordHistoryAdd
+	12,  // 861: zeroauthy.store.v1.StoreService.PasswordHistoriesList:input_type -> zeroauthy.store.v1.ScopedKey
+	130, // 862: zeroauthy.store.v1.StoreService.UsersCreate:input_type -> zeroauthy.store.v1.UserWrite
+	12,  // 863: zeroauthy.store.v1.StoreService.UsersGet:input_type -> zeroauthy.store.v1.ScopedKey
+	132, // 864: zeroauthy.store.v1.StoreService.UsersFindByLogin:input_type -> zeroauthy.store.v1.UsersFindByLoginRequest
+	130, // 865: zeroauthy.store.v1.StoreService.UsersUpdate:input_type -> zeroauthy.store.v1.UserWrite
+	133, // 866: zeroauthy.store.v1.StoreService.UsersRecordLogin:input_type -> zeroauthy.store.v1.UsersRecordLoginRequest
+	139, // 867: zeroauthy.store.v1.StoreService.UsersSetPasswordHash:input_type -> zeroauthy.store.v1.UsersSetPasswordHashRequest
+	134, // 868: zeroauthy.store.v1.StoreService.UsersFindByEmail:input_type -> zeroauthy.store.v1.UsersFindByEmailRequest
+	139, // 869: zeroauthy.store.v1.StoreService.UsersSetPasswordHashIfEmpty:input_type -> zeroauthy.store.v1.UsersSetPasswordHashRequest
+	167, // 870: zeroauthy.store.v1.StoreService.UsersUpgradeImportedHash:input_type -> zeroauthy.store.v1.UsersUpgradeImportedHashRequest
+	12,  // 871: zeroauthy.store.v1.StoreService.UsersBumpVersion:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 872: zeroauthy.store.v1.StoreService.UsersGetForUpdate:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 873: zeroauthy.store.v1.StoreService.UsersDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	137, // 874: zeroauthy.store.v1.StoreService.UsersList:input_type -> zeroauthy.store.v1.UsersListRequest
+	140, // 875: zeroauthy.store.v1.StoreService.SessionsCreate:input_type -> zeroauthy.store.v1.SessionWrite
+	12,  // 876: zeroauthy.store.v1.StoreService.SessionsGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 877: zeroauthy.store.v1.StoreService.SessionsGet:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 878: zeroauthy.store.v1.StoreService.SessionsListByUser:input_type -> zeroauthy.store.v1.ScopedKey
+	13,  // 879: zeroauthy.store.v1.StoreService.SessionsTouch:input_type -> zeroauthy.store.v1.TouchRequest
+	143, // 880: zeroauthy.store.v1.StoreService.SessionsAddClient:input_type -> zeroauthy.store.v1.SessionsAddClientRequest
+	12,  // 881: zeroauthy.store.v1.StoreService.SessionsDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 882: zeroauthy.store.v1.StoreService.SessionsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
+	15,  // 883: zeroauthy.store.v1.StoreService.SessionsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	144, // 884: zeroauthy.store.v1.StoreService.AuthTransactionsCreate:input_type -> zeroauthy.store.v1.AuthTransactionWrite
+	12,  // 885: zeroauthy.store.v1.StoreService.AuthTransactionsGet:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 886: zeroauthy.store.v1.StoreService.AuthTransactionsDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	15,  // 887: zeroauthy.store.v1.StoreService.AuthTransactionsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	59,  // 888: zeroauthy.store.v1.StoreService.AuthTransactionsCompareAndSwapHosted:input_type -> zeroauthy.store.v1.HostedStateCASRequest
+	146, // 889: zeroauthy.store.v1.StoreService.AuthCodesCreate:input_type -> zeroauthy.store.v1.AuthCodeWrite
+	16,  // 890: zeroauthy.store.v1.StoreService.AuthCodesConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
+	12,  // 891: zeroauthy.store.v1.StoreService.AuthCodesGet:input_type -> zeroauthy.store.v1.ScopedKey
+	15,  // 892: zeroauthy.store.v1.StoreService.AuthCodesDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	148, // 893: zeroauthy.store.v1.StoreService.PushedAuthRequestsCreate:input_type -> zeroauthy.store.v1.PushedAuthRequestWrite
+	16,  // 894: zeroauthy.store.v1.StoreService.PushedAuthRequestsConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
+	12,  // 895: zeroauthy.store.v1.StoreService.PushedAuthRequestsGet:input_type -> zeroauthy.store.v1.ScopedKey
+	15,  // 896: zeroauthy.store.v1.StoreService.PushedAuthRequestsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	150, // 897: zeroauthy.store.v1.StoreService.DeviceCodesCreate:input_type -> zeroauthy.store.v1.DeviceCodeWrite
+	12,  // 898: zeroauthy.store.v1.StoreService.DeviceCodesGet:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 899: zeroauthy.store.v1.StoreService.DeviceCodesGetByUserCode:input_type -> zeroauthy.store.v1.ScopedKey
+	152, // 900: zeroauthy.store.v1.StoreService.DeviceCodesDecide:input_type -> zeroauthy.store.v1.DeviceDecisionRequest
+	153, // 901: zeroauthy.store.v1.StoreService.DeviceCodesPoll:input_type -> zeroauthy.store.v1.DevicePollRequest
+	15,  // 902: zeroauthy.store.v1.StoreService.DeviceCodesDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	155, // 903: zeroauthy.store.v1.StoreService.RefreshTokensCreate:input_type -> zeroauthy.store.v1.RefreshTokenWrite
+	12,  // 904: zeroauthy.store.v1.StoreService.RefreshTokensGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 905: zeroauthy.store.v1.StoreService.RefreshTokensGet:input_type -> zeroauthy.store.v1.ScopedKey
+	12,  // 906: zeroauthy.store.v1.StoreService.RefreshTokensListByUser:input_type -> zeroauthy.store.v1.ScopedKey
+	17,  // 907: zeroauthy.store.v1.StoreService.RefreshTokensRevoke:input_type -> zeroauthy.store.v1.RevokeRequest
+	158, // 908: zeroauthy.store.v1.StoreService.RefreshTokensRotate:input_type -> zeroauthy.store.v1.RefreshTokensRotateRequest
+	13,  // 909: zeroauthy.store.v1.StoreService.RefreshTokensTouch:input_type -> zeroauthy.store.v1.TouchRequest
+	17,  // 910: zeroauthy.store.v1.StoreService.RefreshTokensRevokeFamily:input_type -> zeroauthy.store.v1.RevokeRequest
+	17,  // 911: zeroauthy.store.v1.StoreService.RefreshTokensRevokeByUser:input_type -> zeroauthy.store.v1.RevokeRequest
+	15,  // 912: zeroauthy.store.v1.StoreService.RefreshTokensDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	159, // 913: zeroauthy.store.v1.StoreService.PasswordResetTicketsMarkChallengePassed:input_type -> zeroauthy.store.v1.PasswordResetTicketChallengeRequest
+	160, // 914: zeroauthy.store.v1.StoreService.PasswordResetTicketsCreate:input_type -> zeroauthy.store.v1.PasswordResetTicketWrite
+	12,  // 915: zeroauthy.store.v1.StoreService.PasswordResetTicketsGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
+	16,  // 916: zeroauthy.store.v1.StoreService.PasswordResetTicketsConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
+	12,  // 917: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
+	15,  // 918: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	162, // 919: zeroauthy.store.v1.StoreService.EmailVerificationTicketsCreate:input_type -> zeroauthy.store.v1.EmailVerificationTicketWrite
+	12,  // 920: zeroauthy.store.v1.StoreService.EmailVerificationTicketsGetByTokenHash:input_type -> zeroauthy.store.v1.ScopedKey
+	16,  // 921: zeroauthy.store.v1.StoreService.EmailVerificationTicketsConsume:input_type -> zeroauthy.store.v1.ConsumeRequest
+	12,  // 922: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteByUser:input_type -> zeroauthy.store.v1.ScopedKey
+	15,  // 923: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	12,  // 924: zeroauthy.store.v1.StoreService.OperatorsGet:input_type -> zeroauthy.store.v1.ScopedKey
+	164, // 925: zeroauthy.store.v1.StoreService.OperatorsUpsert:input_type -> zeroauthy.store.v1.OperatorWrite
+	11,  // 926: zeroauthy.store.v1.StoreService.OperatorsList:input_type -> zeroauthy.store.v1.TenantScope
+	12,  // 927: zeroauthy.store.v1.StoreService.OperatorsDelete:input_type -> zeroauthy.store.v1.ScopedKey
+	168, // 928: zeroauthy.store.v1.StoreService.JobsCreate:input_type -> zeroauthy.store.v1.JobWrite
+	12,  // 929: zeroauthy.store.v1.StoreService.JobsGet:input_type -> zeroauthy.store.v1.ScopedKey
+	171, // 930: zeroauthy.store.v1.StoreService.JobsList:input_type -> zeroauthy.store.v1.JobsListRequest
+	172, // 931: zeroauthy.store.v1.StoreService.JobsCountActive:input_type -> zeroauthy.store.v1.JobsCountActiveRequest
+	173, // 932: zeroauthy.store.v1.StoreService.JobsClaim:input_type -> zeroauthy.store.v1.JobsClaimRequest
+	174, // 933: zeroauthy.store.v1.StoreService.JobsRenew:input_type -> zeroauthy.store.v1.JobsRenewRequest
+	175, // 934: zeroauthy.store.v1.StoreService.JobsCheckpoint:input_type -> zeroauthy.store.v1.JobsCheckpointRequest
+	176, // 935: zeroauthy.store.v1.StoreService.JobsFinish:input_type -> zeroauthy.store.v1.JobsFinishRequest
+	12,  // 936: zeroauthy.store.v1.StoreService.JobsErrors:input_type -> zeroauthy.store.v1.ScopedKey
+	178, // 937: zeroauthy.store.v1.StoreService.JobsAppendFile:input_type -> zeroauthy.store.v1.JobsAppendFileRequest
+	12,  // 938: zeroauthy.store.v1.StoreService.JobsReadFile:input_type -> zeroauthy.store.v1.ScopedKey
+	15,  // 939: zeroauthy.store.v1.StoreService.JobsDeleteExpired:input_type -> zeroauthy.store.v1.DeleteExpiredRequest
+	253, // 940: zeroauthy.store.v1.StoreService.MFACapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
+	270, // 941: zeroauthy.store.v1.StoreService.MFAGetGuardian:output_type -> zeroauthy.store.v1.MFAGetGuardianResponse
+	272, // 942: zeroauthy.store.v1.StoreService.MFAPutGuardian:output_type -> zeroauthy.store.v1.MFAPutGuardianResponse
+	274, // 943: zeroauthy.store.v1.StoreService.MFACreateAuthenticator:output_type -> zeroauthy.store.v1.MFACreateAuthenticatorResponse
+	276, // 944: zeroauthy.store.v1.StoreService.MFAGetAuthenticator:output_type -> zeroauthy.store.v1.MFAGetAuthenticatorResponse
+	278, // 945: zeroauthy.store.v1.StoreService.MFAGetAuthenticatorByEnrollmentID:output_type -> zeroauthy.store.v1.MFAGetAuthenticatorByEnrollmentIDResponse
+	280, // 946: zeroauthy.store.v1.StoreService.MFAListAuthenticators:output_type -> zeroauthy.store.v1.MFAListAuthenticatorsResponse
+	282, // 947: zeroauthy.store.v1.StoreService.MFAUpdateAuthenticator:output_type -> zeroauthy.store.v1.MFAUpdateAuthenticatorResponse
+	284, // 948: zeroauthy.store.v1.StoreService.MFADeleteAuthenticator:output_type -> zeroauthy.store.v1.MFADeleteAuthenticatorResponse
+	286, // 949: zeroauthy.store.v1.StoreService.MFADeleteUserAuthenticators:output_type -> zeroauthy.store.v1.MFADeleteUserAuthenticatorsResponse
+	288, // 950: zeroauthy.store.v1.StoreService.MFAAcceptTOTPStep:output_type -> zeroauthy.store.v1.MFAAcceptTOTPStepResponse
+	290, // 951: zeroauthy.store.v1.StoreService.MFAReplaceRecoveryCode:output_type -> zeroauthy.store.v1.MFAReplaceRecoveryCodeResponse
+	292, // 952: zeroauthy.store.v1.StoreService.MFAAcceptSignCount:output_type -> zeroauthy.store.v1.MFAAcceptSignCountResponse
+	294, // 953: zeroauthy.store.v1.StoreService.MFACreateMFAToken:output_type -> zeroauthy.store.v1.MFACreateMFATokenResponse
+	296, // 954: zeroauthy.store.v1.StoreService.MFAConsumeMFAToken:output_type -> zeroauthy.store.v1.MFAConsumeMFATokenResponse
+	298, // 955: zeroauthy.store.v1.StoreService.MFAPeekMFAToken:output_type -> zeroauthy.store.v1.MFAPeekMFATokenResponse
+	300, // 956: zeroauthy.store.v1.StoreService.MFACreateChallenge:output_type -> zeroauthy.store.v1.MFACreateChallengeResponse
+	302, // 957: zeroauthy.store.v1.StoreService.MFAGetChallenge:output_type -> zeroauthy.store.v1.MFAGetChallengeResponse
+	304, // 958: zeroauthy.store.v1.StoreService.MFAFailChallenge:output_type -> zeroauthy.store.v1.MFAFailChallengeResponse
+	306, // 959: zeroauthy.store.v1.StoreService.MFAConsumeChallenge:output_type -> zeroauthy.store.v1.MFAConsumeChallengeResponse
+	308, // 960: zeroauthy.store.v1.StoreService.MFACreateTicket:output_type -> zeroauthy.store.v1.MFACreateTicketResponse
+	310, // 961: zeroauthy.store.v1.StoreService.MFAConsumeTicket:output_type -> zeroauthy.store.v1.MFAConsumeTicketResponse
+	312, // 962: zeroauthy.store.v1.StoreService.MFAPeekTicket:output_type -> zeroauthy.store.v1.MFAPeekTicketResponse
+	314, // 963: zeroauthy.store.v1.StoreService.MFAPutBrowser:output_type -> zeroauthy.store.v1.MFAPutBrowserResponse
+	316, // 964: zeroauthy.store.v1.StoreService.MFAGetBrowser:output_type -> zeroauthy.store.v1.MFAGetBrowserResponse
+	318, // 965: zeroauthy.store.v1.StoreService.MFABumpRememberEpoch:output_type -> zeroauthy.store.v1.MFABumpRememberEpochResponse
+	320, // 966: zeroauthy.store.v1.StoreService.MFAPurgeMFA:output_type -> zeroauthy.store.v1.MFAPurgeMFAResponse
+	322, // 967: zeroauthy.store.v1.StoreService.MFADeleteUserMFA:output_type -> zeroauthy.store.v1.MFADeleteUserMFAResponse
+	324, // 968: zeroauthy.store.v1.StoreService.MFADeleteTenantMFA:output_type -> zeroauthy.store.v1.MFADeleteTenantMFAResponse
+	4,   // 969: zeroauthy.store.v1.StoreService.SessionsMarkMFA:output_type -> zeroauthy.store.v1.Result
+	4,   // 970: zeroauthy.store.v1.StoreService.SessionsSetAuthMethods:output_type -> zeroauthy.store.v1.Result
+	253, // 971: zeroauthy.store.v1.StoreService.PhoneCapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
+	333, // 972: zeroauthy.store.v1.StoreService.PhoneListProviders:output_type -> zeroauthy.store.v1.PhoneListProvidersResponse
+	332, // 973: zeroauthy.store.v1.StoreService.PhoneGetProvider:output_type -> zeroauthy.store.v1.PhoneProviderResponse
+	328, // 974: zeroauthy.store.v1.StoreService.PhoneCreateProvider:output_type -> zeroauthy.store.v1.PhoneErrorResponse
+	328, // 975: zeroauthy.store.v1.StoreService.PhoneUpdateProvider:output_type -> zeroauthy.store.v1.PhoneErrorResponse
+	328, // 976: zeroauthy.store.v1.StoreService.PhoneDeleteProvider:output_type -> zeroauthy.store.v1.PhoneErrorResponse
+	336, // 977: zeroauthy.store.v1.StoreService.PhoneListTemplates:output_type -> zeroauthy.store.v1.PhoneListTemplatesResponse
+	335, // 978: zeroauthy.store.v1.StoreService.PhoneGetTemplate:output_type -> zeroauthy.store.v1.PhoneTemplateResponse
+	328, // 979: zeroauthy.store.v1.StoreService.PhonePutTemplate:output_type -> zeroauthy.store.v1.PhoneErrorResponse
+	328, // 980: zeroauthy.store.v1.StoreService.PhoneDeleteTemplate:output_type -> zeroauthy.store.v1.PhoneErrorResponse
+	328, // 981: zeroauthy.store.v1.StoreService.PhonePutPasswordlessCode:output_type -> zeroauthy.store.v1.PhoneErrorResponse
+	339, // 982: zeroauthy.store.v1.StoreService.PhoneFailPasswordlessCode:output_type -> zeroauthy.store.v1.PhoneFailCodeResponse
+	341, // 983: zeroauthy.store.v1.StoreService.PhoneConsumePasswordlessCode:output_type -> zeroauthy.store.v1.PhoneCodeResponse
+	341, // 984: zeroauthy.store.v1.StoreService.PhonePeekPasswordlessLink:output_type -> zeroauthy.store.v1.PhoneCodeResponse
+	344, // 985: zeroauthy.store.v1.StoreService.PhoneFindUsersByPhone:output_type -> zeroauthy.store.v1.PhoneFindUsersResponse
+	346, // 986: zeroauthy.store.v1.StoreService.PhonePurge:output_type -> zeroauthy.store.v1.PhoneCountResponse
+	328, // 987: zeroauthy.store.v1.StoreService.PhoneDeleteTenant:output_type -> zeroauthy.store.v1.PhoneErrorResponse
+	253, // 988: zeroauthy.store.v1.StoreService.WebAuthnCapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
+	350, // 989: zeroauthy.store.v1.StoreService.WebAuthnGetAuthenticatorByCredentialID:output_type -> zeroauthy.store.v1.WebAuthnAuthenticatorResponse
+	348, // 990: zeroauthy.store.v1.StoreService.WebAuthnCreatePasskey:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
+	348, // 991: zeroauthy.store.v1.StoreService.WebAuthnCreateUserWithPasskey:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
+	348, // 992: zeroauthy.store.v1.StoreService.WebAuthnAcceptAssertion:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
+	348, // 993: zeroauthy.store.v1.StoreService.WebAuthnMovePasskeys:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
+	348, // 994: zeroauthy.store.v1.StoreService.WebAuthnPutSnooze:output_type -> zeroauthy.store.v1.WebAuthnErrorResponse
+	357, // 995: zeroauthy.store.v1.StoreService.WebAuthnGetSnooze:output_type -> zeroauthy.store.v1.WebAuthnSnoozeResponse
+	359, // 996: zeroauthy.store.v1.StoreService.WebAuthnHostTenantsUnder:output_type -> zeroauthy.store.v1.WebAuthnTenantIDsResponse
+	361, // 997: zeroauthy.store.v1.StoreService.WebAuthnPurge:output_type -> zeroauthy.store.v1.WebAuthnCountResponse
+	253, // 998: zeroauthy.store.v1.StoreService.EventsCapabilities:output_type -> zeroauthy.store.v1.EventsCapabilitiesResult
+	262, // 999: zeroauthy.store.v1.StoreService.AppendEvents:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1000: zeroauthy.store.v1.StoreService.GetEvent:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1001: zeroauthy.store.v1.StoreService.EventsAfter:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1002: zeroauthy.store.v1.StoreService.EventsFromTime:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1003: zeroauthy.store.v1.StoreService.LatestEventSeq:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1004: zeroauthy.store.v1.StoreService.PurgedEventSeq:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1005: zeroauthy.store.v1.StoreService.OldestEventSeq:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1006: zeroauthy.store.v1.StoreService.PurgeEvents:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1007: zeroauthy.store.v1.StoreService.DeleteTenantEvents:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1008: zeroauthy.store.v1.StoreService.CreateEventStream:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1009: zeroauthy.store.v1.StoreService.GetEventStream:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1010: zeroauthy.store.v1.StoreService.ListEventStreams:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1011: zeroauthy.store.v1.StoreService.CountEventStreams:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1012: zeroauthy.store.v1.StoreService.UpdateEventStream:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1013: zeroauthy.store.v1.StoreService.DeleteEventStream:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1014: zeroauthy.store.v1.StoreService.LeaseEventStream:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1015: zeroauthy.store.v1.StoreService.RecordEventDelivery:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1016: zeroauthy.store.v1.StoreService.ListDeliveries:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1017: zeroauthy.store.v1.StoreService.GetDelivery:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1018: zeroauthy.store.v1.StoreService.QueueRedelivery:output_type -> zeroauthy.store.v1.EventsResponse
+	262, // 1019: zeroauthy.store.v1.StoreService.QueuedDeliveries:output_type -> zeroauthy.store.v1.EventsResponse
+	240, // 1020: zeroauthy.store.v1.StoreService.LogsCapabilities:output_type -> zeroauthy.store.v1.LogsCapabilitiesResult
+	252, // 1021: zeroauthy.store.v1.StoreService.AppendLogs:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1022: zeroauthy.store.v1.StoreService.GetLog:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1023: zeroauthy.store.v1.StoreService.SearchLogs:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1024: zeroauthy.store.v1.StoreService.LogsAfter:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1025: zeroauthy.store.v1.StoreService.LatestLogs:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1026: zeroauthy.store.v1.StoreService.PurgeLogs:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1027: zeroauthy.store.v1.StoreService.DeleteTenantLogs:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1028: zeroauthy.store.v1.StoreService.CreateLogStream:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1029: zeroauthy.store.v1.StoreService.GetLogStream:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1030: zeroauthy.store.v1.StoreService.ListLogStreams:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1031: zeroauthy.store.v1.StoreService.UpdateLogStream:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1032: zeroauthy.store.v1.StoreService.DeleteLogStream:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1033: zeroauthy.store.v1.StoreService.LeaseLogStream:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1034: zeroauthy.store.v1.StoreService.RecordDelivery:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1035: zeroauthy.store.v1.StoreService.DailyStats:output_type -> zeroauthy.store.v1.LogsResponse
+	252, // 1036: zeroauthy.store.v1.StoreService.ActiveUsers:output_type -> zeroauthy.store.v1.LogsResponse
+	204, // 1037: zeroauthy.store.v1.StoreService.RBACCapabilities:output_type -> zeroauthy.store.v1.RBACCapabilitiesResult
+	203, // 1038: zeroauthy.store.v1.StoreService.RBACCreateRole:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1039: zeroauthy.store.v1.StoreService.RBACGetRole:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1040: zeroauthy.store.v1.StoreService.RBACUpdateRole:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1041: zeroauthy.store.v1.StoreService.RBACDeleteRole:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1042: zeroauthy.store.v1.StoreService.RBACListRoles:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1043: zeroauthy.store.v1.StoreService.RBACRolePermissions:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1044: zeroauthy.store.v1.StoreService.RBACChangeRolePermissions:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1045: zeroauthy.store.v1.StoreService.RBACRoleUsers:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1046: zeroauthy.store.v1.StoreService.RBACAssignRoleUsers:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1047: zeroauthy.store.v1.StoreService.RBACUserRoles:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1048: zeroauthy.store.v1.StoreService.RBACChangeUserRoles:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1049: zeroauthy.store.v1.StoreService.RBACUserPermissions:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1050: zeroauthy.store.v1.StoreService.RBACChangeUserPermissions:output_type -> zeroauthy.store.v1.RBACResponse
+	203, // 1051: zeroauthy.store.v1.StoreService.RBACSnapshot:output_type -> zeroauthy.store.v1.RBACResponse
+	212, // 1052: zeroauthy.store.v1.StoreService.OrganizationsIICapabilities:output_type -> zeroauthy.store.v1.OrganizationsCapabilitiesResult
+	237, // 1053: zeroauthy.store.v1.StoreService.OrganizationsIICreateInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1054: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1055: zeroauthy.store.v1.StoreService.OrganizationsIIFindInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1056: zeroauthy.store.v1.StoreService.OrganizationsIIListInvitations:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1057: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1058: zeroauthy.store.v1.StoreService.OrganizationsIIConsumeInvitation:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1059: zeroauthy.store.v1.StoreService.OrganizationsIIGetInvitationReceipt:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1060: zeroauthy.store.v1.StoreService.OrganizationsIIPutClients:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1061: zeroauthy.store.v1.StoreService.OrganizationsIIGetClient:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1062: zeroauthy.store.v1.StoreService.OrganizationsIIListClients:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1063: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClients:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1064: zeroauthy.store.v1.StoreService.OrganizationsIIPutClientGrant:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1065: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteClientGrant:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1066: zeroauthy.store.v1.StoreService.OrganizationsIIListClientGrants:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1067: zeroauthy.store.v1.StoreService.OrganizationsIIGrantOrganizations:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1068: zeroauthy.store.v1.StoreService.OrganizationsIIHasClientGrant:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1069: zeroauthy.store.v1.StoreService.OrganizationsIIPutDiscoveryDomain:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1070: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomain:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1071: zeroauthy.store.v1.StoreService.OrganizationsIIGetDiscoveryDomainByName:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1072: zeroauthy.store.v1.StoreService.OrganizationsIIListDiscoveryDomains:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1073: zeroauthy.store.v1.StoreService.OrganizationsIIDeleteDiscoveryDomain:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1074: zeroauthy.store.v1.StoreService.OrganizationsIIDiscoverOrganizations:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	237, // 1075: zeroauthy.store.v1.StoreService.OrganizationsIISearch:output_type -> zeroauthy.store.v1.OrganizationsIIResponse
+	212, // 1076: zeroauthy.store.v1.StoreService.OrganizationsCapabilities:output_type -> zeroauthy.store.v1.OrganizationsCapabilitiesResult
+	211, // 1077: zeroauthy.store.v1.StoreService.OrganizationsCreate:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1078: zeroauthy.store.v1.StoreService.OrganizationsGet:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1079: zeroauthy.store.v1.StoreService.OrganizationsGetByName:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1080: zeroauthy.store.v1.StoreService.OrganizationsList:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1081: zeroauthy.store.v1.StoreService.OrganizationsUpdate:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1082: zeroauthy.store.v1.StoreService.OrganizationsDelete:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1083: zeroauthy.store.v1.StoreService.OrganizationsConnections:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1084: zeroauthy.store.v1.StoreService.OrganizationsGetConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1085: zeroauthy.store.v1.StoreService.OrganizationsPutConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1086: zeroauthy.store.v1.StoreService.OrganizationsDeleteConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1087: zeroauthy.store.v1.StoreService.OrganizationsConnectionsByConnection:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1088: zeroauthy.store.v1.StoreService.OrganizationsMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1089: zeroauthy.store.v1.StoreService.OrganizationsAddMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1090: zeroauthy.store.v1.StoreService.OrganizationsRemoveMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1091: zeroauthy.store.v1.StoreService.OrganizationsIsMember:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1092: zeroauthy.store.v1.StoreService.OrganizationsUserOrganizations:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1093: zeroauthy.store.v1.StoreService.OrganizationsMemberRoles:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1094: zeroauthy.store.v1.StoreService.OrganizationsChangeMemberRoles:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	211, // 1095: zeroauthy.store.v1.StoreService.OrganizationsRoleMembers:output_type -> zeroauthy.store.v1.OrganizationsResponse
+	226, // 1096: zeroauthy.store.v1.StoreService.ActionsCapabilities:output_type -> zeroauthy.store.v1.ActionsCapabilitiesResult
+	224, // 1097: zeroauthy.store.v1.StoreService.ActionsCreateAction:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1098: zeroauthy.store.v1.StoreService.ActionsGetAction:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1099: zeroauthy.store.v1.StoreService.ActionsGetActionByName:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1100: zeroauthy.store.v1.StoreService.ActionsUpdateAction:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1101: zeroauthy.store.v1.StoreService.ActionsDeleteAction:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1102: zeroauthy.store.v1.StoreService.ActionsListActions:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1103: zeroauthy.store.v1.StoreService.ActionsDeploy:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1104: zeroauthy.store.v1.StoreService.ActionsGetVersion:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1105: zeroauthy.store.v1.StoreService.ActionsListVersions:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1106: zeroauthy.store.v1.StoreService.ActionsPutBuild:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1107: zeroauthy.store.v1.StoreService.ActionsGetBuild:output_type -> zeroauthy.store.v1.ActionsResponse
+	4,   // 1108: zeroauthy.store.v1.StoreService.ActionsPutArtifact:output_type -> zeroauthy.store.v1.Result
+	225, // 1109: zeroauthy.store.v1.StoreService.ActionsGetArtifact:output_type -> zeroauthy.store.v1.ActionsArtifactChunk
+	224, // 1110: zeroauthy.store.v1.StoreService.ActionsBindings:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1111: zeroauthy.store.v1.StoreService.ActionsBindingsInitialized:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1112: zeroauthy.store.v1.StoreService.ActionsInitializeBindings:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1113: zeroauthy.store.v1.StoreService.ActionsReplaceBindings:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1114: zeroauthy.store.v1.StoreService.ActionsCreateExecution:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1115: zeroauthy.store.v1.StoreService.ActionsListExecutions:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1116: zeroauthy.store.v1.StoreService.ActionsGetExecution:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1117: zeroauthy.store.v1.StoreService.ActionsPurgeExecutions:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1118: zeroauthy.store.v1.StoreService.ActionsCreateContinue:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1119: zeroauthy.store.v1.StoreService.ActionsConsumeContinue:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1120: zeroauthy.store.v1.StoreService.ActionsPurgeContinue:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1121: zeroauthy.store.v1.StoreService.ActionsCreateModule:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1122: zeroauthy.store.v1.StoreService.ActionsGetModule:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1123: zeroauthy.store.v1.StoreService.ActionsGetModuleByName:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1124: zeroauthy.store.v1.StoreService.ActionsUpdateModule:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1125: zeroauthy.store.v1.StoreService.ActionsDeleteModule:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1126: zeroauthy.store.v1.StoreService.ActionsListModules:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1127: zeroauthy.store.v1.StoreService.ActionsPublishModule:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1128: zeroauthy.store.v1.StoreService.ActionsRollbackModule:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1129: zeroauthy.store.v1.StoreService.ActionsListModuleVersions:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1130: zeroauthy.store.v1.StoreService.ActionsGetModuleVersion:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1131: zeroauthy.store.v1.StoreService.ActionsModuleUsers:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1132: zeroauthy.store.v1.StoreService.ActionsEnqueueJob:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1133: zeroauthy.store.v1.StoreService.ActionsGetJob:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1134: zeroauthy.store.v1.StoreService.ActionsCancelJob:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1135: zeroauthy.store.v1.StoreService.ActionsClaimJobs:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1136: zeroauthy.store.v1.StoreService.ActionsFinishJob:output_type -> zeroauthy.store.v1.ActionsResponse
+	224, // 1137: zeroauthy.store.v1.StoreService.ActionsPurgeJobs:output_type -> zeroauthy.store.v1.ActionsResponse
+	4,   // 1138: zeroauthy.store.v1.StoreService.Ping:output_type -> zeroauthy.store.v1.Result
+	4,   // 1139: zeroauthy.store.v1.StoreService.MicrosoftFederationSupported:output_type -> zeroauthy.store.v1.Result
+	4,   // 1140: zeroauthy.store.v1.StoreService.CustomDomainsSupported:output_type -> zeroauthy.store.v1.Result
+	192, // 1141: zeroauthy.store.v1.StoreService.CustomDomainsGet:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1142: zeroauthy.store.v1.StoreService.CustomDomainsList:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1143: zeroauthy.store.v1.StoreService.CustomDomainsListDue:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1144: zeroauthy.store.v1.StoreService.CustomDomainsCreate:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1145: zeroauthy.store.v1.StoreService.CustomDomainsUpdate:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1146: zeroauthy.store.v1.StoreService.CustomDomainsDelete:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1147: zeroauthy.store.v1.StoreService.CustomDomainsGetHost:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1148: zeroauthy.store.v1.StoreService.CustomDomainsPutHost:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1149: zeroauthy.store.v1.StoreService.CustomDomainsDeleteHost:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1150: zeroauthy.store.v1.StoreService.CustomDomainsGetDefault:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1151: zeroauthy.store.v1.StoreService.CustomDomainsSetDefault:output_type -> zeroauthy.store.v1.CustomDomainResult
+	192, // 1152: zeroauthy.store.v1.StoreService.CustomDomainsAdmitAttempt:output_type -> zeroauthy.store.v1.CustomDomainResult
+	194, // 1153: zeroauthy.store.v1.StoreService.TLSAssetsGet:output_type -> zeroauthy.store.v1.TLSAssetResult
+	194, // 1154: zeroauthy.store.v1.StoreService.TLSAssetsPut:output_type -> zeroauthy.store.v1.TLSAssetResult
+	194, // 1155: zeroauthy.store.v1.StoreService.TLSAssetsDelete:output_type -> zeroauthy.store.v1.TLSAssetResult
+	194, // 1156: zeroauthy.store.v1.StoreService.TLSAssetsListExpired:output_type -> zeroauthy.store.v1.TLSAssetResult
+	194, // 1157: zeroauthy.store.v1.StoreService.TLSAssetsClaimLease:output_type -> zeroauthy.store.v1.TLSAssetResult
+	194, // 1158: zeroauthy.store.v1.StoreService.TLSAssetsRenewLease:output_type -> zeroauthy.store.v1.TLSAssetResult
+	194, // 1159: zeroauthy.store.v1.StoreService.TLSAssetsCheckLease:output_type -> zeroauthy.store.v1.TLSAssetResult
+	194, // 1160: zeroauthy.store.v1.StoreService.TLSAssetsReleaseLease:output_type -> zeroauthy.store.v1.TLSAssetResult
+	184, // 1161: zeroauthy.store.v1.StoreService.ProtectionReserve:output_type -> zeroauthy.store.v1.ProtectionResult
+	184, // 1162: zeroauthy.store.v1.StoreService.ProtectionComplete:output_type -> zeroauthy.store.v1.ProtectionResult
+	184, // 1163: zeroauthy.store.v1.StoreService.ProtectionBlocks:output_type -> zeroauthy.store.v1.ProtectionResult
+	184, // 1164: zeroauthy.store.v1.StoreService.ProtectionClear:output_type -> zeroauthy.store.v1.ProtectionResult
+	184, // 1165: zeroauthy.store.v1.StoreService.ProtectionUseProof:output_type -> zeroauthy.store.v1.ProtectionResult
+	184, // 1166: zeroauthy.store.v1.StoreService.ProtectionRecordRisk:output_type -> zeroauthy.store.v1.ProtectionResult
+	184, // 1167: zeroauthy.store.v1.StoreService.ProtectionRiskCount:output_type -> zeroauthy.store.v1.ProtectionResult
+	184, // 1168: zeroauthy.store.v1.StoreService.ProtectionSweep:output_type -> zeroauthy.store.v1.ProtectionResult
+	4,   // 1169: zeroauthy.store.v1.StoreService.TenantSettingsSupported:output_type -> zeroauthy.store.v1.Result
+	9,   // 1170: zeroauthy.store.v1.StoreService.BeginTx:output_type -> zeroauthy.store.v1.BeginTxResponse
+	4,   // 1171: zeroauthy.store.v1.StoreService.Commit:output_type -> zeroauthy.store.v1.Result
+	4,   // 1172: zeroauthy.store.v1.StoreService.Rollback:output_type -> zeroauthy.store.v1.Result
+	4,   // 1173: zeroauthy.store.v1.StoreService.TenantsCreate:output_type -> zeroauthy.store.v1.Result
+	100, // 1174: zeroauthy.store.v1.StoreService.TenantsGet:output_type -> zeroauthy.store.v1.TenantResult
+	100, // 1175: zeroauthy.store.v1.StoreService.TenantsGetByName:output_type -> zeroauthy.store.v1.TenantResult
+	100, // 1176: zeroauthy.store.v1.StoreService.TenantsGetByDomain:output_type -> zeroauthy.store.v1.TenantResult
+	4,   // 1177: zeroauthy.store.v1.StoreService.TenantsUpdate:output_type -> zeroauthy.store.v1.Result
+	101, // 1178: zeroauthy.store.v1.StoreService.TenantsList:output_type -> zeroauthy.store.v1.TenantList
+	4,   // 1179: zeroauthy.store.v1.StoreService.TenantsDelete:output_type -> zeroauthy.store.v1.Result
+	4,   // 1180: zeroauthy.store.v1.StoreService.ClientsCreate:output_type -> zeroauthy.store.v1.Result
+	103, // 1181: zeroauthy.store.v1.StoreService.ClientsGet:output_type -> zeroauthy.store.v1.ClientResult
+	4,   // 1182: zeroauthy.store.v1.StoreService.ClientsUpdate:output_type -> zeroauthy.store.v1.Result
+	4,   // 1183: zeroauthy.store.v1.StoreService.ClientsDelete:output_type -> zeroauthy.store.v1.Result
+	104, // 1184: zeroauthy.store.v1.StoreService.ClientsList:output_type -> zeroauthy.store.v1.ClientList
+	106, // 1185: zeroauthy.store.v1.StoreService.ClientsListPage:output_type -> zeroauthy.store.v1.ClientPage
+	4,   // 1186: zeroauthy.store.v1.StoreService.ResourceServersCreate:output_type -> zeroauthy.store.v1.Result
+	108, // 1187: zeroauthy.store.v1.StoreService.ResourceServersGet:output_type -> zeroauthy.store.v1.ResourceServerResult
+	108, // 1188: zeroauthy.store.v1.StoreService.ResourceServersGetByIdentifier:output_type -> zeroauthy.store.v1.ResourceServerResult
+	4,   // 1189: zeroauthy.store.v1.StoreService.ResourceServersUpdate:output_type -> zeroauthy.store.v1.Result
+	4,   // 1190: zeroauthy.store.v1.StoreService.ResourceServersDelete:output_type -> zeroauthy.store.v1.Result
+	109, // 1191: zeroauthy.store.v1.StoreService.ResourceServersList:output_type -> zeroauthy.store.v1.ResourceServerList
+	4,   // 1192: zeroauthy.store.v1.StoreService.ResourceServersRenameSystem:output_type -> zeroauthy.store.v1.Result
+	4,   // 1193: zeroauthy.store.v1.StoreService.ClientGrantsCreate:output_type -> zeroauthy.store.v1.Result
+	112, // 1194: zeroauthy.store.v1.StoreService.ClientGrantsFind:output_type -> zeroauthy.store.v1.ClientGrantResult
+	4,   // 1195: zeroauthy.store.v1.StoreService.ClientGrantsUpdate:output_type -> zeroauthy.store.v1.Result
+	4,   // 1196: zeroauthy.store.v1.StoreService.ClientGrantsDelete:output_type -> zeroauthy.store.v1.Result
+	114, // 1197: zeroauthy.store.v1.StoreService.ClientGrantsList:output_type -> zeroauthy.store.v1.ClientGrantList
+	117, // 1198: zeroauthy.store.v1.StoreService.UserGrantsFind:output_type -> zeroauthy.store.v1.UserGrantResult
+	117, // 1199: zeroauthy.store.v1.StoreService.UserGrantsUpsert:output_type -> zeroauthy.store.v1.UserGrantResult
+	118, // 1200: zeroauthy.store.v1.StoreService.UserGrantsList:output_type -> zeroauthy.store.v1.UserGrantList
+	118, // 1201: zeroauthy.store.v1.StoreService.UserGrantsListByUser:output_type -> zeroauthy.store.v1.UserGrantList
+	118, // 1202: zeroauthy.store.v1.StoreService.UserGrantsListByAudience:output_type -> zeroauthy.store.v1.UserGrantList
+	4,   // 1203: zeroauthy.store.v1.StoreService.UserGrantsDelete:output_type -> zeroauthy.store.v1.Result
+	5,   // 1204: zeroauthy.store.v1.StoreService.UserGrantsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1205: zeroauthy.store.v1.StoreService.SigningKeysCreate:output_type -> zeroauthy.store.v1.Result
+	121, // 1206: zeroauthy.store.v1.StoreService.SigningKeysList:output_type -> zeroauthy.store.v1.SigningKeyList
+	4,   // 1207: zeroauthy.store.v1.StoreService.SigningKeysRotate:output_type -> zeroauthy.store.v1.Result
+	36,  // 1208: zeroauthy.store.v1.StoreService.SigningKeysGet:output_type -> zeroauthy.store.v1.SigningKeyResult
+	38,  // 1209: zeroauthy.store.v1.StoreService.SigningKeysRotateWithResult:output_type -> zeroauthy.store.v1.SigningKeyRotationResult
+	36,  // 1210: zeroauthy.store.v1.StoreService.SigningKeysRevoke:output_type -> zeroauthy.store.v1.SigningKeyResult
+	36,  // 1211: zeroauthy.store.v1.StoreService.SigningKeysSetCertificate:output_type -> zeroauthy.store.v1.SigningKeyResult
+	42,  // 1212: zeroauthy.store.v1.StoreService.CustomSigningKeysGet:output_type -> zeroauthy.store.v1.CustomSigningKeySetResult
+	4,   // 1213: zeroauthy.store.v1.StoreService.CustomSigningKeysReplace:output_type -> zeroauthy.store.v1.Result
+	4,   // 1214: zeroauthy.store.v1.StoreService.CustomSigningKeysDelete:output_type -> zeroauthy.store.v1.Result
+	45,  // 1215: zeroauthy.store.v1.StoreService.HostedLoginsGet:output_type -> zeroauthy.store.v1.HostedLoginConfigResult
+	4,   // 1216: zeroauthy.store.v1.StoreService.HostedLoginsPut:output_type -> zeroauthy.store.v1.Result
+	138, // 1217: zeroauthy.store.v1.StoreService.FederationIdentityEpoch:output_type -> zeroauthy.store.v1.VersionResult
+	4,   // 1218: zeroauthy.store.v1.StoreService.FederationBumpIdentityEpoch:output_type -> zeroauthy.store.v1.Result
+	4,   // 1219: zeroauthy.store.v1.StoreService.FederationCreateAttempt:output_type -> zeroauthy.store.v1.Result
+	52,  // 1220: zeroauthy.store.v1.StoreService.FederationGetAttempt:output_type -> zeroauthy.store.v1.FederationAttemptResult
+	52,  // 1221: zeroauthy.store.v1.StoreService.FederationClaimAttempt:output_type -> zeroauthy.store.v1.FederationAttemptResult
+	4,   // 1222: zeroauthy.store.v1.StoreService.FederationFinishAttempt:output_type -> zeroauthy.store.v1.Result
+	4,   // 1223: zeroauthy.store.v1.StoreService.FederationPutIdentity:output_type -> zeroauthy.store.v1.Result
+	4,   // 1224: zeroauthy.store.v1.StoreService.FederationDeleteIdentity:output_type -> zeroauthy.store.v1.Result
+	57,  // 1225: zeroauthy.store.v1.StoreService.FederationGetTokens:output_type -> zeroauthy.store.v1.FederatedTokensResult
+	4,   // 1226: zeroauthy.store.v1.StoreService.FederationPutTokens:output_type -> zeroauthy.store.v1.Result
+	4,   // 1227: zeroauthy.store.v1.StoreService.FederationDeleteTokens:output_type -> zeroauthy.store.v1.Result
+	5,   // 1228: zeroauthy.store.v1.StoreService.FederationDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	131, // 1229: zeroauthy.store.v1.StoreService.UsersFindByIdentity:output_type -> zeroauthy.store.v1.UserResult
+	61,  // 1230: zeroauthy.store.v1.StoreService.EmailProvidersGet:output_type -> zeroauthy.store.v1.EmailProviderResult
+	4,   // 1231: zeroauthy.store.v1.StoreService.EmailProvidersPut:output_type -> zeroauthy.store.v1.Result
+	4,   // 1232: zeroauthy.store.v1.StoreService.EmailProvidersDelete:output_type -> zeroauthy.store.v1.Result
+	66,  // 1233: zeroauthy.store.v1.StoreService.EmailTemplatesGet:output_type -> zeroauthy.store.v1.EmailTemplateResult
+	4,   // 1234: zeroauthy.store.v1.StoreService.EmailTemplatesPut:output_type -> zeroauthy.store.v1.Result
+	69,  // 1235: zeroauthy.store.v1.StoreService.EmailNotificationsClaim:output_type -> zeroauthy.store.v1.EmailNotificationClaimResult
+	5,   // 1236: zeroauthy.store.v1.StoreService.EmailNotificationsSweep:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1237: zeroauthy.store.v1.StoreService.ConnectionsCreate:output_type -> zeroauthy.store.v1.Result
+	124, // 1238: zeroauthy.store.v1.StoreService.ConnectionsGet:output_type -> zeroauthy.store.v1.ConnectionResult
+	124, // 1239: zeroauthy.store.v1.StoreService.ConnectionsGetByName:output_type -> zeroauthy.store.v1.ConnectionResult
+	4,   // 1240: zeroauthy.store.v1.StoreService.ConnectionsUpdate:output_type -> zeroauthy.store.v1.Result
+	125, // 1241: zeroauthy.store.v1.StoreService.ConnectionsList:output_type -> zeroauthy.store.v1.ConnectionList
+	127, // 1242: zeroauthy.store.v1.StoreService.ConnectionsListPage:output_type -> zeroauthy.store.v1.ConnectionPage
+	4,   // 1243: zeroauthy.store.v1.StoreService.ConnectionsDelete:output_type -> zeroauthy.store.v1.Result
+	4,   // 1244: zeroauthy.store.v1.StoreService.PasswordHistoriesAdd:output_type -> zeroauthy.store.v1.Result
+	129, // 1245: zeroauthy.store.v1.StoreService.PasswordHistoriesList:output_type -> zeroauthy.store.v1.PasswordHistoryList
+	4,   // 1246: zeroauthy.store.v1.StoreService.UsersCreate:output_type -> zeroauthy.store.v1.Result
+	131, // 1247: zeroauthy.store.v1.StoreService.UsersGet:output_type -> zeroauthy.store.v1.UserResult
+	131, // 1248: zeroauthy.store.v1.StoreService.UsersFindByLogin:output_type -> zeroauthy.store.v1.UserResult
+	4,   // 1249: zeroauthy.store.v1.StoreService.UsersUpdate:output_type -> zeroauthy.store.v1.Result
+	4,   // 1250: zeroauthy.store.v1.StoreService.UsersRecordLogin:output_type -> zeroauthy.store.v1.Result
+	4,   // 1251: zeroauthy.store.v1.StoreService.UsersSetPasswordHash:output_type -> zeroauthy.store.v1.Result
+	135, // 1252: zeroauthy.store.v1.StoreService.UsersFindByEmail:output_type -> zeroauthy.store.v1.UserListResult
+	4,   // 1253: zeroauthy.store.v1.StoreService.UsersSetPasswordHashIfEmpty:output_type -> zeroauthy.store.v1.Result
+	4,   // 1254: zeroauthy.store.v1.StoreService.UsersUpgradeImportedHash:output_type -> zeroauthy.store.v1.Result
+	138, // 1255: zeroauthy.store.v1.StoreService.UsersBumpVersion:output_type -> zeroauthy.store.v1.VersionResult
+	131, // 1256: zeroauthy.store.v1.StoreService.UsersGetForUpdate:output_type -> zeroauthy.store.v1.UserResult
+	4,   // 1257: zeroauthy.store.v1.StoreService.UsersDelete:output_type -> zeroauthy.store.v1.Result
+	135, // 1258: zeroauthy.store.v1.StoreService.UsersList:output_type -> zeroauthy.store.v1.UserListResult
+	4,   // 1259: zeroauthy.store.v1.StoreService.SessionsCreate:output_type -> zeroauthy.store.v1.Result
+	141, // 1260: zeroauthy.store.v1.StoreService.SessionsGetByTokenHash:output_type -> zeroauthy.store.v1.SessionResult
+	141, // 1261: zeroauthy.store.v1.StoreService.SessionsGet:output_type -> zeroauthy.store.v1.SessionResult
+	142, // 1262: zeroauthy.store.v1.StoreService.SessionsListByUser:output_type -> zeroauthy.store.v1.SessionList
+	4,   // 1263: zeroauthy.store.v1.StoreService.SessionsTouch:output_type -> zeroauthy.store.v1.Result
+	4,   // 1264: zeroauthy.store.v1.StoreService.SessionsAddClient:output_type -> zeroauthy.store.v1.Result
+	4,   // 1265: zeroauthy.store.v1.StoreService.SessionsDelete:output_type -> zeroauthy.store.v1.Result
+	5,   // 1266: zeroauthy.store.v1.StoreService.SessionsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
+	5,   // 1267: zeroauthy.store.v1.StoreService.SessionsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1268: zeroauthy.store.v1.StoreService.AuthTransactionsCreate:output_type -> zeroauthy.store.v1.Result
+	145, // 1269: zeroauthy.store.v1.StoreService.AuthTransactionsGet:output_type -> zeroauthy.store.v1.AuthTransactionResult
+	4,   // 1270: zeroauthy.store.v1.StoreService.AuthTransactionsDelete:output_type -> zeroauthy.store.v1.Result
+	5,   // 1271: zeroauthy.store.v1.StoreService.AuthTransactionsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1272: zeroauthy.store.v1.StoreService.AuthTransactionsCompareAndSwapHosted:output_type -> zeroauthy.store.v1.Result
+	4,   // 1273: zeroauthy.store.v1.StoreService.AuthCodesCreate:output_type -> zeroauthy.store.v1.Result
+	147, // 1274: zeroauthy.store.v1.StoreService.AuthCodesConsume:output_type -> zeroauthy.store.v1.AuthCodeResult
+	147, // 1275: zeroauthy.store.v1.StoreService.AuthCodesGet:output_type -> zeroauthy.store.v1.AuthCodeResult
+	5,   // 1276: zeroauthy.store.v1.StoreService.AuthCodesDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1277: zeroauthy.store.v1.StoreService.PushedAuthRequestsCreate:output_type -> zeroauthy.store.v1.Result
+	149, // 1278: zeroauthy.store.v1.StoreService.PushedAuthRequestsConsume:output_type -> zeroauthy.store.v1.PushedAuthRequestResult
+	149, // 1279: zeroauthy.store.v1.StoreService.PushedAuthRequestsGet:output_type -> zeroauthy.store.v1.PushedAuthRequestResult
+	5,   // 1280: zeroauthy.store.v1.StoreService.PushedAuthRequestsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1281: zeroauthy.store.v1.StoreService.DeviceCodesCreate:output_type -> zeroauthy.store.v1.Result
+	151, // 1282: zeroauthy.store.v1.StoreService.DeviceCodesGet:output_type -> zeroauthy.store.v1.DeviceCodeResult
+	151, // 1283: zeroauthy.store.v1.StoreService.DeviceCodesGetByUserCode:output_type -> zeroauthy.store.v1.DeviceCodeResult
+	151, // 1284: zeroauthy.store.v1.StoreService.DeviceCodesDecide:output_type -> zeroauthy.store.v1.DeviceCodeResult
+	154, // 1285: zeroauthy.store.v1.StoreService.DeviceCodesPoll:output_type -> zeroauthy.store.v1.DevicePollResult
+	5,   // 1286: zeroauthy.store.v1.StoreService.DeviceCodesDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1287: zeroauthy.store.v1.StoreService.RefreshTokensCreate:output_type -> zeroauthy.store.v1.Result
+	156, // 1288: zeroauthy.store.v1.StoreService.RefreshTokensGetByTokenHash:output_type -> zeroauthy.store.v1.RefreshTokenResult
+	156, // 1289: zeroauthy.store.v1.StoreService.RefreshTokensGet:output_type -> zeroauthy.store.v1.RefreshTokenResult
+	157, // 1290: zeroauthy.store.v1.StoreService.RefreshTokensListByUser:output_type -> zeroauthy.store.v1.RefreshTokenList
+	4,   // 1291: zeroauthy.store.v1.StoreService.RefreshTokensRevoke:output_type -> zeroauthy.store.v1.Result
+	4,   // 1292: zeroauthy.store.v1.StoreService.RefreshTokensRotate:output_type -> zeroauthy.store.v1.Result
+	4,   // 1293: zeroauthy.store.v1.StoreService.RefreshTokensTouch:output_type -> zeroauthy.store.v1.Result
+	4,   // 1294: zeroauthy.store.v1.StoreService.RefreshTokensRevokeFamily:output_type -> zeroauthy.store.v1.Result
+	5,   // 1295: zeroauthy.store.v1.StoreService.RefreshTokensRevokeByUser:output_type -> zeroauthy.store.v1.CountResult
+	5,   // 1296: zeroauthy.store.v1.StoreService.RefreshTokensDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1297: zeroauthy.store.v1.StoreService.PasswordResetTicketsMarkChallengePassed:output_type -> zeroauthy.store.v1.Result
+	4,   // 1298: zeroauthy.store.v1.StoreService.PasswordResetTicketsCreate:output_type -> zeroauthy.store.v1.Result
+	161, // 1299: zeroauthy.store.v1.StoreService.PasswordResetTicketsGetByTokenHash:output_type -> zeroauthy.store.v1.PasswordResetTicketResult
+	161, // 1300: zeroauthy.store.v1.StoreService.PasswordResetTicketsConsume:output_type -> zeroauthy.store.v1.PasswordResetTicketResult
+	5,   // 1301: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
+	5,   // 1302: zeroauthy.store.v1.StoreService.PasswordResetTicketsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	4,   // 1303: zeroauthy.store.v1.StoreService.EmailVerificationTicketsCreate:output_type -> zeroauthy.store.v1.Result
+	163, // 1304: zeroauthy.store.v1.StoreService.EmailVerificationTicketsGetByTokenHash:output_type -> zeroauthy.store.v1.EmailVerificationTicketResult
+	163, // 1305: zeroauthy.store.v1.StoreService.EmailVerificationTicketsConsume:output_type -> zeroauthy.store.v1.EmailVerificationTicketResult
+	5,   // 1306: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteByUser:output_type -> zeroauthy.store.v1.CountResult
+	5,   // 1307: zeroauthy.store.v1.StoreService.EmailVerificationTicketsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	165, // 1308: zeroauthy.store.v1.StoreService.OperatorsGet:output_type -> zeroauthy.store.v1.OperatorResult
+	4,   // 1309: zeroauthy.store.v1.StoreService.OperatorsUpsert:output_type -> zeroauthy.store.v1.Result
+	166, // 1310: zeroauthy.store.v1.StoreService.OperatorsList:output_type -> zeroauthy.store.v1.OperatorList
+	4,   // 1311: zeroauthy.store.v1.StoreService.OperatorsDelete:output_type -> zeroauthy.store.v1.Result
+	4,   // 1312: zeroauthy.store.v1.StoreService.JobsCreate:output_type -> zeroauthy.store.v1.Result
+	169, // 1313: zeroauthy.store.v1.StoreService.JobsGet:output_type -> zeroauthy.store.v1.JobResult
+	170, // 1314: zeroauthy.store.v1.StoreService.JobsList:output_type -> zeroauthy.store.v1.JobPage
+	5,   // 1315: zeroauthy.store.v1.StoreService.JobsCountActive:output_type -> zeroauthy.store.v1.CountResult
+	169, // 1316: zeroauthy.store.v1.StoreService.JobsClaim:output_type -> zeroauthy.store.v1.JobResult
+	4,   // 1317: zeroauthy.store.v1.StoreService.JobsRenew:output_type -> zeroauthy.store.v1.Result
+	4,   // 1318: zeroauthy.store.v1.StoreService.JobsCheckpoint:output_type -> zeroauthy.store.v1.Result
+	4,   // 1319: zeroauthy.store.v1.StoreService.JobsFinish:output_type -> zeroauthy.store.v1.Result
+	177, // 1320: zeroauthy.store.v1.StoreService.JobsErrors:output_type -> zeroauthy.store.v1.JobErrorList
+	4,   // 1321: zeroauthy.store.v1.StoreService.JobsAppendFile:output_type -> zeroauthy.store.v1.Result
+	179, // 1322: zeroauthy.store.v1.StoreService.JobsReadFile:output_type -> zeroauthy.store.v1.JobFileChunk
+	5,   // 1323: zeroauthy.store.v1.StoreService.JobsDeleteExpired:output_type -> zeroauthy.store.v1.CountResult
+	940, // [940:1324] is the sub-list for method output_type
+	556, // [556:940] is the sub-list for method input_type
+	556, // [556:556] is the sub-list for extension type_name
+	556, // [556:556] is the sub-list for extension extendee
+	0,   // [0:556] is the sub-list for field type_name
 }
 
 func init() { file_store_proto_init() }
@@ -32001,39 +32081,39 @@ func file_store_proto_init() {
 	if File_store_proto != nil {
 		return
 	}
-	file_store_proto_msgTypes[16].OneofWrappers = []any{}
-	file_store_proto_msgTypes[21].OneofWrappers = []any{}
-	file_store_proto_msgTypes[27].OneofWrappers = []any{}
-	file_store_proto_msgTypes[31].OneofWrappers = []any{}
-	file_store_proto_msgTypes[44].OneofWrappers = []any{}
-	file_store_proto_msgTypes[68].OneofWrappers = []any{}
-	file_store_proto_msgTypes[70].OneofWrappers = []any{}
+	file_store_proto_msgTypes[17].OneofWrappers = []any{}
+	file_store_proto_msgTypes[22].OneofWrappers = []any{}
+	file_store_proto_msgTypes[28].OneofWrappers = []any{}
+	file_store_proto_msgTypes[32].OneofWrappers = []any{}
+	file_store_proto_msgTypes[45].OneofWrappers = []any{}
+	file_store_proto_msgTypes[69].OneofWrappers = []any{}
 	file_store_proto_msgTypes[71].OneofWrappers = []any{}
-	file_store_proto_msgTypes[73].OneofWrappers = []any{}
+	file_store_proto_msgTypes[72].OneofWrappers = []any{}
 	file_store_proto_msgTypes[74].OneofWrappers = []any{}
-	file_store_proto_msgTypes[76].OneofWrappers = []any{}
-	file_store_proto_msgTypes[83].OneofWrappers = []any{}
-	file_store_proto_msgTypes[88].OneofWrappers = []any{}
-	file_store_proto_msgTypes[91].OneofWrappers = []any{}
-	file_store_proto_msgTypes[132].OneofWrappers = []any{}
-	file_store_proto_msgTypes[180].OneofWrappers = []any{}
+	file_store_proto_msgTypes[75].OneofWrappers = []any{}
+	file_store_proto_msgTypes[77].OneofWrappers = []any{}
+	file_store_proto_msgTypes[84].OneofWrappers = []any{}
+	file_store_proto_msgTypes[89].OneofWrappers = []any{}
+	file_store_proto_msgTypes[92].OneofWrappers = []any{}
+	file_store_proto_msgTypes[133].OneofWrappers = []any{}
 	file_store_proto_msgTypes[181].OneofWrappers = []any{}
-	file_store_proto_msgTypes[183].OneofWrappers = []any{}
+	file_store_proto_msgTypes[182].OneofWrappers = []any{}
 	file_store_proto_msgTypes[184].OneofWrappers = []any{}
-	file_store_proto_msgTypes[202].OneofWrappers = []any{}
+	file_store_proto_msgTypes[185].OneofWrappers = []any{}
 	file_store_proto_msgTypes[203].OneofWrappers = []any{}
 	file_store_proto_msgTypes[204].OneofWrappers = []any{}
-	file_store_proto_msgTypes[237].OneofWrappers = []any{}
-	file_store_proto_msgTypes[243].OneofWrappers = []any{}
-	file_store_proto_msgTypes[250].OneofWrappers = []any{}
+	file_store_proto_msgTypes[205].OneofWrappers = []any{}
+	file_store_proto_msgTypes[238].OneofWrappers = []any{}
+	file_store_proto_msgTypes[244].OneofWrappers = []any{}
 	file_store_proto_msgTypes[251].OneofWrappers = []any{}
+	file_store_proto_msgTypes[252].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_store_proto_rawDesc), len(file_store_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   362,
+			NumMessages:   363,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
